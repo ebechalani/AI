@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "title": "Apprendre l’IA. Créer avec l’IA. Inventer le futur.",
+    "description": "RoboHolic AI enseigne l’intelligence artificielle, la programmation et la robotique aux élèves de 8 à 18 ans à travers de vrais projets, avec une Académie des enseignants et des outils pour les écoles."
+  },
+  "hero": {
+    "eyebrow": "L’éducation à l’IA pour les 8–18 ans, les enseignants et les écoles",
+    "titleLine1": "Apprendre l’IA.",
+    "titleLine2": "Créer avec l’IA.",
+    "titleLine3": "Inventer le futur.",
+    "subtitle": "L’éducation à l’IA pour les élèves, les enseignants et les écoles.",
+    "lead": "Des leçons guidées, un tuteur IA à vos côtés, de vrais projets relus par un enseignant et des certificats qui comptent.",
+    "primary": "Commencer à apprendre",
+    "secondary": "Découvrir les parcours",
+    "facts": {
+      "ages": "De 8 à 18\u00a0ans",
+      "pathways": "{count, plural, =0 {Parcours d’apprentissage} one {# parcours d’apprentissage} other {# parcours d’apprentissage}}",
+      "languages": "Français et anglais",
+      "robotics": "IA + Robotique incluses"
+    },
+    "preview": {
+      "label": "À quoi ressemble une leçon",
+      "progress": "Leçon {current} sur {total}",
+      "stageLabel": "Étape en cours",
+      "task": "Entraînez un modèle qui distingue les pommes des oranges, puis testez-le avec vos propres photos.",
+      "tutorName": "Robo AI",
+      "tutorHint": "Avant d’entraîner le modèle, décrivez ce qu’il doit remarquer. Qu’est-ce qui fait qu’une pomme ressemble à une pomme\u00a0?",
+      "xp": "+50\u00a0XP",
+      "badge": "Badge Bâtisseur de vision débloqué"
+    }
+  },
+  "entrances": {
+    "title": "Une plateforme, trois portes d’entrée",
+    "description": "RoboHolic AI est conçu pour toute la classe\u00a0: les élèves apprennent, les enseignants enseignent et créent, les écoles pilotent l’ensemble.",
+    "students": {
+      "label": "Élèves",
+      "title": "Apprendre l’IA avec de vrais projets.",
+      "description": "Suivez un parcours adapté à votre âge, demandez de l’aide à Robo AI quand vous bloquez, réalisez des projets et gagnez des XP, des badges et des certificats.",
+      "cta": "Créer un compte élève"
+    },
+    "teachers": {
+      "label": "Enseignants",
+      "title": "Enseigner et créer avec l’IA.",
+      "description": "Gérez vos classes, assignez des cours officiels, relisez les projets avec une suggestion de note par l’IA et créez vos propres leçons.",
+      "cta": "Créer un compte enseignant"
+    },
+    "schools": {
+      "label": "Écoles",
+      "title": "Apporter une éducation structurée à l’IA dans votre école.",
+      "description": "Des licences pour chaque classe, la formation des enseignants, des statistiques et des certificats, au même endroit.",
+      "cta": "Voir l’offre pour les écoles"
+    }
+  },
+  "pathways": {
+    "eyebrow": "Parcours d’apprentissage",
+    "title": "Un parcours pour chaque âge",
+    "description": "Des premières questions sur l’IA à 8\u00a0ans à la création de produits IA à 18\u00a0ans, chaque parcours est une suite de cours qui se termine par des projets à montrer.",
+    "viewAll": "Voir tous les parcours",
+    "empty": {
+      "title": "Les parcours arrivent",
+      "description": "Les parcours d’apprentissage apparaîtront ici dès leur publication."
+    },
+    "unavailable": "Les parcours d’apprentissage n’ont pas pu être chargés pour le moment. Réessayez dans un instant."
+  },
+  "robotics": {
+    "eyebrow": "IA + Robotique",
+    "title": "La robotique est un parcours à part entière, pas une option",
+    "description": "Les élèves donnent aux machines des yeux, des capteurs et des décisions\u00a0: l’IA apprise à l’écran finit par bouger dans le monde réel.",
+    "points": {
+      "courses": {
+        "title": "Cours de robotique IA",
+        "description": "Du premier robot intelligent aux machines autonomes qui voient, perçoivent et décident."
+      },
+      "vision": {
+        "title": "Projets de vision et de capteurs",
+        "description": "Des caméras qui reconnaissent des objets, des capteurs qui réagissent, des robots qui suivent une ligne ou trouvent leur chemin."
+      },
+      "challenges": {
+        "title": "Défis robotiques",
+        "description": "Des défis hebdomadaires et à l’échelle de l’école où les équipes montrent ce que leur robot sait faire."
+      },
+      "hardware": {
+        "title": "Le simulateur d’abord, n’importe quel matériel ensuite",
+        "description": "Les leçons commencent dans un simulateur et prennent en charge plusieurs plateformes robotiques\u00a0: aucune marque imposée."
+      }
+    },
+    "cta": "Découvrir le parcours Robotique IA"
+  },
+  "teacherAcademy": {
+    "eyebrow": "Académie des enseignants",
+    "title": "Une formation continue pensée pour la classe",
+    "description": "Des cours courts et concrets pour comprendre l’IA, l’utiliser de façon responsable et l’intégrer à ses propres leçons, avec un certificat à la clé.",
+    "points": {
+      "foundations": "Fondements de l’IA et ingénierie de prompts pour les enseignants",
+      "lessons": "Créer des leçons, des images et des vidéos avec l’IA",
+      "assessment": "L’IA pour l’évaluation, la différenciation et l’éducation inclusive",
+      "responsible": "L’IA responsable à l’école"
+    },
+    "cta": "Explorer l’Académie des enseignants",
+    "signup": "Créer un compte enseignant"
+  },
+  "howItWorks": {
+    "eyebrow": "Comment ça marche",
+    "title": "Apprendre. Essayer. Construire. Recevoir un retour. Améliorer. Montrer son projet.",
+    "description": "Chaque cours suit la même boucle, quel que soit l’âge\u00a0: on comprend en faisant, et on fait mieux grâce aux retours.",
+    "steps": {
+      "learn": {
+        "title": "Apprendre",
+        "description": "De courtes leçons, avec texte, vidéo et exemples, expliquent une idée à la fois."
+      },
+      "try": {
+        "title": "Essayer",
+        "description": "Des activités pratiques et des quiz vérifient l’idée avant d’aller plus loin."
+      },
+      "build": {
+        "title": "Construire",
+        "description": "Chaque cours mène à un projet\u00a0: une histoire, un modèle, un chatbot, un robot."
+      },
+      "feedback": {
+        "title": "Recevoir un retour",
+        "description": "Un enseignant relit le projet, aidé par une suggestion de l’IA, et explique ce qu’il faut améliorer."
+      },
+      "improve": {
+        "title": "Améliorer",
+        "description": "Les élèves soumettent une meilleure version et voient leurs progrès."
+      },
+      "show": {
+        "title": "Montrer son projet",
+        "description": "Les projets terminés rapportent des XP, des badges et des certificats vérifiables en ligne."
+      }
+    }
+  },
+  "projectBased": {
+    "eyebrow": "Apprentissage par projets",
+    "title": "Chaque leçon se termine par quelque chose que vous avez fait",
+    "description": "Les leçons ne sont pas des diapositives à lire. Chacune suit les mêmes neuf étapes, de la première question au projet que vous gardez.",
+    "flowTitle": "Dans chaque leçon",
+    "points": {
+      "tutor": {
+        "title": "Robo AI, le tuteur qui guide au lieu de répondre",
+        "description": "Expliquer, donner un indice, m’interroger, donner un exemple, me lancer un défi, vérifier mon travail\u00a0: six façons de se débloquer sans recevoir la réponse."
+      },
+      "review": {
+        "title": "Relecture par l’enseignant avec une suggestion de note par l’IA",
+        "description": "Les projets sont évalués sur la créativité, la qualité technique, la compréhension et l’usage responsable de l’IA\u00a0; l’enseignant a toujours le dernier mot."
+      },
+      "lab": {
+        "title": "Un laboratoire IA pour expérimenter en sécurité",
+        "description": "Des outils de texte, d’image, de voix et de vision, avec des limites adaptées à chaque âge."
+      }
+    }
+  },
+  "schools": {
+    "eyebrow": "Pour les écoles",
+    "title": "Une éducation structurée à l’IA pour toute votre école",
+    "description": "Un compte école réunit chaque classe, chaque enseignant et chaque licence, avec les données dont votre direction a besoin.",
+    "points": {
+      "licences": {
+        "title": "Des licences pour chaque classe",
+        "description": "Les licences annuelles couvrent les cours et parcours officiels pour le nombre de places dont vous avez besoin."
+      },
+      "classes": {
+        "title": "Des classes et des listes d’élèves prêtes en quelques minutes",
+        "description": "Les enseignants créent des classes, ajoutent des élèves sans adresse e-mail et partagent un code de classe."
+      },
+      "analytics": {
+        "title": "Statistiques et certificats",
+        "description": "Taux de complétion, résultats aux quiz et certificats délivrés, pour toute l’école."
+      },
+      "privacy": {
+        "title": "La confidentialité dès la conception",
+        "description": "Un minimum de données sur les élèves, aucun profil public, des limites d’usage de l’IA fixées pour chaque âge."
+      }
+    },
+    "cta": "Nous contacter",
+    "noContact": "Les comptes école sont créés par l’équipe RoboHolic AI."
+  },
+  "cta": {
+    "title": "Prêt à inventer le futur\u00a0?",
+    "description": "Créez un compte gratuit et commencez votre première leçon aujourd’hui.",
+    "student": "Je suis élève",
+    "teacher": "Je suis enseignant",
+    "login": "J’ai déjà un compte"
+  },
+  "pathwaysPage": {
+    "title": "Parcours d’apprentissage",
+    "description": "Sept parcours, chacun une suite de cours officiels avec des projets à montrer. Choisissez celui qui correspond à votre âge, ou l’Académie des enseignants.",
+    "students": {
+      "title": "Pour les élèves",
+      "description": "Les parcours principaux par âge, plus la Robotique IA de 8 à 18\u00a0ans."
+    },
+    "teachers": {
+      "title": "Pour les enseignants",
+      "description": "La formation continue pensée pour la classe."
+    },
+    "empty": {
+      "title": "Aucun parcours publié pour le moment",
+      "description": "Les parcours d’apprentissage apparaîtront ici dès leur publication."
+    }
+  },
+  "pathwayPage": {
+    "back": "Tous les parcours",
+    "topics": "Ce que vous allez explorer",
+    "courses": "Les cours de ce parcours",
+    "coursesCount": "{count, plural, =0 {Aucun cours pour le moment} one {# cours} other {# cours}}",
+    "empty": {
+      "title": "Les cours arrivent bientôt",
+      "description": "Les cours de ce parcours sont en préparation. Revenez bientôt."
+    },
+    "access": {
+      "title": "Prêt à commencer\u00a0?",
+      "description": "Chaque cours s’ouvre dans votre propre espace. Connectez-vous, ou créez un compte gratuit pour commencer.",
+      "login": "Se connecter",
+      "signup": "Créer un compte"
+    }
+  }
+}

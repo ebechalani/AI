@@ -1,0 +1,107 @@
+{
+  "draft": {
+    "label": "Brouillon",
+    "title": "Brouillon soumis à relecture juridique",
+    "description": "Ce texte est un document provisoire rédigé par l’équipe produit pour montrer où figurera le document final. Il ne constitue pas un avis juridique et sera remplacé, avant le lancement, par la version approuvée par le conseil juridique de RoboHolic AI."
+  },
+  "contact": {
+    "title": "Questions",
+    "description": "Pour toute question sur ce document, contactez l’équipe RoboHolic AI par l’intermédiaire de votre école ou à l’adresse de contact publiée sur le site."
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "intro": "RoboHolic AI est utilisé par des enfants, des adolescents, des enseignants et des écoles. Cette politique explique, en termes simples, quelles informations la plateforme collecte, pourquoi, et qui peut les voir.",
+    "sections": {
+      "who": {
+        "title": "Qui nous sommes",
+        "body": "RoboHolic AI est la plateforme d’apprentissage exploitée par RoboHolic (l’«\u00a0exploitant\u00a0», entité juridique et adresse à compléter). Lorsqu’une école signe une licence, c’est elle qui décide quels élèves et quels enseignants utilisent la plateforme\u00a0; l’exploitant traite leurs données pour le compte de l’école."
+      },
+      "data": {
+        "title": "Ce que nous collectons",
+        "body": "Pour chaque compte\u00a0: un nom affiché, une langue, une tranche d’âge, un rôle et, pour les comptes créés avec une adresse e-mail, cette adresse. Les comptes d’élèves créés par une école ont un nom d’utilisateur à la place de l’adresse e-mail. Pendant l’apprentissage\u00a0: la progression dans les leçons, les tentatives aux quiz, les projets soumis et les retours reçus, les XP, les badges et les certificats. Pour la sécurité et la fiabilité\u00a0: l’heure de la dernière connexion, des journaux de sécurité et des compteurs anonymisés d’usage de l’IA. Les conversations avec le tuteur IA ne sont pas conservées."
+      },
+      "children": {
+        "title": "Les enfants",
+        "body": "Les comptes des élèves de moins de 13 ans ne peuvent être créés que par une école qui a accepté la responsabilité de ses élèves, ou par un enseignant dont le statut d’éducateur a été vérifié. Les élèves de 13 ans et plus peuvent créer leur propre compte avec une adresse e-mail. Nous collectons le minimum nécessaire à l’expérience d’apprentissage et ne créons jamais de profil public d’élève."
+      },
+      "use": {
+        "title": "Comment nous utilisons les données",
+        "body": "Pour faire fonctionner la plateforme\u00a0: afficher les bons cours, enregistrer la progression, permettre aux enseignants de relire les travaux et de délivrer des certificats. Pour la sécurité de tous\u00a0: appliquer les limites d’usage de l’IA, détecter les abus et protéger les comptes. Pour améliorer le service\u00a0: des statistiques agrégées qui n’identifient personne. Nous ne vendons aucune donnée personnelle et n’affichons aucune publicité."
+      },
+      "ai": {
+        "title": "Fonctions d’intelligence artificielle",
+        "body": "Le tuteur IA, le laboratoire IA et les suggestions de note présentées aux enseignants reposent sur un fournisseur d’IA sous contrat avec l’exploitant. Les requêtes sont limitées par élève et par jour, les informations personnelles sont retirées avant l’envoi d’une requête et les réponses sont vérifiées avant d’être affichées. Les suggestions de l’IA sur un projet sont un conseil pour l’enseignant, qui décide de la note."
+      },
+      "sharing": {
+        "title": "Qui voit quoi",
+        "body": "Un élève voit ses propres données. Les enseignants voient la progression et les travaux des élèves des classes qu’ils encadrent. Un administrateur d’école voit les données de son école. Les administrateurs de la plateforme voient ce qui est nécessaire à son fonctionnement. Les certificats peuvent être vérifiés publiquement par leur code, sans révéler le nom de l’apprenant. Les prestataires (hébergement, authentification, IA) ne traitent les données que sur nos instructions."
+      },
+      "retention": {
+        "title": "Durée de conservation",
+        "body": "Les données de compte sont conservées tant que le compte existe. À la suppression d’un compte, les données d’apprentissage et les fichiers téléversés sont effacés\u00a0; les certificats restent vérifiables, le nom de l’apprenant étant retiré. Les journaux de sécurité sont conservés pour une durée limitée."
+      },
+      "rights": {
+        "title": "Vos droits",
+        "body": "Vous pouvez demander à consulter, corriger ou supprimer les données personnelles détenues sur vous ou votre enfant. Les élèves d’une école font la demande par l’intermédiaire de leur école\u00a0; les autres utilisateurs contactent directement l’exploitant. Nous répondons dans le délai fixé par la loi applicable."
+      },
+      "security": {
+        "title": "Sécurité",
+        "body": "Les données sont hébergées chez des fournisseurs cloud reconnus, protégées par des règles d’accès vérifiées à chaque requête, chiffrées en transit et au repos. Les comptes sont protégés par un mot de passe\u00a0; le mot de passe du personnel se réinitialise par e-mail et celui des élèves par leur enseignant."
+      },
+      "changes": {
+        "title": "Modifications de cette politique",
+        "body": "Cette politique sera mise à jour avant le lancement et à chaque évolution du service. La date de la dernière version et un résumé des changements seront indiqués ici."
+      }
+    }
+  },
+  "terms": {
+    "title": "Conditions d’utilisation",
+    "intro": "Ces conditions décrivent la façon dont RoboHolic AI peut être utilisé par les élèves, les enseignants et les écoles. Elles seront finalisées avec le conseil juridique avant le lancement.",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptation des conditions",
+        "body": "En créant un compte ou en utilisant un compte fourni par une école, vous acceptez ces conditions. Une école qui signe une licence les accepte pour les comptes qu’elle crée. Si vous n’êtes pas d’accord, n’utilisez pas la plateforme."
+      },
+      "accounts": {
+        "title": "Comptes",
+        "body": "Les élèves de 13 ans et plus et les enseignants peuvent créer un compte avec une adresse e-mail. Les élèves plus jeunes utilisent un compte créé par leur école ou par un enseignant vérifié, avec un nom d’utilisateur et un mot de passe. Gardez votre mot de passe secret, ne partagez pas votre compte et prévenez votre enseignant ou l’exploitant si vous pensez qu’il a été utilisé à votre insu."
+      },
+      "schools": {
+        "title": "Écoles et licences",
+        "body": "Une licence école donne un nombre de places pour une période déterminée. L’école est responsable des comptes qu’elle crée, de l’obtention des consentements requis pour ses élèves et du comportement de ses utilisateurs. Les licences, les prix et les conditions de renouvellement sont fixés dans l’accord signé avec l’école."
+      },
+      "conduct": {
+        "title": "Usage acceptable",
+        "body": "Utilisez la plateforme pour apprendre et pour enseigner. Ne publiez pas de contenu illicite, blessant ou appartenant à autrui sans autorisation. N’essayez pas de contourner les limites de sécurité de l’IA, d’accéder aux données d’autres personnes ou de perturber le service. Les comptes qui enfreignent ces règles peuvent être suspendus."
+      },
+      "content": {
+        "title": "Contenus et propriété intellectuelle",
+        "body": "Les cours officiels, la marque et la plateforme appartiennent à l’exploitant. Les projets et les cours que vous créez restent les vôtres\u00a0; vous accordez à l’exploitant l’autorisation nécessaire pour les stocker et les afficher aux personnes autorisées à les voir. Les enseignants qui publient un cours pour leur école sont responsables de son contenu."
+      },
+      "ai": {
+        "title": "Fonctions d’IA",
+        "body": "Les réponses de l’IA peuvent être fausses. Le tuteur IA est conçu pour guider l’apprentissage, pas pour faire le travail à votre place, et les suggestions de note sont un conseil pour les enseignants. Ne saisissez pas d’informations personnelles dans les requêtes à l’IA. Les fonctions d’IA peuvent être limitées ou modifiées à tout moment."
+      },
+      "payments": {
+        "title": "Paiements",
+        "body": "Les abonnements individuels et les cours payants, lorsqu’ils seront proposés, seront décrits avec leur prix, leur durée et leurs conditions de résiliation au moment de l’achat. Les licences école sont facturées selon l’accord signé."
+      },
+      "termination": {
+        "title": "Suspension et fermeture",
+        "body": "Vous pouvez fermer votre compte à tout moment\u00a0; le compte d’un élève est fermé par son école. L’exploitant peut suspendre un compte qui enfreint ces conditions ou menace la sécurité des autres utilisateurs. Les certificats déjà délivrés restent vérifiables."
+      },
+      "liability": {
+        "title": "Responsabilité",
+        "body": "La plateforme est fournie en l’état, avec le soin attendu d’un service éducatif. Dans la mesure permise par la loi, l’exploitant n’est pas responsable des pertes indirectes ni des contenus créés par les utilisateurs ou par les outils d’IA. Cette section sera complétée avec la formulation juridique applicable."
+      },
+      "changes": {
+        "title": "Modifications de ces conditions",
+        "body": "Ces conditions peuvent évoluer avec le service. Les changements importants seront annoncés dans la plateforme et, pour les écoles, à l’administrateur de l’école."
+      },
+      "law": {
+        "title": "Droit applicable",
+        "body": "Le droit applicable et les tribunaux compétents seront indiqués ici une fois arrêtés avec le conseil juridique."
+      }
+    }
+  }
+}

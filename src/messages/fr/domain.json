@@ -1,0 +1,170 @@
+{
+  "roles": {
+    "student": "Élève",
+    "teacher": "Enseignant",
+    "school_admin": "Administrateur de l’école",
+    "platform_admin": "Administrateur de la plateforme"
+  },
+  "ageBands": {
+    "8-10": "8–10\u00a0ans",
+    "11-12": "11–12\u00a0ans",
+    "13-15": "13–15\u00a0ans",
+    "16-18": "16–18\u00a0ans",
+    "adult": "Adulte"
+  },
+  "areas": {
+    "ai": "Intelligence artificielle",
+    "generative_ai": "IA générative",
+    "coding": "Programmation",
+    "robotics": "Robotique",
+    "creativity": "Créativité",
+    "innovation": "Innovation",
+    "responsible_ai": "IA responsable"
+  },
+  "submissionTypes": {
+    "text": "Texte",
+    "image": "Image",
+    "audio": "Audio",
+    "video": "Vidéo",
+    "pdf": "PDF",
+    "file": "Fichier",
+    "link": "Lien",
+    "code": "Code"
+  },
+  "rubric": {
+    "creativity": "Créativité",
+    "technicalQuality": "Qualité technique",
+    "understanding": "Compréhension",
+    "responsibleAi": "Usage responsable de l’IA"
+  },
+  "stages": {
+    "discover": "Découvrir",
+    "learn": "Apprendre",
+    "watch": "Regarder",
+    "try": "Essayer",
+    "ask_ai": "Demander à l’IA",
+    "build": "Construire",
+    "check": "Vérifier",
+    "reflect": "Réfléchir",
+    "earn": "Gagner"
+  },
+  "tutorModes": {
+    "explain": "Explique-moi",
+    "hint": "Donne-moi un indice",
+    "quiz_me": "Interroge-moi",
+    "give_example": "Donne un exemple",
+    "challenge_me": "Lance-moi un défi",
+    "check_my_work": "Vérifie mon travail"
+  },
+  "status": {
+    "submitted": "Envoyé",
+    "ai_reviewed": "Évalué par l’IA",
+    "approved": "Approuvé",
+    "returned": "À retravailler",
+    "draft": "Brouillon",
+    "published": "Publié",
+    "archived": "Archivé",
+    "upcoming": "À venir",
+    "open": "Ouvert",
+    "closed": "Clôturé",
+    "completed": "Terminé",
+    "in_progress": "En cours",
+    "active": "Actif",
+    "disabled": "Désactivé",
+    "suspended": "Suspendu",
+    "issued": "Délivré",
+    "revoked": "Révoqué",
+    "expired": "Expiré"
+  },
+  "certified": {
+    "label": "Certifié RoboHolic",
+    "description": "Un cours officiel conçu et vérifié par RoboHolic."
+  },
+  "xp": {
+    "unit": "XP",
+    "amount": "{xp, number}\u00a0XP",
+    "summary": "Niveau {level}, {xp, number}\u00a0XP"
+  },
+  "level": {
+    "label": "Niveau {level}",
+    "progress": "Progression vers le niveau suivant",
+    "toNext": "Encore {xp, number}\u00a0XP avant le niveau {level}",
+    "max": "Niveau maximal atteint"
+  },
+  "course": {
+    "lessons": "{count, plural, one {# leçon} other {# leçons}}",
+    "modules": "{count, plural, one {# module} other {# modules}}",
+    "ages": "{min}–{max}\u00a0ans",
+    "agesFrom": "Dès {min}\u00a0ans",
+    "agesUpTo": "Jusqu’à {max}\u00a0ans",
+    "forTeachers": "Pour les enseignants",
+    "premium": "Premium",
+    "progress": "{percent}\u00a0% terminé"
+  },
+  "pathway": {
+    "courses": "{count, plural, =0 {Aucun cours pour le moment} one {# cours} other {# cours}}",
+    "progress": "{completed, plural, one {# cours terminé} other {# cours terminés}} sur {total}"
+  },
+  "lessonNav": {
+    "label": "Plan du cours",
+    "current": "Leçon en cours",
+    "completed": "Terminée",
+    "notCompleted": "Pas encore terminée",
+    "moduleProgress": "{completed, plural, one {# leçon terminée} other {# leçons terminées}} sur {total}"
+  },
+  "chat": {
+    "assistantName": "Robo AI",
+    "userName": "Vous",
+    "conversation": "Conversation avec Robo AI",
+    "empty": "Posez une question sur ce que vous apprenez. Robo AI vous guidera pas à pas.",
+    "modeLabel": "Comment Robo AI peut-il aider\u00a0?",
+    "inputLabel": "Votre message",
+    "placeholder": "Posez une question à Robo AI…",
+    "send": "Envoyer",
+    "thinking": "Robo AI réfléchit…",
+    "remainingToday": "{count, plural, =0 {Plus aucun message aujourd’hui} one {# message restant aujourd’hui} other {# messages restants aujourd’hui}}",
+    "disclaimer": "Robo AI peut se tromper. Vérifiez les réponses importantes avec votre enseignant."
+  },
+  "project": {
+    "kinds": {
+      "project": "Projet",
+      "challenge": "Défi"
+    },
+    "attempt": "Tentative {number}",
+    "submittedOn": "Envoyé le {date}",
+    "by": "Par {name}",
+    "score": "Note\u00a0: {score}/100"
+  },
+  "certificate": {
+    "issuedOn": "Délivré le {date}",
+    "issuedBy": "Délivré par {name}",
+    "code": "Code de vérification\u00a0: {code}",
+    "view": "Voir le certificat"
+  },
+  "challenge": {
+    "types": {
+      "weekly": "Défi de la semaine",
+      "school": "Défi de l’école",
+      "roboholic": "Défi RoboHolic",
+      "national": "Défi national",
+      "hackathon": "Hackathon"
+    },
+    "opensOn": "Ouverture le {date}",
+    "dueOn": "Date limite\u00a0: {date}",
+    "closedOn": "Clôturé le {date}",
+    "entered": "Participation envoyée",
+    "reward": "{xp, number}\u00a0XP à gagner"
+  },
+  "badge": {
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Argent",
+      "gold": "Or"
+    },
+    "earnedOn": "Obtenu le {date}",
+    "locked": "Pas encore obtenu"
+  },
+  "richText": {
+    "externalLink": "s’ouvre dans un nouvel onglet"
+  }
+}

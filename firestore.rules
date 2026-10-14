@@ -1,0 +1,297 @@
+rules_version = '2';
+
+// docs/ARCHITECTURE.md section 5.1. The Next.js server uses the Admin SDK, which bypasses
+// these rules; they are the second line of defence for a stolen web config or a compromised
+// browser session. Deny by default, no client write anywhere, reads that mirror section 4.
+//
+// Teacher access to their students' records is deliberately absent: it depends on class
+// intersection, which rules cannot check cheaply. Teachers reach that data through the server.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- The caller ------------------------------------------------------------------------
+    // Role, school and status come from the profile document, never from the token's claims:
+    // a token keeps its claims for up to an hour after a demotion or a disable.
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function uid() {
+      return request.auth.uid;
+    }
+
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function active() {
+      return signedIn() && profile().status == 'active';
+    }
+
+    function role() {
+      return profile().role;
+    }
+
+    function school() {
+      return profile().schoolId;
+    }
+
+    function isPlatformAdmin() {
+      return active() && role() == 'platform_admin';
+    }
+
+    function isSchoolAdminOf(schoolId) {
+      return active() && role() == 'school_admin' && schoolId != null && school() == schoolId;
+    }
+
+    function isSelf(userId) {
+      return signedIn() && uid() == userId;
+    }
+
+    // --- Shared conditions -----------------------------------------------------------------
+
+    function canReadClass(classData) {
+      return (active() && role() == 'teacher' && uid() in classData.teacherUids)
+        || isSchoolAdminOf(classData.schoolId)
+        || isPlatformAdmin();
+    }
+
+    function classDoc(classId) {
+      return get(/databases/$(database)/documents/classes/$(classId)).data;
+    }
+
+    function isClassMember(classId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/classes/$(classId)/members/$(request.auth.uid));
+    }
+
+    function courseDoc(courseId) {
+      return get(/databases/$(database)/documents/courses/$(courseId)).data;
+    }
+
+    function isEnrolled(courseId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/enrollments/$(request.auth.uid + '_' + courseId));
+    }
+
+    // Premium content is never readable without an enrollment, matching getCourseAccess.
+    function canReadContent(courseId) {
+      return active() && (
+        role() == 'platform_admin'
+        || courseDoc(courseId).ownerUid == uid()
+        || isEnrolled(courseId)
+        || (
+          courseDoc(courseId).status == 'published'
+          && courseDoc(courseId).isOfficial == true
+          && courseDoc(courseId).accessTier == 'free'
+          && (courseDoc(courseId).audience == 'student' || role() != 'student')
+        )
+      );
+    }
+
+    // --- Identity and organisation ---------------------------------------------------------
+
+    match /users/{userId} {
+      allow read: if isSelf(userId)
+        || isPlatformAdmin()
+        || isSchoolAdminOf(resource.data.schoolId);
+      allow write: if false;
+
+      match /badges/{badgeId} {
+        allow read: if isSelf(userId) || isPlatformAdmin();
+        allow write: if false;
+      }
+
+      match /xpLedger/{entryId} {
+        allow read: if isSelf(userId) || isPlatformAdmin();
+        allow write: if false;
+      }
+    }
+
+    match /schools/{schoolId} {
+      allow read: if (active() && school() == schoolId) || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    // Not readable by the class's students: the document carries the join code.
+    match /classes/{classId} {
+      allow read: if canReadClass(resource.data);
+      allow write: if false;
+
+      match /members/{memberUid} {
+        allow read: if isSelf(memberUid) || canReadClass(classDoc(classId));
+        allow write: if false;
+      }
+
+      match /assignments/{courseId} {
+        allow read: if canReadClass(classDoc(classId)) || isClassMember(classId);
+        allow write: if false;
+      }
+    }
+
+    match /joinCodes/{code} {
+      allow read, write: if false;
+    }
+
+    // --- Content ---------------------------------------------------------------------------
+
+    match /pathways/{pathwayId} {
+      allow read: if resource.data.status == 'published' || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /courses/{courseId} {
+      // The catalog card.
+      allow read: if (resource.data.status == 'published' && resource.data.isOfficial == true)
+        || (signedIn() && resource.data.ownerUid == uid())
+        || isSchoolAdminOf(resource.data.schoolId)
+        || isPlatformAdmin()
+        || isEnrolled(courseId);
+      allow write: if false;
+
+      match /modules/{document=**} {
+        allow read: if canReadContent(courseId);
+        allow write: if false;
+      }
+
+      match /lessons/{document=**} {
+        allow read: if canReadContent(courseId);
+        allow write: if false;
+      }
+
+      // Not recursive: the answer key below the quiz stays out of reach.
+      match /quizzes/{quizId} {
+        allow read: if canReadContent(courseId);
+        allow write: if false;
+
+        match /private/{keyId} {
+          allow read, write: if false;
+        }
+      }
+
+      match /projects/{document=**} {
+        allow read: if canReadContent(courseId);
+        allow write: if false;
+      }
+    }
+
+    // --- Learning records ------------------------------------------------------------------
+
+    match /enrollments/{enrollmentId} {
+      allow read: if (signedIn() && resource.data.userUid == uid())
+        || isSchoolAdminOf(resource.data.schoolId)
+        || isPlatformAdmin();
+      allow write: if false;
+
+      // No school-admin branch: the documents hold reflections and carry no schoolId.
+      match /lessonProgress/{lessonId} {
+        allow read: if (signedIn() && resource.data.userUid == uid()) || isPlatformAdmin();
+        allow write: if false;
+      }
+    }
+
+    // Not the owner: `results` would reveal the answer key. Students get the server's
+    // projection instead.
+    match /quizAttempts/{attemptId} {
+      allow read: if isSchoolAdminOf(resource.data.schoolId) || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /submissions/{submissionId} {
+      allow read: if (signedIn() && resource.data.studentUid == uid())
+        || isSchoolAdminOf(resource.data.schoolId)
+        || isPlatformAdmin();
+      allow write: if false;
+
+      // Students read the decision from the submission document.
+      match /reviews/{reviewId} {
+        allow read: if isPlatformAdmin();
+        allow write: if false;
+      }
+
+      match /aiReviews/{aiReviewId} {
+        allow read: if isPlatformAdmin();
+        allow write: if false;
+      }
+    }
+
+    match /files/{fileId} {
+      allow read: if (signedIn() && resource.data.ownerUid == uid()) || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    // --- Gamification, challenges, billing, hardware ---------------------------------------
+
+    match /badges/{badgeId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /hardwarePlatforms/{platformId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /certificates/{certificateId} {
+      allow read: if (signedIn() && resource.data.userUid == uid())
+        || isSchoolAdminOf(resource.data.schoolId)
+        || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /challenges/{challengeId} {
+      allow read: if (
+          active()
+          && resource.data.status == 'published'
+          && (
+            resource.data.scope == 'global'
+            || (resource.data.schoolId != null && resource.data.schoolId == school())
+          )
+        )
+        || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /subscriptions/{subscriptionId} {
+      allow read: if (
+          signedIn() && resource.data.ownerType == 'user' && resource.data.ownerId == uid()
+        )
+        || (resource.data.ownerType == 'school' && isSchoolAdminOf(resource.data.ownerId))
+        || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    match /licenses/{licenseId} {
+      allow read: if isSchoolAdminOf(resource.data.schoolId) || isPlatformAdmin();
+      allow write: if false;
+    }
+
+    // --- Server-only -----------------------------------------------------------------------
+
+    match /aiUsage/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /uploadUsage/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /rateLimits/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /auditLogs/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /meta/{document=**} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "student": {
+    "home": "Accueil",
+    "learn": "Apprendre",
+    "aiLab": "Labo IA",
+    "robotics": "Robotique",
+    "challenges": "Défis",
+    "projects": "Projets",
+    "tutor": "Tuteur IA",
+    "achievements": "Réussites",
+    "certificates": "Certificats",
+    "settings": "Paramètres"
+  },
+  "teacher": {
+    "dashboard": "Tableau de bord",
+    "classes": "Classes",
+    "courses": "Cours",
+    "create": "Créer",
+    "assessments": "Évaluations",
+    "projects": "Projets",
+    "reports": "Rapports",
+    "settings": "Paramètres"
+  },
+  "school_admin": {
+    "dashboard": "Tableau de bord",
+    "teachers": "Enseignants",
+    "students": "Élèves",
+    "classes": "Classes",
+    "courses": "Cours",
+    "analytics": "Statistiques",
+    "certificates": "Certificats",
+    "licenses": "Licences",
+    "settings": "Paramètres"
+  },
+  "platform_admin": {
+    "dashboard": "Tableau de bord",
+    "schools": "Écoles",
+    "users": "Utilisateurs",
+    "subscriptions": "Abonnements",
+    "courses": "Cours",
+    "certificates": "Certificats",
+    "challenges": "Défis"
+  },
+  "public": {
+    "home": "Accueil",
+    "pathways": "Parcours",
+    "login": "Se connecter",
+    "getStarted": "Commencer",
+    "mySpace": "Accéder à mon espace",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d’utilisation",
+    "footerNavigation": "Pied de page",
+    "copyright": "© {year} RoboHolic AI. Tous droits réservés."
+  },
+  "shell": {
+    "mainNavigation": "Navigation principale",
+    "homeLink": "Accueil RoboHolic AI",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "more": "Plus",
+    "userMenu": "Menu du compte",
+    "signedInAs": "Session ouverte\u00a0: {name}",
+    "signOut": "Se déconnecter",
+    "breadcrumbs": "Fil d’Ariane"
+  },
+  "pages": {
+    "verifyCertificate": "Vérifier un certificat",
+    "verifyEmail": "Consultez votre boîte de réception",
+    "joinClass": "Rejoindre une classe",
+    "forgotPassword": "Réinitialiser le mot de passe",
+    "certificate": "Certificat",
+    "lesson": "Leçon"
+  },
+  "lesson": {
+    "openOutline": "Ouvrir la liste des leçons",
+    "closeOutline": "Fermer la liste des leçons",
+    "askTutor": "Demander à Robo AI",
+    "closeTutor": "Fermer Robo AI",
+    "exit": "Quitter la leçon"
+  }
+}

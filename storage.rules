@@ -1,0 +1,146 @@
+rules_version = '2';
+
+// docs/ARCHITECTURE.md section 5.2. Three prefixes; everything else is denied. Uploads are
+// create-only: the server registers, serves and deletes every object with the Admin SDK.
+// The content types and sizes below must stay equal to UPLOAD_LIMITS in
+// src/lib/firebase/storage-paths.ts and to the table of section 5.2.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // --- The caller ------------------------------------------------------------------------
+    // Status and role come from the profile document in Firestore, never from the token's
+    // claims. An Auth account without an active profile (anyone can create one with the
+    // public web config) can upload nothing.
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function profile() {
+      return firestore.get(/databases/(default)/documents/users/$(request.auth.uid));
+    }
+
+    function activeProfile() {
+      return signedIn() && profile() != null && profile().data.status == 'active';
+    }
+
+    function activeWithRole(roles) {
+      return activeProfile() && profile().data.role in roles;
+    }
+
+    // --- The object ------------------------------------------------------------------------
+
+    // A name made only of dots would be a path segment the server cannot address.
+    function validNames(fileId, fileName) {
+      return fileId.matches('^[0-9a-f-]{36}$')
+        && fileName.matches('^[A-Za-z0-9._-]{1,100}$')
+        && !fileName.matches('^[.]+$');
+    }
+
+    function fits(megabytes) {
+      return request.resource.size <= megabytes * 1024 * 1024;
+    }
+
+    function isImage() {
+      return fits(10)
+        && request.resource.contentType in ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+    }
+
+    function isAudio() {
+      return fits(25)
+        && request.resource.contentType in
+          ['audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/ogg', 'audio/webm'];
+    }
+
+    function isVideo() {
+      return fits(100)
+        && request.resource.contentType in ['video/mp4', 'video/webm', 'video/quicktime'];
+    }
+
+    function isPdf() {
+      return fits(20) && request.resource.contentType == 'application/pdf';
+    }
+
+    // Browsers report Scratch projects and notebooks as application/octet-stream, so that
+    // type is accepted only with one of their extensions.
+    function isFile(fileName) {
+      return fits(25) && (
+        request.resource.contentType in [
+          'application/zip',
+          'text/plain',
+          'text/csv',
+          'application/json',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'application/x.scratch.sb3'
+        ]
+        || (
+          request.resource.contentType == 'application/octet-stream'
+          && fileName.matches('^.*[.]([sS][bB]3|[iI][pP][yY][nN][bB])$')
+        )
+      );
+    }
+
+    function isOfKind(kind, fileName) {
+      return (kind == 'image' && isImage())
+        || (kind == 'audio' && isAudio())
+        || (kind == 'video' && isVideo())
+        || (kind == 'pdf' && isPdf())
+        || (kind == 'file' && isFile(fileName));
+    }
+
+    function isOfAnyKind(fileName) {
+      return isImage() || isAudio() || isVideo() || isPdf() || isFile(fileName);
+    }
+
+    // --- Learner work ----------------------------------------------------------------------
+    // Never readable, not even by the owner: /api/files/{fileId} serves it after the server
+    // has authorized the request, so no permanent download URL can be minted.
+
+    match /user-uploads/{uid}/{kind}/{fileId}/{fileName} {
+      allow read: if false;
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && activeProfile()
+        && validNames(fileId, fileName)
+        && isOfKind(kind, fileName)
+        && resource == null;
+      allow update, delete: if false;
+    }
+
+    // --- Media of teacher-made courses -----------------------------------------------------
+    // Served through /api/files/{fileId} after getCourseAccess, so a private course's media
+    // is as private as the course.
+
+    match /course-media/authors/{uid}/{fileId}/{fileName} {
+      allow read: if false;
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && activeWithRole(['teacher', 'platform_admin'])
+        && validNames(fileId, fileName)
+        && isOfAnyKind(fileName)
+        && resource == null;
+      allow update, delete: if false;
+    }
+
+    // --- Media of official courses ---------------------------------------------------------
+    // Curriculum media published by RoboHolic; no learner data. Public by URL, but not
+    // listable: the media of a draft course stays unguessable.
+
+    match /course-media/official/{fileId}/{fileName} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if activeWithRole(['platform_admin'])
+        && validNames(fileId, fileName)
+        && isOfAnyKind(fileName)
+        && resource == null;
+      allow update, delete: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
