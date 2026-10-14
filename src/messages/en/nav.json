@@ -1,0 +1,81 @@
+{
+  "student": {
+    "home": "Home",
+    "learn": "Learn",
+    "aiLab": "AI Lab",
+    "robotics": "Robotics",
+    "challenges": "Challenges",
+    "projects": "Projects",
+    "tutor": "AI Tutor",
+    "achievements": "Achievements",
+    "certificates": "Certificates",
+    "settings": "Settings"
+  },
+  "teacher": {
+    "dashboard": "Dashboard",
+    "classes": "Classes",
+    "courses": "Courses",
+    "create": "Create",
+    "assessments": "Assessments",
+    "projects": "Projects",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "school_admin": {
+    "dashboard": "Dashboard",
+    "teachers": "Teachers",
+    "students": "Students",
+    "classes": "Classes",
+    "courses": "Courses",
+    "analytics": "Analytics",
+    "certificates": "Certificates",
+    "licenses": "Licenses",
+    "settings": "Settings"
+  },
+  "platform_admin": {
+    "dashboard": "Dashboard",
+    "schools": "Schools",
+    "users": "Users",
+    "subscriptions": "Subscriptions",
+    "courses": "Courses",
+    "certificates": "Certificates",
+    "challenges": "Challenges"
+  },
+  "public": {
+    "home": "Home",
+    "pathways": "Pathways",
+    "login": "Log in",
+    "getStarted": "Get started",
+    "mySpace": "Go to my space",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "footerNavigation": "Footer",
+    "copyright": "© {year} RoboHolic AI. All rights reserved."
+  },
+  "shell": {
+    "mainNavigation": "Main navigation",
+    "homeLink": "RoboHolic AI home",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "more": "More",
+    "userMenu": "Account menu",
+    "signedInAs": "Signed in as {name}",
+    "signOut": "Sign out",
+    "breadcrumbs": "Breadcrumb"
+  },
+  "pages": {
+    "verifyCertificate": "Verify a certificate",
+    "verifyEmail": "Check your inbox",
+    "joinClass": "Join a class",
+    "forgotPassword": "Reset your password",
+    "certificate": "Certificate",
+    "lesson": "Lesson"
+  },
+  "lesson": {
+    "openOutline": "Open the lesson list",
+    "closeOutline": "Close the lesson list",
+    "askTutor": "Ask Robo AI",
+    "closeTutor": "Close Robo AI",
+    "exit": "Exit lesson"
+  }
+}

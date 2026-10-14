@@ -1,0 +1,12 @@
+.next/
+out/
+coverage/
+.emulator-data/
+.swc/
+node_modules/
+package-lock.json
+next-env.d.ts
+AGENTS.md
+
+# Hand-formatted contract documents (wide tables)
+docs/

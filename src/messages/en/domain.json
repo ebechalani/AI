@@ -1,0 +1,170 @@
+{
+  "roles": {
+    "student": "Student",
+    "teacher": "Teacher",
+    "school_admin": "School administrator",
+    "platform_admin": "Platform administrator"
+  },
+  "ageBands": {
+    "8-10": "Ages 8–10",
+    "11-12": "Ages 11–12",
+    "13-15": "Ages 13–15",
+    "16-18": "Ages 16–18",
+    "adult": "Adult"
+  },
+  "areas": {
+    "ai": "Artificial intelligence",
+    "generative_ai": "Generative AI",
+    "coding": "Coding",
+    "robotics": "Robotics",
+    "creativity": "Creativity",
+    "innovation": "Innovation",
+    "responsible_ai": "Responsible AI"
+  },
+  "submissionTypes": {
+    "text": "Text",
+    "image": "Image",
+    "audio": "Audio",
+    "video": "Video",
+    "pdf": "PDF",
+    "file": "File",
+    "link": "Link",
+    "code": "Code"
+  },
+  "rubric": {
+    "creativity": "Creativity",
+    "technicalQuality": "Technical quality",
+    "understanding": "Understanding",
+    "responsibleAi": "Responsible use of AI"
+  },
+  "stages": {
+    "discover": "Discover",
+    "learn": "Learn",
+    "watch": "Watch",
+    "try": "Try",
+    "ask_ai": "Ask AI",
+    "build": "Build",
+    "check": "Check",
+    "reflect": "Reflect",
+    "earn": "Earn"
+  },
+  "tutorModes": {
+    "explain": "Explain",
+    "hint": "Give me a hint",
+    "quiz_me": "Quiz me",
+    "give_example": "Give an example",
+    "challenge_me": "Challenge me",
+    "check_my_work": "Check my work"
+  },
+  "status": {
+    "submitted": "Submitted",
+    "ai_reviewed": "Reviewed by AI",
+    "approved": "Approved",
+    "returned": "Returned",
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived",
+    "upcoming": "Upcoming",
+    "open": "Open",
+    "closed": "Closed",
+    "completed": "Completed",
+    "in_progress": "In progress",
+    "active": "Active",
+    "disabled": "Disabled",
+    "suspended": "Suspended",
+    "issued": "Issued",
+    "revoked": "Revoked",
+    "expired": "Expired"
+  },
+  "certified": {
+    "label": "RoboHolic Certified",
+    "description": "An official course created and reviewed by RoboHolic."
+  },
+  "xp": {
+    "unit": "XP",
+    "amount": "{xp, number} XP",
+    "summary": "Level {level}, {xp, number} XP"
+  },
+  "level": {
+    "label": "Level {level}",
+    "progress": "Progress towards the next level",
+    "toNext": "{xp, number} XP to level {level}",
+    "max": "Highest level reached"
+  },
+  "course": {
+    "lessons": "{count, plural, one {# lesson} other {# lessons}}",
+    "modules": "{count, plural, one {# module} other {# modules}}",
+    "ages": "Ages {min}–{max}",
+    "agesFrom": "Ages {min}+",
+    "agesUpTo": "Up to age {max}",
+    "forTeachers": "For teachers",
+    "premium": "Premium",
+    "progress": "{percent}% complete"
+  },
+  "pathway": {
+    "courses": "{count, plural, =0 {No courses yet} one {# course} other {# courses}}",
+    "progress": "{completed} of {total} courses completed"
+  },
+  "lessonNav": {
+    "label": "Course outline",
+    "current": "Current lesson",
+    "completed": "Completed",
+    "notCompleted": "Not completed yet",
+    "moduleProgress": "{completed} of {total} lessons completed"
+  },
+  "chat": {
+    "assistantName": "Robo AI",
+    "userName": "You",
+    "conversation": "Conversation with Robo AI",
+    "empty": "Ask a question about what you are learning. Robo AI will guide you step by step.",
+    "modeLabel": "How should Robo AI help?",
+    "inputLabel": "Your message",
+    "placeholder": "Ask Robo AI a question…",
+    "send": "Send",
+    "thinking": "Robo AI is thinking…",
+    "remainingToday": "{count, plural, =0 {No messages left today} one {# message left today} other {# messages left today}}",
+    "disclaimer": "Robo AI can make mistakes. Check important answers with your teacher."
+  },
+  "project": {
+    "kinds": {
+      "project": "Project",
+      "challenge": "Challenge"
+    },
+    "attempt": "Attempt {number}",
+    "submittedOn": "Submitted on {date}",
+    "by": "By {name}",
+    "score": "Score: {score}/100"
+  },
+  "certificate": {
+    "issuedOn": "Issued on {date}",
+    "issuedBy": "Issued by {name}",
+    "code": "Verification code: {code}",
+    "view": "View certificate"
+  },
+  "challenge": {
+    "types": {
+      "weekly": "Weekly challenge",
+      "school": "School challenge",
+      "roboholic": "RoboHolic challenge",
+      "national": "National challenge",
+      "hackathon": "Hackathon"
+    },
+    "opensOn": "Opens on {date}",
+    "dueOn": "Due on {date}",
+    "closedOn": "Closed on {date}",
+    "entered": "Entered",
+    "reward": "{xp, number} XP reward"
+  },
+  "badge": {
+    "tiers": {
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold"
+    },
+    "earnedOn": "Earned on {date}",
+    "locked": "Not earned yet"
+  },
+  "richText": {
+    "externalLink": "opens in a new tab"
+  }
+}

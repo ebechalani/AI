@@ -1,0 +1,107 @@
+{
+  "draft": {
+    "label": "Draft",
+    "title": "Draft for legal review",
+    "description": "This text is a placeholder written by the product team to show where the final document will appear. It is not legal advice and it will be replaced by the version approved by RoboHolic AI’s legal counsel before launch."
+  },
+  "contact": {
+    "title": "Questions",
+    "description": "For any question about this document, contact the RoboHolic AI team through your school or through the contact address published on the website."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "RoboHolic AI is used by children, teenagers, teachers and schools. This policy explains, in plain words, what information the platform collects, why, and who can see it.",
+    "sections": {
+      "who": {
+        "title": "Who we are",
+        "body": "RoboHolic AI is the learning platform operated by RoboHolic (the “operator”, legal entity and address to be completed). When a school signs a licence, the school decides which pupils and teachers use the platform; the operator processes their data on the school’s behalf."
+      },
+      "data": {
+        "title": "What we collect",
+        "body": "For every account: a display name, a language, an age group, a role and, for accounts created with an email address, that address. Pupil accounts created by a school have a username instead of an email address. While learning: lesson progress, quiz attempts, project submissions and the feedback on them, XP, badges and certificates. For safety and reliability: the time of the last login, security logs and anonymised counters of AI usage. Conversations with the AI tutor are not stored."
+      },
+      "children": {
+        "title": "Children",
+        "body": "Accounts for pupils under 13 can only be created by a school that has accepted responsibility for its pupils, or by a teacher whose status as an educator has been verified. Students aged 13 and over may create their own account with an email address. We collect the minimum needed to run the learning experience and never build public profiles of students."
+      },
+      "use": {
+        "title": "How we use the data",
+        "body": "To run the platform: show the right courses, save progress, let teachers review work and issue certificates. To keep everyone safe: enforce limits on AI usage, detect abuse and protect accounts. To improve the service: aggregate statistics that identify nobody. We do not sell personal data and we do not show advertising."
+      },
+      "ai": {
+        "title": "Artificial intelligence features",
+        "body": "The AI tutor, the AI Lab and the grading suggestions shown to teachers use an AI provider under contract with the operator. Requests are limited per student and per day, personal details are removed before a request is sent, and the output is checked before it is shown. AI suggestions about a project are advice for the teacher, who decides the grade."
+      },
+      "sharing": {
+        "title": "Who can see what",
+        "body": "A student sees their own data. Teachers see the progress and work of students in the classes they teach. A school administrator sees the data of their school. Platform administrators see what is needed to operate the service. Certificates can be verified publicly by their code, without revealing the learner’s name. Service providers (hosting, authentication, AI) process data only on our instructions."
+      },
+      "retention": {
+        "title": "How long we keep data",
+        "body": "Account data is kept while the account exists. When an account is deleted, learning records and uploaded files are removed; certificates stay verifiable with the learner’s name removed. Security logs are kept for a limited period."
+      },
+      "rights": {
+        "title": "Your rights",
+        "body": "You can ask to see, correct or delete the personal data held about you or your child. Pupils of a school make the request through their school; other users contact the operator directly. We answer within the delay set by the applicable law."
+      },
+      "security": {
+        "title": "Security",
+        "body": "Data is stored with established cloud providers, protected by access rules checked on every request, encrypted in transit and at rest. Accounts are protected by passwords; staff passwords can be reset by email and pupil passwords by their teacher."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "body": "This policy will be updated before launch and whenever the service changes. The date of the latest version and a summary of changes will be shown here."
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "intro": "These terms describe how RoboHolic AI may be used by students, teachers and schools. They will be finalised with legal counsel before launch.",
+    "sections": {
+      "acceptance": {
+        "title": "Accepting the terms",
+        "body": "By creating an account or using an account provided by a school, you accept these terms. A school that signs a licence accepts them for the accounts it creates. If you do not agree, do not use the platform."
+      },
+      "accounts": {
+        "title": "Accounts",
+        "body": "Students aged 13 and over and teachers can create an account with an email address. Younger pupils use an account created by their school or by a verified teacher, with a username and a password. Keep your password private, do not share your account and tell your teacher or the operator if you think it has been misused."
+      },
+      "schools": {
+        "title": "Schools and licences",
+        "body": "A school licence gives a number of seats for a set period. The school is responsible for the accounts it creates, for obtaining any consent required for its pupils and for the conduct of its users. Licences, prices and renewal terms are set in the agreement signed with the school."
+      },
+      "conduct": {
+        "title": "Acceptable use",
+        "body": "Use the platform to learn and to teach. Do not upload content that is unlawful, hurtful or that belongs to someone else without permission. Do not try to break the AI safety limits, to access other people’s data or to disrupt the service. Accounts that break these rules may be suspended."
+      },
+      "content": {
+        "title": "Content and intellectual property",
+        "body": "Official courses, the brand and the platform belong to the operator. Projects and courses you create remain yours; you give the operator the permission needed to store and display them to the people allowed to see them. Teachers who publish a course to their school are responsible for its content."
+      },
+      "ai": {
+        "title": "AI features",
+        "body": "AI answers can be wrong. The AI tutor is designed to guide learning, not to do the work for you, and the grading suggestions are advice for teachers. Do not enter personal information in AI prompts. AI features may be limited or changed at any time."
+      },
+      "payments": {
+        "title": "Payments",
+        "body": "Individual subscriptions and paid courses, when they are offered, will be described with their price, duration and cancellation terms at the point of purchase. School licences are invoiced under the signed agreement."
+      },
+      "termination": {
+        "title": "Suspension and closure",
+        "body": "You can close your account at any time; a pupil’s account is closed by their school. The operator may suspend an account that breaks these terms or threatens the safety of other users. Certificates already issued remain verifiable."
+      },
+      "liability": {
+        "title": "Liability",
+        "body": "The platform is provided as is, with the care expected of an education service. To the extent permitted by law, the operator is not liable for indirect losses or for content created by users or by AI tools. This section will be completed with the applicable legal wording."
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "body": "These terms may change as the service evolves. Significant changes will be announced in the platform and, for schools, to the school administrator."
+      },
+      "law": {
+        "title": "Applicable law",
+        "body": "The applicable law and the competent courts will be stated here once decided with legal counsel."
+      }
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "title": "Learn AI. Build with AI. Create the Future.",
+    "description": "RoboHolic AI teaches artificial intelligence, coding and robotics to students aged 8 to 18 through real projects, with a Teacher Academy and tools for schools."
+  },
+  "hero": {
+    "eyebrow": "AI education for ages 8 to 18, teachers and schools",
+    "titleLine1": "Learn AI.",
+    "titleLine2": "Build with AI.",
+    "titleLine3": "Create the Future.",
+    "subtitle": "AI education for students, teachers and schools.",
+    "lead": "Guided lessons, an AI tutor by your side, real projects reviewed by a teacher, and certificates worth showing.",
+    "primary": "Start learning",
+    "secondary": "Explore the pathways",
+    "facts": {
+      "ages": "Ages 8 to 18",
+      "pathways": "{count, plural, =0 {Learning pathways} one {# learning pathway} other {# learning pathways}}",
+      "languages": "English and French",
+      "robotics": "AI + Robotics included"
+    },
+    "preview": {
+      "label": "What a lesson looks like",
+      "progress": "Lesson {current} of {total}",
+      "stageLabel": "Current step",
+      "task": "Train a model that tells apples from oranges, then test it with your own photos.",
+      "tutorName": "Robo AI",
+      "tutorHint": "Before you train, describe what your model should notice. What makes an apple look like an apple?",
+      "xp": "+50 XP",
+      "badge": "Vision Builder badge unlocked"
+    }
+  },
+  "entrances": {
+    "title": "One platform, three ways in",
+    "description": "RoboHolic AI is built for the whole classroom: students learn, teachers teach and create, schools run it all.",
+    "students": {
+      "label": "Students",
+      "title": "Learn AI through real projects.",
+      "description": "Follow a pathway made for your age, ask Robo AI when you are stuck, build projects and earn XP, badges and certificates.",
+      "cta": "Create a student account"
+    },
+    "teachers": {
+      "label": "Teachers",
+      "title": "Teach and create with AI.",
+      "description": "Run classes, assign official courses, review projects with AI-suggested grading, and create your own lessons.",
+      "cta": "Create a teacher account"
+    },
+    "schools": {
+      "label": "Schools",
+      "title": "Bring structured AI education to your school.",
+      "description": "Licences for every class, teacher training, analytics and certificates, all in one place.",
+      "cta": "See what schools get"
+    }
+  },
+  "pathways": {
+    "eyebrow": "Learning pathways",
+    "title": "A pathway for every age",
+    "description": "From the first questions about AI at age 8 to building AI products at 18, each pathway is a sequence of courses that ends with projects to show.",
+    "viewAll": "See all pathways",
+    "empty": {
+      "title": "Pathways are on their way",
+      "description": "The learning pathways will appear here as soon as they are published."
+    },
+    "unavailable": "The learning pathways could not be loaded right now. Try again in a moment."
+  },
+  "robotics": {
+    "eyebrow": "AI + Robotics",
+    "title": "Robotics is a main pathway, not an add-on",
+    "description": "Students give machines eyes, sensors and decisions: the AI they learn on screen ends up moving in the real world.",
+    "points": {
+      "courses": {
+        "title": "AI Robotics courses",
+        "description": "From a first smart robot to autonomous machines that see, sense and decide."
+      },
+      "vision": {
+        "title": "Vision and sensor projects",
+        "description": "Cameras that recognise objects, sensors that react, robots that follow a line or find their way."
+      },
+      "challenges": {
+        "title": "Robot challenges",
+        "description": "Weekly and school-wide challenges where teams submit what their robot can do."
+      },
+      "hardware": {
+        "title": "Simulator first, any hardware next",
+        "description": "Lessons start in a simulator and support several robot platforms, so no single brand is required."
+      }
+    },
+    "cta": "Discover the AI Robotics pathway"
+  },
+  "teacherAcademy": {
+    "eyebrow": "Teacher Academy",
+    "title": "Professional development built for the classroom",
+    "description": "Short, practical courses that help teachers understand AI, use it responsibly and bring it into their own lessons, with a certificate at the end.",
+    "points": {
+      "foundations": "AI foundations and prompt engineering for educators",
+      "lessons": "Creating lessons, images and videos with AI",
+      "assessment": "AI for assessment, differentiation and inclusive education",
+      "responsible": "Responsible AI in schools"
+    },
+    "cta": "Explore the Teacher Academy",
+    "signup": "Create a teacher account"
+  },
+  "howItWorks": {
+    "eyebrow": "How it works",
+    "title": "Learn. Try. Build. Get feedback. Improve. Show your project.",
+    "description": "Every course follows the same loop, whatever the age: understanding comes from making, and making gets better with feedback.",
+    "steps": {
+      "learn": {
+        "title": "Learn",
+        "description": "Short lessons with text, video and examples explain one idea at a time."
+      },
+      "try": {
+        "title": "Try",
+        "description": "Hands-on activities and quizzes check the idea before moving on."
+      },
+      "build": {
+        "title": "Build",
+        "description": "Every course leads to a project: a story, a model, a chatbot, a robot."
+      },
+      "feedback": {
+        "title": "Get feedback",
+        "description": "A teacher reviews the project, helped by an AI suggestion, and explains what to improve."
+      },
+      "improve": {
+        "title": "Improve",
+        "description": "Students resubmit a better version and see their progress."
+      },
+      "show": {
+        "title": "Show your project",
+        "description": "Finished projects earn XP, badges and certificates that can be verified online."
+      }
+    }
+  },
+  "projectBased": {
+    "eyebrow": "Project-based learning",
+    "title": "Every lesson ends with something you made",
+    "description": "Lessons are not slides to read. Each one walks through the same nine steps, from the first question to the project you keep.",
+    "flowTitle": "Inside every lesson",
+    "points": {
+      "tutor": {
+        "title": "Robo AI, the tutor that guides instead of answering",
+        "description": "Explain, hint, quiz me, give an example, challenge me, check my work: six ways to get unstuck without being handed the answer."
+      },
+      "review": {
+        "title": "Teacher review with AI-suggested grading",
+        "description": "Projects are graded on creativity, technical quality, understanding and responsible use of AI; the teacher always has the last word."
+      },
+      "lab": {
+        "title": "An AI Lab to experiment safely",
+        "description": "Text, image, voice and vision tools, with limits suited to each age."
+      }
+    }
+  },
+  "schools": {
+    "eyebrow": "For schools",
+    "title": "Structured AI education for your whole school",
+    "description": "A school account brings every class, teacher and licence together, with the data your leadership team needs.",
+    "points": {
+      "licences": {
+        "title": "Licences for every class",
+        "description": "Annual school licences cover official courses and pathways for the seats you need."
+      },
+      "classes": {
+        "title": "Classes and rosters, ready in minutes",
+        "description": "Teachers create classes, add pupils without email addresses and share a class code."
+      },
+      "analytics": {
+        "title": "Analytics and certificates",
+        "description": "Completion rates, quiz results and issued certificates, school-wide."
+      },
+      "privacy": {
+        "title": "Privacy by design",
+        "description": "Minimal data about pupils, no public profiles, AI usage boundaries set for each age."
+      }
+    },
+    "cta": "Contact us",
+    "noContact": "School accounts are set up by the RoboHolic AI team."
+  },
+  "cta": {
+    "title": "Ready to create the future?",
+    "description": "Create a free account and start your first lesson today.",
+    "student": "I am a student",
+    "teacher": "I am a teacher",
+    "login": "I already have an account"
+  },
+  "pathwaysPage": {
+    "title": "Learning pathways",
+    "description": "Seven pathways, each a sequence of official courses with projects to show. Pick the one that fits your age, or the Teacher Academy.",
+    "students": {
+      "title": "For students",
+      "description": "Core pathways by age, plus AI Robotics for ages 8 to 18."
+    },
+    "teachers": {
+      "title": "For teachers",
+      "description": "Professional development for the classroom."
+    },
+    "empty": {
+      "title": "No pathways published yet",
+      "description": "The learning pathways will appear here as soon as they are published."
+    }
+  },
+  "pathwayPage": {
+    "back": "All pathways",
+    "topics": "What you will explore",
+    "courses": "Courses in this pathway",
+    "coursesCount": "{count, plural, =0 {No courses yet} one {# course} other {# courses}}",
+    "empty": {
+      "title": "Courses coming soon",
+      "description": "The courses of this pathway are being prepared. Check back soon."
+    },
+    "access": {
+      "title": "Ready to start?",
+      "description": "Each course opens inside your own space. Log in, or create a free account to begin.",
+      "login": "Log in",
+      "signup": "Create an account"
+    }
+  }
+}
