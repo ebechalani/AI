@@ -1,0 +1,34 @@
+{
+  "validation": "Certaines informations ne sont pas valides. Vérifiez les champs signalés, puis réessayez.",
+  "unauthenticated": "Votre session a expiré. Reconnectez-vous pour continuer.",
+  "forbidden": "Vous n’avez pas l’autorisation d’effectuer cette action.",
+  "not_found": "L’élément recherché est introuvable.",
+  "conflict": "Action impossible, car la situation a changé entre-temps. Actualisez la page, puis réessayez.",
+  "rate_limited": "Trop de tentatives. Patientez un instant, puis réessayez.",
+  "license_required": "Ce contenu nécessite une licence. Demandez l’accès à votre enseignant ou à votre école.",
+  "profile_missing": "Ce compte n’a pas encore de profil. Terminez l’inscription ou demandez de l’aide à votre enseignant.",
+  "email_unverified": "Confirmez votre adresse e-mail avant de vous connecter. Le lien se trouve dans votre boîte de réception.",
+  "not_implemented": "Cette fonctionnalité n’est pas encore disponible.",
+  "internal": "Une erreur s’est produite de notre côté. Réessayez dans un instant.",
+  "retry": {
+    "seconds": "Réessayez dans {seconds, plural, one {# seconde} other {# secondes}}.",
+    "minutes": "Réessayez dans environ {minutes, plural, one {# minute} other {# minutes}}.",
+    "tomorrow": "Réessayez demain."
+  },
+  "page": {
+    "title": "Une erreur s’est produite",
+    "description": "Impossible d’afficher cette page. Réessayez, ou revenez plus tard si le problème persiste.",
+    "retry": "Réessayer",
+    "home": "Retour à l’accueil"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page recherchée n’existe pas ou a été déplacée.",
+    "home": "Aller à l’accueil"
+  },
+  "empty": {
+    "title": "Rien à afficher pour le moment",
+    "description": "Dès qu’il y aura du contenu, il apparaîtra ici."
+  },
+  "offline": "Vous semblez être hors ligne. Vérifiez votre connexion, puis réessayez."
+}
