@@ -606,7 +606,7 @@ export async function deleteLesson(
   await getAdminDb().runTransaction(async (tx) => {
     fromSnapshot<Course>(await tx.get(courseRef));
     const lesson = fromSnapshot<Lesson>(await tx.get(ref), { courseId });
-    await assertNoEnollments(tx, courseId);
+    await assertNoEnrollments(tx, courseId);
     const moduleRef = collections.modules(courseId).doc(lesson.moduleId);
     const moduleSnapshot = await tx.get(moduleRef);
     const lessons = fromQuery<Lesson>(await tx.get(collections.lessons(courseId)), { courseId });
