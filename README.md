@@ -165,7 +165,7 @@ network access; `next dev` falls back to a system font with a warning when the d
 ## Checks and test suites
 
 | Command                    | What it runs                                                                                                                                       | Needs                  |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | `npm run lint`             | `eslint .`, then `scripts/check-messages.ts` (fails when the `en` and `fr` catalogs differ by a namespace file or a key)                           | nothing                |
 | `npm run typecheck`        | `next typegen && tsc --noEmit` (writes `.next/types`; do not run it while `next dev` or `next build` is using `.next`)                             | nothing                |
 | `npm test`                 | Vitest project `unit`: `tests/unit/**` (node only, no Firebase, mocked repositories)                                                               | nothing                |
