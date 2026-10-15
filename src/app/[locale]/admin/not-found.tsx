@@ -8,6 +8,7 @@ export default function AdminNotFound() {
     <EmptyState
       icon={<SearchX />}
       title={t('notFound.title')}
+      titleAs="h1"
       description={t('notFound.description')}
       action={<LinkButton href="/admin">{t('notFound.home')}</LinkButton>}
     />

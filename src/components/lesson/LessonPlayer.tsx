@@ -19,7 +19,6 @@ import { LessonCompleteControl } from './LessonCompleteControl';
 import { LessonContent } from './LessonContent';
 import { LessonFooter } from './LessonFooter';
 import { LessonPreviewNotice } from './LessonPreviewNotice';
-import { LessonScrollPadding } from './LessonScrollPadding';
 import { LessonStartBeacon } from './LessonStartBeacon';
 import { LessonTopBar } from './LessonTopBar';
 import {
@@ -159,7 +158,6 @@ export async function LessonPlayer({
         />
       }
     >
-      <LessonScrollPadding />
       {!readOnly && !completed && (
         <LessonStartBeacon
           key={`${course.id}/${lesson.id}`}

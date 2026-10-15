@@ -1,5 +1,4 @@
 export { ContinueLearning, type ContinueLearningProps } from './ContinueLearning';
-export { STUDENT_SCROLL_PADDING, StudentScrollPadding } from './StudentScrollPadding';
 export { HomeSection, type HomeSectionProps } from './HomeSection';
 export {
   CONTINUE_LIMIT,

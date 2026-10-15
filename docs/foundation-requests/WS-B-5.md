@@ -1,7 +1,9 @@
 # WS-B-5: "1 of 1 courses completed" — the pathway progress message has no plural
 
 - **From:** WS-B, area home (Student Home), 2026-10-15; extended by area learn, 2026-10-15
-- **Status:** open. Nothing is blocked; the English text is just ungrammatical.
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-15: the two English
+  messages use ICU plural, as wanted. French was already correct; keys and arguments are
+  unchanged.
 - **Frozen files concerned:** `src/messages/en/domain.json`
 
 ## Problem
@@ -55,3 +57,22 @@ The pages WS-B owns no longer use the two domain messages. The student pathway p
 and the same French text as `domain`. They can stay once this lands. `PathwayCard` is a
 domain component, so the catalog on `/student/learn` and My pathways on the Home still need
 this request.
+
+## Change (landed)
+
+Landed by the foundation maintainer on 2026-10-15:
+
+- `src/messages/en/domain.json`: `pathway.progress` is `"{completed} of {total, plural, one {#
+  course} other {# courses}} completed"` and `lessonNav.moduleProgress` is `"{completed} of
+  {total, plural, one {# lesson} other {# lessons}} completed"`.
+- French unchanged: `"{completed, plural, one {# cours terminé} other {# cours terminés}} sur
+  {total}"` reads "0 cours terminé sur 1" and "1 cours terminé sur 1" (French `one` covers 0
+  and 1), "2 cours terminés sur 3"; the same for `moduleProgress`.
+- `tests/unit/foundation-ui.test.ts` formats both messages in en and fr for 0/1, 1/1 and 2/3.
+- `docs/ARCHITECTURE.md` 7.4.
+
+Checked in Chromium: `lea.demo` reads "1 of 1 course completed" on the AI Explorer card of
+`/en/student` (My pathways) and `/en/student/learn` (Explore pathways), and "1 cours terminé sur
+1" on `/fr/student/learn`; `student@demo` reads "0 of 1 course completed". WS-B's own
+`learn.*` copies of the message can stay.
+

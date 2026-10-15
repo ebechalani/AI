@@ -823,7 +823,7 @@ src/
    │  ├─ PublicShell.tsx · PublicHeader.tsx · PublicFooter.tsx · AuthShell.tsx
    │  ├─ AppShell.tsx · SidebarNav.tsx · MobileNav.tsx · TopBar.tsx · UserMenu.tsx
    │  ├─ LocaleSwitcher.tsx · PageHeader.tsx · LessonShell.tsx · tutor-bridge.tsx · index.ts
-   │  └─ Drawer.tsx · NavLinks.tsx · SkipLink.tsx · LessonSidePane.tsx · sign-out.tsx   layout-private (section 7.5)
+   │  └─ Drawer.tsx · NavLinks.tsx · SkipLink.tsx · LessonSidePane.tsx · lesson-scroll-padding.ts · field-reveal.ts · sign-out.tsx   layout-private (section 7.5)
    ├─ lesson/                                lesson player (section 7.6)
    │  ├─ LessonPlayer.tsx · LessonTopBar.tsx · StageStepper.tsx · LessonContent.tsx
    │  ├─ LessonFooter.tsx · LessonCompletePanel.tsx · BlockRenderer.tsx
@@ -2502,7 +2502,7 @@ changes copy tone and tutor behaviour.
 the built-in inline-SVG avatars; unknown ids fall back to `DEFAULT_AVATAR_ID`), `Logo`
 (inline SVG wordmark), `ProgressBar`, `ProgressRing`, `Tabs`, `Dialog`, `DropdownMenu`,
 `Tooltip`, `Toast` (`ToastProvider`, `useToast()`), `Table`, `Pagination`, `Skeleton`,
-`Spinner`, `EmptyState` (`icon`, `title`, `description`, `action`), `ErrorState`, `Alert`,
+`Spinner`, `EmptyState` (`icon`, `title`, `titleAs`, `description`, `action`), `ErrorState`, `Alert`,
 `Breadcrumbs`. `LinkButton` lives in `Button.tsx`. All are exported from
 `components/ui/index.ts`, together with `CardTitle` (`{ as?: 'h2' | 'h3' | 'h4' }`),
 `buttonClasses({ variant, size, fullWidth, iconOnly })` (for elements that are neither
@@ -2568,9 +2568,12 @@ Props and behaviour fixed by the delivered kit:
   strokeWidth?, label?, children? }`; `Skeleton { className?, lines? }` is `aria-hidden`, so a
   `loading.tsx` also renders a `Spinner` or a status line; `Table` requires `caption` and
   scrolls horizontally in its own focusable region.
-- `EmptyState { icon?: ReactNode; title?; description?; action?; variant?: 'framed' |
-  'plain' }`: `icon` is an icon element (`<Trophy />`), not a name; `title` falls back to
-  `errors.empty.title`, and the default description is shown only with the default title.
+- `EmptyState { icon?: ReactNode; title?; titleAs?: 'p' | 'h1' | 'h2' | 'h3'; description?;
+  action?; variant?: 'framed' | 'plain' }`: `icon` is an icon element (`<Trophy />`), not a
+  name; `title` falls back to `errors.empty.title`, and the default description is shown only
+  with the default title. `titleAs` (default `'p'`, same look at every level) makes the title a
+  heading on a page that is nothing but the empty state: every `not-found.tsx` under `src/app`
+  passes `'h1'` (the global one writes its own `<h1>`), so each not-found page has one h1.
 - Built-in text: `EmptyState` and `ErrorState` read the `errors` namespace
   (`errors.empty.{title, description}`, `errors.page.{title, description, retry}`),
   `Breadcrumbs` reads `nav.shell.breadcrumbs`; everything else comes from `common`
@@ -2623,7 +2626,12 @@ Every card takes an optional `className`. `CourseCard`, `PathwayCard`, `ProjectC
 `ChallengeCard` and `CertificateCard` make the whole card clickable through an `::after`
 overlay on the title link, so no second interactive control goes inside them.
 `CertificateCard` resolves `certificate.courseTitle` with `pickTranslation(…, locale, 'en')`
-(a certificate has no `defaultLocale`); `ChallengeCard` derives the phase with
+(a certificate has no `defaultLocale`) and renders `domain.certificate.code` with `t.rich`: the
+message wraps `{code}` in a `<nowrap>` tag, rendered as a `whitespace-nowrap` `translate="no"`
+span, so the verification code is never split (on a narrow card it moves to its own line and
+only the label wraps; checked down to a 320 px screen with the widest code). `PathwayCard`'s
+`domain.pathway.progress` and `LessonNavigation`'s `domain.lessonNav.moduleProgress` agree the
+noun with `{total}` (ICU plural: "1 of 1 course completed"); `ChallengeCard` derives the phase with
 `getChallengePhase(challenge, now)`, `now` passed from the server render. Lucide icon names
 in data (`pathways.icon`, `badges.icon`, nav items, lab tools) are resolved by `NamedIcon`
 from `ICON_NAMES`, a fixed list of about 95 icons rather than lucide's full export (keeps
@@ -2702,6 +2710,46 @@ export function useTutorBridge(): {
 always visible, so only the request matters; on narrow screens `LessonShell` opens the
 slide-over. Outside a provider (the full-page tutor) `useTutorBridge()` returns a no-op
 bridge, so `TutorPanel` works in both places.
+
+**Scroll padding** (WCAG 2.2 SC 2.4.11 *Focus Not Obscured*; foundation requests WS-B-3 and
+WS-B-4). The browser does not scroll a keyboard-focused element that is inside the viewport but
+under a sticky or fixed bar, and Shift+Tab stops at the viewport's top edge, under the bar.
+`AppShell` marks its root `data-app-shell="{role}"` and `LessonShell` marks its root
+`data-lesson-shell`; the rules in `globals.css` (`@layer base`) give `<html>` scroll padding
+only while that shell is mounted **and focus is inside `#main-content`**. The bars sit in the
+padded strips, so padding while a bar holds focus would scroll the page whenever a bar control
+gets focus from mid-page (Tab, a menu that opens or returns focus). While focus is anywhere
+else (a bar, a pane, the skip link, nothing), `#main-content` and every element with an `id`
+inside it carry the top offset as `scroll-margin-top` instead (the skip link, the stepper chips,
+"n steps left"). Values:
+
+- `AppShell`: top `5.5rem` at every width for every role (the TopBar is 4rem and a border);
+  bottom `calc(5.5rem + env(safe-area-inset-bottom))` below `lg`, students only (the MobileNav is
+  3.5rem, a border and the safe area); jump margin `5rem`.
+- `LessonShell`: measured. `lesson-scroll-padding.ts` (layout-private; the hook
+  `useLessonScrollPadding` runs `watchLessonBars`) observes the top bar and the bottom stack
+  (the footer and, below `xl`, the floating tutor button above it) with a `ResizeObserver` and
+  sets `--lesson-scroll-top` / `--lesson-scroll-bottom` (each bar + 24 px) and
+  `--lesson-jump-top` (top bar + 16 px) on `<html>`, restoring the previous values on unmount;
+  the first-paint fallbacks are 10rem, 10.5rem (7rem from `xl`) and 10rem. Measured:
+  top bar 99 px, 123 px below `sm`, 139 px when the stepper wraps; bottom stack 93 px, 153 px
+  with the tutor button. Below `xl` with the tutor on, `<main>` ends with `pb-24` (`xl:pb-8`) so
+  the end of the lesson scrolls clear of the floating button.
+
+The 24 px (1.5rem) beyond a bar covers the focus ring and the top of a text field: on focus the
+browser scrolls a field's caret line clear of the padding, not its box. A multi-line field whose
+first line is already on screen therefore stays partly under the bottom bar (40–80 px of a
+5-row field), so both shells also render `FieldReveal` (`field-reveal.ts`, layout-private,
+client; `AppShell` next to `SkipLink`). On `focusin` of a `<textarea>` or an editable region
+inside `#main-content` it calls `scrollIntoView({ block: 'nearest', inline: 'nearest' })`, which
+keeps the padding, does nothing to a field already clear, and runs before the browser's own
+caret scroll. It skips focus caused by a pointer press (in the same task as its `pointerdown` or
+`mousedown`), because scrolling then would move the text under the pressed button. Other
+elements need no help: the browser scrolls their whole box clear of the padding. What no rule can
+do is make room that is not there: an element taller than the space between the bars (a 40-row
+field, a 700 px card on an 812 px phone) gets its top edge aligned with the padding and stays
+partly under the bottom bar, never entirely (2.4.11 AA is met; 2.4.12 AAA is not promised).
+Pages and feature components add no root scroll padding and no `scroll-mt-*` for these bars.
 
 ### 7.6 Lesson player
 
@@ -5167,8 +5215,9 @@ only with `--with-demo-users`.
   teacher): `lea.demo` completes all four lessons, passes both quizzes first time and
   submits the project, which the teacher accepts with decision `modify` (criteria
   90/85/95/100), giving the automatic certificate, the `ai-explorer` pathway badge and the
-  manual badge `responsible-ai-champion` awarded by the teacher (850 XP + 150 bonus = 1000,
-  level 3); `omar.demo` (locale `fr`) completes lessons 1–2 with `quiz-m1` failed then
+  manual badge `responsible-ai-champion` awarded by the teacher (700 XP from the course
+  (4 lessons × 50, 2 quizzes × 100, the project 300) + 150 badge bonus (`ai-explorer` 100,
+  `responsible-ai-champion` 50) = 850 XP, level 3); `omar.demo` (locale `fr`) completes lessons 1–2 with `quiz-m1` failed then
   passed, starts lesson 3 and has the project submitted with a ready mock AI review (the one
   submission awaiting review); `maya.demo` starts lesson 1 with a reflection saved;
   `student@demo` self-enrols, completes lesson 1 and fails `quiz-m1` once. The seed summary

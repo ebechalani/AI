@@ -26,7 +26,7 @@ export function focusWasLost(within: Element | null): boolean {
 /**
  * Moves focus to a field and makes it fully visible: the browser leaves a partly visible field
  * where it is on focus, which can be under the sticky top bar. `nearest` keeps the root's scroll
- * padding (LessonScrollPadding) and does not scroll a field already in view.
+ * padding (LessonShell's, globals.css) and does not scroll a field already in view.
  */
 export function focusInView(field: HTMLElement): void {
   field.focus({ preventScroll: true });

@@ -14,6 +14,8 @@ import { useTranslations } from 'next-intl';
 import { Button, IconButton } from '@/components/ui';
 import { usePathname } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { FieldReveal } from './field-reveal';
+import { useLessonScrollPadding } from './lesson-scroll-padding';
 import { LessonSidePane } from './LessonSidePane';
 import { TutorBridgeProvider, useTutorBridge } from './tutor-bridge';
 
@@ -60,6 +62,8 @@ function LessonFrame({ top, nav, children, aside, footer }: LessonShellProps) {
   const outlineCloseRef = useRef<HTMLButtonElement>(null);
   const tutorCloseRef = useRef<HTMLButtonElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
   // The outline is open for the page it was opened on: following a lesson link closes it.
   const [outlineOpenOn, setOutlineOpenOn] = useState<string | null>(null);
 
@@ -72,6 +76,10 @@ function LessonFrame({ top, nav, children, aside, footer }: LessonShellProps) {
         ? 'tutor'
         : null;
   const closeOverlay = () => (overlay === 'outline' ? setOutlineOpenOn(null) : setTutorOpen(false));
+
+  // Focused controls and jump targets stay clear of the sticky bars (globals.css, 7.5); a
+  // multi-line field all of it, not only its caret line (FieldReveal, below).
+  useLessonScrollPadding(headerRef, bottomRef, `${hasTutor}:${Boolean(footer)}`);
 
   // On a wide screen the tutor is always visible and "open" means nothing. Dropping the flag
   // there keeps the pane from sliding in later, when the window is made narrower.
@@ -105,7 +113,8 @@ function LessonFrame({ top, nav, children, aside, footer }: LessonShellProps) {
   }, [overlay, setTutorOpen]);
 
   return (
-    <div className="flex min-h-dvh bg-surface">
+    <div data-lesson-shell="" className="flex min-h-dvh bg-surface">
+      <FieldReveal />
       <LessonSidePane
         side="start"
         id={outlineId}
@@ -120,7 +129,10 @@ function LessonFrame({ top, nav, children, aside, footer }: LessonShellProps) {
 
       {/* While a pane is over the page, the page itself is out of reach. */}
       <div className="flex min-w-0 flex-1 flex-col" inert={overlay !== null}>
-        <header className="sticky top-0 z-30 flex items-start gap-2 border-b border-border bg-surface/95 px-3 py-2 backdrop-blur-sm sm:px-6">
+        <header
+          ref={headerRef}
+          className="sticky top-0 z-30 flex items-start gap-2 border-b border-border bg-surface/95 px-3 py-2 backdrop-blur-sm sm:px-6"
+        >
           <IconButton
             aria-label={t('lesson.openOutline')}
             aria-haspopup="dialog"
@@ -138,14 +150,16 @@ function LessonFrame({ top, nav, children, aside, footer }: LessonShellProps) {
           id="main-content"
           tabIndex={-1}
           className={cn(
-            'flex-1 px-4 py-6 outline-none sm:px-8 sm:py-8',
-            hasTutor && 'max-xl:pb-24',
+            'flex-1 px-4 pt-6 outline-none sm:px-8 sm:pt-8',
+            // Below `xl`, room at the end for the floating tutor button. (`max-xl:pb-24` next to
+            // `sm:py-8` lost to it from `sm` up: cn() does not merge utilities, section 7.1.)
+            hasTutor ? 'pb-24 xl:pb-8' : 'pb-6 sm:pb-8',
           )}
         >
           <div className="mx-auto w-full max-w-3xl">{children}</div>
         </main>
 
-        <div className="sticky bottom-0 z-20">
+        <div ref={bottomRef} className="sticky bottom-0 z-20">
           {hasTutor && (
             // Rides on top of the footer, whatever its height.
             <div className="absolute inset-e-4 bottom-full mb-4 rounded-control shadow-lg xl:hidden">

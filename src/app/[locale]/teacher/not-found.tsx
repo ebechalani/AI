@@ -10,6 +10,7 @@ export default function TeacherNotFound() {
         variant="plain"
         icon={<SearchX />}
         title={t('notFound.title')}
+        titleAs="h1"
         description={t('notFound.description')}
         action={<LinkButton href="/teacher">{t('notFound.home')}</LinkButton>}
       />

@@ -60,6 +60,58 @@
     outline-offset: 2px;
   }
 
+  /* Shell scroll padding (ARCHITECTURE.md 7.5). The browser does not scroll a keyboard-focused
+     element that is inside the viewport but under a sticky or fixed bar, and Shift+Tab stops at
+     the viewport's top edge, under the bar (WCAG 2.2 SC 2.4.11). Root scroll padding makes it
+     scroll the element clear. Each shell marks its root, so its rules apply only while it is on
+     screen. The bars themselves sit in the padded strips: with the padding on while a bar holds
+     focus, focusing a bar control from mid-page (Tab, a menu that opens or returns focus) would
+     scroll the page, so the root is padded only while focus is inside the page content. While
+     focus is anywhere else (a bar, a pane, the skip link, nothing), the content and its jump
+     targets (any element with an id) carry the top offset as a margin instead. */
+
+  /* AppShell: the sticky TopBar (4rem and its border) at every width, for every role; below `lg`
+     the student's fixed bottom bar (3.5rem, its border and the safe area). Staff have no bottom
+     bar. Each value leaves 1.5rem beyond the bar: the focus ring, and the top of a text field,
+     whose caret line (not its box) is what the browser scrolls clear of the padding. */
+  html:has([data-app-shell] #main-content :focus) {
+    scroll-padding-top: 5.5rem;
+  }
+
+  @media (width < 64rem) {
+    html:has([data-app-shell='student'] #main-content :focus) {
+      scroll-padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  html:not(:has([data-app-shell] #main-content :focus))
+    [data-app-shell]
+    :is(#main-content, #main-content [id]) {
+    scroll-margin-top: 5rem;
+  }
+
+  /* LessonShell: its sticky top bar (99–139px) and its bottom stack (the footer, 93px, and below
+     `xl` the floating tutor button on it, 153px together). The shell measures them into the
+     --lesson-* properties on <html> (src/components/layout/lesson-scroll-padding.ts); the
+     fallbacks cover the first paint. The jump targets include the stages and blocks that the
+     stepper chips, the checklist links and "n steps left" lead to. */
+  html:has([data-lesson-shell] #main-content :focus) {
+    scroll-padding-top: var(--lesson-scroll-top, 10rem);
+    scroll-padding-bottom: var(--lesson-scroll-bottom, 10.5rem);
+  }
+
+  @media (width >= 80rem) {
+    html:has([data-lesson-shell] #main-content :focus) {
+      scroll-padding-bottom: var(--lesson-scroll-bottom, 7rem);
+    }
+  }
+
+  html:not(:has([data-lesson-shell] #main-content :focus))
+    [data-lesson-shell]
+    :is(#main-content, #main-content [id]) {
+    scroll-margin-top: var(--lesson-jump-top, 10rem);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,

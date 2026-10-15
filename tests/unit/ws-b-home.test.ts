@@ -2,10 +2,6 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
-  STUDENT_SCROLL_PADDING,
-  StudentScrollPadding,
-} from '@/components/student/StudentScrollPadding';
-import {
   CONTINUE_LIMIT,
   continueItems,
   continueTarget,
@@ -246,25 +242,6 @@ describe('withBadges', () => {
 
   it('does not read a prototype property for an id like "constructor"', () => {
     expect(withBadges([{ badgeId: 'constructor', awardedAt: NOW }], [])).toEqual([]);
-  });
-});
-
-// Stopgap for foundation request WS-B-3: delete with StudentScrollPadding once it lands.
-describe('StudentScrollPadding', () => {
-  it('renders the root scroll padding as a server-rendered <style>', () => {
-    const element = StudentScrollPadding();
-    expect(element.type).toBe('style');
-    expect(element.props).toEqual({ children: STUDENT_SCROLL_PADDING });
-  });
-
-  it('clears the sticky TopBar at every width and the bottom bar only below lg', () => {
-    const [always, belowLg] = STUDENT_SCROLL_PADDING.split('@media');
-    // The TopBar is min-h-16 (4rem) plus its border.
-    expect(always).toBe('html{scroll-padding-top:4.5rem}');
-    // The MobileNav is min-h-14 (3.5rem) plus its border and the safe area; it hides from lg.
-    expect(belowLg).toBe(
-      ' (width<64rem){html{scroll-padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}}',
-    );
   });
 });
 

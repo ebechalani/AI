@@ -1,9 +1,12 @@
 # WS-B-3: keyboard focus hidden under the student TopBar and bottom bar
 
 - **From:** WS-B, area home (Student Home), 2026-10-15
-- **Status:** open. A workaround for WS-B's shell pages (Student Home, Learn, pathway, course
-  detail) is in place in WS-B's own files (below). The other student pages still need the
-  shell-wide rule.
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-15: `AppShell` marks
+  its root `data-app-shell="{role}"` and `globals.css` pads the root while focus is inside
+  `#main-content` (top 5.5rem for every role, bottom `calc(5.5rem + env(safe-area-inset-bottom))`
+  below `lg` for students), with a 5rem `scroll-margin-top` on the content's jump targets
+  otherwise; `FieldReveal` brings a keyboard-focused multi-line field wholly out from under the
+  bars. WS-B's `StudentScrollPadding` stopgap is deleted. See "Change (landed)" below.
 - **Frozen files concerned:** `src/app/globals.css` (or `src/components/layout/AppShell.tsx`)
 - **Related:** WS-B-4 (the same problem in the lesson player's `LessonShell`)
 
@@ -59,7 +62,7 @@ wrapper. The `(player)` route has its own bars and its own padding (WS-B-4), so 
 not reach the lesson player, or the player's value must win there. Either way it is
 foundation code.
 
-## Workaround in place (WS-B, to delete when this lands)
+## Workaround (WS-B; deleted when this request landed, 2026-10-15)
 
 - `src/components/student/StudentScrollPadding.tsx` renders the rule above as a `<style>`
   (`html{scroll-padding-top:4.5rem}@media (width<64rem){html{scroll-padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}}`).
@@ -83,3 +86,70 @@ these pages is under either bar (en and fr). When this request lands, delete
 `StudentScrollPadding.tsx`, its export in `src/components/student/index.ts`, its test in
 `tests/unit/ws-b-home.test.ts` and the `<StudentScrollPadding />` line (with its comment) in
 the four pages.
+
+## Change (landed)
+
+Landed by the foundation maintainer on 2026-10-15, in the shell rather than per page, with
+three differences from the wanted change, found while verifying it and in review:
+
+- **Padding only while focus is inside `#main-content`.** An unconditional root padding (the
+  wanted change, and the stopgap) puts the sticky TopBar inside the padded strip, so the page
+  jumped whenever a TopBar control got focus from mid-page: `student@demo`, `/en/student`,
+  375 × 812, scrolled to 800, opening the language menu with the mouse moved the page to 425
+  (focus moves into the menu) and Escape moved it again to 59 (focus returns to the trigger);
+  Tab between the TopBar's own controls scrolled by about 366 px each time. While focus is
+  anywhere else, `#main-content` and every element with an `id` inside it get a 5rem
+  `scroll-margin-top` instead, so the skip link and fragment links still land below the
+  TopBar.
+- **Top 5.5rem, not 4.5rem.** On focus the browser scrolls a text field's caret line, not its
+  box, clear of the padding, so a field's border and inner padding (about 14 px) end up above the
+  padded edge. With 4.5rem (72 px) a kit-styled textarea reached by Shift+Tab stayed at 60 px,
+  its focus ring 9 px under the 65 px TopBar; with 5.5rem it lands at 74 px.
+- **Multi-line fields revealed whole.** For the same reason, Tab to a multi-line field whose
+  first line is already above the bottom bar leaves the rest of it under the bar: a 5-row
+  textarea on `/en/student` (injected; no shell page has one yet) kept 66 of its 150 px under
+  the MobileNav at 375 × 812 and 768 × 1024 (never entirely hidden, so 2.4.11 AA was met).
+  `FieldReveal` (shared with `LessonShell`, WS-B-4) scrolls such a field wholly clear.
+
+Files:
+
+- `src/components/layout/AppShell.tsx`: `data-app-shell={role}` on the root, and
+  `<FieldReveal />` next to `SkipLink`.
+- `src/components/layout/field-reveal.ts` (layout-private, client): on `focusin` of a
+  `<textarea>` or an editable region inside `#main-content`, `scrollIntoView({ block:
+  'nearest', inline: 'nearest' })`, except for focus caused by a pointer press.
+- `src/app/globals.css` (`@layer base`): `html:has([data-app-shell] #main-content :focus)`
+  → `scroll-padding-top: 5.5rem`; below `64rem`,
+  `html:has([data-app-shell='student'] #main-content :focus)` → `scroll-padding-bottom:
+  calc(5.5rem + env(safe-area-inset-bottom))` (staff have no bottom bar); otherwise
+  `[data-app-shell] :is(#main-content, #main-content [id])` → `scroll-margin-top: 5rem`. The
+  rules match only while `AppShell` is mounted, so the lesson player (no `AppShell`) keeps its
+  own (WS-B-4).
+- `docs/ARCHITECTURE.md` 7.5 ("Scroll padding").
+- `tests/unit/shell-scroll-padding.test.ts` pins the rules down.
+- Deleted: `src/components/student/StudentScrollPadding.tsx`, its export in
+  `src/components/student/index.ts`, its tests in `tests/unit/ws-b-home.test.ts` and the
+  `<StudentScrollPadding />` line (with its comment) in the four WS-B pages; the
+  `scroll-mt-24` of `PathwayCatalog`'s `#pathways` section (`learn/_components`), WS-B's
+  per-element offset for the TopBar, which stacked with the shell's padding (the section takes
+  focus) and put it at 184 px instead of 88 px.
+
+Checked in Chromium (emulator seed), Tab and Shift+Tab through the whole page, measuring every
+focus stop (`getBoundingClientRect`, plus the 4 px ring) against the bars:
+
+- `student@demo`, `/en/student`, `/en/student/learn`, `/en/student/learn/courses/my-first-ai-adventure`
+  at 375 × 812 and 1366 × 900: 0 focus stops under the TopBar or the bottom bar (17–25 stops per
+  page and direction). The same walk with the rules switched off finds the failures of this
+  request again (for example "All my courses" at `761–785px` under the bottom bar at `755px`).
+- `lea.demo`, `/fr/student`, `/fr/student/learn`, the course and the AI Explorer pathway at
+  375 × 812, and `/en/student`, `/en/student/learn` at 1366 × 700: 0 under a bar.
+- Tab between TopBar controls, and a TopBar menu opened and closed mid-page: the page does not
+  move. `teacher@demo` at 375: top padding only, no bottom padding.
+
+Re-checked with `FieldReveal` (2026-10-15):
+
+- The injected 5-row textarea on `/en/student` (`lea.demo`), its top 40, 80 or 120 px above the
+  MobileNav, then Tab: wholly clear of both bars at 320 × 640, 375 × 812 and 768 × 1024; the
+  same walk as above over `/en/student` with fields injected: 0 focus stops covered.
+- `/en/student/learn#pathways`, and a `#pathways` link inside and outside `<main>`: the section
+  lands at 88 px, below the 65 px TopBar, at 375 × 800 (at the end of the page at 1366 × 800).

@@ -14,7 +14,8 @@ export interface PathwayCatalogProps {
 
 /**
  * Every student pathway. The section is the target of the "Browse pathways" link, so it takes
- * focus (tabIndex -1) and keeps clear of the sticky top bar when scrolled to.
+ * focus (tabIndex -1); the shell keeps it clear of the sticky top bar when it is scrolled to
+ * (ARCHITECTURE.md 7.5), so it has no `scroll-mt-*` of its own.
  */
 export function PathwayCatalog({ pathways, progress }: PathwayCatalogProps) {
   const t = useTranslations('learn');
@@ -23,7 +24,7 @@ export function PathwayCatalog({ pathways, progress }: PathwayCatalogProps) {
       id="pathways"
       aria-labelledby="learn-pathways"
       tabIndex={-1}
-      className="flex min-w-0 scroll-mt-24 flex-col gap-4 outline-none"
+      className="flex min-w-0 flex-col gap-4 outline-none"
     >
       <div className="flex flex-col gap-1">
         <h2 id="learn-pathways" className="text-xl font-bold text-ink">

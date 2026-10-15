@@ -1,8 +1,10 @@
 # WS-B-6: `CertificateCard` splits the verification code across two lines
 
 - **From:** WS-B, area home (Student Home), 2026-10-15
-- **Status:** open. WS-B mitigates it on the Student Home (below); a phone 320 px wide still
-  splits the code.
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-15: `CertificateCard`
+  renders the code in a `whitespace-nowrap` span through a `<nowrap>` tag in
+  `domain.certificate.code` (en and fr), and the paragraph no longer has `break-all`. The code
+  stays whole down to a 320 px screen.
 - **Frozen files concerned:** `src/components/domain/CertificateCard.tsx`
 
 ## Problem
@@ -59,3 +61,22 @@ line on a narrow card instead of being cut.
 Checked: the seeded code stays on one line in French at 375, 640, 700, 768, 1024, 1280, 1300,
 1366, 1440 and 1600 px. At 320 px it is still split, which needs this request. Both
 mitigations can stay once it lands.
+
+## Change (landed)
+
+Landed by the foundation maintainer on 2026-10-15, as the first option of the wanted change:
+
+- `src/messages/{en,fr}/domain.json`: `certificate.code` is `"Verification code:
+  <nowrap>{code}</nowrap>"` / `"Code de vérification\u00a0: <nowrap>{code}</nowrap>"` (same key;
+  the tag is not named `code` because the argument is).
+- `src/components/domain/CertificateCard.tsx`: `t.rich('certificate.code', { code, nowrap })`
+  renders the code in `<span translate="no" className="whitespace-nowrap">` (`translate="no"`
+  keeps a browser translation away from the code); the `<p>` has no `break-all`. On a narrow
+  card the code moves to its own line and only the label wraps.
+- `tests/unit/foundation-ui.test.ts` (the rich message in en and fr); `docs/ARCHITECTURE.md` 7.4.
+
+Checked in Chromium, `lea.demo`, Student Home at 320 × 900: the code (`RH-JT2Q7ZCQW3` in the
+current seed) is one line box inside the card in en and fr, on its own line after the label,
+with no horizontal scroll; the widest possible code, `RH-WWWWWWWWWW` (166 px), also stays on
+one line in a 288 px card. WS-B's two mitigations can stay.
+

@@ -138,7 +138,7 @@
   "certificate": {
     "issuedOn": "Délivré le {date}",
     "issuedBy": "Délivré par {name}",
-    "code": "Code de vérification\u00a0: {code}",
+    "code": "Code de vérification\u00a0: <nowrap>{code}</nowrap>",
     "view": "Voir le certificat"
   },
   "challenge": {

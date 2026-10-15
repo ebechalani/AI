@@ -13,7 +13,6 @@ import {
   RecentBadges,
   RecentCertificates,
   RecentProjects,
-  StudentScrollPadding,
   UpcomingChallenges,
   withBadges,
 } from '@/components/student';
@@ -92,8 +91,6 @@ export default async function StudentHomePage() {
 
   return (
     <>
-      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
-      <StudentScrollPadding />
       <PageHeader
         title={t(isNew ? 'welcome.titleNew' : 'welcome.title', { name: session.displayName })}
         description={t(isNew ? 'welcome.subtitleNew' : 'welcome.subtitle')}

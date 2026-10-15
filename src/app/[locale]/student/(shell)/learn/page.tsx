@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { PageHeader } from '@/components/layout';
-import { StudentScrollPadding } from '@/components/student';
 import { requireRole } from '@/lib/auth/session';
 import { getCourses } from '@/lib/data/courses';
 import { listEnrollmentsForUser } from '@/lib/data/enrollments';
@@ -34,8 +33,6 @@ export default async function StudentLearnPage() {
 
   return (
     <>
-      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
-      <StudentScrollPadding />
       <PageHeader title={tNav('student.learn')} description={t('overview.description')} />
       <div className="flex flex-col gap-10">
         <MyCourses inProgress={inProgress} completed={completed} />

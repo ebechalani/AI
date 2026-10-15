@@ -8,6 +8,7 @@ export default function SchoolNotFound() {
     <EmptyState
       icon={<SearchX />}
       title={t('notFound.title')}
+      titleAs="h1"
       description={t('notFound.description')}
       action={<LinkButton href="/school">{t('notFound.home')}</LinkButton>}
     />

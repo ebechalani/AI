@@ -10,6 +10,7 @@ export default function LocaleNotFound() {
         variant="plain"
         icon={<SearchX />}
         title={t('notFound.title')}
+        titleAs="h1"
         description={t('notFound.description')}
         action={<LinkButton href="/">{t('notFound.home')}</LinkButton>}
       />

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import { CircleCheck } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { PageHeader } from '@/components/layout';
-import { StudentScrollPadding } from '@/components/student';
 import { requireRole } from '@/lib/auth/session';
 import { getPublishedCourse } from '@/lib/data/courses';
 import { getEnrollment } from '@/lib/data/enrollments';
@@ -83,8 +82,6 @@ export default async function StudentCoursePage({ params }: { params: Params }) 
 
   return (
     <>
-      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
-      <StudentScrollPadding />
       <PageHeader
         title={text.title}
         description={text.summary || undefined}

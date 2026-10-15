@@ -110,8 +110,8 @@ export function LessonContent({
         groups.map((group, index) => (
           <StageSection key={group.stage} stage={group.stage} number={index + 1} total={stepCount}>
             {group.blocks.map((block) => (
-              // A stepper chip or a checklist link jumps here; LessonScrollPadding keeps the
-              // target clear of the sticky top bar.
+              // A stepper chip or a checklist link jumps here; LessonShell keeps the target
+              // clear of the sticky top bar.
               <div key={block.id} id={blockAnchor(block.id)}>
                 <BlockRenderer block={block} runtime={runtime} />
               </div>

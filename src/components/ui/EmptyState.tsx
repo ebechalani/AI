@@ -8,6 +8,11 @@ export interface EmptyStateProps {
   icon?: ReactNode;
   /** Default: the generic "Nothing here yet" copy of the `errors` namespace. */
   title?: string;
+  /**
+   * The element of the title. Default `p`: inside a page the `PageHeader` holds the heading. A
+   * page that is nothing but the empty state (a not-found page) passes `h1`, so it has one.
+   */
+  titleAs?: 'p' | 'h1' | 'h2' | 'h3';
   description?: string;
   /** Usually one `Button` or `LinkButton`: the way out of the empty state. */
   action?: ReactNode;
@@ -19,6 +24,7 @@ export interface EmptyStateProps {
 export function EmptyState({
   icon,
   title,
+  titleAs: Title = 'p',
   description,
   action,
   variant = 'framed',
@@ -42,7 +48,7 @@ export function EmptyState({
       >
         {icon ?? <Inbox />}
       </span>
-      <p className="mt-4 text-base font-semibold text-ink">{title ?? t('empty.title')}</p>
+      <Title className="mt-4 text-base font-semibold text-ink">{title ?? t('empty.title')}</Title>
       {body && <p className="mt-1 max-w-sm text-sm text-ink-muted">{body}</p>}
       {action && <div className="mt-5">{action}</div>}
     </div>

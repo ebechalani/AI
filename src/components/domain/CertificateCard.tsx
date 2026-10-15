@@ -55,7 +55,18 @@ export function CertificateCard({ certificate, href, className }: CertificateCar
       <div className="flex flex-col gap-1 text-sm text-ink-muted">
         <p>{t('certificate.issuedOn', { date: formatDate(certificate.issuedAt, 'dateLong') })}</p>
         <p>{t('certificate.issuedBy', { name: certificate.issuerName })}</p>
-        <p className="break-all">{t('certificate.code', { code: certificate.verificationCode })}</p>
+        <p>
+          {t.rich('certificate.code', {
+            code: certificate.verificationCode,
+            // The code is copied to verify the certificate, so it is never split: on a narrow
+            // card it moves to its own line and only the label wraps.
+            nowrap: (chunks) => (
+              <span translate="no" className="whitespace-nowrap">
+                {chunks}
+              </span>
+            ),
+          })}
+        </p>
       </div>
 
       <Link
