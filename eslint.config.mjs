@@ -154,6 +154,7 @@ const BOUNDARIES = [
   {
     from: ['components'],
     forbid: ['app', 'lib/data', 'lib/services'],
+    exceptions: [['components/lesson/LessonPlayer', 'lib/services/learning']],
     reason: 'pages fetch, components render; components reach the server through actions (7.1)',
   },
   {

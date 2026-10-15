@@ -1,0 +1,73 @@
+{
+  "welcome": {
+    "title": "Welcome back, {name}!",
+    "titleNew": "Welcome, {name}!",
+    "subtitle": "Pick up where you left off, or explore something new.",
+    "subtitleNew": "Your AI adventure starts here. Choose a course to begin."
+  },
+  "progress": {
+    "title": "Your level",
+    "achievementsLink": "See your achievements",
+    "lessonsCompleted": "Lessons completed"
+  },
+  "tutor": {
+    "title": "Ask Robo AI",
+    "description": "Stuck on a lesson or curious about something? Robo AI explains, gives hints and quizzes you.",
+    "action": "Open the AI tutor"
+  },
+  "continue": {
+    "title": "Continue learning",
+    "viewAll": "All my courses",
+    "lessons": "{completed} of {total, plural, one {# lesson} other {# lessons}} completed",
+    "completed": "Course completed",
+    "continue": "Continue",
+    "start": "Start",
+    "review": "Review",
+    "empty": {
+      "title": "Start your first course",
+      "description": "Courses you start appear here, so you can pick up where you left off.",
+      "action": "Explore courses"
+    }
+  },
+  "pathways": {
+    "title": "My pathways",
+    "viewAll": "Explore all pathways",
+    "empty": {
+      "title": "No pathways yet",
+      "description": "Start a course and its pathway shows up here with your progress."
+    }
+  },
+  "projects": {
+    "title": "Recent projects",
+    "viewAll": "All my projects",
+    "empty": {
+      "title": "No projects yet",
+      "description": "Projects you submit from your lessons appear here."
+    }
+  },
+  "challenges": {
+    "title": "Upcoming challenges",
+    "viewAll": "All challenges",
+    "empty": {
+      "title": "No upcoming challenges",
+      "description": "New challenges are announced here. Check back soon!"
+    }
+  },
+  "badges": {
+    "title": "Badges",
+    "viewAll": "All my badges",
+    "empty": {
+      "title": "No badges yet",
+      "description": "Complete lessons, pass quizzes and finish projects to earn badges."
+    }
+  },
+  "certificates": {
+    "title": "Certificates",
+    "viewAll": "All my certificates",
+    "empty": {
+      "title": "No certificates yet",
+      "description": "Finish a course to earn your first certificate."
+    }
+  },
+  "sectionError": "This section could not be loaded. Refresh the page to try again."
+}

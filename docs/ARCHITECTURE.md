@@ -116,7 +116,8 @@ checked, and it covers `import`, `export … from`, `import()` and `import('…'
   `limits`, `schemas`, `types`, and the files marked "shared" in section 2) may be imported
   from any layer.
 - The component rules of section 7.1 are part of the same rule: `components` never import
-  `app`, `lib/data` or `lib/services`; `components/ui` imports no other component folder,
+  `app`, `lib/data` or `lib/services` (one exception, 7.1: `components/lesson/LessonPlayer`
+  → `lib/services/learning`); `components/ui` imports no other component folder,
   `components/domain` only `ui`, `components/layout` only `ui` and `domain`.
 
 The banned imports (the F1 row of section 11.1) are a separate mechanism with the same
@@ -1742,9 +1743,9 @@ composite indexes, so a missing index only fails in production).
 |---|---|
 | Any authenticated page | `users/{uid}` (session) |
 | Public home, `/pathways` | `pathways` where `status == 'published'` order by `order` (7 documents; an `audience` filter is applied in memory) |
-| Pathway detail (public and student) | `pathways/{id}`; `courses` where `pathwayId == id` and `status == 'published'` order by `order` |
-| Student Home, Student Learn | `enrollments` where `userUid == uid` order by `lastActivityAt desc` (no limit; ≤ a few dozen) → `getAll` courses and pathways. Home slices the first 6 in memory for "Continue Learning" and computes "My Pathways" from the full list. Home also reads: `submissions` where `studentUid == uid` order by `submittedAt desc` limit 3; `users/{uid}/badges` order by `awardedAt desc` limit 6; `certificates` where `userUid == uid` order by `issuedAt desc` limit 3; `challenges` where `status == 'published'` and `scope == 'global'` and `deadlineAt >= now` order by `deadlineAt` limit 3, plus the same with `schoolId == session.schoolId` **only when `session.schoolId` is not null** |
-| Course detail | course outline: `courses/{id}`; `modules` order by `order`; `lessons` (all, sorted in memory by module then `order`); `enrollments/{uid}_{courseId}` |
+| Pathway detail (public and student) | `pathways/{id}`; `courses` where `pathwayId == id` and `status == 'published'` order by `order`. The student page also reads the learner's enrollments with the Student Home/Learn query (`enrollments` where `userUid == uid` order by `lastActivityAt desc`), matched to the pathway's courses in memory for the learner's own progress (6.4) |
+| Student Home, Student Learn | `enrollments` where `userUid == uid` order by `lastActivityAt desc` (no limit; ≤ a few dozen) → `getAll` courses and pathways. Home slices the first 6 in memory for "Continue Learning" and computes "My Pathways" from the full list. Home also reads: `submissions` where `studentUid == uid` order by `submittedAt desc` limit 3; `users/{uid}/badges` order by `awardedAt desc` limit 6, then `badges/{badgeId}` by id for each badge returned (`getBadge`: a `UserBadge` carries only `badgeId`, and `BadgeTile` needs the definition); `certificates` where `userUid == uid` order by `issuedAt desc` limit 3; `challenges` where `status == 'published'` and `scope == 'global'` and `deadlineAt >= now` order by `deadlineAt` limit 3, plus the same with `schoolId == session.schoolId` **only when `session.schoolId` is not null**. Learn also reads the pathway catalog (6.4) with the Public home query (`pathways` where `status == 'published'` order by `order`; `audience` filtered in memory) |
+| Course detail | course outline: `courses/{id}`; `modules` order by `order`; `lessons` (all, sorted in memory by module then `order`); `enrollments/{uid}_{courseId}`; course access (row "Course access"; no read for a free course). When the outline read is `forbidden`, the student page reads `courses/{id}` again through `getPublishedCourse` to recognise a Teacher Academy course |
 | Lesson player | course outline (as above, `cache`d per request by `services/learning`; the lesson is taken from the outline, not read again); `blocks` order by `order`; `enrollments/{uid}_{courseId}`; `lessonProgress/{lessonId}`; `schools/{schoolId}` (for `tutorEnabled`, only when the learner has a school); for each id in `lesson.quizIds`: quiz doc + latest attempt by direct get `quizAttempts/{uid}_{courseId}_{quizId}_{quizSummary[quizId].attempts}` (only when `attempts > 0`); for each id in `lesson.projectIds`: project doc + latest submission by direct get `submissions/{projectSummary[projectId].latestSubmissionId}` (only when one exists). An unenrolled viewer costs no attempt or submission read |
 | Student Projects | `submissions` where `studentUid == uid` order by `submittedAt desc` |
 | Student Robotics | `courses` where `area == 'robotics'`, `status == 'published'`, `isOfficial == true` order by `order` (grouped by `tags` in memory); global challenge query filtered to `area == 'robotics'` in memory; `hardwarePlatforms` (the whole collection; `activeOnly` and `order` applied in memory) |
@@ -1766,6 +1767,7 @@ composite indexes, so a missing index only fails in production).
 | Admin lists | `schools` order by `name`; `users` where `role == R` order by `createdAt desc`; `courses` where `isOfficial == true` order by `updatedAt desc`; `subscriptions` order by `currentPeriodEnd desc`; `licenses` where `schoolId` order by `endsAt desc`; `certificates` order by `issuedAt desc`; `challenges` order by `deadlineAt desc`; `submissions` where `challengeId == X` order by `submittedAt desc`; `pathways` (the whole collection, 7 documents, sorted by `order` in memory; the course editor's pathway select); unfiltered `count()` aggregations for platform analytics |
 | Certificate verification | `certificates` where `verificationCode == code` limit 1 |
 | Tutor context (per message) | `courses/{id}`, lesson doc, `pathways/{id}`; `quizAttempts` where `userUid == uid` order by `submittedAt desc` limit 3 (`AI_LIMITS.tutorRecentQuizResults`). No school read (the route's `checkAndCountAiUsage` already applies the school switch and the context carries nothing from the school) and no block or quiz documents (`lessons.tutorExcerpt`, `quizAttempts.quizTitle`) |
+| Course access (`getCourseAccess`, 4.5; every page and service that opens course content) | a free course: none, or `enrollments/{uid}_{courseId}` when only an enrollment can make a teacher-made course visible. A premium course, until the first cover is found: `licenses` where `schoolId == X` order by `endsAt desc` (only when the actor has a school); `subscriptions` where `ownerType == 'user'` and `ownerId == uid` order by `currentPeriodEnd desc`; `classes/{id}` for each of a student's classes |
 | Internal (services) | `enrollments` where `courseId == X` limit 1 (delete guard); `enrollments` where `userUid == uid` and `classId == X` (removal); `submissions` where `studentUid == uid` and `courseId == Y`, or where `studentUid == uid` order by `submittedAt desc` (`listOpenSubmissionsForStudent`, re-pointing; `status == 'submitted'` and the `classId` filter applied in memory); the first three equality only |
 
 Optional filters never change the query shape: `includeArchived: true` is executed as
@@ -2428,7 +2430,10 @@ Everything else is a server action. Session creation and sign-out are server act
   server actions). `components/layout` sits beside `domain` and imports from `ui` and
   `domain` only.
 - Components never import from `src/lib/data`, `src/lib/services` or `firebase-admin`.
-  Pages fetch; components render. Forms import their input types from `src/types/inputs.ts`
+  Pages fetch; components render. `LessonPlayer` is the one component that loads its own
+  data (`getLessonPlayerData`, 7.6): its props are fixed (7.7) and three route files render
+  it, so the lint rule allows exactly one such import, `components/lesson/LessonPlayer` →
+  `lib/services/learning`. Forms import their input types from `src/types/inputs.ts`
   and their zod schemas from `src/lib/schemas/*` (both shared, neither is `server-only`).
 - After a successful server action, the client container calls `router.refresh()`
   (section 1.4).

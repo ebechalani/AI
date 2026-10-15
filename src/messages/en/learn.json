@@ -1,0 +1,96 @@
+{
+  "overview": {
+    "description": "Your courses, and every pathway you can explore."
+  },
+  "myCourses": {
+    "title": "My courses",
+    "inProgress": "Courses in progress",
+    "completed": "Completed courses",
+    "empty": {
+      "title": "You have not started a course yet",
+      "description": "Pick a pathway below and start your first course.",
+      "action": "Browse pathways"
+    }
+  },
+  "catalog": {
+    "title": "Explore pathways",
+    "description": "Each pathway is a series of courses, from first steps to real projects.",
+    "empty": {
+      "title": "Pathways are on their way",
+      "description": "Learning pathways appear here as soon as they are published."
+    }
+  },
+  "pathway": {
+    "about": "About this pathway",
+    "topics": "Topics",
+    "progressLabel": "Pathway progress",
+    "courses": "Courses in this pathway",
+    "empty": {
+      "title": "No courses yet",
+      "description": "The courses of this pathway are being prepared. Check back soon."
+    }
+  },
+  "course": {
+    "back": "Back to Learn",
+    "about": "About this course",
+    "outcomes": "What you will learn",
+    "outline": "Course outline",
+    "previewHint": "You can open any lesson to look at it. Enroll to save your progress and earn XP.",
+    "module": "Module {number}",
+    "lessonXp": "+{xp, number} XP",
+    "lessonQuiz": "Quiz",
+    "lessonProject": "Project",
+    "lessonResume": "where you left off",
+    "lessonLocked": "locked",
+    "noLessons": {
+      "title": "No lessons yet",
+      "description": "This course does not have any lessons yet."
+    },
+    "facts": {
+      "title": "Course details",
+      "content": "Content",
+      "duration": "Duration",
+      "ages": "Age range",
+      "area": "Area",
+      "certificate": "Certificate when you finish",
+      "pathway": "See the pathway"
+    },
+    "enroll": {
+      "title": "Start this course",
+      "description": "Enroll to save your progress, earn XP and get a certificate when you finish.",
+      "action": "Enroll and start",
+      "success": "You are enrolled. Have fun!",
+      "errors": {
+        "conflict": "This course is not open for enrollment right now.",
+        "forbidden": "This course is not available for your account.",
+        "notFound": "This course no longer exists."
+      }
+    },
+    "progress": {
+      "title": "Your progress",
+      "lessons": "{completed} of {total, plural, one {# lesson} other {# lessons}} completed",
+      "fromClass": "Assigned by your class",
+      "start": "Start the first lesson",
+      "continue": "Continue",
+      "review": "Review the course"
+    },
+    "completed": {
+      "title": "Course completed!",
+      "description": "You finished every lesson of this course.",
+      "certificate": "View your certificate"
+    },
+    "license": {
+      "title": "This course needs a license",
+      "description": "Ask your teacher or your school for access. You can still look at the course outline."
+    },
+    "teacherOnly": {
+      "title": "This course is for teachers",
+      "description": "“{title}” is part of the Teacher Academy. Ask your teacher which courses are made for students."
+    },
+    "unavailable": {
+      "heading": "Course unavailable",
+      "title": "This course is not available",
+      "description": "It may have been removed, or it is not open to your account."
+    }
+  }
+}

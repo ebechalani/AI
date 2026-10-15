@@ -1,0 +1,96 @@
+{
+  "overview": {
+    "description": "Tes cours, et tous les parcours que tu peux explorer."
+  },
+  "myCourses": {
+    "title": "Mes cours",
+    "inProgress": "Cours en cours",
+    "completed": "Cours terminés",
+    "empty": {
+      "title": "Tu n’as pas encore commencé de cours",
+      "description": "Choisis un parcours ci-dessous et commence ton premier cours.",
+      "action": "Parcourir les parcours"
+    }
+  },
+  "catalog": {
+    "title": "Explorer les parcours",
+    "description": "Chaque parcours est une suite de cours, des premiers pas jusqu’à de vrais projets.",
+    "empty": {
+      "title": "Les parcours arrivent",
+      "description": "Les parcours d’apprentissage apparaissent ici dès leur publication."
+    }
+  },
+  "pathway": {
+    "about": "À propos de ce parcours",
+    "topics": "Thèmes",
+    "progressLabel": "Progression dans le parcours",
+    "courses": "Les cours de ce parcours",
+    "empty": {
+      "title": "Aucun cours pour le moment",
+      "description": "Les cours de ce parcours sont en préparation. Repasse bientôt."
+    }
+  },
+  "course": {
+    "back": "Retour à Apprendre",
+    "about": "À propos de ce cours",
+    "outcomes": "Ce que tu vas apprendre",
+    "outline": "Plan du cours",
+    "previewHint": "Tu peux ouvrir n’importe quelle leçon pour la découvrir. Inscris-toi pour enregistrer ta progression et gagner des XP.",
+    "module": "Module {number}",
+    "lessonXp": "+{xp, number} XP",
+    "lessonQuiz": "Quiz",
+    "lessonProject": "Projet",
+    "lessonResume": "là où tu t’es arrêté",
+    "lessonLocked": "verrouillée",
+    "noLessons": {
+      "title": "Aucune leçon pour le moment",
+      "description": "Ce cours n’a pas encore de leçon."
+    },
+    "facts": {
+      "title": "Détails du cours",
+      "content": "Contenu",
+      "duration": "Durée",
+      "ages": "Tranche d’âge",
+      "area": "Domaine",
+      "certificate": "Un certificat quand tu termines",
+      "pathway": "Voir le parcours"
+    },
+    "enroll": {
+      "title": "Commencer ce cours",
+      "description": "Inscris-toi pour enregistrer ta progression, gagner des XP et obtenir un certificat à la fin.",
+      "action": "M’inscrire et commencer",
+      "success": "Tu es inscrit. Amuse-toi bien !",
+      "errors": {
+        "conflict": "Les inscriptions à ce cours ne sont pas ouvertes pour le moment.",
+        "forbidden": "Ce cours n’est pas disponible pour ton compte.",
+        "notFound": "Ce cours n’existe plus."
+      }
+    },
+    "progress": {
+      "title": "Ta progression",
+      "lessons": "{completed, plural, one {# leçon terminée} other {# leçons terminées}} sur {total}",
+      "fromClass": "Assigné par ta classe",
+      "start": "Commencer la première leçon",
+      "continue": "Continuer",
+      "review": "Revoir le cours"
+    },
+    "completed": {
+      "title": "Cours terminé !",
+      "description": "Tu as terminé toutes les leçons de ce cours.",
+      "certificate": "Voir ton certificat"
+    },
+    "license": {
+      "title": "Ce cours nécessite une licence",
+      "description": "Demande l’accès à ton enseignant ou à ton école. Tu peux quand même consulter le plan du cours."
+    },
+    "teacherOnly": {
+      "title": "Ce cours est destiné aux enseignants",
+      "description": "« {title} » fait partie de l’Académie des enseignants. Demande à ton enseignant quels cours sont faits pour les élèves."
+    },
+    "unavailable": {
+      "heading": "Cours indisponible",
+      "title": "Ce cours n’est pas disponible",
+      "description": "Il a peut-être été retiré, ou il n’est pas ouvert à ton compte."
+    }
+  }
+}

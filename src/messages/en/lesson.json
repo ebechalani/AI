@@ -1,0 +1,118 @@
+{
+  "header": {
+    "position": "Lesson {current} of {total}",
+    "xpReward": "+{xp, number} XP"
+  },
+  "topBar": {
+    "progress": "Course progress",
+    "stages": "Lesson steps",
+    "preview": "Preview"
+  },
+  "stepper": {
+    "step": "Step {number}: {stage}",
+    "earnDone": "lesson completed"
+  },
+  "stage": {
+    "stepOf": "Step {number} of {total}"
+  },
+  "empty": {
+    "title": "This lesson has no content yet",
+    "description": "The lesson is still being written. Come back a little later."
+  },
+  "preview": {
+    "title": "Preview",
+    "description": "You are viewing this lesson in preview. Nothing you do here is saved.",
+    "enrollHint": "Enroll in the course to save your work and earn XP.",
+    "enrollAction": "Go to the course"
+  },
+  "access": {
+    "forbidden": {
+      "title": "This lesson is not available",
+      "description": "The course is not open to your account."
+    },
+    "licenseRequired": {
+      "title": "This lesson needs a license",
+      "description": "Ask your teacher or your school for access to this course."
+    }
+  },
+  "earn": {
+    "intro": "Complete the lesson to earn {xp, number} XP.",
+    "previewIntro": "Learners earn {xp, number} XP when they complete this lesson.",
+    "done": "You completed this lesson."
+  },
+  "checklist": {
+    "title": "Before you finish",
+    "quiz": "Pass the quiz “{title}”",
+    "project": "Submit the project “{title}”",
+    "reflection": "Answer the reflection “{title}” ({min, plural, =0 {any length} one {at least # character} other {at least # characters}})",
+    "done": "done",
+    "todo": "to do",
+    "ready": "Everything is done. You can complete the lesson."
+  },
+  "footer": {
+    "label": "Lesson navigation",
+    "previous": "Previous lesson",
+    "next": "Next lesson",
+    "complete": "Complete lesson",
+    "completed": "Lesson completed",
+    "stepsLeft": "{count, plural, one {# step left} other {# steps left}}"
+  },
+  "notReady": {
+    "title": "Almost there",
+    "description": "Finish the remaining steps, then complete the lesson."
+  },
+  "complete": {
+    "title": "Lesson complete!",
+    "xp": "+{xp, number} XP",
+    "noXp": "You already earned the XP for this lesson.",
+    "pending": "Your XP and badges are added to your profile.",
+    "levelUp": "Level up! You reached level {level}.",
+    "badges": "New badges",
+    "certificate": "You earned a certificate for this course!",
+    "viewCertificate": "View your certificate",
+    "courseCompleted": "You finished the whole course. Well done!",
+    "next": "Next lesson",
+    "backToCourse": "Back to the course"
+  },
+  "blocks": {
+    "video": {
+      "frameTitle": "Video: {title}",
+      "unavailable": "This video is not available yet.",
+      "unavailableHint": "You can read the transcript below instead.",
+      "transcript": "Transcript",
+      "duration": "Length: {duration}",
+      "noSupport": "Your browser cannot play this video."
+    },
+    "file": {
+      "download": "Download",
+      "downloadName": "Download {name}",
+      "meta": "{type} · {size}"
+    },
+    "code": {
+      "title": "Coding activity",
+      "languages": {
+        "python": "Python",
+        "javascript": "JavaScript",
+        "blocks": "Blocks"
+      },
+      "editorLabel": "Your code",
+      "hint": "Show a hint",
+      "save": "Save my code",
+      "saved": "Your code is saved.",
+      "unsaved": "Not saved yet",
+      "reset": "Start again",
+      "notRun": "Running code is coming soon. For now, write your code and save it.",
+      "preview": "Code is not saved in preview."
+    },
+    "reflection": {
+      "title": "Reflection",
+      "minLength": "{min, plural, =0 {Any length is fine.} one {Write at least # character.} other {Write at least # characters.}}",
+      "count": "{count, number} / {min, number}",
+      "longEnough": "Long enough",
+      "save": "Save my answer",
+      "saved": "Your answer is saved.",
+      "unsaved": "Not saved yet",
+      "preview": "Answers are not saved in preview."
+    }
+  }
+}

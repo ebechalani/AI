@@ -1,0 +1,118 @@
+{
+  "header": {
+    "position": "Leçon {current} sur {total}",
+    "xpReward": "+{xp, number}\u00a0XP"
+  },
+  "topBar": {
+    "progress": "Progression du cours",
+    "stages": "Étapes de la leçon",
+    "preview": "Aperçu"
+  },
+  "stepper": {
+    "step": "Étape {number}\u00a0: {stage}",
+    "earnDone": "leçon terminée"
+  },
+  "stage": {
+    "stepOf": "Étape {number} sur {total}"
+  },
+  "empty": {
+    "title": "Cette leçon n’a pas encore de contenu",
+    "description": "La leçon est en cours d’écriture. Revenez un peu plus tard."
+  },
+  "preview": {
+    "title": "Aperçu",
+    "description": "Vous consultez cette leçon en aperçu. Rien de ce que vous faites ici n’est enregistré.",
+    "enrollHint": "Inscrivez-vous au cours pour enregistrer votre travail et gagner des XP.",
+    "enrollAction": "Aller au cours"
+  },
+  "access": {
+    "forbidden": {
+      "title": "Cette leçon n’est pas disponible",
+      "description": "Ce cours n’est pas ouvert à votre compte."
+    },
+    "licenseRequired": {
+      "title": "Cette leçon nécessite une licence",
+      "description": "Demandez l’accès à ce cours à votre enseignant ou à votre école."
+    }
+  },
+  "earn": {
+    "intro": "Terminez la leçon pour gagner {xp, number}\u00a0XP.",
+    "previewIntro": "Les élèves gagnent {xp, number}\u00a0XP en terminant cette leçon.",
+    "done": "Vous avez terminé cette leçon."
+  },
+  "checklist": {
+    "title": "Avant de terminer",
+    "quiz": "Réussir le quiz «\u00a0{title}\u00a0»",
+    "project": "Rendre le projet «\u00a0{title}\u00a0»",
+    "reflection": "Répondre à la réflexion «\u00a0{title}\u00a0» ({min, plural, =0 {toute longueur} one {au moins # caractère} other {au moins # caractères}})",
+    "done": "fait",
+    "todo": "à faire",
+    "ready": "Tout est fait. Vous pouvez terminer la leçon."
+  },
+  "footer": {
+    "label": "Navigation entre les leçons",
+    "previous": "Leçon précédente",
+    "next": "Leçon suivante",
+    "complete": "Terminer la leçon",
+    "completed": "Leçon terminée",
+    "stepsLeft": "{count, plural, one {# étape restante} other {# étapes restantes}}"
+  },
+  "notReady": {
+    "title": "Presque fini",
+    "description": "Faites les étapes restantes, puis terminez la leçon."
+  },
+  "complete": {
+    "title": "Leçon terminée\u00a0!",
+    "xp": "+{xp, number}\u00a0XP",
+    "noXp": "Vous avez déjà gagné les XP de cette leçon.",
+    "pending": "Vos XP et vos badges sont ajoutés à votre profil.",
+    "levelUp": "Niveau supérieur\u00a0! Vous avez atteint le niveau {level}.",
+    "badges": "Nouveaux badges",
+    "certificate": "Vous avez obtenu un certificat pour ce cours\u00a0!",
+    "viewCertificate": "Voir votre certificat",
+    "courseCompleted": "Vous avez terminé tout le cours. Bravo\u00a0!",
+    "next": "Leçon suivante",
+    "backToCourse": "Retour au cours"
+  },
+  "blocks": {
+    "video": {
+      "frameTitle": "Vidéo\u00a0: {title}",
+      "unavailable": "Cette vidéo n’est pas encore disponible.",
+      "unavailableHint": "Vous pouvez lire la transcription ci-dessous à la place.",
+      "transcript": "Transcription",
+      "duration": "Durée\u00a0: {duration}",
+      "noSupport": "Votre navigateur ne peut pas lire cette vidéo."
+    },
+    "file": {
+      "download": "Télécharger",
+      "downloadName": "Télécharger {name}",
+      "meta": "{type} · {size}"
+    },
+    "code": {
+      "title": "Activité de code",
+      "languages": {
+        "python": "Python",
+        "javascript": "JavaScript",
+        "blocks": "Blocs"
+      },
+      "editorLabel": "Votre code",
+      "hint": "Afficher un indice",
+      "save": "Enregistrer le code",
+      "saved": "Votre code est enregistré.",
+      "unsaved": "Pas encore enregistré",
+      "reset": "Recommencer",
+      "notRun": "L’exécution du code arrive bientôt. Pour l’instant, écrivez votre code et enregistrez-le.",
+      "preview": "Le code n’est pas enregistré en aperçu."
+    },
+    "reflection": {
+      "title": "Réflexion",
+      "minLength": "{min, plural, =0 {Toute longueur convient.} one {Écrivez au moins # caractère.} other {Écrivez au moins # caractères.}}",
+      "count": "{count, number} / {min, number}",
+      "longEnough": "Assez long",
+      "save": "Enregistrer la réponse",
+      "saved": "Votre réponse est enregistrée.",
+      "unsaved": "Pas encore enregistrée",
+      "preview": "Les réponses ne sont pas enregistrées en aperçu."
+    }
+  }
+}

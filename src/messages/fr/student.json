@@ -1,0 +1,73 @@
+{
+  "welcome": {
+    "title": "Bon retour, {name}\u00a0!",
+    "titleNew": "Bienvenue, {name}\u00a0!",
+    "subtitle": "Reprends ton apprentissage là où tu l’as laissé, ou découvre quelque chose de nouveau.",
+    "subtitleNew": "Ton aventure dans l’IA commence ici. Choisis un cours pour te lancer."
+  },
+  "progress": {
+    "title": "Ton niveau",
+    "achievementsLink": "Voir tes réussites",
+    "lessonsCompleted": "Leçons terminées"
+  },
+  "tutor": {
+    "title": "Demande à Robo AI",
+    "description": "Une leçon te bloque ou tu te poses une question\u00a0? Robo AI explique, donne des indices et t’interroge.",
+    "action": "Ouvrir le tuteur IA"
+  },
+  "continue": {
+    "title": "Continuer à apprendre",
+    "viewAll": "Tous mes cours",
+    "lessons": "{completed, plural, one {# leçon terminée} other {# leçons terminées}} sur {total}",
+    "completed": "Cours terminé",
+    "continue": "Continuer",
+    "start": "Commencer",
+    "review": "Revoir",
+    "empty": {
+      "title": "Commence ton premier cours",
+      "description": "Les cours que tu commences s’affichent ici, pour que tu reprennes là où tu en étais.",
+      "action": "Explorer les cours"
+    }
+  },
+  "pathways": {
+    "title": "Mes parcours",
+    "viewAll": "Explorer tous les parcours",
+    "empty": {
+      "title": "Aucun parcours pour le moment",
+      "description": "Commence un cours et son parcours apparaîtra ici avec ta progression."
+    }
+  },
+  "projects": {
+    "title": "Projets récents",
+    "viewAll": "Tous mes projets",
+    "empty": {
+      "title": "Aucun projet pour le moment",
+      "description": "Les projets que tu envoies depuis tes leçons apparaissent ici."
+    }
+  },
+  "challenges": {
+    "title": "Défis à venir",
+    "viewAll": "Tous les défis",
+    "empty": {
+      "title": "Aucun défi à venir",
+      "description": "Les nouveaux défis sont annoncés ici. Repasse bientôt\u00a0!"
+    }
+  },
+  "badges": {
+    "title": "Badges",
+    "viewAll": "Tous mes badges",
+    "empty": {
+      "title": "Aucun badge pour le moment",
+      "description": "Termine des leçons, réussis des quiz et finis des projets pour gagner des badges."
+    }
+  },
+  "certificates": {
+    "title": "Certificats",
+    "viewAll": "Tous mes certificats",
+    "empty": {
+      "title": "Aucun certificat pour le moment",
+      "description": "Termine un cours pour obtenir ton premier certificat."
+    }
+  },
+  "sectionError": "Cette section n’a pas pu être chargée. Actualise la page pour réessayer."
+}
