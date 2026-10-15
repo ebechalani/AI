@@ -25,7 +25,8 @@ export function RecentBadges({ badges }: RecentBadgesProps) {
   }
 
   return (
-    <ul className="grid grid-cols-2 gap-3">
+    // Two per row on phones and in the side column (xl); three while the page is one wide column.
+    <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-2">
       {badges.map(({ badge, awardedAt }) => (
         <li key={badge.id} className="min-w-0">
           <BadgeTile badge={badge} earnedAt={awardedAt} className="h-full" />

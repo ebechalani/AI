@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent, type MouseEvent } from 'react';
 import { RotateCcw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button, FormField, Textarea } from '@/components/ui';
 import { CONTENT_LIMITS } from '@/lib/limits';
+import { focusInView, hasKeyboardFocus, revealOnFocus } from '../focus';
 import { useSaveResponse } from './use-save-response';
 
 export interface CodeActivityEditorProps {
@@ -31,13 +32,23 @@ export function CodeActivityEditor({
   const t = useTranslations('lesson');
   const [draft, setDraft] = useState(initialCode);
   const [savedCode, setSavedCode] = useState(initialCode);
+  const fieldRef = useRef<HTMLTextAreaElement>(null);
   const { pending, fieldError, save } = useSaveResponse({
     courseId,
     lessonId,
     blockId,
     savedMessage: t('blocks.code.saved'),
+    fieldRef,
   });
   const dirty = draft !== savedCode;
+
+  // "Start again" disables itself once the starter code is back; from the keyboard, focus moves
+  // on to the code before that drops it to the page.
+  function startAgain(event: MouseEvent<HTMLButtonElement>) {
+    const field = fieldRef.current;
+    if (field !== null && hasKeyboardFocus(event.currentTarget)) focusInView(field);
+    setDraft(starterCode);
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -58,10 +69,12 @@ export function CodeActivityEditor({
       )}
       <FormField label={t('blocks.code.editorLabel')} error={fieldError}>
         <Textarea
+          ref={fieldRef}
           name="code"
           rows={8}
           maxLength={CONTENT_LIMITS.blockResponseChars}
           readOnly={readOnly}
+          onFocus={readOnly ? revealOnFocus : undefined}
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"
@@ -82,7 +95,7 @@ export function CodeActivityEditor({
             variant="ghost"
             size="sm"
             disabled={pending || draft === starterCode}
-            onClick={() => setDraft(starterCode)}
+            onClick={startAgain}
           >
             <RotateCcw aria-hidden="true" className="rtl:-scale-x-100" />
             {t('blocks.code.reset')}

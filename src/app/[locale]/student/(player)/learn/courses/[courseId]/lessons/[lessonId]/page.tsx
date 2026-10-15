@@ -1,20 +1,19 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { LessonPlayer } from '@/components/lesson/LessonPlayer';
+import { LessonPlayer, lessonMetadata } from '@/components/lesson/LessonPlayer';
 import { requireRole } from '@/lib/auth/session';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('nav');
-  return { title: t('pages.lesson') };
+type Params = Promise<{ courseId: string; lessonId: string }>;
+
+// The lesson's title, or the not-found page (one cached read, shared with the player).
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  await requireRole('student');
+  const { courseId, lessonId } = await params;
+  return lessonMetadata(courseId, lessonId);
 }
 
 // A student learns when enrolled and gets the read-only preview otherwise; the server decides
 // inside LessonPlayer (ARCHITECTURE.md 7.6).
-export default async function StudentLessonPage({
-  params,
-}: {
-  params: Promise<{ courseId: string; lessonId: string }>;
-}) {
+export default async function StudentLessonPage({ params }: { params: Params }) {
   await requireRole('student');
   const { courseId, lessonId } = await params;
 

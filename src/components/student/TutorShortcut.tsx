@@ -22,7 +22,12 @@ export function TutorShortcut() {
         </CardTitle>
       </div>
       <p className="text-sm text-ink-muted">{t('tutor.description')}</p>
-      <LinkButton href="/student/tutor" variant="secondary" size="sm" className="mt-auto self-start">
+      <LinkButton
+        href="/student/tutor"
+        variant="secondary"
+        size="sm"
+        className="mt-auto self-start"
+      >
         {t('tutor.action')}
         <ArrowRight aria-hidden="true" className="rtl:rotate-180" />
       </LinkButton>

@@ -4,12 +4,12 @@
   },
   "myCourses": {
     "title": "Mes cours",
-    "inProgress": "Cours en cours",
+    "inProgress": "Cours à poursuivre",
     "completed": "Cours terminés",
     "empty": {
       "title": "Tu n’as pas encore commencé de cours",
       "description": "Choisis un parcours ci-dessous et commence ton premier cours.",
-      "action": "Parcourir les parcours"
+      "action": "Découvrir les parcours"
     }
   },
   "catalog": {
@@ -24,6 +24,7 @@
     "about": "À propos de ce parcours",
     "topics": "Thèmes",
     "progressLabel": "Progression dans le parcours",
+    "progress": "{completed, plural, one {# cours terminé} other {# cours terminés}} sur {total}",
     "courses": "Les cours de ce parcours",
     "empty": {
       "title": "Aucun cours pour le moment",
@@ -37,10 +38,11 @@
     "outline": "Plan du cours",
     "previewHint": "Tu peux ouvrir n’importe quelle leçon pour la découvrir. Inscris-toi pour enregistrer ta progression et gagner des XP.",
     "module": "Module {number}",
-    "lessonXp": "+{xp, number} XP",
+    "lessonXp": "+{xp, number}\u00a0XP",
     "lessonQuiz": "Quiz",
     "lessonProject": "Projet",
-    "lessonResume": "là où tu t’es arrêté",
+    "lessonResume": "là où tu en étais",
+    "lessonNext": "ta prochaine leçon",
     "lessonLocked": "verrouillée",
     "noLessons": {
       "title": "Aucune leçon pour le moment",
@@ -59,7 +61,7 @@
       "title": "Commencer ce cours",
       "description": "Inscris-toi pour enregistrer ta progression, gagner des XP et obtenir un certificat à la fin.",
       "action": "M’inscrire et commencer",
-      "success": "Tu es inscrit. Amuse-toi bien !",
+      "success": "Inscription réussie. Amuse-toi bien\u00a0!",
       "errors": {
         "conflict": "Les inscriptions à ce cours ne sont pas ouvertes pour le moment.",
         "forbidden": "Ce cours n’est pas disponible pour ton compte.",
@@ -75,7 +77,7 @@
       "review": "Revoir le cours"
     },
     "completed": {
-      "title": "Cours terminé !",
+      "title": "Cours terminé\u00a0!",
       "description": "Tu as terminé toutes les leçons de ce cours.",
       "certificate": "Voir ton certificat"
     },
@@ -85,7 +87,7 @@
     },
     "teacherOnly": {
       "title": "Ce cours est destiné aux enseignants",
-      "description": "« {title} » fait partie de l’Académie des enseignants. Demande à ton enseignant quels cours sont faits pour les élèves."
+      "description": "«\u00a0{title}\u00a0» fait partie de l’Académie des enseignants. Demande à ton enseignant quels cours sont faits pour les élèves."
     },
     "unavailable": {
       "heading": "Cours indisponible",

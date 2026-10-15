@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CircleCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { completeLessonAction } from '@/actions/learning';
 import { Button, Chip, Dialog, LinkButton, useToast } from '@/components/ui';
 import { useRouter } from '@/lib/i18n/navigation';
+import { cn } from '@/lib/utils';
 import type { ActionError } from '@/types/actions';
 import type { IsoDateString } from '@/types/common';
 import { summarizeCompletion, type CompletionSummary } from './completion-model';
+import { focusWasLost } from './focus';
 import { LessonCompletePanel } from './LessonCompletePanel';
 import { EARN_ANCHOR } from './lesson-model';
 import { useActionErrorMessage } from './use-action-error';
@@ -62,6 +64,33 @@ export function LessonCompleteControl({
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<{ summary: CompletionSummary; earnedAt: IsoDateString }>();
   const [open, setOpen] = useState(false);
+  const controlRef = useRef<HTMLDivElement>(null);
+  const [refocus, setRefocus] = useState(0);
+  // Once this view completed the lesson, the button gives way to the "Lesson completed" chip.
+  const done = completed || result !== undefined;
+
+  // "Complete lesson" is disabled while the action runs, which drops focus to the page, and the
+  // dialog then has nothing to give focus back to (WCAG 2.4.3). After the dialog or a failed
+  // run, focus returns to this control in the sticky footer: the button, or the control itself
+  // once it holds the chip (also while the refresh that swaps them is still on its way).
+  useEffect(() => {
+    if (refocus === 0) return;
+    const control = controlRef.current;
+    if (control === null) return;
+    // Focusable itself only once done (below): then the button inside is on its way out too.
+    const holdsChip = control.hasAttribute('tabindex');
+    const active = document.activeElement;
+    const onOldButton =
+      holdsChip && active !== null && active !== control && control.contains(active);
+    if (!focusWasLost(control) && !onOldButton) return;
+    const target = holdsChip ? control : control.querySelector<HTMLElement>('button:enabled');
+    target?.focus({ preventScroll: true });
+  }, [refocus]);
+
+  function closeDialog() {
+    setOpen(false);
+    setRefocus((count) => count + 1);
+  }
 
   async function complete() {
     if (pending) return;
@@ -95,39 +124,46 @@ export function LessonCompleteControl({
       setPending(false);
     }
     toast({ tone: 'danger', title: errorMessage(error) });
+    setRefocus((count) => count + 1);
     if (REFRESH_ON.has(error.code)) router.refresh();
   }
 
   return (
     <>
-      {completed ? (
-        <Chip tone="success" size="md" icon={<CircleCheck aria-hidden="true" />}>
-          {t('footer.completed')}
-        </Chip>
-      ) : (
-        <div className="flex flex-col items-center">
-          <Button loading={pending} onClick={complete}>
-            {t('footer.complete')}
-          </Button>
-          {missingCount > 0 && (
-            <a
-              href={`#${EARN_ANCHOR}`}
-              className="inline-flex min-h-6 items-center text-xs font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline"
-            >
-              {t('footer.stepsLeft', { count: missingCount })}
-            </a>
-          )}
-        </div>
-      )}
+      <div
+        ref={controlRef}
+        tabIndex={done ? -1 : undefined}
+        className={cn('flex flex-col items-center', completed ? 'rounded-full' : 'rounded-control')}
+      >
+        {completed ? (
+          <Chip tone="success" size="md" icon={<CircleCheck aria-hidden="true" />}>
+            {t('footer.completed')}
+          </Chip>
+        ) : (
+          <>
+            <Button loading={pending} onClick={complete}>
+              {t('footer.complete')}
+            </Button>
+            {missingCount > 0 && (
+              <a
+                href={`#${EARN_ANCHOR}`}
+                className="inline-flex min-h-6 items-center text-xs font-medium text-ink-muted underline-offset-2 hover:text-ink hover:underline"
+              >
+                {t('footer.stepsLeft', { count: missingCount })}
+              </a>
+            )}
+          </>
+        )}
+      </div>
 
       <Dialog
         open={open && result !== undefined}
-        onClose={() => setOpen(false)}
+        onClose={closeDialog}
         title={t('complete.title')}
         size="md"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>
+            <Button variant="ghost" onClick={closeDialog}>
               {tCommon('actions.close')}
             </Button>
             <LinkButton href={courseHref} variant="secondary" onClick={() => setOpen(false)}>

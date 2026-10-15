@@ -13,6 +13,7 @@ import {
   RecentBadges,
   RecentCertificates,
   RecentProjects,
+  StudentScrollPadding,
   UpcomingChallenges,
   withBadges,
 } from '@/components/student';
@@ -91,14 +92,20 @@ export default async function StudentHomePage() {
 
   return (
     <>
+      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
+      <StudentScrollPadding />
       <PageHeader
         title={t(isNew ? 'welcome.titleNew' : 'welcome.title', { name: session.displayName })}
         description={t(isNew ? 'welcome.subtitleNew' : 'welcome.subtitle')}
       />
       <div className="flex flex-col gap-8">
         <ProgressOverview xp={profile.xpTotal} stats={profile.stats} />
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="flex min-w-0 flex-col gap-8 lg:col-span-2">
+        {/* Two columns only from xl: between lg and xl the sidebar leaves ~700 px, and a third
+            of that is too narrow for badge tiles and certificate cards. The side column keeps
+            at least 20.5rem, so a certificate's verification code stays on one line at 1280 px
+            in French (2fr/1fr alone leaves it 299 px there and splits the code). */}
+        <div className="grid gap-8 xl:grid-cols-[minmax(0,2fr)_minmax(20.5rem,1fr)]">
+          <div className="flex min-w-0 flex-col gap-8">
             <HomeSection
               id="home-continue"
               title={t('continue.title')}

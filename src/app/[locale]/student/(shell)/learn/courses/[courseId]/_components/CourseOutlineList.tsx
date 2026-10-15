@@ -24,7 +24,6 @@ function ModuleSection({
 }: Omit<CourseOutlineListProps, 'modules' | 'lessons'> & { group: ModuleGroup }) {
   const locale = useLocale();
   const t = useTranslations('learn');
-  const tDomain = useTranslations('domain');
   const { module, number, lessons } = group;
   const text = pickTranslation(module.translations, locale, module.defaultLocale);
   const headingId = `course-module-${module.id}`;
@@ -33,16 +32,18 @@ function ModuleSection({
   return (
     <Card as="section" aria-labelledby={headingId} className="gap-4 p-5 sm:p-6">
       <div className="flex flex-col gap-1">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-          <h3 id={headingId} className="min-w-0 break-words text-ink">
+        {/* Phones: the progress always sits under the title. From `sm`: always on the right, in
+            line with the "Module n" label, whatever the title's length. */}
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-4">
+          <h3 id={headingId} className="min-w-0 break-words text-ink sm:flex-1">
             <span className="block text-xs font-semibold tracking-wide text-brand-700 uppercase">
               {t('course.module', { number })}
             </span>{' '}
             <span className="text-lg leading-snug font-bold">{text.title}</span>
           </h3>
           {enrolled && (
-            <p className="text-sm font-medium text-ink-muted">
-              {tDomain('lessonNav.moduleProgress', { completed, total: lessons.length })}
+            <p className="text-sm font-medium text-ink-muted sm:shrink-0 sm:whitespace-nowrap">
+              {t('course.progress.lessons', { completed, total: lessons.length })}
             </p>
           )}
         </div>

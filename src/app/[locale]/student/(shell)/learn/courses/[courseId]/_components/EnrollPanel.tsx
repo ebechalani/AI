@@ -38,12 +38,7 @@ function ResumeLink({
 }) {
   const t = useTranslations('learn');
   return (
-    <LinkButton
-      href={lessonHref(courseId, resume.lessonId)}
-      variant={variant}
-      size="lg"
-      fullWidth
-    >
+    <LinkButton href={lessonHref(courseId, resume.lessonId)} variant={variant} size="lg" fullWidth>
       {resume.kind === 'review' ? (
         <RotateCcw aria-hidden="true" />
       ) : (
@@ -145,7 +140,9 @@ export function EnrollPanel({
               {t('course.completed.certificate')}
             </LinkButton>
           )}
-          {resume !== null && <ResumeLink courseId={courseId} resume={resume} variant="secondary" />}
+          {resume !== null && (
+            <ResumeLink courseId={courseId} resume={resume} variant="secondary" />
+          )}
         </div>
       </div>
     );

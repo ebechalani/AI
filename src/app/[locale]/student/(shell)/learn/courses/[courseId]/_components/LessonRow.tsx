@@ -22,7 +22,7 @@ function StateIcon({ state, locked }: { state: LessonState; locked: boolean }) {
   if (state === 'completed') {
     return <CircleCheck aria-hidden="true" className={cn(shared, 'text-success')} />;
   }
-  if (state === 'resume') {
+  if (state === 'resume' || state === 'next') {
     return <CirclePlay aria-hidden="true" className={cn(shared, 'text-brand-600')} />;
   }
   return <Circle aria-hidden="true" className={cn(shared, 'text-ink-muted')} />;
@@ -36,13 +36,16 @@ export function LessonRow({ courseId, lesson, state, locked }: LessonRowProps) {
   const formatDuration = useDurationFormat();
   const text = pickTranslation(lesson.translations, locale, lesson.defaultLocale);
 
+  // `lessonNav.completed` agrees with "leçon" in French (`status.completed` does not).
   const stateLabel = locked
     ? t('course.lessonLocked')
     : state === 'completed'
-      ? tDomain('status.completed')
+      ? tDomain('lessonNav.completed')
       : state === 'resume'
         ? t('course.lessonResume')
-        : null;
+        : state === 'next'
+          ? t('course.lessonNext')
+          : null;
   const srState = stateLabel && (
     <>
       {' '}
@@ -54,7 +57,7 @@ export function LessonRow({ courseId, lesson, state, locked }: LessonRowProps) {
     <li
       className={cn(
         'flex min-h-11 items-start gap-3 rounded-control px-3 py-3',
-        state === 'resume' && !locked && 'bg-brand-50',
+        (state === 'resume' || state === 'next') && !locked && 'bg-brand-50',
       )}
     >
       <StateIcon state={state} locked={locked} />

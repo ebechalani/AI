@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { CircleCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button, Chip, FormField, Textarea } from '@/components/ui';
 import { responseLength } from '@/lib/learning/lesson-completion';
 import { CONTENT_LIMITS } from '@/lib/limits';
+import { revealOnFocus } from '../focus';
 import { useSaveResponse } from './use-save-response';
 
 export interface ReflectionFormProps {
@@ -32,11 +33,13 @@ export function ReflectionForm({
   const t = useTranslations('lesson');
   const [draft, setDraft] = useState(initialText);
   const [savedText, setSavedText] = useState(initialText);
+  const fieldRef = useRef<HTMLTextAreaElement>(null);
   const { pending, fieldError, save } = useSaveResponse({
     courseId,
     lessonId,
     blockId,
     savedMessage: t('blocks.reflection.saved'),
+    fieldRef,
   });
   const length = responseLength(draft);
   const dirty = draft !== savedText;
@@ -56,10 +59,12 @@ export function ReflectionForm({
         error={fieldError}
       >
         <Textarea
+          ref={fieldRef}
           name="text"
           rows={5}
           maxLength={CONTENT_LIMITS.blockResponseChars}
           readOnly={readOnly}
+          onFocus={readOnly ? revealOnFocus : undefined}
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
         />

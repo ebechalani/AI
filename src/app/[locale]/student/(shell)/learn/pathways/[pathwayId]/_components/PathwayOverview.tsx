@@ -62,20 +62,25 @@ export function PathwayOverview({ pathway, enrolled, completed, total }: Pathway
         </div>
 
         <div className="flex min-w-0 flex-col gap-4">
-          <ul className="flex flex-wrap gap-2">
-            {ageRange && (
-              <li className="max-w-full">
-                <Chip tone="brand" size="md" icon={<Users aria-hidden="true" />}>
-                  {ageRange}
-                </Chip>
-              </li>
-            )}
-            <li className="max-w-full">
-              <Chip size="md" icon={<BookOpen aria-hidden="true" />}>
-                {tDomain('pathway.courses', { count: total })}
-              </Chip>
-            </li>
-          </ul>
+          {(ageRange || total > 0) && (
+            <ul className="flex flex-wrap gap-2">
+              {ageRange && (
+                <li className="max-w-full">
+                  <Chip tone="brand" size="md" icon={<Users aria-hidden="true" />}>
+                    {ageRange}
+                  </Chip>
+                </li>
+              )}
+              {/* Without courses, the empty state under the overview already says so. */}
+              {total > 0 && (
+                <li className="max-w-full">
+                  <Chip size="md" icon={<BookOpen aria-hidden="true" />}>
+                    {tDomain('pathway.courses', { count: total })}
+                  </Chip>
+                </li>
+              )}
+            </ul>
+          )}
           {topics.length > 0 && (
             <div className="flex flex-col gap-2">
               <h3 className="text-sm font-semibold text-ink">{t('pathway.topics')}</h3>
@@ -99,7 +104,7 @@ export function PathwayOverview({ pathway, enrolled, completed, total }: Pathway
             showValue
           />
           <p className="text-sm font-medium text-ink">
-            {tDomain('pathway.progress', { completed, total })}
+            {t('pathway.progress', { completed, total })}
           </p>
         </div>
       )}

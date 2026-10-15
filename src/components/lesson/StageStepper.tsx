@@ -10,15 +10,19 @@ export interface StageStepperProps {
 }
 
 /**
- * The lesson's steps as a row of chips that jump to their section. The row scrolls inside
- * itself, so a phone never scrolls the page sideways.
+ * The lesson's steps as chips that jump to their section. On phones the row scrolls inside
+ * itself, so the page never scrolls sideways; from `sm` up the chips wrap, so every step stays
+ * in view even beside the outline and the tutor (up to nine chips, longer in French).
  */
 export function StageStepper({ stages, lessonCompleted }: StageStepperProps) {
   const t = useTranslations('lesson');
   const tDomain = useTranslations('domain');
   return (
     <nav aria-label={t('topBar.stages')} className="min-w-0">
-      <ol className="-mx-1 flex gap-1.5 overflow-x-auto px-1 py-1 [scrollbar-width:thin]">
+      {/* On focus the browser scrolls a chip it finds hidden to the middle of the phone row, but
+          leaves a partly hidden one alone. With an inline scroll padding wider than any chip
+          (French "Demander à l’IA" is about 140 px), a chip it leaves alone is fully in view. */}
+      <ol className="-mx-1 flex scroll-px-36 gap-1.5 overflow-x-auto px-1 py-1 [scrollbar-width:thin] sm:flex-wrap sm:overflow-x-visible">
         {stages.map((stage, index) => {
           const number = index + 1;
           const label = tDomain(`stages.${stage}`);

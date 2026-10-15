@@ -25,7 +25,9 @@ export function RecentCertificates({ certificates }: RecentCertificatesProps) {
   }
 
   return (
-    <ul className="flex flex-col gap-4">
+    // Stacked in the side column (xl) and up to md; side by side while the page is one wide
+    // column. Not from sm: a half-width card at 640-767 px splits the verification code.
+    <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-1">
       {certificates.map((certificate) => (
         <li key={certificate.id} className="min-w-0">
           <CertificateCard certificate={certificate} href={`/certificates/${certificate.id}`} />

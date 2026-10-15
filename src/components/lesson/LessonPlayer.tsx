@@ -1,5 +1,7 @@
+import { cache } from 'react';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getLocale } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { TutorPanel } from '@/components/ai/TutorPanel';
 import { LessonNavigation } from '@/components/domain';
 import { LessonShell } from '@/components/layout';
@@ -17,6 +19,7 @@ import { LessonCompleteControl } from './LessonCompleteControl';
 import { LessonContent } from './LessonContent';
 import { LessonFooter } from './LessonFooter';
 import { LessonPreviewNotice } from './LessonPreviewNotice';
+import { LessonScrollPadding } from './LessonScrollPadding';
 import { LessonStartBeacon } from './LessonStartBeacon';
 import { LessonTopBar } from './LessonTopBar';
 import {
@@ -28,6 +31,33 @@ import {
   toRuntime,
   visibleBlocks,
 } from './lesson-model';
+
+/**
+ * The player's data, read once per request: the route's generateMetadata and the player share
+ * it (the outline read of 3.7 is not repeated, and a repair of pending effects runs once).
+ */
+const loadPlayerData = cache(async (courseId: string, lessonId: string) =>
+  // Cached: the route already ran requireRole.
+  getLessonPlayerData(await requireSession(), courseId, lessonId),
+);
+
+/**
+ * The document title of a lesson route, for its generateMetadata after its requireRole: the
+ * lesson's title, the not-found page for an unknown course or lesson, and the generic "Lesson"
+ * while the player shows an access state or an error.
+ */
+export async function lessonMetadata(courseId: string, lessonId: string): Promise<Metadata> {
+  try {
+    const { lesson } = await loadPlayerData(courseId, lessonId);
+    const text = pickTranslation(lesson.translations, await getLocale(), lesson.defaultLocale);
+    return { title: text.title };
+  } catch (error) {
+    if (isAppError(error) && error.code === 'not_found') notFound();
+    // The player renders the access state, or error.tsx the fault, from the same cached read.
+    const t = await getTranslations('nav');
+    return { title: t('pages.lesson') };
+  }
+}
 
 export interface LessonPlayerProps {
   courseId: string;
@@ -51,7 +81,7 @@ export async function LessonPlayer({
   const session = await requireSession();
   let data: LessonPlayerData;
   try {
-    data = await getLessonPlayerData(session, courseId, lessonId);
+    data = await loadPlayerData(courseId, lessonId);
   } catch (error) {
     // Real faults go to the route's error.tsx, which never sees an AppError's code.
     if (!isAppError(error)) throw error;
@@ -129,6 +159,7 @@ export async function LessonPlayer({
         />
       }
     >
+      <LessonScrollPadding />
       {!readOnly && !completed && (
         <LessonStartBeacon
           key={`${course.id}/${lesson.id}`}

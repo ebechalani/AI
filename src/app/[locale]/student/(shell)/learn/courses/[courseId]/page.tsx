@@ -3,13 +3,14 @@ import { notFound } from 'next/navigation';
 import { CircleCheck } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { PageHeader } from '@/components/layout';
+import { StudentScrollPadding } from '@/components/student';
 import { requireRole } from '@/lib/auth/session';
 import { getPublishedCourse } from '@/lib/data/courses';
 import { getEnrollment } from '@/lib/data/enrollments';
 import { isAppError } from '@/lib/errors';
 import { pickTranslation } from '@/lib/i18n/content';
 import { getCourseAccess } from '@/lib/services/access';
-import type { CourseOutline } from '@/types/content';
+import type { Course, CourseOutline } from '@/types/content';
 import { CourseFacts } from './_components/CourseFacts';
 import { forbiddenCourseView, lessonStates, resumeLesson } from './_components/course-model';
 import { CourseOutlineList } from './_components/CourseOutlineList';
@@ -32,18 +33,20 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 }
 
+type OutlineResult =
+  { kind: 'outline'; outline: CourseOutline } | { kind: 'forbidden'; published: Course | null };
+
 /** The outline, or the page a hidden course gets; not found for a missing or malformed id. */
-async function outlineOrView(courseId: string) {
+async function outlineOrView(courseId: string): Promise<OutlineResult> {
   try {
-    return { outline: await loadOutline(courseId) };
+    return { kind: 'outline', outline: await loadOutline(courseId) };
   } catch (error) {
     if (!isAppError(error)) throw error;
     if (error.code === 'not_found') notFound();
     if (error.code !== 'forbidden') throw error;
     // ARCHITECTURE.md 4.4: a hidden course is forbidden. Only a published official course can
     // be named here, so the student learns why a Teacher Academy course does not open.
-    const published = await getPublishedCourse(courseId);
-    return { forbidden: published };
+    return { kind: 'forbidden', published: await getPublishedCourse(courseId) };
   }
 }
 
@@ -59,15 +62,15 @@ export default async function StudentCoursePage({ params }: { params: Params }) 
     getTranslations('nav'),
   ]);
 
-  if (!('outline' in result)) {
-    const published = result.forbidden;
+  if (result.kind === 'forbidden') {
+    const { published } = result;
     const title = published
       ? pickTranslation(published.translations, locale, published.defaultLocale).title
       : null;
     return <CourseUnavailable view={forbiddenCourseView(published)} title={title} />;
   }
 
-  const { course, modules, lessons }: CourseOutline = result.outline;
+  const { course, modules, lessons } = result.outline;
   const [enrollment, access] = await Promise.all([
     getEnrollment(session, session.uid, courseId),
     getCourseAccess(session, course),
@@ -80,10 +83,15 @@ export default async function StudentCoursePage({ params }: { params: Params }) 
 
   return (
     <>
+      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
+      <StudentScrollPadding />
       <PageHeader
         title={text.title}
         description={text.summary || undefined}
-        breadcrumbs={[{ label: tNav('student.learn'), href: '/student/learn' }, { label: text.title }]}
+        breadcrumbs={[
+          { label: tNav('student.learn'), href: '/student/learn' },
+          { label: text.title },
+        ]}
       />
       {/* The panel comes first in the DOM, so on phones it sits right under the header. */}
       <div className="grid gap-8 lg:grid-cols-3">

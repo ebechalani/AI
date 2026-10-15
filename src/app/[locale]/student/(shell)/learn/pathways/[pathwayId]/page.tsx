@@ -4,6 +4,7 @@ import { BookOpen } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { CourseCard } from '@/components/domain';
 import { PageHeader } from '@/components/layout';
+import { StudentScrollPadding } from '@/components/student';
 import { EmptyState, LinkButton } from '@/components/ui';
 import { requireRole } from '@/lib/auth/session';
 import { listPublishedCoursesByPathway } from '@/lib/data/courses';
@@ -52,10 +53,15 @@ export default async function StudentPathwayPage({ params }: { params: Params })
 
   return (
     <>
+      {/* Stopgap until foundation request WS-B-3 lands; delete it with the component then. */}
+      <StudentScrollPadding />
       <PageHeader
         title={text.title}
         description={text.tagline || undefined}
-        breadcrumbs={[{ label: tNav('student.learn'), href: '/student/learn' }, { label: text.title }]}
+        breadcrumbs={[
+          { label: tNav('student.learn'), href: '/student/learn' },
+          { label: text.title },
+        ]}
       />
       <div className="flex flex-col gap-10">
         <PathwayOverview

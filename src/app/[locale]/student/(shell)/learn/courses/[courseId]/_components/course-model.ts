@@ -12,7 +12,13 @@ export interface ResumeTarget {
   kind: ResumeKind;
 }
 
-export type LessonState = 'completed' | 'resume' | 'todo';
+/**
+ * The state of one lesson in the outline. `resume` and `next` are the lesson the primary button
+ * opens: `resume` when the student already opened it and has not finished it ("where you left
+ * off"), `next` when they have not opened it yet (a fresh enrolment, or the lesson after the
+ * last one finished).
+ */
+export type LessonState = 'completed' | 'resume' | 'next' | 'todo';
 
 type EnrollmentProgress = Pick<Enrollment, 'completedLessonIds' | 'lastLessonId'>;
 
@@ -43,7 +49,10 @@ export function resumeLesson(
   return { lessonId: first.id, kind: 'review' };
 }
 
-/** `completed` for done lessons, `resume` for the enrolled student's next lesson, else `todo`. */
+/**
+ * `completed` for done lessons; for the enrolled student's next lesson, `resume` when it is the
+ * lesson last opened and `next` otherwise; else `todo`.
+ */
 export function lessonStates(
   lessons: readonly Pick<Lesson, 'id'>[],
   enrollment: EnrollmentProgress | null,
@@ -52,12 +61,12 @@ export function lessonStates(
   const done = new Set(enrollment?.completedLessonIds ?? []);
   const resumeId =
     enrollment !== null && resume !== null && resume.kind !== 'review' ? resume.lessonId : null;
-  return new Map(
-    lessons.map((lesson): [string, LessonState] => [
-      lesson.id,
-      done.has(lesson.id) ? 'completed' : lesson.id === resumeId ? 'resume' : 'todo',
-    ]),
-  );
+  const stateOf = (id: string): LessonState => {
+    if (done.has(id)) return 'completed';
+    if (id !== resumeId) return 'todo';
+    return id === enrollment?.lastLessonId ? 'resume' : 'next';
+  };
+  return new Map(lessons.map((lesson): [string, LessonState] => [lesson.id, stateOf(lesson.id)]));
 }
 
 export interface ModuleGroup {

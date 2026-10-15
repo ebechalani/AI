@@ -75,7 +75,9 @@ export function continueItems(
   return enrollments
     .flatMap((enrollment) => {
       const course = coursesById.get(enrollment.courseId);
-      return course === undefined ? [] : [{ enrollment, course, target: continueTarget(enrollment) }];
+      return course === undefined
+        ? []
+        : [{ enrollment, course, target: continueTarget(enrollment) }];
     })
     .slice(0, CONTINUE_LIMIT);
 }

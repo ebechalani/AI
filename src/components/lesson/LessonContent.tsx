@@ -4,15 +4,10 @@ import { useTranslations } from 'next-intl';
 import { useDurationFormat } from '@/components/domain';
 import { Chip, EmptyState } from '@/components/ui';
 import type { StageGroup } from '@/lib/learning/stages';
-import { cn } from '@/lib/utils';
 import type { LessonBlock } from '@/types/content';
 import { BlockRenderer } from './BlockRenderer';
 import type { LessonRuntime } from './blocks/registry';
 import { blockAnchor, stageAnchor, type StepperStage } from './lesson-model';
-
-// The sticky top bar must not cover a section or block that a stepper chip or a checklist link
-// jumps to: about 125 px high on phones (three rows), 100 px from `sm` up (two rows).
-const ANCHOR_OFFSET = 'scroll-mt-36 xl:scroll-mt-28';
 
 interface StageSectionProps {
   stage: StepperStage;
@@ -32,7 +27,7 @@ function StageSection({ stage, number, total, children }: StageSectionProps) {
       aria-labelledby={`${id}-title`}
       // EARN receives focus when "Complete lesson" finds something missing.
       tabIndex={stage === 'earn' ? -1 : undefined}
-      className={cn('flex flex-col gap-5 outline-none', ANCHOR_OFFSET)}
+      className="flex flex-col gap-5 outline-none"
     >
       <div className="flex flex-col gap-0.5 border-b border-border pb-2">
         <p className="text-sm font-semibold text-brand-700">
@@ -115,7 +110,9 @@ export function LessonContent({
         groups.map((group, index) => (
           <StageSection key={group.stage} stage={group.stage} number={index + 1} total={stepCount}>
             {group.blocks.map((block) => (
-              <div key={block.id} id={blockAnchor(block.id)} className={ANCHOR_OFFSET}>
+              // A stepper chip or a checklist link jumps here; LessonScrollPadding keeps the
+              // target clear of the sticky top bar.
+              <div key={block.id} id={blockAnchor(block.id)}>
                 <BlockRenderer block={block} runtime={runtime} />
               </div>
             ))}
