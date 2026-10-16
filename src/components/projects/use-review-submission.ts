@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useState, type RefObject } from 'react';
+import { useEffect, useEffectEvent, useState, useTransition, type RefObject } from 'react';
 import { useTranslations } from 'next-intl';
 import { reviewSubmissionAction } from '@/actions/review';
 import { useToast } from '@/components/ui';
@@ -18,7 +18,9 @@ import {
 import { useActionErrorMessage } from './use-action-error';
 
 // Sending the teacher's decision (SPEC-D 10.3): the scores and the schema first, then
-// reviewSubmissionAction, then a toast and a refresh that shows the recorded decision.
+// reviewSubmissionAction, then a toast and a refresh that shows the recorded decision. The form
+// stays busy until that refresh has arrived: a second click in between would send the decision
+// again, and the server would refuse it as a conflict.
 
 export type ReviewAlert = 'form' | 'not_found' | 'session';
 
@@ -57,7 +59,9 @@ export function useReviewSubmission({
   const router = useRouter();
   const { toast } = useToast();
   const errorMessage = useActionErrorMessage();
-  const [pending, setPending] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [refreshing, startRefresh] = useTransition();
+  const pending = sending || refreshing;
   const [errors, setErrors] = useState<Partial<Record<ReviewField, string>>>({});
   const [formAlert, setFormAlert] = useState<ReviewAlert | null>(null);
   const [focusRequest, setFocusRequest] = useState<{ target: FocusTarget; seq: number } | null>(
@@ -139,20 +143,20 @@ export function useReviewSubmission({
     setErrors({});
 
     const fromKeyboard = hasKeyboardFocus(submitRef.current);
-    setPending(true);
+    setSending(true);
     let error: ActionError;
     try {
       const result = await reviewSubmissionAction(input);
       if (result.ok) {
         toast({ tone: 'success', title: t(`form.done.${draft.decision}`, { name: studentName }) });
-        router.refresh();
+        startRefresh(() => router.refresh());
         return;
       }
       error = result.error;
     } catch {
       error = { code: 'internal' };
     } finally {
-      setPending(false);
+      setSending(false);
     }
 
     switch (error.code) {

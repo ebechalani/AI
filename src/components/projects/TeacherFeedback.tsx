@@ -13,7 +13,10 @@ export interface TeacherFeedbackProps {
 }
 
 /** The teacher's decision as the student reads it: score, criteria and feedback. */
-export function TeacherFeedback({ submission, headingLevel: Heading = 'h2' }: TeacherFeedbackProps) {
+export function TeacherFeedback({
+  submission,
+  headingLevel: Heading = 'h2',
+}: TeacherFeedbackProps) {
   const t = useTranslations('projects');
   const tDomain = useTranslations('domain');
   const formatDate = useDateFormat();

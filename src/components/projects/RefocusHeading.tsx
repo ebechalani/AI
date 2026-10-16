@@ -20,7 +20,13 @@ export interface RefocusHeadingProps {
  * A section heading that takes focus back after a router.refresh() removed or disabled the
  * control that had it (SPEC-D 5.4, 11.3). Server-rendered sections cannot hold refs.
  */
-export function RefocusHeading({ as: Tag, focusKey, id, className, children }: RefocusHeadingProps) {
+export function RefocusHeading({
+  as: Tag,
+  focusKey,
+  id,
+  className,
+  children,
+}: RefocusHeadingProps) {
   const ref = useRef<HTMLHeadingElement>(null);
   useRefocusWhenLost(ref, focusKey);
   return (

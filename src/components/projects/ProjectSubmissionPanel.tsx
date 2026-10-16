@@ -69,7 +69,12 @@ export function ProjectSubmissionPanel({
         </h4>
         <SubmissionStatusLine submission={latest} showScore />
         <OutcomeNotice outcome={outcome} headingLevel="h4" retryHint={false}>
-          {outcome.kind === 'ai_pending' && <CheckAgainButton label={t('outcome.checkAgain')} />}
+          {outcome.kind === 'ai_pending' && (
+            <CheckAgainButton
+              label={t('outcome.checkAgain')}
+              stillPendingLabel={t('outcome.aiPending.still')}
+            />
+          )}
         </OutcomeNotice>
         {showFeedback && (
           <div className="rounded-control border border-border bg-surface-muted p-4">

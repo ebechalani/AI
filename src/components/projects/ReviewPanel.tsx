@@ -22,7 +22,12 @@ export interface ReviewPanelProps {
  * The panel stays mounted across the refresh that follows a decision (keyed by submission), so
  * it moves focus to the outcome's heading and keeps a conflict notice in view.
  */
-export function ReviewPanel({ submission, aiReview, latestReview, approveBlock }: ReviewPanelProps) {
+export function ReviewPanel({
+  submission,
+  aiReview,
+  latestReview,
+  approveBlock,
+}: ReviewPanelProps) {
   const t = useTranslations('review');
   const headingRef = useRef<HTMLHeadingElement>(null);
   const noticeRef = useRef<HTMLDivElement>(null);

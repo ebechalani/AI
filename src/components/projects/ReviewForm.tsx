@@ -64,9 +64,21 @@ export function ReviewForm({ submission, aiReview, approveBlock, onConflict }: R
   const rows = rubricRows(submission.rubric);
   const [chosen, setDecision] = useState<ReviewDecision>(() => initialDecision(approveBlock));
   // A refresh can block "approve" after it was chosen (a new suggestion with points to check).
-  const decision: ReviewDecision = chosen === 'approve' && approveBlock !== null ? 'modify' : chosen;
+  const decision: ReviewDecision =
+    chosen === 'approve' && approveBlock !== null ? 'modify' : chosen;
   const [criteria, setCriteria] = useState<CriteriaDraft>(() => criteriaDraftFrom(aiReview));
   const [feedback, setFeedback] = useState('');
+  // The form stays mounted while the page is refreshed (Check again, a new suggestion): a new
+  // suggestion seeds it again, as on a first load, except what the teacher has already changed.
+  const suggestionId = aiReview?.id ?? null;
+  const [seededFor, setSeededFor] = useState(suggestionId);
+  const [decisionTouched, setDecisionTouched] = useState(false);
+  const [criteriaTouched, setCriteriaTouched] = useState(false);
+  if (seededFor !== suggestionId) {
+    setSeededFor(suggestionId);
+    if (!decisionTouched) setDecision(initialDecision(approveBlock));
+    if (!criteriaTouched) setCriteria(criteriaDraftFrom(aiReview));
+  }
   const formRef = useRef<HTMLFormElement>(null);
   const submitRef = useRef<HTMLButtonElement>(null);
   const alertRef = useRef<HTMLDivElement>(null);
@@ -145,6 +157,7 @@ export function ReviewForm({ submission, aiReview, approveBlock, onConflict }: R
           onValueChange={(value) => {
             if (!isDecision(value)) return;
             setDecision(value);
+            setDecisionTouched(true);
             clearError('decision');
           }}
           error={messages.decision}
@@ -174,6 +187,7 @@ export function ReviewForm({ submission, aiReview, approveBlock, onConflict }: R
             draft={criteria}
             onChange={(key, value) => {
               setCriteria((current) => ({ ...current, [key]: value }));
+              setCriteriaTouched(true);
               clearError(key);
               clearError('criteria');
             }}

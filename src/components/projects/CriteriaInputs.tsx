@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { FormField, Input } from '@/components/ui';
 import type { RubricKey, RubricWeight } from '@/types/project';
-import { previewScore, type CriteriaDraft } from './review-model';
+import { scoreState, type CriteriaDraft } from './review-model';
 
 export interface CriteriaInputsProps {
   rows: { key: RubricKey; weight: number }[];
@@ -31,7 +31,7 @@ export function CriteriaInputs({
 }: CriteriaInputsProps) {
   const t = useTranslations('review');
   const tDomain = useTranslations('domain');
-  const score = previewScore(draft, rubric);
+  const total = scoreState(draft, rubric);
   const hintId = `${legendId}-hint`;
 
   return (
@@ -71,7 +71,11 @@ export function CriteriaInputs({
         ))}
       </div>
       <p aria-live="polite" className="text-sm font-semibold text-ink">
-        {score === null ? t('form.scorePending') : t('form.score', { score })}
+        {total.kind === 'ready'
+          ? t('form.score', { score: total.score })
+          : total.kind === 'invalid'
+            ? t('form.scoreInvalid')
+            : t('form.scorePending')}
       </p>
     </fieldset>
   );

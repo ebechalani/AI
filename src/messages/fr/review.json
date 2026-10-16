@@ -1,0 +1,185 @@
+{
+  "list": {
+    "description": "Lisez les travaux envoyés par vos élèves et faites-leur un retour."
+  },
+  "views": {
+    "label": "Envois",
+    "queue": "En attente d’évaluation ({count, number})",
+    "queueMax": "En attente d’évaluation ({count, number}+)",
+    "queuePlain": "En attente d’évaluation",
+    "all": "Tous les envois"
+  },
+  "queue": {
+    "oldestFirst": "Les plus anciens d’abord, pour que personne n’attende trop longtemps.",
+    "classCount": "{count, plural, one {# en attente} other {# en attente}}",
+    "unknownClass": "Autre classe",
+    "truncated": "Affichage des {count, number} envois les plus anciens. Évaluez-en quelques-uns pour voir les suivants.",
+    "empty": {
+      "title": "Rien à évaluer",
+      "description": "Quand les élèves de vos classes envoient un travail, il apparaît ici.",
+      "action": "Voir tous les envois"
+    }
+  },
+  "noClasses": {
+    "title": "Vous n’avez pas encore de classe",
+    "description": "Créez une classe et assignez-lui un cours\u00a0: les projets de vos élèves apparaîtront ici.",
+    "action": "Aller à mes classes"
+  },
+  "all": {
+    "classLabel": "Classe",
+    "archived": "{name} (archivée)",
+    "show": "Afficher",
+    "newestFirst": "Les plus récents d’abord.",
+    "empty": {
+      "title": "Aucun envoi dans cette classe pour le moment",
+      "description": "Les travaux envoyés par les élèves de cette classe apparaîtront ici."
+    },
+    "staleCursor": "Ce lien de page n’est plus à jour.",
+    "firstPage": "Aller à la première page"
+  },
+  "detail": {
+    "studentProgress": "Progression de l’élève",
+    "summary": {
+      "title": "Envoi",
+      "student": "Élève",
+      "status": "Statut",
+      "attempt": "Tentative",
+      "attemptValue": "{number} sur {max}",
+      "submitted": "Envoyé",
+      "type": "Type de travail",
+      "language": "Langue",
+      "previous": "Voir la tentative {number}"
+    },
+    "brief": {
+      "title": "Ce qui était demandé à l’élève",
+      "unavailable": "Les consignes de ce travail ne vous sont pas accessibles."
+    },
+    "work": {
+      "title": "Le travail de l’élève"
+    },
+    "history": {
+      "title": "Historique des évaluations",
+      "by": "Par {name} le {date}"
+    }
+  },
+  "decisions": {
+    "approve": "Approuvé (suggestion de l’IA)",
+    "modify": "Noté",
+    "return": "Rendu pour amélioration"
+  },
+  "ai": {
+    "title": "Suggestion de l’IA",
+    "label": "Généré par l’IA",
+    "disclaimer": "Une simple suggestion\u00a0: c’est vous qui décidez de la note et du retour.",
+    "overall": "Note suggérée\u00a0: {score}/100",
+    "confidence": {
+      "label": "Confiance",
+      "low": "Confiance faible",
+      "medium": "Confiance moyenne",
+      "high": "Confiance élevée"
+    },
+    "flags": {
+      "title": "Points à vérifier",
+      "possible_personal_data": "Peut contenir des informations personnelles, comme un nom, une adresse e-mail ou un numéro de téléphone.",
+      "unsafe_content": "Peut contenir un contenu inapproprié.",
+      "off_topic": "Ne répond peut-être pas au projet.",
+      "possible_plagiarism": "A peut-être été copié ailleurs.",
+      "possible_prompt_injection": "Semble s’adresser à l’IA qui évalue au lieu de réaliser le travail.",
+      "blocksApprove": "Une suggestion avec des points à vérifier ne peut pas être approuvée telle quelle."
+    },
+    "writtenFeedback": "Retour suggéré pour l’élève ({locale, select, en {en anglais} fr {en français} other {dans une autre langue}})",
+    "strengths": "Points forts",
+    "improvements": "À améliorer",
+    "criteria": "Par critère",
+    "limitations": "Ce que l’IA n’a pas pu vérifier",
+    "pending": {
+      "title": "La suggestion de l’IA est en préparation",
+      "description": "Cela prend en général moins d’une minute.",
+      "still": "La suggestion de l’IA est encore en préparation."
+    },
+    "checkAgain": "Vérifier de nouveau",
+    "failed": {
+      "title": "Pas de suggestion de l’IA",
+      "generic": "L’IA n’a pas pu produire de suggestion.",
+      "reasons": {
+        "incomplete": "La réponse de l’IA a été interrompue.",
+        "refused": "L’IA a refusé d’évaluer ce travail.",
+        "blocked": "La réponse de l’IA a été bloquée par le contrôle de sécurité.",
+        "invalid_output": "La réponse de l’IA n’a pas pu être lue.",
+        "provider_error": "Le service d’IA n’a pas répondu."
+      }
+    },
+    "skipped": {
+      "title": "Pas de suggestion de l’IA",
+      "description": "La limite quotidienne d’évaluations par l’IA de l’élève est atteinte, ou l’IA est désactivée pour l’école."
+    },
+    "none": "Il n’y a pas de suggestion de l’IA pour ce travail.",
+    "regenerate": "Demander une nouvelle suggestion",
+    "regenerations": "Nouvelles suggestions demandées\u00a0: {used} sur {max}",
+    "noRegenerations": "Aucune nouvelle suggestion ne peut être demandée pour ce travail.",
+    "regenerated": "La suggestion de l’IA est mise à jour.",
+    "regenerateConflict": "Aucune nouvelle suggestion ne peut être demandée maintenant. La page a été actualisée."
+  },
+  "form": {
+    "title": "Votre décision",
+    "decision": {
+      "legend": "Décision",
+      "approve": {
+        "label": "Approuver la suggestion de l’IA",
+        "description": "Les notes suggérées deviennent l’évaluation."
+      },
+      "modify": {
+        "label": "Noter avec mes propres notes",
+        "description": "Donnez une note de 0 à 100 pour chaque critère."
+      },
+      "return": {
+        "label": "Rendre pour amélioration",
+        "description": "Pas de note. L’élève améliore son travail et le renvoie."
+      }
+    },
+    "approveBlocked": {
+      "not_ready": "Disponible quand la suggestion de l’IA est prête.",
+      "unavailable": "Il n’y a pas de suggestion de l’IA à approuver.",
+      "flagged": "La suggestion de l’IA comporte des points à vérifier\u00a0: elle ne peut pas être approuvée telle quelle.",
+      "low_confidence": "L’IA n’est pas sûre de sa suggestion\u00a0: elle ne peut pas être approuvée telle quelle."
+    },
+    "approveScore": "Note si vous approuvez\u00a0: {score}/100",
+    "criteria": {
+      "legend": "Vos notes",
+      "hint": "De 0 à 100.",
+      "weight": "Poids\u00a0: {weight}\u00a0%",
+      "notWeighted": "Non compté dans la note"
+    },
+    "score": "Note\u00a0: {score}/100",
+    "scorePending": "Remplissez toutes les notes pour voir le total.",
+    "scoreInvalid": "Corrigez les notes pour voir le total.",
+    "feedback": {
+      "label": "Retour pour l’élève",
+      "hint": "L’élève lira ce texte. Dites ce qui est réussi et ce qui peut être amélioré. Jusqu’à {max, number} caractères.",
+      "useAi": "Partir du retour suggéré par l’IA"
+    },
+    "submit": {
+      "approve": "Approuver",
+      "modify": "Enregistrer la note",
+      "return": "Rendre à l’élève"
+    },
+    "done": {
+      "approve": "Le travail de {name} est approuvé.",
+      "modify": "La note de {name} est enregistrée.",
+      "return": "Le travail est rendu à {name}."
+    },
+    "errors": {
+      "form": "Vérifiez la décision et réessayez.",
+      "conflict": "Ce travail a changé\u00a0: un autre enseignant l’a peut-être évalué, ou la suggestion de l’IA a changé. La page a été actualisée.",
+      "notFound": "Ce travail ne fait plus partie de vos classes. La page a été actualisée.",
+      "sessionEnded": "Votre retour est toujours là. Reconnectez-vous dans un nouvel onglet, puis revenez l’envoyer.",
+      "loginAgain": "Se reconnecter"
+    }
+  },
+  "outcome": {
+    "title": "Décision",
+    "by": "Par {name} le {date}",
+    "xp": "{xp, number}\u00a0XP attribués",
+    "backToQueue": "Retour à la file d’évaluation"
+  }
+}

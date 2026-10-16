@@ -6,7 +6,12 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Alert, Button, ProgressBar, Spinner } from '@/components/ui';
 import type { FileKind, FilePurpose, FileRef, MediaRef } from '@/types/common';
 import { SessionEndedAlert } from './SessionEndedAlert';
-import { acceptAttribute, kindLimits, type UploadErrorView, type UploadTarget } from './upload-model';
+import {
+  acceptAttribute,
+  kindLimits,
+  type UploadErrorView,
+  type UploadTarget,
+} from './upload-model';
 import { useActionErrorMessage, useValidationMessage } from './use-action-error';
 import { useFileUpload } from './use-file-upload';
 

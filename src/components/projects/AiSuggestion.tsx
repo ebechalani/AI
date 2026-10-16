@@ -32,7 +32,9 @@ function AiState({ submission, aiReview }: Pick<AiSuggestionProps, 'submission' 
         tone="info"
         live="off"
         title={t('ai.pending.title')}
-        action={<CheckAgainButton label={t('ai.checkAgain')} />}
+        action={
+          <CheckAgainButton label={t('ai.checkAgain')} stillPendingLabel={t('ai.pending.still')} />
+        }
       >
         <span className="flex items-center gap-1.5">
           <Clock aria-hidden="true" className="size-4 shrink-0" />

@@ -1,7 +1,7 @@
 {
   "overview": {
     "description": "Teste des outils d’IA et découvre comment ils fonctionnent. Les outils en direct utilisent un vrai modèle d’IA\u00a0; les outils de démonstration montrent un exemple de résultat.",
-    "safety": "L’IA peut se tromper et sembler sûre d’elle même quand elle a tort. N’écris jamais ton nom, ton adresse, ton école ni tes mots de passe."
+    "safety": "L’IA peut se tromper et sembler sûre d’elle, même quand elle a tort. N’écris jamais ton nom, ton adresse, ton école ni tes mots de passe."
   },
   "sections": {
     "tryIt": "Essaie un outil",
@@ -40,7 +40,7 @@
     "yourPrompt": "Ta consigne",
     "option": "Choix",
     "aiLabel": "Écrit par une IA",
-    "mockLabel": "Résultat de démonstration\u00a0: aucune IA n’a été utilisée",
+    "mockLabel": "Aucune IA n’a été utilisée pour ce résultat.",
     "disclaimer": "L’IA peut se tromper. Vérifie les faits importants avec ton enseignant ou une source fiable.",
     "earlier": "Résultats précédents"
   },

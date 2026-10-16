@@ -1,0 +1,247 @@
+{
+  "list": {
+    "description": "Everything you have sent, with the feedback from your teacher or from Robo AI.",
+    "sections": {
+      "returned": "Returned to you",
+      "returnedHint": "Read the feedback, improve your work and send a new version.",
+      "submitted": "Waiting for feedback",
+      "accepted": "Accepted",
+      "earlier": "{count, plural, one {# earlier attempt} other {# earlier attempts}}",
+      "count": "{count, plural, one {# item} other {# items}}"
+    },
+    "empty": {
+      "title": "No projects yet",
+      "description": "Projects are part of your lessons. When you send one, you will find it here with its feedback.",
+      "action": "Go to Learn"
+    }
+  },
+  "detail": {
+    "backToLesson": "Back to the lesson",
+    "openChallenge": "Open the challenge",
+    "facts": {
+      "title": "About this attempt",
+      "attempt": "Attempt",
+      "attemptValue": "{number} of {max}",
+      "submitted": "Sent",
+      "reviewed": "Reviewed",
+      "type": "Type of work",
+      "xp": "XP earned"
+    },
+    "previousAttempt": "See attempt {number}",
+    "newerAttempt": {
+      "title": "There is a newer attempt",
+      "description": "This attempt was returned, and a new version has been sent since.",
+      "action": "See the latest attempt"
+    },
+    "resubmit": {
+      "title": "Send a new version",
+      "description": "Improve your work using the feedback above, then send it again. Files are not copied: attach them again if you need them.",
+      "noAttemptsLeft": "All {max} attempts for this work are used.",
+      "closed": "This challenge is closed, so no new version can be sent.",
+      "unavailable": "A new version cannot be sent right now."
+    },
+    "brief": {
+      "title": "What you were asked to do",
+      "unavailable": "The instructions for this work are not available any more."
+    },
+    "work": {
+      "title": "Your work"
+    }
+  },
+  "brief": {
+    "brief": "What to do",
+    "requirements": "What to hand in",
+    "allowedTypes": "You can send: {types}"
+  },
+  "block": {
+    "kinds": {
+      "project": "Project",
+      "assignment": "Assignment"
+    },
+    "yourSubmission": "Your submission",
+    "viewSubmission": "See my submission",
+    "submitTitle": "Send your work",
+    "resubmitTitle": "Send a new version",
+    "preview": "Work is not sent in preview.",
+    "noAttemptsLeft": "All {max} attempts for this project are used.",
+    "unavailable": "This project is not available."
+  },
+  "outcome": {
+    "waitingTeacher": {
+      "title": "Waiting for your teacher",
+      "description": "Your teacher will read your work and give you feedback."
+    },
+    "aiPending": {
+      "title": "Robo AI is reading your work",
+      "description": "Feedback usually arrives within a minute. Check again in a moment.",
+      "still": "Robo AI is still reading your work."
+    },
+    "aiUnavailable": {
+      "title": "No feedback from Robo AI yet",
+      "failed": "Robo AI could not review your work this time.",
+      "skipped": "Robo AI did not review your work: today’s limit of AI reviews may be reached, or AI may be turned off.",
+      "retriesLeft": "{count, plural, one {You can ask # more time.} other {You can ask # more times.}}",
+      "noRetries": "Robo AI cannot review this work. It stays here in your projects.",
+      "retry": "Ask Robo AI again"
+    },
+    "approved": {
+      "title": "Approved by your teacher",
+      "description": "Well done! Read your teacher’s feedback below."
+    },
+    "aiReviewed": {
+      "title": "Accepted with Robo AI’s feedback",
+      "description": "Well done! Robo AI’s feedback is advice, not a grade."
+    },
+    "returnedTeacher": {
+      "title": "Your teacher returned your work",
+      "description": "Read the feedback, improve your work and send a new version."
+    },
+    "returnedAi": {
+      "title": "Robo AI returned your work",
+      "description": "Read the feedback, improve your work and send a new version."
+    },
+    "checkAgain": "Check again"
+  },
+  "feedback": {
+    "teacher": {
+      "title": "Feedback from your teacher",
+      "reviewedOn": "Reviewed on {date}"
+    }
+  },
+  "criteria": {
+    "weight": "Weight {weight}%",
+    "notWeighted": "Not counted",
+    "value": "{score}/100"
+  },
+  "ai": {
+    "label": "AI-generated",
+    "student": {
+      "title": "Feedback from Robo AI",
+      "disclaimer": "Robo AI can make mistakes. Use this feedback as advice."
+    },
+    "strengths": "What went well",
+    "improvements": "What to improve",
+    "criteria": "About each part of your work",
+    "limitations": "What Robo AI could not check",
+    "returnReasons": {
+      "title": "Why your work was returned",
+      "off_topic": "Your work did not seem to answer the project.",
+      "unsafe_content": "Your work seemed to contain something that is not safe to share.",
+      "possible_prompt_injection": "Your work seemed to talk to the AI reviewer instead of doing the project.",
+      "empty": "Your work seemed to be missing."
+    },
+    "retried": "Robo AI has looked at your work again.",
+    "retryConflict": "Robo AI cannot be asked again for this work. The page has been refreshed."
+  },
+  "work": {
+    "description": "About this work",
+    "text": "Text",
+    "code": "Code",
+    "codeRegion": "Code (scrollable)",
+    "link": "Link",
+    "linkHint": "Opens another website.",
+    "attachments": "{count, plural, one {# file} other {# files}}",
+    "noContent": "Nothing was sent with this work."
+  },
+  "codeLanguages": {
+    "python": "Python",
+    "javascript": "JavaScript",
+    "blocks": "Blocks"
+  },
+  "attachments": {
+    "open": "Open",
+    "download": "Download",
+    "meta": "{type} · {size}",
+    "deleteName": "Delete {name}",
+    "deleteDialog": {
+      "title": "Delete this file?",
+      "description": "{name} will be deleted for good. This cannot be undone.",
+      "confirm": "Delete the file"
+    },
+    "deleted": "The file is deleted.",
+    "ownerHint": "You can delete a file until your work has been reviewed.",
+    "player": {
+      "audio": "Listen to {name}",
+      "video": "Watch {name}"
+    },
+    "errors": {
+      "forbidden": "This file can no longer be deleted: the work has been reviewed.",
+      "gone": "This file was already deleted. The page has been refreshed."
+    }
+  },
+  "form": {
+    "label": "Send your work",
+    "privacy": "Do not include your full name, your address, your phone number or the name of your school.",
+    "type": {
+      "legend": "What kind of work are you sending?",
+      "single": "Type of work: {type}",
+      "hints": {
+        "text": "Write your work here.",
+        "code": "Paste or type your code.",
+        "link": "A link to your work online, such as a shared document.",
+        "image": "A photo or a picture.",
+        "audio": "A sound recording.",
+        "video": "A video.",
+        "pdf": "A PDF document.",
+        "file": "Another file, such as a Scratch project or a spreadsheet."
+      }
+    },
+    "title": {
+      "label": "Title",
+      "hint": "Up to {max, number} characters."
+    },
+    "description": {
+      "label": "About your work",
+      "hint": "What did you make, and how did you use AI? Up to {max, number} characters."
+    },
+    "text": {
+      "label": "Your work",
+      "hint": "Up to {max, number} characters."
+    },
+    "code": {
+      "label": "Your code",
+      "hint": "Up to {max, number} characters."
+    },
+    "codeLanguage": {
+      "label": "Language",
+      "placeholder": "Choose a language"
+    },
+    "link": {
+      "label": "Link to your work",
+      "hint": "Starts with https://. Check that your teacher can open it."
+    },
+    "files": {
+      "label": "Files",
+      "hint": "{max, plural, one {You can attach # file.} other {You can attach up to # files.}}",
+      "limitReached": "You have attached the maximum of {max} files.",
+      "removeName": "Remove {name}",
+      "removed": "{name} is removed from your work.",
+      "empty": "No file attached yet."
+    },
+    "submit": "Send my work",
+    "resubmit": "Send the new version",
+    "submitted": "Your work is sent!",
+    "submittedDescription": "You can follow it in Projects.",
+    "errors": {
+      "form": "Check your work and try again.",
+      "notFound": "This work cannot be sent here any more. The page has been refreshed.",
+      "conflict": "This work cannot be sent now: it may already have been sent, no attempt may be left, or the challenge may be closed. The page has been refreshed.",
+      "sessionEnded": "Your work is still here. Log in again in a new tab, then come back and send it.",
+      "loginAgain": "Log in again"
+    }
+  },
+  "upload": {
+    "choose": "Choose a file",
+    "chooseAnother": "Choose another file",
+    "limit": "{types}, up to {size}",
+    "uploading": "Uploading {name}",
+    "registering": "Checking {name}…",
+    "done": "{name} is uploaded.",
+    "errors": {
+      "refused": "The upload was refused. Check the type and the size of the file, then try again.",
+      "quota": "You have reached today’s upload limit. Try again tomorrow.",
+      "notStored": "The file did not finish uploading. Try again.",
+      "retry": "Something went wrong with this file. Try again."
+    }
+  }
+}

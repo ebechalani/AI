@@ -17,15 +17,19 @@ export function LabResultCard({ variant, prompt, option, children }: LabResultCa
   const t = useTranslations('aiLab');
   return (
     <Card className="gap-4 p-5 sm:p-6">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
         {variant === 'ai' ? (
           <Chip tone="brand" icon={<Sparkles aria-hidden="true" />}>
             {t('result.aiLabel')}
           </Chip>
         ) : (
-          <Chip tone="accent" icon={<FlaskConical aria-hidden="true" />}>
-            {t('result.mockLabel')}
-          </Chip>
+          // A chip never wraps (it truncates): the sentence that says no AI ran is text beside it.
+          <>
+            <Chip tone="accent" icon={<FlaskConical aria-hidden="true" />}>
+              {t('status.mock')}
+            </Chip>
+            <p className="text-xs text-ink-muted">{t('result.mockLabel')}</p>
+          </>
         )}
       </div>
       <dl className="grid gap-x-4 gap-y-1 text-sm sm:grid-cols-[auto_minmax(0,1fr)]">

@@ -1,12 +1,5 @@
 import type { ReactNode } from 'react';
-import {
-  CircleCheck,
-  Clock,
-  Sparkles,
-  TriangleAlert,
-  Undo2,
-  type LucideIcon,
-} from 'lucide-react';
+import { CircleCheck, Clock, Sparkles, TriangleAlert, Undo2, type LucideIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { StatusTone } from '@/components/ui';
 import { TONE_ICON, TONE_PANEL } from '@/components/ui/tones';

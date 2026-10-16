@@ -73,7 +73,11 @@ export function useFileUpload({
     setAnnouncement('');
     const checked = precheck(kinds, file);
     if ('problem' in checked) {
-      setState({ phase: 'error', view: { kind: 'validation', key: checked.problem }, name: file.name });
+      setState({
+        phase: 'error',
+        view: { kind: 'validation', key: checked.problem },
+        name: file.name,
+      });
       return;
     }
     const { kind } = checked;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { regenerateAiReviewAction } from '@/actions/review';
@@ -26,27 +26,37 @@ const REFRESH_ON: ReadonlySet<ActionError['code']> = new Set([
 
 /**
  * One more AI review, run before the action answers (it can take a while on a real provider).
- * After the refresh the section's RefocusHeading takes focus; a failure returns it here.
+ * After the refresh the section's RefocusHeading takes focus; a failure returns it here. The
+ * button stays busy until the refreshed page has arrived: a click in between would ask for one
+ * more review, and use up one more of the submission's new suggestions.
  */
-export function RegenerateAiReviewButton({ submissionId, audience }: RegenerateAiReviewButtonProps) {
+export function RegenerateAiReviewButton({
+  submissionId,
+  audience,
+}: RegenerateAiReviewButtonProps) {
   const tProjects = useTranslations('projects');
   const tReview = useTranslations('review');
   const router = useRouter();
   const { toast } = useToast();
   const errorMessage = useActionErrorMessage();
   const [pending, setPending] = useState(false);
+  const [refreshing, startRefresh] = useTransition();
+  const busy = pending || refreshing;
   const [refocus, setRefocus] = useState(0);
+  const handledRefocus = useRef(0);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  // After a failure, once the button is enabled again (a disabled button cannot take focus).
   useEffect(() => {
-    if (refocus === 0) return;
+    if (busy || refocus === handledRefocus.current) return;
+    handledRefocus.current = refocus;
     if (focusWasLost(null)) focusInView(buttonRef.current);
-  }, [refocus]);
+  }, [refocus, busy]);
 
   const student = audience === 'student';
 
   async function regenerate() {
-    if (pending) return;
+    if (busy) return;
     setPending(true);
     let error: ActionError;
     try {
@@ -56,7 +66,7 @@ export function RegenerateAiReviewButton({ submissionId, audience }: RegenerateA
           tone: 'success',
           title: student ? tProjects('ai.retried') : tReview('ai.regenerated'),
         });
-        router.refresh();
+        startRefresh(() => router.refresh());
         return;
       }
       error = result.error;
@@ -78,14 +88,8 @@ export function RegenerateAiReviewButton({ submissionId, audience }: RegenerateA
   }
 
   return (
-    <Button
-      ref={buttonRef}
-      variant="secondary"
-      size="sm"
-      loading={pending}
-      onClick={regenerate}
-    >
-      {!pending && <Sparkles aria-hidden="true" />}
+    <Button ref={buttonRef} variant="secondary" size="sm" loading={busy} onClick={regenerate}>
+      {!busy && <Sparkles aria-hidden="true" />}
       {student ? tProjects('outcome.aiUnavailable.retry') : tReview('ai.regenerate')}
     </Button>
   );

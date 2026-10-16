@@ -40,7 +40,7 @@
     "yourPrompt": "Your prompt",
     "option": "Choice",
     "aiLabel": "Written by AI",
-    "mockLabel": "Demo result: no AI was used",
+    "mockLabel": "No AI was used for this result.",
     "disclaimer": "AI can make mistakes. Check important facts with your teacher or a trusted source.",
     "earlier": "Earlier results"
   },

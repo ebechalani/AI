@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { ClipboardCheck, Users } from 'lucide-react';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { hasLocale } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PageHeader } from '@/components/layout';
 import {
   ASSESSMENTS_PATH,
@@ -20,28 +22,38 @@ import { listAttemptsForClass } from '@/lib/data/quizzes';
 import { isAppError } from '@/lib/errors';
 import { pickTranslation } from '@/lib/i18n/content';
 import { getPathname, redirect } from '@/lib/i18n/navigation';
+import { routing } from '@/lib/i18n/routing';
 import type { Page } from '@/types/common';
 import type { QuizAttempt } from '@/types/quiz';
 import { AssessmentFilters } from './_components/AssessmentFilters';
 import { AttemptsTable } from './_components/AttemptsTable';
 
+type Params = Promise<{ locale: string }>;
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('nav');
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({
+    locale: hasLocale(routing.locales, locale) ? locale : routing.defaultLocale,
+    namespace: 'nav',
+  });
   return { title: t('teacher.assessments') };
 }
 
 // Quiz results by class and course (ARCHITECTURE.md 6.5): the Assessments reads of 3.7.
 export default async function TeacherAssessmentsPage({
+  params,
   searchParams,
 }: {
+  params: Params;
   searchParams: SearchParams;
 }) {
   const session = await requireRole('teacher');
-  const [raw, locale, t, tNav] = await Promise.all([
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+  setRequestLocale(locale);
+  const [raw, t, tNav] = await Promise.all([
     searchParams,
-    getLocale(),
     getTranslations('assessments'),
     getTranslations('nav'),
   ]);
@@ -70,7 +82,8 @@ export default async function TeacherAssessmentsPage({
     firstParam(raw.courseId),
     assigned.map((course) => course.id),
   );
-  const { cursor, trail } = parsePaging(firstParam(raw.cursor), firstParam(raw.trail));
+  const paging = parsePaging(firstParam(raw.cursor), firstParam(raw.trail), firstParam(raw.page));
+  const { cursor } = paging;
 
   let page: Page<QuizAttempt>;
   try {
@@ -104,7 +117,7 @@ export default async function TeacherAssessmentsPage({
   }));
   const classLabel = (name: string, archived: boolean) =>
     archived ? t('filters.archivedClass', { name }) : name;
-  const links = pageLinks({ classId: cls.id, courseId, cursor, trail }, page.nextCursor);
+  const links = pageLinks({ classId: cls.id, courseId, ...paging }, page.nextCursor);
 
   return (
     <>

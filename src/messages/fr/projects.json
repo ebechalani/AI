@@ -1,0 +1,247 @@
+{
+  "list": {
+    "description": "Tout ce que vous avez envoyé, avec le retour de votre enseignant ou de Robo AI.",
+    "sections": {
+      "returned": "À retravailler",
+      "returnedHint": "Lisez le retour, améliorez votre travail et envoyez une nouvelle version.",
+      "submitted": "En attente de retour",
+      "accepted": "Acceptés",
+      "earlier": "{count, plural, one {# tentative précédente} other {# tentatives précédentes}}",
+      "count": "{count, plural, one {# élément} other {# éléments}}"
+    },
+    "empty": {
+      "title": "Pas encore de projet",
+      "description": "Les projets font partie de vos leçons. Quand vous en envoyez un, vous le retrouvez ici avec son retour.",
+      "action": "Aller à Apprendre"
+    }
+  },
+  "detail": {
+    "backToLesson": "Retour à la leçon",
+    "openChallenge": "Ouvrir le défi",
+    "facts": {
+      "title": "À propos de cette tentative",
+      "attempt": "Tentative",
+      "attemptValue": "{number} sur {max}",
+      "submitted": "Envoyé",
+      "reviewed": "Évalué",
+      "type": "Type de travail",
+      "xp": "XP gagnés"
+    },
+    "previousAttempt": "Voir la tentative {number}",
+    "newerAttempt": {
+      "title": "Il existe une tentative plus récente",
+      "description": "Cette tentative vous a été rendue, et une nouvelle version a été envoyée depuis.",
+      "action": "Voir la dernière tentative"
+    },
+    "resubmit": {
+      "title": "Envoyer une nouvelle version",
+      "description": "Améliorez votre travail à l’aide du retour ci-dessus, puis renvoyez-le. Les fichiers ne sont pas copiés\u00a0: joignez-les de nouveau si vous en avez besoin.",
+      "noAttemptsLeft": "Les {max} tentatives pour ce travail sont utilisées.",
+      "closed": "Ce défi est clôturé\u00a0: aucune nouvelle version ne peut être envoyée.",
+      "unavailable": "Une nouvelle version ne peut pas être envoyée pour le moment."
+    },
+    "brief": {
+      "title": "Ce qui vous était demandé",
+      "unavailable": "Les consignes de ce travail ne sont plus disponibles."
+    },
+    "work": {
+      "title": "Votre travail"
+    }
+  },
+  "brief": {
+    "brief": "Ce qu’il faut faire",
+    "requirements": "Ce qu’il faut rendre",
+    "allowedTypes": "Vous pouvez envoyer\u00a0: {types}"
+  },
+  "block": {
+    "kinds": {
+      "project": "Projet",
+      "assignment": "Devoir"
+    },
+    "yourSubmission": "Votre envoi",
+    "viewSubmission": "Voir mon envoi",
+    "submitTitle": "Envoyer votre travail",
+    "resubmitTitle": "Envoyer une nouvelle version",
+    "preview": "Aucun travail n’est envoyé en aperçu.",
+    "noAttemptsLeft": "Les {max} tentatives pour ce projet sont utilisées.",
+    "unavailable": "Ce projet n’est pas disponible."
+  },
+  "outcome": {
+    "waitingTeacher": {
+      "title": "En attente de votre enseignant",
+      "description": "Votre enseignant va lire votre travail et vous faire un retour."
+    },
+    "aiPending": {
+      "title": "Robo AI lit votre travail",
+      "description": "Le retour arrive en général en moins d’une minute. Vérifiez de nouveau dans un instant.",
+      "still": "Robo AI lit encore votre travail."
+    },
+    "aiUnavailable": {
+      "title": "Pas encore de retour de Robo AI",
+      "failed": "Robo AI n’a pas pu évaluer votre travail cette fois-ci.",
+      "skipped": "Robo AI n’a pas évalué votre travail\u00a0: la limite quotidienne d’évaluations par l’IA est peut-être atteinte, ou l’IA est peut-être désactivée.",
+      "retriesLeft": "{count, plural, one {Vous pouvez redemander # fois.} other {Vous pouvez redemander # fois.}}",
+      "noRetries": "Robo AI ne peut pas évaluer ce travail. Il reste ici, dans vos projets.",
+      "retry": "Redemander à Robo AI"
+    },
+    "approved": {
+      "title": "Approuvé par votre enseignant",
+      "description": "Bravo\u00a0! Lisez le retour de votre enseignant ci-dessous."
+    },
+    "aiReviewed": {
+      "title": "Accepté avec le retour de Robo AI",
+      "description": "Bravo\u00a0! Le retour de Robo AI est un conseil, pas une note."
+    },
+    "returnedTeacher": {
+      "title": "Votre enseignant vous a rendu votre travail",
+      "description": "Lisez le retour, améliorez votre travail et envoyez une nouvelle version."
+    },
+    "returnedAi": {
+      "title": "Robo AI vous a rendu votre travail",
+      "description": "Lisez le retour, améliorez votre travail et envoyez une nouvelle version."
+    },
+    "checkAgain": "Vérifier de nouveau"
+  },
+  "feedback": {
+    "teacher": {
+      "title": "Retour de votre enseignant",
+      "reviewedOn": "Évalué le {date}"
+    }
+  },
+  "criteria": {
+    "weight": "Poids\u00a0: {weight}\u00a0%",
+    "notWeighted": "Non compté",
+    "value": "{score}/100"
+  },
+  "ai": {
+    "label": "Généré par l’IA",
+    "student": {
+      "title": "Retour de Robo AI",
+      "disclaimer": "Robo AI peut se tromper. Prenez ce retour comme un conseil."
+    },
+    "strengths": "Ce qui est réussi",
+    "improvements": "Ce qui peut être amélioré",
+    "criteria": "Sur chaque partie de votre travail",
+    "limitations": "Ce que Robo AI n’a pas pu vérifier",
+    "returnReasons": {
+      "title": "Pourquoi votre travail a été rendu",
+      "off_topic": "Votre travail ne semblait pas répondre au projet.",
+      "unsafe_content": "Votre travail semblait contenir quelque chose qu’il n’est pas prudent de partager.",
+      "possible_prompt_injection": "Votre travail semblait s’adresser à l’IA qui évalue au lieu de réaliser le projet.",
+      "empty": "Votre travail semblait manquer."
+    },
+    "retried": "Robo AI a de nouveau examiné votre travail.",
+    "retryConflict": "Robo AI ne peut plus être sollicité pour ce travail. La page a été actualisée."
+  },
+  "work": {
+    "description": "À propos de ce travail",
+    "text": "Texte",
+    "code": "Code",
+    "codeRegion": "Code (zone défilante)",
+    "link": "Lien",
+    "linkHint": "Ouvre un autre site web.",
+    "attachments": "{count, plural, one {# fichier} other {# fichiers}}",
+    "noContent": "Rien n’a été envoyé avec ce travail."
+  },
+  "codeLanguages": {
+    "python": "Python",
+    "javascript": "JavaScript",
+    "blocks": "Blocs"
+  },
+  "attachments": {
+    "open": "Ouvrir",
+    "download": "Télécharger",
+    "meta": "{type} · {size}",
+    "deleteName": "Supprimer {name}",
+    "deleteDialog": {
+      "title": "Supprimer ce fichier\u00a0?",
+      "description": "{name} sera supprimé définitivement. Cette action est irréversible.",
+      "confirm": "Supprimer le fichier"
+    },
+    "deleted": "Le fichier est supprimé.",
+    "ownerHint": "Vous pouvez supprimer un fichier tant que votre travail n’a pas été évalué.",
+    "player": {
+      "audio": "Écouter {name}",
+      "video": "Regarder {name}"
+    },
+    "errors": {
+      "forbidden": "Ce fichier ne peut plus être supprimé\u00a0: le travail a été évalué.",
+      "gone": "Ce fichier avait déjà été supprimé. La page a été actualisée."
+    }
+  },
+  "form": {
+    "label": "Envoyer votre travail",
+    "privacy": "N’indiquez pas votre nom complet, votre adresse, votre numéro de téléphone ni le nom de votre école.",
+    "type": {
+      "legend": "Quel type de travail envoyez-vous\u00a0?",
+      "single": "Type de travail\u00a0: {type}",
+      "hints": {
+        "text": "Écrivez votre travail ici.",
+        "code": "Collez ou tapez votre code.",
+        "link": "Un lien vers votre travail en ligne, comme un document partagé.",
+        "image": "Une photo ou une image.",
+        "audio": "Un enregistrement sonore.",
+        "video": "Une vidéo.",
+        "pdf": "Un document PDF.",
+        "file": "Un autre fichier, comme un projet Scratch ou un tableur."
+      }
+    },
+    "title": {
+      "label": "Titre",
+      "hint": "Jusqu’à {max, number} caractères."
+    },
+    "description": {
+      "label": "À propos de votre travail",
+      "hint": "Qu’avez-vous réalisé, et comment avez-vous utilisé l’IA\u00a0? Jusqu’à {max, number} caractères."
+    },
+    "text": {
+      "label": "Votre travail",
+      "hint": "Jusqu’à {max, number} caractères."
+    },
+    "code": {
+      "label": "Votre code",
+      "hint": "Jusqu’à {max, number} caractères."
+    },
+    "codeLanguage": {
+      "label": "Langage",
+      "placeholder": "Choisir un langage"
+    },
+    "link": {
+      "label": "Lien vers votre travail",
+      "hint": "Commence par https://. Vérifiez que votre enseignant peut l’ouvrir."
+    },
+    "files": {
+      "label": "Fichiers",
+      "hint": "{max, plural, one {Vous pouvez joindre # fichier.} other {Vous pouvez joindre jusqu’à # fichiers.}}",
+      "limitReached": "Vous avez joint le maximum de {max} fichiers.",
+      "removeName": "Retirer {name}",
+      "removed": "{name} est retiré de votre travail.",
+      "empty": "Aucun fichier joint pour le moment."
+    },
+    "submit": "Envoyer mon travail",
+    "resubmit": "Envoyer la nouvelle version",
+    "submitted": "Votre travail est envoyé\u00a0!",
+    "submittedDescription": "Vous pouvez le suivre dans Projets.",
+    "errors": {
+      "form": "Vérifiez votre travail et réessayez.",
+      "notFound": "Ce travail ne peut plus être envoyé ici. La page a été actualisée.",
+      "conflict": "Ce travail ne peut pas être envoyé maintenant\u00a0: il a peut-être déjà été envoyé, il ne reste peut-être plus de tentative, ou le défi est peut-être clôturé. La page a été actualisée.",
+      "sessionEnded": "Votre travail est toujours là. Reconnectez-vous dans un nouvel onglet, puis revenez l’envoyer.",
+      "loginAgain": "Se reconnecter"
+    }
+  },
+  "upload": {
+    "choose": "Choisir un fichier",
+    "chooseAnother": "Choisir un autre fichier",
+    "limit": "{types}, jusqu’à {size}",
+    "uploading": "Importation de {name}",
+    "registering": "Vérification de {name}…",
+    "done": "{name} est importé.",
+    "errors": {
+      "refused": "L’importation a été refusée. Vérifiez le type et la taille du fichier, puis réessayez.",
+      "quota": "Vous avez atteint la limite d’importation du jour. Réessayez demain.",
+      "notStored": "L’importation du fichier n’a pas abouti. Réessayez.",
+      "retry": "Un problème est survenu avec ce fichier. Réessayez."
+    }
+  }
+}

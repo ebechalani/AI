@@ -79,9 +79,7 @@ export function SubmissionEditor({
     if (element === null) return;
     // A group (type cards, files) is focused on its chosen radio, or its own wrapper.
     const control =
-      field === 'type'
-        ? (element.querySelector<HTMLElement>('input:checked') ?? element)
-        : element;
+      field === 'type' ? (element.querySelector<HTMLElement>('input:checked') ?? element) : element;
     focusInView(control);
   }
 
@@ -205,12 +203,7 @@ export function SubmissionEditor({
       </FormField>
 
       <div>
-        <Button
-          ref={submitRef}
-          type="submit"
-          loading={pending}
-          className="w-full sm:w-auto"
-        >
+        <Button ref={submitRef} type="submit" loading={pending} className="w-full sm:w-auto">
           {!pending && <Send aria-hidden="true" />}
           {previousSubmissionId ? t('form.resubmit') : t('form.submit')}
         </Button>

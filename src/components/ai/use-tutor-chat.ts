@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ChatDraft } from '@/components/domain';
 import type { TutorOpenRequest } from '@/components/layout';
@@ -39,9 +39,24 @@ export interface TutorChat {
 }
 
 /**
+ * Keyboard focus fell, or is about to fall, to the page: the input it was in has just been
+ * disabled (the browser moves focus off a disabled element only at its next rendering update).
+ */
+function focusWasLost(): boolean {
+  const active = document.activeElement;
+  return (
+    active === null ||
+    active === document.body ||
+    !active.isConnected ||
+    active.matches(':disabled')
+  );
+}
+
+/**
  * The tutor conversation of one panel (ARCHITECTURE.md 7.4, 8.3): sends the thread to
  * POST /api/ai/tutor, reads the NDJSON reply, and keeps the limits the route reports. Requests
- * start in event handlers only; effects only clean up (timers, the request in flight).
+ * start in event handlers only; effects only clean up (timers, the request in flight) and keep
+ * keyboard focus in the panel when a block disables the input.
  */
 export function useTutorChat(options: {
   courseId: string | null;
@@ -49,8 +64,10 @@ export function useTutorChat(options: {
   defaultMode: TutorMode;
   /** useTutorBridge().request, applied once per nonce. */
   request: TutorOpenRequest | null;
+  /** The panel's root (tabIndex -1): holds keyboard focus while a block disables the input. */
+  panelRef: RefObject<HTMLDivElement | null>;
 }): TutorChat {
-  const { courseId, lessonId, request } = options;
+  const { courseId, lessonId, request, panelRef } = options;
   const t = useTranslations('tutor');
   const tDomain = useTranslations('domain');
   const tErrors = useTranslations('errors');
@@ -84,15 +101,32 @@ export function useTutorChat(options: {
     [],
   );
 
+  // A block disables the input. When focus was in it, the panel takes it once the block is
+  // rendered, so the next Tab stays in the tutor; the composer's Alert says why.
+  const blockKind = state.block?.kind ?? null;
+  useEffect(() => {
+    if (blockKind === null) return;
+    const frame = requestAnimationFrame(() => {
+      if (focusWasLost()) panelRef.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [blockKind, panelRef]);
+
   function offerDraft(text: string) {
     setDraft((current) => ({ text, nonce: (current?.nonce ?? 0) + 1 }));
   }
 
-  function startCooldown(seconds: number) {
+  /** `text`: the question taken back, which goes back into the input when the wait is over. */
+  function startCooldown(seconds: number, text: string) {
     if (timerRef.current !== null) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       timerRef.current = null;
-      setState((current) => (current.block?.kind === 'cooldown' ? setBlock(current, null) : current));
+      // Focus still on the panel (or lost): a new draft refocuses the input once it is enabled.
+      const resume = focusWasLost() || document.activeElement === panelRef.current;
+      setState((current) =>
+        current.block?.kind === 'cooldown' ? setBlock(current, null) : current,
+      );
+      if (resume) offerDraft(text);
     }, seconds * 1000);
   }
 
@@ -129,7 +163,7 @@ export function useTutorChat(options: {
         return;
       }
       setState((current) => setBlock(current, block));
-      if (block.kind === 'cooldown') startCooldown(block.seconds);
+      if (block.kind === 'cooldown') startCooldown(block.seconds, text);
       return;
     }
 

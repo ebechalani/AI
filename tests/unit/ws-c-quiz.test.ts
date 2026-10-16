@@ -496,6 +496,79 @@ describe('runnerReducer', () => {
   });
 });
 
+describe('runnerReducer: the quiz changes during a run', () => {
+  const run = (patch: Partial<RunnerState>): RunnerState => ({
+    ...INITIAL_RUNNER_STATE,
+    phase: 'question',
+    order: ['q1', 'q2', 'q3', 'q4'],
+    index: 2,
+    ...patch,
+  });
+  const sync = (state: RunnerState, questionIds: string[]) =>
+    runnerReducer(state, { type: 'sync', questionIds });
+
+  it('changes nothing while the questions are the same, or outside a run', () => {
+    const state = run({});
+    expect(sync(state, ['q4', 'q3', 'q2', 'q1'])).toBe(state);
+    for (const phase of ['intro', 'result'] as const) {
+      const other = run({ phase });
+      expect(sync(other, ['q1'])).toBe(other);
+    }
+  });
+
+  it('removes a question from the order and stays on the question shown', () => {
+    const state = run({ draft: { q1: answer(['a']) }, returnToReview: true });
+    expect(sync(state, ['q2', 'q3', 'q4'])).toEqual({
+      ...state,
+      order: ['q2', 'q3', 'q4'],
+      index: 1,
+    });
+  });
+
+  it('adds a new question at the end of the order', () => {
+    expect(sync(run({}), ['q1', 'q2', 'q5', 'q3', 'q4'])).toMatchObject({
+      phase: 'question',
+      order: ['q1', 'q2', 'q3', 'q4', 'q5'],
+      index: 2,
+    });
+  });
+
+  it('shows the review step when the question on screen left the quiz', () => {
+    const draft = { q1: answer(['a']), q3: answer(['b']) };
+    const synced = sync(run({ draft, returnToReview: true }), ['q1', 'q2', 'q4']);
+    expect(synced).toEqual({
+      ...run({ draft }),
+      phase: 'review',
+      order: ['q1', 'q2', 'q4'],
+      index: 2,
+      returnToReview: false,
+    });
+    // The review step's controls work from there: Change opens question 1, Back the last one.
+    expect(runnerReducer(synced, { type: 'edit', index: 0 })).toMatchObject({
+      phase: 'question',
+      index: 0,
+      returnToReview: true,
+    });
+    expect(runnerReducer(synced, { type: 'back' })).toMatchObject({
+      phase: 'question',
+      index: 2,
+    });
+  });
+
+  it('keeps the review step and its order in step with the quiz', () => {
+    const review = run({ phase: 'review', index: 3 });
+    expect(sync(review, ['q1', 'q3'])).toMatchObject({
+      phase: 'review',
+      order: ['q1', 'q3'],
+      index: 1,
+    });
+  });
+
+  it('starts over when no question is left', () => {
+    expect(sync(run({ draft: { q1: answer(['a']) } }), [])).toEqual(INITIAL_RUNNER_STATE);
+  });
+});
+
 // --- Catalog hygiene (10.5) ----------------------------------------------------------------
 
 const MESSAGES_DIR = path.join(import.meta.dirname, '..', '..', 'src', 'messages');
@@ -538,6 +611,7 @@ const VALUES = {
   awarded: 1,
   points: 2,
   text: 'data',
+  names: 'Data Detective',
 };
 
 type Translate = (key: string, values?: Record<string, string | number>) => string;
@@ -625,6 +699,21 @@ describe.each(['en', 'fr'])('quiz catalog (%s)', (locale) => {
       t('facts.attemptsLeft', { remaining: 0, max: 2 }),
       t('facts.attemptsLeft', { remaining: 1, max: 2 }),
     ]).toEqual(expected[locale]);
+    // The XP toast does not say where the XP came from: it may hold a new badge's bonus.
+    const toasts = [
+      t('result.xpToast', { xp: 125 }),
+      t('result.badgeToast', { count: 1, names: 'Data Detective' }),
+      t('result.badgeToast', { count: 2, names: 'A and B' }),
+    ];
+    expect(toasts).toEqual(
+      locale === 'fr'
+        ? [
+            `+125${nb}XP gagnés`,
+            `Nouveau badge${nb}: Data Detective.`,
+            `Nouveaux badges${nb}: A and B.`,
+          ]
+        : ['+125 XP earned', 'New badge: Data Detective.', 'New badges: A and B.'],
+    );
     if (locale === 'fr') {
       expect(t('facts.passMark', { percent: 70 })).toBe(`Seuil de réussite${nb}: 70${nb}%`);
       expect(t('result.passedTitle')).toBe(`Quiz réussi${nb}!`);

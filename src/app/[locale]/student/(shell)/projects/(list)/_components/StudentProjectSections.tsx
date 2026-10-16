@@ -60,7 +60,11 @@ export function StudentProjectSections({ groups }: { groups: StudentGroups }) {
         hint={t('list.sections.returnedHint')}
         items={groups.returned}
       />
-      <Section id="projects-submitted" title={t('list.sections.submitted')} items={groups.submitted} />
+      <Section
+        id="projects-submitted"
+        title={t('list.sections.submitted')}
+        items={groups.submitted}
+      />
       <Section id="projects-accepted" title={t('list.sections.accepted')} items={groups.accepted} />
       {groups.earlier.length > 0 && (
         // The summary holds an h2, so the cards' h3 do not sit under "Accepted".

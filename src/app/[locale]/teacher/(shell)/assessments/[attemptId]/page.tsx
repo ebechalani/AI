@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import { getLocale, getTranslations } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { PageHeader } from '@/components/layout';
 import { assessmentsHref } from '@/components/quiz/assessments-model';
 import { AttemptReview } from '@/components/quiz/AttemptReview';
@@ -13,11 +14,18 @@ import { getCourses } from '@/lib/data/courses';
 import { getAttempt, getQuiz } from '@/lib/data/quizzes';
 import { isAppError } from '@/lib/errors';
 import { pickTranslation } from '@/lib/i18n/content';
+import { routing } from '@/lib/i18n/routing';
 import type { QuizAttempt } from '@/types/quiz';
 import { AttemptOverview } from './_components/AttemptOverview';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations('assessments');
+type Params = Promise<{ locale: string; attemptId: string }>;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({
+    locale: hasLocale(routing.locales, locale) ? locale : routing.defaultLocale,
+    namespace: 'assessments',
+  });
   return { title: t('detail.metaTitle') };
 }
 
@@ -35,13 +43,12 @@ async function hiddenAsNull<T>(read: Promise<T>): Promise<T | null> {
 
 // One attempt, question by question (ARCHITECTURE.md 6.5): direct gets only (3.7). The answer
 // key is never read: each answer is marked correct or incorrect, the right ones are not shown.
-export default async function TeacherAttemptPage({
-  params,
-}: {
-  params: Promise<{ attemptId: string }>;
-}) {
+export default async function TeacherAttemptPage({ params }: { params: Params }) {
   const session = await requireRole('teacher');
-  const { attemptId } = await params;
+  const { locale, attemptId } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+  // The proxy skips a path with a dot (`…/bad.id`), so the locale comes from the URL here.
+  setRequestLocale(locale);
   let attempt: QuizAttempt;
   try {
     attempt = await getAttempt(session, attemptId);
@@ -55,11 +62,10 @@ export default async function TeacherAttemptPage({
   const classId = attempt.classId;
   if (classId === null || attempt.userUid === session.uid) notFound();
 
-  const [quiz, courses, cls, locale, t, tNav, tCommon] = await Promise.all([
+  const [quiz, courses, cls, t, tNav, tCommon] = await Promise.all([
     hiddenAsNull(getQuiz(session, attempt.courseId, attempt.quizId)),
     getCourses(session, [attempt.courseId]),
     hiddenAsNull(getClass(session, classId)),
-    getLocale(),
     getTranslations('assessments'),
     getTranslations('nav'),
     getTranslations('common'),

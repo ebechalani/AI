@@ -1,0 +1,185 @@
+{
+  "list": {
+    "description": "Read the work your students have sent and give them feedback."
+  },
+  "views": {
+    "label": "Submissions",
+    "queue": "Waiting for review ({count, number})",
+    "queueMax": "Waiting for review ({count, number}+)",
+    "queuePlain": "Waiting for review",
+    "all": "All submissions"
+  },
+  "queue": {
+    "oldestFirst": "Oldest first, so nobody waits too long.",
+    "classCount": "{count, plural, one {# waiting} other {# waiting}}",
+    "unknownClass": "Other class",
+    "truncated": "Showing the {count, number} oldest submissions. Review some to see the rest.",
+    "empty": {
+      "title": "Nothing to review",
+      "description": "When students in your classes send work, it appears here.",
+      "action": "See all submissions"
+    }
+  },
+  "noClasses": {
+    "title": "You have no classes yet",
+    "description": "Create a class and assign a course: your students’ projects will appear here.",
+    "action": "Go to my classes"
+  },
+  "all": {
+    "classLabel": "Class",
+    "archived": "{name} (archived)",
+    "show": "Show",
+    "newestFirst": "Newest first.",
+    "empty": {
+      "title": "No submissions in this class yet",
+      "description": "Work that the students of this class send will appear here."
+    },
+    "staleCursor": "This page link is out of date.",
+    "firstPage": "Go to the first page"
+  },
+  "detail": {
+    "studentProgress": "Student progress",
+    "summary": {
+      "title": "Submission",
+      "student": "Student",
+      "status": "Status",
+      "attempt": "Attempt",
+      "attemptValue": "{number} of {max}",
+      "submitted": "Sent",
+      "type": "Type of work",
+      "language": "Written in",
+      "previous": "See attempt {number}"
+    },
+    "brief": {
+      "title": "What the student was asked to do",
+      "unavailable": "The instructions for this work are not available to you."
+    },
+    "work": {
+      "title": "The student’s work"
+    },
+    "history": {
+      "title": "Review history",
+      "by": "By {name} on {date}"
+    }
+  },
+  "decisions": {
+    "approve": "Approved (AI suggestion)",
+    "modify": "Graded",
+    "return": "Returned"
+  },
+  "ai": {
+    "title": "AI suggestion",
+    "label": "AI-generated",
+    "disclaimer": "A suggestion only: you decide the grade and the feedback.",
+    "overall": "Suggested score: {score}/100",
+    "confidence": {
+      "label": "Confidence",
+      "low": "Low confidence",
+      "medium": "Medium confidence",
+      "high": "High confidence"
+    },
+    "flags": {
+      "title": "Points to check",
+      "possible_personal_data": "May contain personal information, such as a name, an email address or a phone number.",
+      "unsafe_content": "May contain content that is not safe.",
+      "off_topic": "May not answer the project.",
+      "possible_plagiarism": "May be copied from somewhere else.",
+      "possible_prompt_injection": "Seems to talk to the AI reviewer instead of doing the work.",
+      "blocksApprove": "A suggestion with points to check cannot be approved as it is."
+    },
+    "writtenFeedback": "Suggested feedback for the student ({locale, select, en {in English} fr {in French} other {in another language}})",
+    "strengths": "Strengths",
+    "improvements": "To improve",
+    "criteria": "By criterion",
+    "limitations": "What the AI could not check",
+    "pending": {
+      "title": "The AI suggestion is being prepared",
+      "description": "It usually takes less than a minute.",
+      "still": "The AI suggestion is still being prepared."
+    },
+    "checkAgain": "Check again",
+    "failed": {
+      "title": "No AI suggestion",
+      "generic": "The AI could not produce a suggestion.",
+      "reasons": {
+        "incomplete": "The AI’s answer was cut off.",
+        "refused": "The AI declined to review this work.",
+        "blocked": "The AI’s answer was blocked by the safety check.",
+        "invalid_output": "The AI’s answer could not be read.",
+        "provider_error": "The AI service did not answer."
+      }
+    },
+    "skipped": {
+      "title": "No AI suggestion",
+      "description": "The student’s daily limit of AI reviews was reached, or AI is turned off for the school."
+    },
+    "none": "There is no AI suggestion for this work.",
+    "regenerate": "Ask for a new suggestion",
+    "regenerations": "{used} of {max} new suggestions used",
+    "noRegenerations": "No new suggestion can be asked for this work.",
+    "regenerated": "The AI suggestion is updated.",
+    "regenerateConflict": "No new suggestion can be asked now. The page has been refreshed."
+  },
+  "form": {
+    "title": "Your decision",
+    "decision": {
+      "legend": "Decision",
+      "approve": {
+        "label": "Approve the AI suggestion",
+        "description": "The suggested scores become the grade."
+      },
+      "modify": {
+        "label": "Grade with my own scores",
+        "description": "Give a score from 0 to 100 for each criterion."
+      },
+      "return": {
+        "label": "Return for changes",
+        "description": "No grade. The student improves the work and sends it again."
+      }
+    },
+    "approveBlocked": {
+      "not_ready": "Available once the AI suggestion is ready.",
+      "unavailable": "There is no AI suggestion to approve.",
+      "flagged": "The AI suggestion has points to check, so it cannot be approved as it is.",
+      "low_confidence": "The AI is not confident about its suggestion, so it cannot be approved as it is."
+    },
+    "approveScore": "Grade if you approve: {score}/100",
+    "criteria": {
+      "legend": "Your scores",
+      "hint": "From 0 to 100.",
+      "weight": "Weight {weight}%",
+      "notWeighted": "Not counted in the score"
+    },
+    "score": "Score: {score}/100",
+    "scorePending": "Fill in every score to see the total.",
+    "scoreInvalid": "Correct the scores to see the total.",
+    "feedback": {
+      "label": "Feedback for the student",
+      "hint": "The student reads this. Say what went well and what to improve. Up to {max, number} characters.",
+      "useAi": "Start from the AI’s suggested feedback"
+    },
+    "submit": {
+      "approve": "Approve",
+      "modify": "Save the grade",
+      "return": "Return to the student"
+    },
+    "done": {
+      "approve": "The work of {name} is approved.",
+      "modify": "The grade for {name} is saved.",
+      "return": "The work is returned to {name}."
+    },
+    "errors": {
+      "form": "Check the decision and try again.",
+      "conflict": "This work has changed: another teacher may have reviewed it, or the AI suggestion changed. The page has been refreshed.",
+      "notFound": "This work is no longer in your classes. The page has been refreshed.",
+      "sessionEnded": "Your feedback is still here. Log in again in a new tab, then come back and send it.",
+      "loginAgain": "Log in again"
+    }
+  },
+  "outcome": {
+    "title": "Decision",
+    "by": "By {name} on {date}",
+    "xp": "{xp, number} XP awarded",
+    "backToQueue": "Back to the review queue"
+  }
+}

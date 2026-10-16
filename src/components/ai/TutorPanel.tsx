@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { AIChatPanel } from '@/components/domain';
 import { useTutorBridge } from '@/components/layout';
@@ -30,12 +31,15 @@ export function TutorPanel({
 }: TutorPanelProps) {
   const t = useTranslations('tutor');
   const tErrors = useTranslations('errors');
+  const tDomain = useTranslations('domain');
   const { request } = useTutorBridge();
+  const panelRef = useRef<HTMLDivElement>(null);
   const chat = useTutorChat({
     courseId: courseId ?? null,
     lessonId: lessonId ?? null,
     defaultMode,
     request,
+    panelRef,
   });
   const { state } = chat;
 
@@ -55,7 +59,15 @@ export function TutorPanel({
   };
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    // Focusable only from code: it holds keyboard focus while a block disables the input. The
+    // ring is drawn inside, because the frames around the panel clip their overflow.
+    <div
+      ref={panelRef}
+      tabIndex={-1}
+      role="group"
+      aria-label={tDomain('chat.assistantName')}
+      className="flex h-full min-h-0 flex-col focus-visible:-outline-offset-2"
+    >
       <TutorToolbar
         variant={variant}
         canReset={state.messages.length > 0 && state.reply === null}

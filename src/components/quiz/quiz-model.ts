@@ -390,10 +390,38 @@ export type RunnerEvent =
   | { type: 'back' }
   | { type: 'edit'; index: number }
   | { type: 'submitted'; result: QuizAttemptResult }
-  | { type: 'reset' };
+  | { type: 'reset' }
+  /** The quiz's question ids, in authored order, after the page brought a new version. */
+  | { type: 'sync'; questionIds: readonly string[] };
 
 function lastIndex(state: RunnerState): number {
   return Math.max(0, state.order.length - 1);
+}
+
+/**
+ * A run follows an edit of its quiz (router.refresh() brings it in the middle of a run): removed
+ * questions leave the order, new ones join at its end. When the question on screen was removed,
+ * the review step shows what is left to send; when none is left, the runner starts over.
+ */
+function syncOrder(state: RunnerState, questionIds: readonly string[]): RunnerState {
+  if (state.phase !== 'question' && state.phase !== 'review') return state;
+  const present = new Set(questionIds);
+  const kept = state.order.filter((id) => present.has(id));
+  const known = new Set(state.order);
+  const added = [...present].filter((id) => !known.has(id));
+  if (kept.length === state.order.length && added.length === 0) return state;
+  const order = [...kept, ...added];
+  if (order.length === 0) return INITIAL_RUNNER_STATE;
+  const current = state.order[state.index];
+  const at = current === undefined ? -1 : order.indexOf(current);
+  if (state.phase === 'question' && at !== -1) return { ...state, order, index: at };
+  return {
+    ...state,
+    phase: 'review',
+    order,
+    index: Math.min(state.index, order.length - 1),
+    returnToReview: false,
+  };
 }
 
 export function runnerReducer(state: RunnerState, event: RunnerEvent): RunnerState {
@@ -426,5 +454,7 @@ export function runnerReducer(state: RunnerState, event: RunnerEvent): RunnerSta
       return { ...state, phase: 'result', result: event.result, returnToReview: false };
     case 'reset':
       return INITIAL_RUNNER_STATE;
+    case 'sync':
+      return syncOrder(state, event.questionIds);
   }
 }

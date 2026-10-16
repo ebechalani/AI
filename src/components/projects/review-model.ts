@@ -84,10 +84,21 @@ export function parseCriteriaDraft(
   return Object.keys(errors).length === 0 ? { ok: true, criteria } : { ok: false, errors };
 }
 
-/** The grade the scores give, once all four are valid. */
-export function previewScore(d: CriteriaDraft, rubric: readonly RubricWeight[]): number | null {
+/**
+ * What the live total under the scores says: the grade once all four are valid; `invalid` when
+ * a score that is typed is wrong (too big, negative, not a whole number), so the teacher is
+ * told to correct it rather than to fill it in; `incomplete` while scores are only missing.
+ */
+export type ScoreState =
+  { kind: 'ready'; score: number } | { kind: 'invalid' } | { kind: 'incomplete' };
+
+export function scoreState(d: CriteriaDraft, rubric: readonly RubricWeight[]): ScoreState {
   const parsed = parseCriteriaDraft(d);
-  return parsed.ok ? weightedScore(parsed.criteria, rubric) : null;
+  if (parsed.ok) return { kind: 'ready', score: weightedScore(parsed.criteria, rubric) };
+  const problems = Object.values(parsed.errors);
+  return problems.some((problem) => problem !== 'required')
+    ? { kind: 'invalid' }
+    : { kind: 'incomplete' };
 }
 
 export function initialDecision(block: ApproveBlock | null): ReviewDecision {

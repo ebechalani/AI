@@ -40,6 +40,10 @@ export function AttachmentsField({
   const [announcement, setAnnouncement] = useState('');
   // After a removal, focus goes to the next file's Remove button, else to the list.
   const [focusAfterRemove, setFocusAfterRemove] = useState<{ index: number } | null>(null);
+  // Bumped when the last file is removed: the upload control starts over ("Choose a file"
+  // again, not "Choose another file"). Not keyed on the count: the first upload would remount
+  // it too, and drop the focus on its button.
+  const [uploadKey, setUploadKey] = useState(0);
   const canAdd = files.length < SUBMISSION_LIMITS.maxAttachments;
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
 
@@ -61,6 +65,7 @@ export function AttachmentsField({
 
   function remove(file: FileRef, index: number) {
     onRemove(file.fileId);
+    if (files.length === 1) setUploadKey((key) => key + 1);
     setAnnouncement(t('form.files.removed', { name: file.fileName }));
     setFocusAfterRemove({ index });
   }
@@ -123,6 +128,7 @@ export function AttachmentsField({
       )}
       {canAdd ? (
         <FileUpload
+          key={uploadKey}
           purpose="submission"
           kinds={[kind]}
           onUploaded={({ file }) => onAdd(file)}

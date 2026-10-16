@@ -36,7 +36,13 @@ export function WorkView({ submission, headingLevel: Heading }: WorkViewProps) {
   const about = description.trim() !== '' ? description : null;
   const headingClasses = 'text-sm font-semibold text-ink';
 
-  if (about === null && text === null && code === null && link === null && attachments.length === 0) {
+  if (
+    about === null &&
+    text === null &&
+    code === null &&
+    link === null &&
+    attachments.length === 0
+  ) {
     return <p className="text-ink-muted">{t('work.noContent')}</p>;
   }
 

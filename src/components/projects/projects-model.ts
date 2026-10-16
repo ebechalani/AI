@@ -239,7 +239,11 @@ export interface BriefText {
 
 export function projectBrief(project: Project, locale: string): BriefText {
   const text = pickTranslation(project.translations, locale, project.defaultLocale);
-  return { title: text.title ?? '', brief: text.brief ?? '', requirements: text.requirements ?? '' };
+  return {
+    title: text.title ?? '',
+    brief: text.brief ?? '',
+    requirements: text.requirements ?? '',
+  };
 }
 
 export function challengeBrief(challenge: Challenge, locale: string): BriefText {
@@ -252,6 +256,9 @@ export function challengeBrief(challenge: Challenge, locale: string): BriefText 
 }
 
 // --- The teacher's lists -----------------------------------------------------------------------
+
+/** How many submissions the review queue shows at most (listReviewQueue's default limit, 3.7). */
+export const QUEUE_LIMIT = 200;
 
 export interface QueueGroup {
   classId: string;

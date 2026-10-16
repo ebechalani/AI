@@ -35,7 +35,6 @@ export interface AiSuggestionDetailsProps {
 /** A ready AI suggestion for the teacher: score, confidence, points to check, text, criteria. */
 export function AiSuggestionDetails({ submission, aiReview }: AiSuggestionDetailsProps) {
   const t = useTranslations('review');
-  const tCommon = useTranslations('common');
   const criteria = aiReview.criteria;
   const rows =
     criteria === null
@@ -45,9 +44,6 @@ export function AiSuggestionDetails({ submission, aiReview }: AiSuggestionDetail
           score: criteria[row.key].score,
           comment: criteria[row.key].comment,
         }));
-  const language = tCommon.has(`locale.names.${aiReview.locale}`)
-    ? tCommon(`locale.names.${aiReview.locale}`)
-    : aiReview.locale;
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,7 +74,9 @@ export function AiSuggestionDetails({ submission, aiReview }: AiSuggestionDetail
 
       {aiReview.writtenFeedback && (
         <div className="flex flex-col gap-1.5">
-          <h3 className="text-sm font-semibold text-ink">{t('ai.writtenFeedback', { language })}</h3>
+          <h3 className="text-sm font-semibold text-ink">
+            {t('ai.writtenFeedback', { locale: aiReview.locale })}
+          </h3>
           <p className="rounded-control border border-border bg-surface p-3 text-sm break-words whitespace-pre-wrap text-ink">
             {aiReview.writtenFeedback}
           </p>

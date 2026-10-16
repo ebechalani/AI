@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useState, type RefObject } from 'react';
+import { useEffect, useEffectEvent, useState, useTransition, type RefObject } from 'react';
 import { useTranslations } from 'next-intl';
 import { submitWorkAction } from '@/actions/projects';
 import { useToast } from '@/components/ui';
@@ -20,6 +20,8 @@ import { useActionErrorMessage } from './use-action-error';
 
 // Sending the form (SPEC-D 5.3): the schema first (no action call for an invalid draft), then
 // submitWorkAction, then the success toast and a refresh, or a push to the new attempt's page.
+// The form stays busy until that page has arrived: a second click in between would send the
+// work again, and the server would refuse it as a conflict.
 
 export type FormAlert = 'form' | 'conflict' | 'not_found' | 'session';
 
@@ -54,7 +56,9 @@ export function useSubmitWork({
   const pathname = usePathname();
   const { toast } = useToast();
   const errorMessage = useActionErrorMessage();
-  const [pending, setPending] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [navigating, startNavigation] = useTransition();
+  const pending = sending || navigating;
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<FormField, string>>>({});
   const [formAlert, setFormAlert] = useState<FormAlert | null>(null);
   const [focusRequest, setFocusRequest] = useState<FocusRequest | null>(null);
@@ -110,7 +114,7 @@ export function useSubmitWork({
 
     // Read before the button is disabled: then :focus-visible cannot be read any more.
     const fromKeyboard = hasKeyboardFocus(submitRef.current);
-    setPending(true);
+    setSending(true);
     let error: ActionError;
     try {
       const result = await submitWorkAction(input);
@@ -122,15 +126,17 @@ export function useSubmitWork({
         });
         onSubmitted?.(result.data.submissionId);
         const next = successTarget(pathname, previousSubmissionId, result.data.submissionId);
-        if (next.kind === 'push') router.push(next.href);
-        else router.refresh();
+        startNavigation(() => {
+          if (next.kind === 'push') router.push(next.href);
+          else router.refresh();
+        });
         return;
       }
       error = result.error;
     } catch {
       error = { code: 'internal' };
     } finally {
-      setPending(false);
+      setSending(false);
     }
 
     switch (error.code) {

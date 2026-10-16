@@ -117,10 +117,22 @@ export function AttachmentList({
                 </div>
               </div>
               {file.kind === 'audio' && (
-                <audio controls preload="none" src={href} aria-label={player} className="w-full max-w-xl" />
+                <audio
+                  controls
+                  preload="none"
+                  src={href}
+                  aria-label={player}
+                  className="w-full max-w-xl"
+                />
               )}
               {file.kind === 'video' && (
-                <video controls preload="none" src={href} aria-label={player} className="w-full max-w-xl" />
+                <video
+                  controls
+                  preload="none"
+                  src={href}
+                  aria-label={player}
+                  className="w-full max-w-xl"
+                />
               )}
             </li>
           );

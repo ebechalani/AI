@@ -33,7 +33,7 @@
   },
   "detail": {
     "metaTitle": "Tentative de quiz",
-    "title": "{name}\u00a0: {quiz}",
+    "title": "{name}\u00a0: «\u00a0{quiz}\u00a0»",
     "breadcrumb": "Tentative {number}",
     "context": "{course} · {className}",
     "contextCourse": "{course}",

@@ -12,6 +12,7 @@ import {
   parsePaging,
   resolveClassId,
   resolveCourseId,
+  type Paging,
 } from '@/components/quiz/assessments-model';
 
 // WS-C: the filters and paging of /teacher/assessments (spec 5.2) and the hygiene of the
@@ -19,8 +20,8 @@ import {
 
 const ID = 'demo-omar_my-first-ai-adventure_quiz-m1_2';
 
-function query(cursor: string | null, trail: string[] = []) {
-  return { classId: 'class-1', courseId: null, cursor, trail };
+function query(cursor: string | null, trail: string[] = [], page: number | null = null) {
+  return { classId: 'class-1', courseId: null, cursor, trail, page };
 }
 
 /** The query of a locale-less href, as a plain object. */
@@ -63,24 +64,32 @@ describe('search parameters', () => {
 });
 
 describe('parsePaging', () => {
-  it('keeps a valid cursor and trail', () => {
-    expect(parsePaging(ID, 'a_1.b-2')).toEqual({ cursor: ID, trail: ['a_1', 'b-2'] });
-    expect(parsePaging(ID, undefined)).toEqual({ cursor: ID, trail: [] });
+  it('keeps a valid cursor, trail and page number', () => {
+    expect(parsePaging(ID, 'a_1.b-2')).toEqual({ cursor: ID, trail: ['a_1', 'b-2'], page: null });
+    expect(parsePaging(ID, undefined)).toEqual({ cursor: ID, trail: [], page: null });
+    expect(parsePaging(ID, 'a_1', '24')).toEqual({ cursor: ID, trail: ['a_1'], page: 24 });
   });
 
-  it('drops a malformed cursor and its trail', () => {
-    expect(parsePaging('a/b', 'x')).toEqual({ cursor: null, trail: [] });
-    expect(parsePaging('a.b', undefined)).toEqual({ cursor: null, trail: [] });
-    expect(parsePaging('', 'x')).toEqual({ cursor: null, trail: [] });
+  it('drops a malformed cursor and its trail and page number', () => {
+    expect(parsePaging('a/b', 'x', '3')).toEqual({ cursor: null, trail: [], page: null });
+    expect(parsePaging('a.b', undefined)).toEqual({ cursor: null, trail: [], page: null });
+    expect(parsePaging('', 'x')).toEqual({ cursor: null, trail: [], page: null });
   });
 
   it('drops a trail with a bad entry, too many entries, or without a cursor', () => {
-    expect(parsePaging(ID, 'a..b')).toEqual({ cursor: ID, trail: [] });
-    expect(parsePaging(ID, 'a.b/c')).toEqual({ cursor: ID, trail: [] });
+    expect(parsePaging(ID, 'a..b').trail).toEqual([]);
+    expect(parsePaging(ID, 'a.b/c').trail).toEqual([]);
     const full = Array.from({ length: MAX_TRAIL }, (_, index) => `p${index}`);
     expect(parsePaging(ID, full.join('.')).trail).toEqual(full);
     expect(parsePaging(ID, [...full, 'one-more'].join('.')).trail).toEqual([]);
-    expect(parsePaging(undefined, 'a.b')).toEqual({ cursor: null, trail: [] });
+    expect(parsePaging(undefined, 'a.b', '2')).toEqual({ cursor: null, trail: [], page: null });
+  });
+
+  it('keeps a page number only when it is a positive integer of at most six digits', () => {
+    for (const raw of ['0', '-2', '2.5', '1e3', ' 3', '03', 'x', '', '1234567']) {
+      expect(parsePaging(ID, undefined, raw).page, raw).toBeNull();
+    }
+    expect(parsePaging(ID, undefined, '999999').page).toBe(999999);
   });
 });
 
@@ -94,6 +103,16 @@ describe('hrefs', () => {
     ).toBe('/teacher/assessments?classId=class-1&courseId=c-1&cursor=x_2&trail=a.b');
     expect(assessmentsHref({ classId: 'class-1', courseId: '', cursor: null, trail: ['a'] })).toBe(
       '/teacher/assessments?classId=class-1',
+    );
+    expect(
+      assessmentsHref({ classId: 'class-1', courseId: null, cursor: 'x_2', trail: ['a'], page: 3 }),
+    ).toBe('/teacher/assessments?classId=class-1&cursor=x_2&page=3&trail=a');
+    // A page number means nothing without a cursor, and page 1 needs none.
+    expect(assessmentsHref({ classId: 'class-1', courseId: null, cursor: null, page: 4 })).toBe(
+      '/teacher/assessments?classId=class-1',
+    );
+    expect(assessmentsHref({ classId: 'class-1', courseId: null, cursor: 'x_2', page: 1 })).toBe(
+      '/teacher/assessments?classId=class-1&cursor=x_2',
     );
   });
 
@@ -109,27 +128,33 @@ describe('hrefs', () => {
 });
 
 describe('pageLinks', () => {
-  it('page 1: no previous, next without a trail', () => {
+  it('page 1: no previous, next to page 2 without a trail', () => {
     const links = pageLinks(query(null), 'c1');
     expect(links.page).toBe(1);
     expect(links.previousHref).toBeNull();
-    expect(paramsOf(links.nextHref)).toEqual({ classId: 'class-1', cursor: 'c1' });
+    expect(paramsOf(links.nextHref)).toEqual({ classId: 'class-1', cursor: 'c1', page: '2' });
   });
 
   it('page 2: previous goes back to page 1 without a cursor', () => {
     const links = pageLinks(query('c1'), 'c2');
     expect(links.page).toBe(2);
     expect(paramsOf(links.previousHref)).toEqual({ classId: 'class-1' });
-    expect(paramsOf(links.nextHref)).toEqual({ classId: 'class-1', cursor: 'c2', trail: 'c1' });
+    expect(paramsOf(links.nextHref)).toEqual({
+      classId: 'class-1',
+      cursor: 'c2',
+      page: '3',
+      trail: 'c1',
+    });
   });
 
   it('page 3: previous goes back to page 2 with its cursor and trail', () => {
     const links = pageLinks(query('c2', ['c1']), 'c3');
     expect(links.page).toBe(3);
-    expect(paramsOf(links.previousHref)).toEqual({ classId: 'class-1', cursor: 'c1' });
+    expect(paramsOf(links.previousHref)).toEqual({ classId: 'class-1', cursor: 'c1', page: '2' });
     expect(paramsOf(links.nextHref)).toEqual({
       classId: 'class-1',
       cursor: 'c3',
+      page: '4',
       trail: 'c1.c2',
     });
   });
@@ -144,14 +169,67 @@ describe('pageLinks', () => {
     expect(paramsOf(links.nextHref).courseId).toBe('course-9');
   });
 
-  it('a full trail: no page number, and the next link keeps the last entries only', () => {
+  it('a full trail: the next link keeps the last entries only', () => {
     const full = Array.from({ length: MAX_TRAIL }, (_, index) => `p${index}`);
-    const links = pageLinks(query('cur', full), 'next');
-    expect(links.page).toBeUndefined();
-    const trail = paramsOf(links.nextHref).trail!.split('.');
-    expect(trail).toHaveLength(MAX_TRAIL);
-    expect(trail).toEqual([...full.slice(1), 'cur']);
+    const links = pageLinks(query('cur', full, 22), 'next');
+    expect(links.page).toBe(22);
+    const params = paramsOf(links.nextHref);
+    expect(params.trail!.split('.')).toEqual([...full.slice(1), 'cur']);
+    expect(params.page).toBe('23');
+  });
+
+  it('trusts a carried page number only when the trail allows it', () => {
+    const full = Array.from({ length: MAX_TRAIL }, (_, index) => `p${index}`);
+    // Without a carried number a full trail may have been cut: no label, no number on the links.
+    const unknown = pageLinks(query('cur', full), 'next');
+    expect(unknown.page).toBeUndefined();
+    expect(paramsOf(unknown.nextHref).page).toBeUndefined();
+    expect(paramsOf(unknown.previousHref).page).toBeUndefined();
     expect(pageLinks(query('cur', full.slice(1)), 'next').page).toBe(MAX_TRAIL + 1);
+    // A number below what the trail proves is forged: the trail's count wins.
+    expect(pageLinks(query('c2', ['c1'], 2), null).page).toBe(3);
+    expect(pageLinks(query('cur', full, 5), null).page).toBeUndefined();
+  });
+
+  it('walks 25 pages forward and back with the right number on every page', () => {
+    const cursorAfter = (page: number) => `demo-u_course_quiz_${page}`;
+    const open = (href: string | null) => {
+      const params = paramsOf(href);
+      return parsePaging(params.cursor, params.trail, params.page);
+    };
+    /** The real page a query opens: the page after its cursor's page. */
+    const realPage = (paging: Paging) =>
+      paging.cursor === null ? 1 : Number(paging.cursor.split('_').at(-1)) + 1;
+
+    let paging: Paging = parsePaging(undefined, undefined);
+    const forward: (number | undefined)[] = [];
+    for (let step = 0; step < 25; step += 1) {
+      const links = pageLinks(
+        { classId: 'class-1', courseId: null, ...paging },
+        cursorAfter(step + 1),
+      );
+      expect(links.page).toBe(realPage(paging));
+      forward.push(links.page);
+      if (step < 24) paging = open(links.nextHref);
+    }
+    expect(forward).toEqual(Array.from({ length: 25 }, (_, index) => index + 1));
+    expect(realPage(paging)).toBe(25);
+    expect(paging.trail).toHaveLength(MAX_TRAIL);
+
+    const backward: [number, number | undefined][] = [];
+    for (;;) {
+      const links = pageLinks({ classId: 'class-1', courseId: null, ...paging }, 'next_1');
+      backward.push([realPage(paging), links.page]);
+      if (links.previousHref === null) break;
+      paging = open(links.previousHref);
+    }
+    // Every page shows its own number; the trail kept the cursors of pages 5 to 24, so Previous
+    // on page 5 goes to page 1.
+    expect(backward.every(([real, label]) => real === label)).toBe(true);
+    expect(backward.map(([real]) => real)).toEqual([
+      ...Array.from({ length: 21 }, (_, index) => 25 - index),
+      1,
+    ]);
   });
 });
 
@@ -251,6 +329,7 @@ describe.each(['en', 'fr'])('assessments catalog (%s)', (locale) => {
         '#2',
         '4/6 · 66%',
         'Omar Demo, attempt 2 at “Check: meet AI”',
+        'Omar Demo: “Check: meet AI”',
       ],
       fr: [
         '1 sur 1 point',
@@ -258,6 +337,7 @@ describe.each(['en', 'fr'])('assessments catalog (%s)', (locale) => {
         `n°${nb}2`,
         `4/6 · 66${nb}%`,
         `Omar Demo, tentative 2 au quiz «${nb}Check: meet AI${nb}»`,
+        `Omar Demo${nb}: «${nb}Check: meet AI${nb}»`,
       ],
     };
     expect([
@@ -267,6 +347,8 @@ describe.each(['en', 'fr'])('assessments catalog (%s)', (locale) => {
       t('list.scoreValue', { score: 4, max: 6, percent: 66 }),
       // The row link's whole accessible name, starting with the visible name.
       t('list.rowLink', { name: 'Omar Demo', number: 2, quiz: 'Check: meet AI' }),
+      // Seeded quiz titles hold a colon of their own, so the heading quotes the title.
+      t('detail.title', { name: 'Omar Demo', quiz: 'Check: meet AI' }),
     ]).toEqual(expected[locale]);
   });
 

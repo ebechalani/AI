@@ -1,6 +1,9 @@
 import { Skeleton, Spinner } from '@/components/ui';
 
-/** The projects list: header, then two sections of cards. */
+/**
+ * The projects list: header, then two sections of cards. In the `(list)` group, so it wraps the
+ * list only: a submission's page shows its own skeleton straight away.
+ */
 export default function StudentProjectsLoading() {
   return (
     <div className="flex flex-col gap-8">

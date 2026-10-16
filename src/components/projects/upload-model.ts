@@ -46,9 +46,7 @@ export interface KindLimit {
 export function kindLimits(kinds: readonly FileKind[]): KindLimit[] {
   return kinds.map((kind) => ({
     kind,
-    types: [
-      ...new Set(UPLOAD_LIMITS[kind].extensions.map((ext) => ext.slice(1).toUpperCase())),
-    ],
+    types: [...new Set(UPLOAD_LIMITS[kind].extensions.map((ext) => ext.slice(1).toUpperCase()))],
     maxBytes: UPLOAD_LIMITS[kind].maxBytes,
   }));
 }
@@ -124,7 +122,11 @@ export type UploadErrorView =
   | { kind: 'validation'; key: string }
   | {
       kind: 'projects';
-      key: 'upload.errors.refused' | 'upload.errors.quota' | 'upload.errors.notStored' | 'upload.errors.retry';
+      key:
+        | 'upload.errors.refused'
+        | 'upload.errors.quota'
+        | 'upload.errors.notStored'
+        | 'upload.errors.retry';
     }
   | { kind: 'session' }
   | { kind: 'error'; error: ActionError };
@@ -138,7 +140,8 @@ export function uploadErrorView(error: ActionError, stage: 'upload' | 'register'
     case 'validation': {
       const fieldErrors = error.fieldErrors ?? {};
       const key =
-        fieldErrors.file?.[0] ?? (fieldErrors.fileName !== undefined ? 'file_name_invalid' : 'invalid');
+        fieldErrors.file?.[0] ??
+        (fieldErrors.fileName !== undefined ? 'file_name_invalid' : 'invalid');
       return { kind: 'validation', key: isValidationKey(key) ? key : 'invalid' };
     }
     case 'forbidden':
