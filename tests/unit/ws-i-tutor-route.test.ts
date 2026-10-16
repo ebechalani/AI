@@ -391,7 +391,10 @@ describe('the reply stream', () => {
     );
     const events = await lines(await POST(post()));
     expect(events.at(-1)?.type).toBe('done');
-    expect(recordAiTokens).toHaveBeenCalledTimes(1);
+    // The accounting is scheduled with after() when the pump finishes, which can be a tick after
+    // the reader has seen the end of the stream: wait for it to start, then check it is still
+    // pending (the response did not wait for it).
+    await vi.waitFor(() => expect(recordAiTokens).toHaveBeenCalledTimes(1));
     let settled = false;
     const all = Promise.all(pending.tasks).then(() => {
       settled = true;
