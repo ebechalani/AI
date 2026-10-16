@@ -208,9 +208,15 @@ export function credentialsText(
 const DATE_INPUT = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 /**
- * An `<input type="date">` value to the stored ISO datetime: noon UTC, which is the same
- * calendar day everywhere from UTC−11 to UTC+11. '' → null (no due date); anything that is not
- * a real calendar date → undefined.
+ * Due dates are calendar days, not instants: the day is stored as noon UTC and always read back
+ * in UTC. Read in the viewer's zone, noon UTC is already the next day from UTC+12 on (Auckland in
+ * summer, Kiritimati).
+ */
+export const DUE_DATE_TIME_ZONE = 'UTC';
+
+/**
+ * An `<input type="date">` value to the stored ISO datetime (noon UTC of that day). '' → null
+ * (no due date); anything that is not a real calendar date → undefined.
  */
 export function dueDateToIso(value: string): IsoDateString | null | undefined {
   const trimmed = value.trim();
@@ -243,7 +249,12 @@ export function isoToDateInput(iso: IsoDateString | null, timeZone: string | und
   }).format(time);
 }
 
-/** Past the due day in the viewer's zone; the due day itself is not overdue. */
+/** The stored due date back to its `<input type="date">` value; '' for null. */
+export function dueDateToInput(dueAt: IsoDateString | null): string {
+  return isoToDateInput(dueAt, DUE_DATE_TIME_ZONE);
+}
+
+/** Today in the viewer's zone is past the due day; the due day itself is not overdue. */
 export function isOverdue(
   dueAt: IsoDateString | null,
   now: Date | IsoDateString,
@@ -251,7 +262,7 @@ export function isOverdue(
 ): boolean {
   if (dueAt === null) return false;
   const today = isoToDateInput(new Date(toTime(now)).toISOString(), timeZone);
-  const due = isoToDateInput(dueAt, timeZone);
+  const due = dueDateToInput(dueAt);
   return due !== '' && today > due;
 }
 

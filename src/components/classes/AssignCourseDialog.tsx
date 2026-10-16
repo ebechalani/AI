@@ -15,7 +15,7 @@ import {
 import { useRouter } from '@/lib/i18n/navigation';
 import type { ActionError } from '@/types/actions';
 import type { IsoDateString } from '@/types/common';
-import { dueDateToIso, isoToDateInput } from './class-model';
+import { dueDateToInput, dueDateToIso, isoToDateInput } from './class-model';
 import { DIALOG_TEXT } from './dialog';
 import { MAIN_CONTENT_ID, showErrorsAndFocus } from './focus';
 import { useActionErrorMessage, useValidationMessage } from './use-action-error';
@@ -127,7 +127,6 @@ export function AssignCourseDialog({
   const tValidation = useTranslations('validation');
   const router = useRouter();
   const { toast } = useToast();
-  const timeZone = useTimeZone();
   const errorMessage = useActionErrorMessage();
   const validationMessage = useValidationMessage();
   const formId = useId();
@@ -267,7 +266,7 @@ export function AssignCourseDialog({
         <DueDateFields
           formId={formId}
           mode={mode}
-          initialValue={isoToDateInput(currentDueAt, timeZone)}
+          initialValue={dueDateToInput(currentDueAt)}
           fieldError={fieldError}
           formError={formError}
           disabled={pending}

@@ -7,6 +7,7 @@ import { getClass, listAssignments, listMembers, updateClass } from '@/lib/data/
 import { getEnrollment } from '@/lib/data/enrollments';
 import { getSchool, updateSchool } from '@/lib/data/schools';
 import {
+  addReview,
   countReviewQueue,
   getSubmission,
   listReviewQueue,
@@ -448,6 +449,21 @@ describe('teacher flow: classes, accounts, assignments, reviews and recognition'
     const asAva = await getSubmissionForViewer(ava, avaWork.id);
     expect(asAva.aiReview).toBeNull();
     expect(asAva.reviews).toEqual([]);
+
+    // The grading transaction itself refuses an approval of a suggestion that is no longer the
+    // latest one (a co-teacher asked for a new one after reviewSubmission read the submission).
+    const scores = { creativity: 80, technicalQuality: 80, understanding: 80, responsibleAi: 80 };
+    await refusal(
+      addReview(teacher, avaWork.id, {
+        decision: 'approve',
+        criteria: scores,
+        score: 80,
+        feedback: 'Stale.',
+        aiReviewId: 'an-older-suggestion',
+      }),
+      ConflictError,
+    );
+    expect(await getSubmission(teacher, avaWork.id)).toMatchObject({ status: 'submitted' });
 
     const approved = await reviewSubmission(teacher, {
       ...approve,

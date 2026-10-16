@@ -536,6 +536,14 @@ export async function addReview(
     if (submission.status !== 'submitted') {
       throw new ConflictError(`${ref.path} is '${submission.status}' and takes no review.`);
     }
+    // An approval grades with the AI suggestion read before the transaction: a co-teacher may
+    // have asked for a new one since (WS-D-4).
+    if (
+      input.decision === 'approve' &&
+      (submission.aiReviewStatus !== 'ready' || submission.latestAiReviewId !== input.aiReviewId)
+    ) {
+      throw new ConflictError(`${ref.path} has a newer AI suggestion than the one approved.`);
+    }
     const writeSummaryStatus = await summaryStatusWrite(tx, submission);
 
     tx.create(reviewRef, {

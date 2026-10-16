@@ -4263,6 +4263,8 @@ createSubmission(actor, input: NewSubmission): Promise<Submission>
   // stored; a non-null value naming an attempt other than the stored latest one is ConflictError; the document always
   // records the latest attempt found in the transaction.
 addReview(actor, submissionId, input: NewReview): Promise<Submission>                  // review + final* + status + projectSummary + effectsApplied, one transaction
+                                                                                       // ConflictError unless status is 'submitted'; for 'approve' also unless aiReviewStatus
+                                                                                       // is 'ready' and latestAiReviewId still equals input.aiReviewId (checked in the transaction)
 listReviews(actor, submissionId): Promise<TeacherReview[]>
 getAiReview(actor, submissionId, aiReviewId): Promise<AiReview>                        // canViewAiReview
 saveAiReview(actor, submissionId, review: NewAiReview): Promise<AiReview>              // system only
@@ -4440,7 +4442,7 @@ addStudentToClass(actor, classId, student: UserProfile, addedByUid: string | nul
 joinClassWithCode(actor, joinCode: string): Promise<SchoolClass>                    // signed-in student; rate limit 'join_class' keyed by uid
 removeStudentFromClass(actor, classId, studentUid): Promise<void>
 assignCourseToClass(actor, classId, courseId, dueAt: IsoDateString | null): Promise<void>
-unassignCourseFromClass(actor, classId, courseId): Promise<void>                    // keeps existing enrollments
+unassignCourseFromClass(actor, classId, courseId): Promise<void>                    // keeps existing enrollments; ConflictError on an archived class
 getStudentForTeacher(actor, classId, studentUid): Promise<StudentSummary>
 
 // learning.ts
@@ -4524,8 +4526,9 @@ Semantics that the signatures do not show:
   `applyIdentityChange` without invalidation, `upsertClassEnrollments` for every assigned
   course, then the re-pointing of every open unsupervised submission of the student (3.6).
 - **`removeStudentFromClass`**: `NotFoundError` when the class is not visible to the actor or
-  the student is not on its roster (no existence oracle); `removeMember`; "self-registered"
-  is `username === null` (an email account), so a username account provisioned by a
+  the student is not on its roster (no existence oracle); `ConflictError` on an archived class
+  (its roster is read-only); `removeMember`; "self-registered" is `username === null` (an
+  email account), so a username account provisioned by a
   school-less verified teacher who later joined a school class stays attached; the detach
   decision reads the student's remaining classes once; the class's enrollments and open
   submissions are re-resolved after the detach (3.6).
@@ -4855,10 +4858,11 @@ How the workstream actions call the services (the error codes each form must han
 - `createClassAction` → `createClass(session, data)` → `{ classId: cls.id }`;
   `addStudentsAction` → `provisionStudents(session, classId, students)` → `{ credentials }`
   (passwords are shown once and never stored); `removeStudentAction` →
-  `removeStudentFromClass`; `resetStudentPasswordAction` → `resetStudentPassword(session,
-  studentUid)`; `assignCourseAction` → `assignCourseToClass(session, classId, courseId,
-  dueAt)` (expect `license_required`, and `conflict` for a teacher course);
-  `unassignCourseAction` → `unassignCourseFromClass`; `joinClassAction` → `const cls = await
+  `removeStudentFromClass` (`conflict` on an archived class); `resetStudentPasswordAction` →
+  `resetStudentPassword(session, studentUid)`; `assignCourseAction` →
+  `assignCourseToClass(session, classId, courseId, dueAt)` (expect `license_required`, and
+  `conflict` for a teacher course); `unassignCourseAction` → `unassignCourseFromClass`
+  (`conflict` on an archived class); `joinClassAction` → `const cls = await
   joinClassWithCode(session, joinCode)` → `{ classId: cls.id, className: cls.name }`
   (`conflict` = pupil of another school); `awardBadgeAction` → `awardManualBadge(session,
   data)`. The teacher's student page calls `getStudentForTeacher(session, classId,

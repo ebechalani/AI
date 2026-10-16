@@ -4,10 +4,11 @@ import { CertifiedBadge, useDateFormat } from '@/components/domain';
 import { Card, Chip, EmptyState, LinkButton } from '@/components/ui';
 import { pickTranslation } from '@/lib/i18n/content';
 import { Link } from '@/lib/i18n/navigation';
+import { formatDate as formatDateIn } from '@/lib/utils';
 import type { IsoDateString } from '@/types/common';
 import { assignPath, coursePath, reportPath } from '@/components/teacher/paths';
 import { AssignCourseDialog } from './AssignCourseDialog';
-import { isOverdue, type AssignedCourseRow } from './class-model';
+import { DUE_DATE_TIME_ZONE, isOverdue, type AssignedCourseRow } from './class-model';
 import { UnassignCourseButton } from './UnassignCourseButton';
 
 export interface AssignedCoursesProps {
@@ -88,7 +89,9 @@ export function AssignedCourses({ classId, className, rows, now, readOnly }: Ass
                     <span>{t('courses.noDue')}</span>
                   ) : (
                     <span className="inline-flex flex-wrap items-center gap-2">
-                      {t('courses.due', { date: formatDate(assignment.dueAt) })}
+                      {t('courses.due', {
+                        date: formatDateIn(assignment.dueAt, locale, 'date', DUE_DATE_TIME_ZONE),
+                      })}
                       {isOverdue(assignment.dueAt, now, timeZone) && (
                         <Chip tone="warning" size="sm">
                           {t('courses.overdue')}

@@ -4,6 +4,7 @@ import {
   assignedCourseRows,
   capacityLeft,
   credentialsText,
+  dueDateToInput,
   dueDateToIso,
   enrollmentFacts,
   isOverdue,
@@ -248,6 +249,30 @@ describe('due dates', () => {
     const dueAt = dueDateToIso('2026-10-30')!;
     for (const zone of ['Pacific/Pago_Pago', 'Pacific/Honolulu', 'UTC', 'Asia/Beirut', 'Pacific/Noumea']) {
       expect(isoToDateInput(dueAt, zone), zone).toBe('2026-10-30');
+    }
+  });
+
+  it('reads a due date back in UTC, so it keeps its day from UTC+12 to UTC+14 as well', () => {
+    const dueAt = dueDateToIso('2026-10-30')!;
+    expect(dueDateToInput(dueAt)).toBe('2026-10-30');
+    expect(dueDateToInput(null)).toBe('');
+    // Noon UTC is already 31 October in Auckland (summer time, UTC+13) and Kiritimati (UTC+14).
+    expect(isoToDateInput(dueAt, 'Pacific/Auckland')).toBe('2026-10-31');
+    expect(isoToDateInput(dueAt, 'Pacific/Kiritimati')).toBe('2026-10-31');
+  });
+
+  it('is overdue from the day after the stored day in the viewer’s zone, from UTC−11 to UTC+14', () => {
+    const dueAt = dueDateToIso('2026-10-30')!;
+    const cases: [string, string, boolean][] = [
+      ['Pacific/Auckland', '2026-10-30T10:30:00.000Z', false], // 23:30 on the 30th
+      ['Pacific/Auckland', '2026-10-30T11:30:00.000Z', true], // 00:30 on the 31st
+      ['Pacific/Kiritimati', '2026-10-30T09:30:00.000Z', false],
+      ['Pacific/Kiritimati', '2026-10-30T10:30:00.000Z', true],
+      ['Pacific/Pago_Pago', '2026-10-31T10:30:00.000Z', false],
+      ['Pacific/Pago_Pago', '2026-10-31T11:30:00.000Z', true],
+    ];
+    for (const [zone, now, overdue] of cases) {
+      expect(isOverdue(dueAt, now, zone), `${zone} at ${now}`).toBe(overdue);
     }
   });
 
