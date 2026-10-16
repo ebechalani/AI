@@ -105,18 +105,24 @@ export function initialDecision(block: ApproveBlock | null): ReviewDecision {
   return block === null ? 'approve' : 'modify';
 }
 
-/** Scores go with `modify` only: the schema refuses them with the other decisions. */
+/**
+ * Scores go with `modify` only: the schema refuses them with the other decisions. `aiReviewId`
+ * is the suggestion the form shows: an approve that no longer names the latest one is a
+ * conflict, so the teacher sees the new suggestion before it becomes the grade (WS-D-4).
+ */
 export function toReviewInput(a: {
   submissionId: string;
   decision: ReviewDecision;
   criteria: CriteriaScores | null;
   feedback: string;
+  aiReviewId: string | null;
 }): ReviewInput {
   return {
     submissionId: a.submissionId,
     decision: a.decision,
     criteria: a.decision === 'modify' ? a.criteria : null,
     feedback: a.feedback,
+    aiReviewId: a.aiReviewId,
   };
 }
 

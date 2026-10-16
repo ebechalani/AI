@@ -694,6 +694,15 @@ describe('removeStudentFromClass', () => {
     );
   });
 
+  it('refuses an archived class, whose roster is read-only', async () => {
+    addClass(schoolClass({ id: 'class-z', archived: true }), ['student-1']);
+    await expect(removeStudentFromClass(teacher, 'class-z', 'student-1')).rejects.toBeInstanceOf(
+      ConflictError,
+    );
+    expect(removeMember).not.toHaveBeenCalled();
+    expect(applyIdentityChange).not.toHaveBeenCalled();
+  });
+
   it('is not found for a class the actor does not run, or a student who is not a member', async () => {
     await expect(
       removeStudentFromClass(otherTeacher, 'class-a', 'student-1'),
@@ -1005,6 +1014,14 @@ describe('assignCourseToClass', () => {
       classId: 'class-a',
       schoolId: 'school-a',
     });
+  });
+
+  it('refuses to unassign a course from an archived class', async () => {
+    addClass(schoolClass({ id: 'class-z', archived: true, assignedCourseIds: ['course-1'] }));
+    await expect(unassignCourseFromClass(schoolAdmin, 'class-z', 'course-1')).rejects.toBeInstanceOf(
+      ConflictError,
+    );
+    expect(removeAssignment).not.toHaveBeenCalled();
   });
 
   it('unassigning keeps the enrollments', async () => {

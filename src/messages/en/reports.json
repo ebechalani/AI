@@ -1,0 +1,60 @@
+{
+  "description": "Follow each student’s progress in a course assigned to a class, and issue certificates.",
+  "filters": {
+    "label": "Report filters",
+    "class": "Class",
+    "course": "Course",
+    "apply": "Show report",
+    "archivedClass": "{name} (archived)",
+    "noCourse": "No course assigned"
+  },
+  "summary": {
+    "label": "Summary",
+    "students": "Students",
+    "averageProgress": "Average progress",
+    "completed": "Completed the course",
+    "certificates": "Certificates issued"
+  },
+  "table": {
+    "caption": "Progress of {className} in {course}",
+    "student": "Student",
+    "progress": "Progress",
+    "lessons": "Lessons",
+    "status": "Status",
+    "quizAverage": "Quiz average",
+    "projects": "Projects",
+    "lastActivity": "Last activity",
+    "certificate": "Certificate",
+    "lessonCount": "{completed} of {total}",
+    "projectsValue": "{approved} approved, {pending} waiting",
+    "none": "None",
+    "statusNotStarted": "Not started",
+    "statusNotEnrolled": "Not enrolled",
+    "certificateNotCompleted": "Not completed yet",
+    "certificateNotEnrolled": "Not enrolled",
+    "certificatesOff": "This course gives no certificate."
+  },
+  "certificateHint": "For an official course, you can issue a certificate once the student has completed every lesson.",
+  "links": {
+    "class": "Open the class",
+    "quizzes": "Quiz results",
+    "projects": "Projects to review"
+  },
+  "empty": {
+    "noClasses": {
+      "title": "No classes yet",
+      "description": "Create a class and assign a course to it to see progress reports.",
+      "action": "Go to my classes"
+    },
+    "noCourses": {
+      "title": "No course assigned to {className}",
+      "description": "Assign a course to the class to follow its progress.",
+      "action": "Assign a course"
+    },
+    "noStudents": {
+      "title": "No students in {className}",
+      "description": "Add students to the class to see their progress.",
+      "action": "Open the class"
+    }
+  }
+}

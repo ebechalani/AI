@@ -146,6 +146,12 @@ export interface ReviewInput {
   /** The teacher's own scores: required for 'modify', null otherwise. */
   criteria: CriteriaScores | null;
   feedback: string;
+  /**
+   * The AI suggestion shown to the teacher when they decided; null when none was shown. When
+   * given, an 'approve' is accepted only if it names the submission's latest AI review, so the
+   * grade is the one the teacher saw (ARCHITECTURE.md 8.4). Omitted: the latest is used.
+   */
+  aiReviewId?: string | null;
 }
 
 export interface RegenerateAiReviewInput {

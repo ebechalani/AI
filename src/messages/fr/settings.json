@@ -1,0 +1,56 @@
+{
+  "description": "Ton nom, ton avatar, ta langue et tes classes.",
+  "profile": {
+    "title": "Profil",
+    "description": "Ton nom et ton image, tels que RoboHolic les affiche.",
+    "name": {
+      "label": "Nom affiché",
+      "hint": "De {min, number} à {max, number}\u00a0caractères. Ton prénom et l’initiale de ton nom suffisent."
+    },
+    "avatar": {
+      "legend": "Avatar",
+      "hint": "Choisis l’image affichée à côté de ton nom."
+    },
+    "saved": "Profil enregistré.",
+    "noChanges": "Rien à enregistrer\u00a0: tu n’as rien modifié."
+  },
+  "avatars": {
+    "robot": "Robot",
+    "rocket": "Fusée",
+    "planet": "Planète",
+    "star": "Étoile",
+    "bolt": "Éclair",
+    "atom": "Atome",
+    "bulb": "Ampoule",
+    "gear": "Engrenage",
+    "chip": "Puce",
+    "compass": "Boussole",
+    "satellite": "Satellite",
+    "puzzle": "Pièce de puzzle"
+  },
+  "language": {
+    "title": "Langue",
+    "description": "La langue des pages. L’enregistrer change aussi la langue des pages tout de suite.",
+    "legend": "Langue",
+    "saved": "Langue enregistrée.",
+    "noChanges": "Cette langue est déjà enregistrée.",
+    "stored": "Langue enregistrée dans ton profil\u00a0: <lang>{language}</lang>."
+  },
+  "classes": {
+    "title": "Classes",
+    "description": "Ton enseignant t’a donné un code de classe\u00a0? Saisis-le pour rejoindre la classe.",
+    "count": "{count, plural, =0 {Tu n’es encore dans aucune classe.} one {Tu es dans # classe.} other {Tu es dans # classes.}}"
+  },
+  "account": {
+    "title": "Compte",
+    "username": "Nom d’utilisateur",
+    "email": "E-mail",
+    "ageBand": "Tranche d’âge",
+    "passwordUsername": "Mot de passe oublié\u00a0? Demande-en un nouveau à ton enseignant.",
+    "passwordEmail": "Pour changer ton mot de passe, déconnecte-toi, puis choisis «\u00a0Mot de passe oublié\u00a0?\u00a0» sur la page de connexion.",
+    "readOnly": "Ces informations ne peuvent pas être modifiées ici."
+  },
+  "errors": {
+    "form": "Vérifie les champs signalés."
+  }
+}

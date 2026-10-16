@@ -40,6 +40,9 @@ const contentSecurityPolicy = [
   .join('; ');
 
 const nextConfig: NextConfig = {
+  // Server Function arguments carry learners' text and session ID tokens: not in the dev log
+  // either (no personal data in logs, ARCHITECTURE.md 2, 8.1 and 12; foundation request WS-I-2).
+  logging: { serverFunctions: false },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'firebasestorage.googleapis.com', pathname: '/v0/b/**' },

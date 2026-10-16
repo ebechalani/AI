@@ -298,6 +298,7 @@ export async function removeStudentFromClass(
 ): Promise<void> {
   const cls = await getClass(actor, classId);
   assertCan(canManageClass(actor, cls), 'class.manage');
+  if (cls.archived) throw new ConflictError(`classes/${classId} is archived.`);
   const members = await listMembers(actor, classId);
   if (!members.some((member) => member.id === studentUid)) {
     throw new NotFoundError(`users/${studentUid} is not a member of classes/${classId}.`);
@@ -500,7 +501,10 @@ export async function assignCourseToClass(
   );
 }
 
-/** Existing enrollments keep their class: the students simply lose the assignment. */
+/**
+ * Existing enrollments keep their class: the students simply lose the assignment. An archived
+ * class is read-only (ConflictError), as its roster is.
+ */
 export async function unassignCourseFromClass(
   actor: Actor,
   classId: string,
@@ -508,5 +512,6 @@ export async function unassignCourseFromClass(
 ): Promise<void> {
   const cls = await getClass(actor, classId);
   assertCan(canManageClass(actor, cls), 'class.manage');
+  if (cls.archived) throw new ConflictError(`classes/${classId} is archived.`);
   await removeAssignment(actor, classId, courseId);
 }

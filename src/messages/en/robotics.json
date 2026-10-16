@@ -1,0 +1,83 @@
+{
+  "description": "Build robots that see, sense and decide for themselves. Learn with the courses, take on a robot challenge, and use any kit that has the right sensors.",
+  "pathwayLink": "AI Robotics pathway",
+  "sectionError": "This part of the page couldn’t be loaded. Refresh the page to try again.",
+  "courses": {
+    "title": "AI Robotics courses",
+    "description": "Courses that teach robots to see, sense and move on their own.",
+    "empty": {
+      "title": "No robotics course yet",
+      "description": "Robotics courses appear here as soon as they’re published."
+    }
+  },
+  "themes": {
+    "title": "Robotics projects",
+    "description": "Every course ends with a project. Pick a theme to find the courses that build it.",
+    "vision": {
+      "title": "Vision projects",
+      "description": "Robots that use a camera to recognise objects, colours and signs."
+    },
+    "sensors": {
+      "title": "Sensor projects",
+      "description": "Robots that measure distance, light, sound and movement to react to the world around them."
+    },
+    "autonomous": {
+      "title": "Autonomous projects",
+      "description": "Robots that follow lines, avoid obstacles and make their own decisions."
+    },
+    "courseCount": "{count, plural, =0 {No course yet} one {# course} other {# courses}}",
+    "empty": "No course on this theme yet."
+  },
+  "challenges": {
+    "title": "Robot challenges",
+    "description": "Open and upcoming challenges where your robot can compete.",
+    "viewAll": "All challenges",
+    "empty": {
+      "title": "No robot challenge right now",
+      "description": "New robot challenges are announced in the Challenge Arena."
+    }
+  },
+  "hardware": {
+    "title": "Supported hardware",
+    "description": "RoboHolic works with any kit that has the capabilities a course needs, whatever the brand.",
+    "capabilities": "Capabilities",
+    "programming": "Programming",
+    "connectivity": "Connection",
+    "fits": "Works for: {courses}",
+    "empty": {
+      "title": "No hardware listed yet",
+      "description": "The kits you can use will be listed here."
+    },
+    "kinds": {
+      "robot": "Robot",
+      "microcontroller": "Microcontroller",
+      "sensor_kit": "Sensor kit",
+      "simulator": "Simulator"
+    },
+    "modes": {
+      "blocks": "Blocks",
+      "python": "Python",
+      "javascript": "JavaScript",
+      "cpp": "C++"
+    },
+    "links": {
+      "usb": "USB",
+      "bluetooth": "Bluetooth",
+      "wifi": "Wi-Fi",
+      "none": "No connection needed"
+    }
+  },
+  "capabilities": {
+    "drive": "Wheels",
+    "camera": "Camera",
+    "distance": "Distance sensor",
+    "line": "Line sensor",
+    "color": "Colour sensor",
+    "imu": "Motion sensor",
+    "microphone": "Microphone",
+    "speaker": "Speaker",
+    "gripper": "Gripper",
+    "display": "Screen"
+  },
+  "vendor": "Made by {vendor}"
+}

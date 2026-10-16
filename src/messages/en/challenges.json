@@ -1,0 +1,88 @@
+{
+  "description": "Take on challenges, show what you can build and earn XP.",
+  "sectionError": "This part of the page couldn’t be loaded. Refresh the page to try again.",
+  "count": "{count, plural, =0 {No challenge} one {# challenge} other {# challenges}}",
+  "empty": {
+    "title": "No challenge yet",
+    "description": "Challenges appear here as soon as they’re announced. Come back soon!",
+    "action": "Keep learning"
+  },
+  "phases": {
+    "open": {
+      "title": "Open now",
+      "empty": "No challenge is open right now. New challenges are announced here."
+    },
+    "upcoming": {
+      "title": "Coming soon",
+      "empty": "No upcoming challenge has been announced yet."
+    },
+    "closed": {
+      "title": "Closed"
+    }
+  },
+  "myEntries": {
+    "title": "My entries",
+    "description": "Your latest entry to each challenge. Open one to read the feedback."
+  },
+  "detail": {
+    "about": "About this challenge",
+    "requirements": "What to submit",
+    "allowedTypes": "You can send: {types}",
+    "prizes": "Prizes",
+    "judging": {
+      "title": "How entries are judged"
+    }
+  },
+  "facts": {
+    "title": "Key facts",
+    "status": "Status",
+    "opens": "Opens",
+    "opened": "Opened",
+    "deadline": "Deadline",
+    "reward": "Reward",
+    "ages": "Recommended for",
+    "allAges": "All ages",
+    "openTo": "Open to",
+    "scopeGlobal": "Everyone",
+    "scopeSchool": "Your school",
+    "types": "You can send",
+    "hardware": "Your robot needs",
+    "hardwareLink": "See supported hardware"
+  },
+  "entry": {
+    "title": "Your entry",
+    "send": "Send your entry",
+    "newVersion": "Send a new version",
+    "notOpenYet": "This challenge opens on {date}. Come back then to send your entry.",
+    "closed": "This challenge closed on {date}. Entries are no longer accepted.",
+    "unavailable": "Entries can’t be sent for this challenge.",
+    "checkAgain": "Check again",
+    "openEntry": "Open your entry",
+    "waiting": {
+      "title": "Entry sent",
+      "description": "You sent your entry on {date}. It’s waiting for review.",
+      "stillWaiting": "Still waiting for review. Check again in a moment.",
+      "reviewFailed": "Robo AI couldn’t review your entry. Open your entry and ask Robo AI again.",
+      "stalled": "Robo AI is taking longer than usual. Open your entry to get your review."
+    },
+    "accepted": {
+      "title": "Entry accepted",
+      "description": "Well done! Your entry was accepted.",
+      "xp": "You earned {xp, number} XP.",
+      "xpPending": "Your XP hasn’t been added yet. Open your entry to add it."
+    },
+    "approved": {
+      "title": "Entry approved",
+      "description": "Your teacher approved your entry."
+    },
+    "returned": {
+      "title": "Entry returned",
+      "description": "Open your entry to read the feedback, then send a new version below.",
+      "attemptsLeft": "{count, plural, one {# attempt left} other {# attempts left}}"
+    },
+    "noAttempts": {
+      "title": "No attempts left",
+      "description": "You’ve used all {max} attempts for this challenge."
+    }
+  }
+}

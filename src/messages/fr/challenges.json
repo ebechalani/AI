@@ -1,0 +1,88 @@
+{
+  "description": "Relève des défis, montre ce que tu sais construire et gagne des XP.",
+  "sectionError": "Cette partie de la page n’a pas pu être chargée. Actualise la page pour réessayer.",
+  "count": "{count, plural, =0 {Aucun défi} one {# défi} other {# défis}}",
+  "empty": {
+    "title": "Aucun défi pour le moment",
+    "description": "Les défis s’affichent ici dès qu’ils sont annoncés. Repasse bientôt\u00a0!",
+    "action": "Continuer à apprendre"
+  },
+  "phases": {
+    "open": {
+      "title": "Ouverts maintenant",
+      "empty": "Aucun défi n’est ouvert pour le moment. Les nouveaux défis sont annoncés ici."
+    },
+    "upcoming": {
+      "title": "Bientôt",
+      "empty": "Aucun défi à venir n’a encore été annoncé."
+    },
+    "closed": {
+      "title": "Clôturés"
+    }
+  },
+  "myEntries": {
+    "title": "Mes participations",
+    "description": "Ta dernière participation à chaque défi. Ouvre-la pour lire le retour."
+  },
+  "detail": {
+    "about": "À propos de ce défi",
+    "requirements": "Ce qu’il faut envoyer",
+    "allowedTypes": "Tu peux envoyer\u00a0: {types}",
+    "prizes": "Prix",
+    "judging": {
+      "title": "Comment les participations sont évaluées"
+    }
+  },
+  "facts": {
+    "title": "L’essentiel",
+    "status": "Statut",
+    "opens": "Ouverture",
+    "opened": "Ouvert le",
+    "deadline": "Date limite",
+    "reward": "Récompense",
+    "ages": "Recommandé pour",
+    "allAges": "Tous les âges",
+    "openTo": "Ouvert à",
+    "scopeGlobal": "Tout le monde",
+    "scopeSchool": "Ton école",
+    "types": "Tu peux envoyer",
+    "hardware": "Ton robot a besoin de",
+    "hardwareLink": "Voir le matériel compatible"
+  },
+  "entry": {
+    "title": "Ta participation",
+    "send": "Envoie ta participation",
+    "newVersion": "Envoie une nouvelle version",
+    "notOpenYet": "Ce défi ouvre le {date}. Reviens à ce moment-là pour envoyer ta participation.",
+    "closed": "Ce défi a été clôturé le {date}. Les participations ne sont plus acceptées.",
+    "unavailable": "Impossible d’envoyer une participation à ce défi.",
+    "checkAgain": "Vérifier à nouveau",
+    "openEntry": "Ouvrir ta participation",
+    "waiting": {
+      "title": "Participation envoyée",
+      "description": "Tu as envoyé ta participation le {date}. Elle attend d’être évaluée.",
+      "stillWaiting": "Toujours en attente d’évaluation. Vérifie à nouveau dans un instant.",
+      "reviewFailed": "Robo AI n’a pas pu évaluer ta participation. Ouvre-la et redemande à Robo AI.",
+      "stalled": "Robo AI met plus de temps que d’habitude. Ouvre ta participation pour obtenir ton évaluation."
+    },
+    "accepted": {
+      "title": "Participation acceptée",
+      "description": "Bravo\u00a0! Ta participation a été acceptée.",
+      "xp": "Tu as gagné {xp, number}\u00a0XP.",
+      "xpPending": "Tes XP n’ont pas encore été ajoutés. Ouvre ta participation pour les ajouter."
+    },
+    "approved": {
+      "title": "Participation approuvée",
+      "description": "Ton enseignant a approuvé ta participation."
+    },
+    "returned": {
+      "title": "Participation à retravailler",
+      "description": "Ouvre ta participation pour lire le retour, puis envoie une nouvelle version ci-dessous.",
+      "attemptsLeft": "{count, plural, one {# tentative restante} other {# tentatives restantes}}"
+    },
+    "noAttempts": {
+      "title": "Plus de tentatives",
+      "description": "Tu as utilisé les {max} tentatives de ce défi."
+    }
+  }
+}

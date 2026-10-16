@@ -1,0 +1,230 @@
+{
+  "dashboard": {
+    "greeting": "Bienvenue, {name}",
+    "description": "Vos classes, les travaux qui attendent votre évaluation et les derniers résultats aux quiz.",
+    "browseCourses": "Parcourir les cours",
+    "stats": {
+      "label": "En un coup d’œil",
+      "classes": "Classes actives",
+      "students": "Élèves",
+      "pending": "En attente d’évaluation",
+      "courses": "Cours attribués"
+    },
+    "classes": {
+      "title": "Vos classes",
+      "viewAll": "Toutes les classes",
+      "more": "{count, plural, one {et # autre classe} other {et # autres classes}}",
+      "noActive": {
+        "title": "Aucune classe active",
+        "description": "Toutes vos classes sont archivées. Créez une classe pour commencer avec un nouveau groupe."
+      }
+    },
+    "pending": {
+      "title": "En attente d’évaluation",
+      "count": "{count, plural, =0 {Rien en attente} one {# projet en attente} other {# projets en attente}}",
+      "openQueue": "Ouvrir la file d’évaluation",
+      "empty": {
+        "title": "Vous êtes à jour",
+        "description": "Les nouveaux projets de vos classes apparaissent ici."
+      }
+    },
+    "quizzes": {
+      "title": "Derniers résultats aux quiz",
+      "listLabel": "Dernières tentatives aux quiz",
+      "row": "{name} – {quiz}",
+      "passed": "Réussi",
+      "failed": "Non réussi",
+      "unknownClass": "Une autre classe",
+      "viewAll": "Tous les résultats aux quiz",
+      "empty": {
+        "title": "Aucun résultat pour l’instant",
+        "description": "Quand vos élèves passeront des quiz, leurs résultats apparaîtront ici."
+      }
+    },
+    "onboarding": {
+      "title": "Créez votre première classe",
+      "description": "Une classe regroupe vos élèves. Attribuez-lui des cours, suivez leur progression et évaluez leurs projets.",
+      "nextTitle": "Pour bien démarrer",
+      "catalog": {
+        "title": "Explorer le catalogue",
+        "description": "Les cours officiels RoboHolic pour les 8–18\u00a0ans, prêts à être attribués."
+      },
+      "academy": {
+        "title": "Académie des enseignants",
+        "description": "Des cours courts pour les enseignants sur l’usage de l’IA en classe."
+      },
+      "create": {
+        "title": "Créer un cours",
+        "description": "Concevez vos propres leçons, quiz et projets."
+      }
+    }
+  },
+  "courses": {
+    "description": "Le catalogue RoboHolic, l’Académie des enseignants et les cours de votre école.",
+    "tabsLabel": "Listes de cours",
+    "tabs": {
+      "catalog": "Catalogue",
+      "academy": "Académie",
+      "school": "Mon école",
+      "mine": "Mes cours"
+    },
+    "catalog": {
+      "description": "Les cours officiels, par parcours. Ouvrez un cours pour le prévisualiser ou l’attribuer à une classe.",
+      "empty": {
+        "title": "Aucun cours pour l’instant",
+        "description": "Les cours publiés apparaissent ici."
+      }
+    },
+    "academy": {
+      "description": "Des cours pour les enseignants. Inscrivez-vous pour apprendre à votre rythme et obtenir un certificat.",
+      "empty": {
+        "title": "Aucun cours de l’Académie des enseignants pour l’instant",
+        "description": "Les nouveaux cours pour les enseignants apparaissent ici."
+      }
+    },
+    "school": {
+      "description": "Les cours que vos collègues partagent avec l’école.",
+      "empty": {
+        "title": "Aucun cours partagé pour l’instant",
+        "description": "Les cours que les enseignants de votre école partagent apparaissent ici."
+      }
+    },
+    "mine": {
+      "description": "Les cours que vous avez créés, publiés ou non.",
+      "create": "Créer un cours",
+      "edit": "Modifier",
+      "editLabel": "Modifier {course}",
+      "updated": "Mis à jour le {date}",
+      "audience": {
+        "student": "Pour les élèves",
+        "teacher": "Pour les enseignants"
+      },
+      "empty": {
+        "title": "Vous n’avez pas encore créé de cours",
+        "description": "Créez votre propre cours avec des leçons, des quiz et des projets."
+      }
+    }
+  },
+  "course": {
+    "about": "À propos de ce cours",
+    "outcomes": "Ce que les apprenants sauront faire",
+    "preview": "Prévisualiser les leçons",
+    "edit": "Modifier le cours",
+    "outline": {
+      "title": "Leçons",
+      "module": "Module {number}\u00a0: {title}",
+      "completed": "Terminée",
+      "current": "Prochaine",
+      "empty": {
+        "title": "Aucune leçon pour l’instant",
+        "description": "Ce cours n’a pas encore de leçon."
+      }
+    },
+    "facts": {
+      "title": "Détails du cours",
+      "area": "Domaine",
+      "ages": "Âges",
+      "agesNone": "Tous âges",
+      "duration": "Durée",
+      "content": "Contenu",
+      "audience": "Pour",
+      "forStudents": "Élèves",
+      "forTeachers": "Enseignants",
+      "certificate": "Certificat",
+      "certificateYes": "Certificat à la fin du cours",
+      "certificateNo": "Pas de certificat",
+      "access": "Accès",
+      "free": "Gratuit",
+      "status": "Statut"
+    },
+    "license": {
+      "title": "Ce cours nécessite une licence",
+      "description": "Aucune de vos licences ni aucun de vos abonnements ne couvre ce cours premium. Vous pouvez voir son plan, mais pas l’ouvrir, l’attribuer ni vous y inscrire."
+    },
+    "assignPanel": {
+      "title": "Attribuer à une classe",
+      "description": "Tous les élèves de la classe sont inscrits au cours.",
+      "assigned": "Attribué",
+      "assign": "Attribuer",
+      "actionLabel": "Attribuer ce cours à {className}",
+      "notPublished": "Publiez ce cours avant de l’attribuer.",
+      "noClasses": {
+        "description": "Créez une classe pour attribuer ce cours.",
+        "action": "Aller à mes classes"
+      }
+    },
+    "academyPanel": {
+      "title": "Suivre ce cours",
+      "description": "Inscrivez-vous pour enregistrer votre progression, passer les quiz et obtenir le certificat.",
+      "enroll": "M’inscrire et commencer",
+      "enrolled": "Vous êtes inscrit(e).",
+      "start": "Commencer le cours",
+      "continue": "Continuer",
+      "review": "Revoir le cours",
+      "progress": "Votre progression",
+      "lessons": "{completed} sur {total, plural, one {# leçon terminée} other {# leçons terminées}}",
+      "completedTitle": "Cours terminé",
+      "completedDescription": "Bravo\u00a0! Vous avez terminé toutes les leçons.",
+      "certificate": "Voir mon certificat",
+      "draft": "Ce cours n’est pas encore publié. Publiez-le pour vous y inscrire.",
+      "errors": {
+        "conflict": "Ce cours n’est pas publié.",
+        "forbidden": "Vous ne pouvez pas vous inscrire à ce cours.",
+        "notFound": "Ce cours n’existe plus."
+      }
+    }
+  },
+  "settings": {
+    "description": "Votre profil, votre langue et vos certificats.",
+    "profile": {
+      "title": "Profil",
+      "description": "Vos élèves et vos collègues voient votre nom et votre avatar.",
+      "displayName": "Nom affiché",
+      "displayNameHint": "De 2 à 40\u00a0caractères.",
+      "avatar": "Avatar",
+      "submit": "Enregistrer le profil",
+      "saved": "Profil enregistré."
+    },
+    "avatars": {
+      "robot": "Robot",
+      "rocket": "Fusée",
+      "planet": "Planète",
+      "star": "Étoile",
+      "bolt": "Éclair",
+      "atom": "Atome",
+      "bulb": "Ampoule",
+      "gear": "Engrenage",
+      "chip": "Puce",
+      "compass": "Boussole",
+      "satellite": "Satellite",
+      "puzzle": "Pièce de puzzle"
+    },
+    "language": {
+      "title": "Langue",
+      "description": "La langue que RoboHolic AI utilise pour vous.",
+      "label": "Langue",
+      "submit": "Enregistrer la langue",
+      "saved": "Langue enregistrée."
+    },
+    "account": {
+      "title": "Compte",
+      "email": "E-mail",
+      "role": "Rôle",
+      "verification": "Vérification enseignant",
+      "verified": "Enseignant vérifié",
+      "notVerified": "Pas encore vérifié",
+      "notVerifiedHint": "Sans école, seul un enseignant vérifié peut créer des comptes d’élèves. Un administrateur RoboHolic vérifie les enseignants.",
+      "school": "Votre compte appartient à une école.",
+      "passwordHint": "Pour changer votre mot de passe, déconnectez-vous et choisissez «\u00a0Mot de passe oublié\u00a0» sur la page de connexion."
+    },
+    "certificates": {
+      "title": "Mes certificats",
+      "description": "Les certificats que vous avez obtenus dans l’Académie des enseignants.",
+      "empty": {
+        "title": "Aucun certificat pour l’instant",
+        "description": "Terminez un cours de l’Académie des enseignants pour en obtenir un.",
+        "action": "Ouvrir l’Académie des enseignants"
+      }
+    }
+  }
+}

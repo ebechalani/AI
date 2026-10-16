@@ -1,0 +1,100 @@
+{
+  "list": {
+    "description": "Les certificats des cours que vous avez terminés. Ouvrez-en un pour l’imprimer, l’enregistrer en PDF ou partager son lien de vérification.",
+    "heading": "Vos certificats",
+    "count": "{count, plural, one {# certificat} other {# certificats}}",
+    "empty": {
+      "title": "Aucun certificat pour le moment",
+      "description": "Terminez un cours pour obtenir son certificat. Il s’affichera ici.",
+      "action": "Trouver un cours"
+    }
+  },
+  "document": {
+    "heading": "Certificat de réussite",
+    "presentedTo": "Ce certificat atteste que",
+    "completed": "a terminé avec succès le cours",
+    "school": "Par l’intermédiaire de {school}",
+    "date": "Date",
+    "issuer": "Délivré par",
+    "code": "Code de vérification",
+    "verifyLabel": "Vérifiez ce certificat sur",
+    "revoked": "Révoqué"
+  },
+  "page": {
+    "metaTitle": "Certificat – {course}",
+    "printHint": "Pour en garder une copie, imprimez le certificat et choisissez «\u00a0Enregistrer au format PDF\u00a0» dans la fenêtre d’impression.",
+    "copyLink": "Copier le lien de vérification",
+    "copyFailed": "Le lien n’a pas pu être copié. Vous pouvez le sélectionner sur le certificat.",
+    "back": {
+      "student": "Mes certificats",
+      "teacherOwn": "Paramètres",
+      "teacher": "Rapports",
+      "school_admin": "Certificats",
+      "platform_admin": "Certificats"
+    },
+    "status": {
+      "issuedTitle": "Certificat valide",
+      "issued": "Tout le monde peut le vérifier avec son code ou son lien de vérification.",
+      "revokedTitle": "Révoqué le {date}",
+      "revoked": "Ce certificat n’est plus valide. Son lien de vérification le montre désormais comme révoqué.",
+      "reason": "Motif\u00a0: {reason}"
+    }
+  },
+  "issue": {
+    "action": "Délivrer le certificat",
+    "view": "Voir le certificat",
+    "reissueAction": "Délivrer à nouveau",
+    "success": "Certificat délivré.",
+    "dialog": {
+      "title": "Délivrer ce certificat\u00a0?",
+      "description": "Le certificat est délivré au nom de l’apprenant pour ce cours, avec vous comme émetteur. L’apprenant peut ensuite l’imprimer depuis sa page Certificats.",
+      "confirm": "Délivrer le certificat",
+      "reissueTitle": "Délivrer à nouveau ce certificat\u00a0?",
+      "reissueDescription": "Le certificat redevient valide avec un nouveau code de vérification et la date du jour. L’ancien code ne fonctionne plus.",
+      "reissueConfirm": "Délivrer à nouveau"
+    },
+    "errors": {
+      "invalid": "Cette demande de certificat n’est pas valide. Rechargez la page et réessayez.",
+      "conflict": "Ce certificat ne peut pas être délivré\u00a0: le cours ne donne pas de certificat ou, pour un cours Certifié RoboHolic, l’apprenant ne l’a pas encore terminé.",
+      "forbidden": "Vous ne pouvez délivrer un certificat que pour un cours attribué à une classe dans laquelle vous enseignez à cet apprenant.",
+      "notFound": "Cet apprenant n’est pas inscrit au cours, ou ne fait plus partie de vos classes."
+    }
+  },
+  "revoke": {
+    "action": "Révoquer",
+    "success": "Certificat révoqué.",
+    "dialog": {
+      "title": "Révoquer ce certificat\u00a0?",
+      "description": "Il cesse aussitôt d’être valide\u00a0: son lien de vérification le montrera comme révoqué. Vous pourrez le délivrer à nouveau plus tard.",
+      "reason": "Motif",
+      "reasonHint": "L’apprenant voit ce motif. {max, number}\u00a0caractères au maximum.",
+      "confirm": "Révoquer le certificat"
+    },
+    "errors": {
+      "invalid": "Cette demande n’est pas valide. Rechargez la page et réessayez.",
+      "forbidden": "Seul l’enseignant qui a délivré ce certificat, ou un administrateur de la plateforme, peut le révoquer.",
+      "notFound": "Ce certificat n’existe plus, ou vous ne pouvez plus le voir."
+    }
+  },
+  "verify": {
+    "description": "Vérifiez qu’un certificat RoboHolic est authentique et toujours valide.",
+    "valid": {
+      "title": "Certificat valide",
+      "description": "Ce certificat a été délivré par l’intermédiaire de RoboHolic AI et il est valide."
+    },
+    "revoked": {
+      "title": "Certificat révoqué",
+      "description": "Ce certificat a été révoqué et n’est plus valide."
+    },
+    "notFound": {
+      "title": "Aucun certificat trouvé",
+      "description": "Aucun certificat ne correspond au code {code}. Vérifiez le code imprimé sur le certificat\u00a0: il commence par RH- suivi de 10\u00a0lettres et chiffres."
+    },
+    "course": "Cours",
+    "issuedOn": "Délivré le",
+    "issuer": "Délivré par",
+    "school": "École",
+    "code": "Code de vérification",
+    "privacy": "Pour protéger la vie privée des apprenants, cette page n’affiche jamais le nom de la personne qui détient le certificat."
+  }
+}

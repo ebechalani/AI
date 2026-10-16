@@ -847,6 +847,28 @@ describe('project and submission schemas', () => {
     ).toEqual({ 'criteria.creativity': ['too_big'] });
   });
 
+  it('name the AI suggestion a review was decided on, optionally (WS-D-4)', () => {
+    const { reviewInputSchema } = submissionSchemas;
+    const approve = {
+      submissionId: 'uid1_p_c1_project-1_1',
+      decision: 'approve',
+      criteria: null,
+      feedback: 'Well done.',
+    };
+    expect(errorsOf(reviewInputSchema, approve)).toEqual({});
+    expect(errorsOf(reviewInputSchema, { ...approve, aiReviewId: null })).toEqual({});
+    expect(errorsOf(reviewInputSchema, { ...approve, aiReviewId: 'q4XChK972fSu4wO56qhE' })).toEqual(
+      {},
+    );
+    for (const aiReviewId of ['', 'a/b', 'a_b', 'x'.repeat(65), 7]) {
+      expect(errorsOf(reviewInputSchema, { ...approve, aiReviewId })).toEqual({
+        aiReviewId: ['invalid'],
+      });
+    }
+    const parsed = reviewInputSchema.safeParse({ ...approve, aiReviewId: 'q4XChK972fSu4wO56qhE' });
+    expect(parsed.success && parsed.data.aiReviewId).toBe('q4XChK972fSu4wO56qhE');
+  });
+
   it('register an upload by id, kind and file name, never by path', () => {
     const { registerUploadInputSchema } = submissionSchemas;
     const upload = {

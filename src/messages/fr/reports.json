@@ -1,0 +1,60 @@
+{
+  "description": "Suivez la progression de chaque élève dans un cours attribué à une classe, et délivrez des certificats.",
+  "filters": {
+    "label": "Filtres du rapport",
+    "class": "Classe",
+    "course": "Cours",
+    "apply": "Afficher le rapport",
+    "archivedClass": "{name} (archivée)",
+    "noCourse": "Aucun cours attribué"
+  },
+  "summary": {
+    "label": "Résumé",
+    "students": "Élèves",
+    "averageProgress": "Progression moyenne",
+    "completed": "Ont terminé le cours",
+    "certificates": "Certificats délivrés"
+  },
+  "table": {
+    "caption": "Progression de la classe {className}\u00a0: {course}",
+    "student": "Élève",
+    "progress": "Progression",
+    "lessons": "Leçons",
+    "status": "Statut",
+    "quizAverage": "Moyenne aux quiz",
+    "projects": "Projets",
+    "lastActivity": "Dernière activité",
+    "certificate": "Certificat",
+    "lessonCount": "{completed} sur {total}",
+    "projectsValue": "{approved, plural, one {# approuvé} other {# approuvés}}, {pending} en attente",
+    "none": "Aucune",
+    "statusNotStarted": "Pas commencé",
+    "statusNotEnrolled": "Non inscrit",
+    "certificateNotCompleted": "Pas encore terminé",
+    "certificateNotEnrolled": "Non inscrit",
+    "certificatesOff": "Ce cours ne donne pas de certificat."
+  },
+  "certificateHint": "Pour un cours officiel, vous pouvez délivrer un certificat une fois que l’élève a terminé toutes les leçons.",
+  "links": {
+    "class": "Ouvrir la classe",
+    "quizzes": "Résultats aux quiz",
+    "projects": "Projets à évaluer"
+  },
+  "empty": {
+    "noClasses": {
+      "title": "Aucune classe pour l’instant",
+      "description": "Créez une classe et attribuez-lui un cours pour voir les rapports de progression.",
+      "action": "Aller à mes classes"
+    },
+    "noCourses": {
+      "title": "Aucun cours attribué à {className}",
+      "description": "Attribuez un cours à la classe pour suivre sa progression.",
+      "action": "Attribuer un cours"
+    },
+    "noStudents": {
+      "title": "Aucun élève dans {className}",
+      "description": "Ajoutez des élèves à la classe pour voir leur progression.",
+      "action": "Ouvrir la classe"
+    }
+  }
+}

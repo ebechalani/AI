@@ -116,6 +116,8 @@ const scoreSchema = int(0, 100);
 /**
  * 'modify' carries the teacher's own scores; 'approve' (the AI suggestion becomes the grade)
  * and 'return' carry none. Feedback is always required: it is what the student reads.
+ * `aiReviewId` names the suggestion the teacher saw (null: none); whether an 'approve' still
+ * matches the latest suggestion is the service's decision (a conflict), not a field error.
  */
 export const reviewInputSchema = obj({
   submissionId: compositeIdSchema,
@@ -127,6 +129,8 @@ export const reviewInputSchema = obj({
     responsibleAi: scoreSchema,
   }).nullable(),
   feedback: requiredText(CONTENT_LIMITS.feedbackChars),
+  // AI reviews have Firestore auto-ids.
+  aiReviewId: idSchema.nullable().optional(),
 }).superRefine((review, ctx) => {
   if (review.decision === 'modify' && review.criteria === null) {
     ctx.addIssue({ code: 'custom', message: 'required', path: ['criteria'] });

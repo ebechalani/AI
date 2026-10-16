@@ -1,0 +1,56 @@
+{
+  "description": "Your name, your avatar, your language and your classes.",
+  "profile": {
+    "title": "Profile",
+    "description": "Your name and picture, as RoboHolic shows them.",
+    "name": {
+      "label": "Display name",
+      "hint": "{min, number} to {max, number} characters. Your first name and the first letter of your last name are enough."
+    },
+    "avatar": {
+      "legend": "Avatar",
+      "hint": "Pick the picture shown next to your name."
+    },
+    "saved": "Profile saved.",
+    "noChanges": "Nothing to save: you haven’t changed anything."
+  },
+  "avatars": {
+    "robot": "Robot",
+    "rocket": "Rocket",
+    "planet": "Planet",
+    "star": "Star",
+    "bolt": "Lightning bolt",
+    "atom": "Atom",
+    "bulb": "Light bulb",
+    "gear": "Gear",
+    "chip": "Chip",
+    "compass": "Compass",
+    "satellite": "Satellite",
+    "puzzle": "Puzzle piece"
+  },
+  "language": {
+    "title": "Language",
+    "description": "The language of the pages. Saving it also switches the pages now.",
+    "legend": "Language",
+    "saved": "Language saved.",
+    "noChanges": "This language is already saved.",
+    "stored": "Saved in your profile: <lang>{language}</lang>."
+  },
+  "classes": {
+    "title": "Classes",
+    "description": "Got a class code from your teacher? Enter it to join the class.",
+    "count": "{count, plural, =0 {You’re not in a class yet.} one {You’re in # class.} other {You’re in # classes.}}"
+  },
+  "account": {
+    "title": "Account",
+    "username": "Username",
+    "email": "Email",
+    "ageBand": "Age group",
+    "passwordUsername": "Forgot your password? Ask your teacher for a new one.",
+    "passwordEmail": "To change your password, sign out, then choose “Forgot password?” on the sign-in page.",
+    "readOnly": "These details can’t be changed here."
+  },
+  "errors": {
+    "form": "Check the highlighted fields."
+  }
+}

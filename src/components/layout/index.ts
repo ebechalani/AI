@@ -10,6 +10,7 @@ export { PublicShell, type PublicShellProps } from './PublicShell';
 export { SidebarNav } from './SidebarNav';
 export { SignOutButton, useSignOut, type SignOutButtonProps } from './sign-out';
 export { SkipLink } from './SkipLink';
+export { TimeZoneCookie } from './TimeZoneCookie';
 export { TopBar, type ShellUser, type TopBarProps } from './TopBar';
 export {
   TutorBridgeProvider,
