@@ -15,7 +15,9 @@ export function PublicHeader({ mySpaceHref }: PublicHeaderProps) {
   const t = useTranslations('nav');
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur-sm">
-      <div className="mx-auto flex min-h-16 w-full max-w-6xl items-center gap-1.5 px-4 sm:gap-3 sm:px-6 lg:px-8">
+      {/* Below 360 px (French on a 320 px phone) the gaps tighten and the language button is
+          the globe alone, so the row never scrolls sideways; 360 px and up are unchanged. */}
+      <div className="mx-auto flex min-h-16 w-full max-w-6xl items-center gap-1 px-4 min-[22.5rem]:gap-1.5 sm:gap-3 sm:px-6 lg:px-8">
         <Link href="/" aria-label={t('shell.homeLink')} className="shrink-0 rounded-sm">
           <Logo variant="mark" label="" className="sm:hidden" />
           <Logo label="" className="max-sm:hidden" />
@@ -29,7 +31,7 @@ export function PublicHeader({ mySpaceHref }: PublicHeaderProps) {
           </Link>
         </nav>
         <div className="flex-1" />
-        <LocaleSwitcher align="start" />
+        <LocaleSwitcher align="start" compact="narrow" />
         {mySpaceHref ? (
           <LinkButton href={mySpaceHref} size="sm">
             {t('public.mySpace')}

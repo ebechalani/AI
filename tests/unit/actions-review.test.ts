@@ -96,6 +96,18 @@ describe('reviewSubmissionAction', () => {
       error: { code: 'conflict' },
     });
   });
+
+  it('passes on the suggestion the teacher saw, and refuses a malformed one (WS-D-4)', async () => {
+    const seen = { ...approve, aiReviewId: 'q4XChK972fSu4wO56qhE' };
+    expect((await reviewSubmissionAction(seen)).ok).toBe(true);
+    expect(reviewSubmission).toHaveBeenCalledWith(sessionOf('teacher', 'teacher-1'), seen);
+    vi.mocked(reviewSubmission).mockClear();
+    expect(await reviewSubmissionAction({ ...approve, aiReviewId: '../x' })).toEqual({
+      ok: false,
+      error: { code: 'validation', fieldErrors: { aiReviewId: ['invalid'] } },
+    });
+    expect(reviewSubmission).not.toHaveBeenCalled();
+  });
 });
 
 describe('regenerateAiReviewAction', () => {

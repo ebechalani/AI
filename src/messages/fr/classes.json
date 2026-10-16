@@ -1,0 +1,375 @@
+{
+  "errors": {
+    "form": "Certaines informations ne sont pas valides. Vérifiez-les et réessayez.",
+    "archived": "Cette classe est archivée et ne peut plus être modifiée.",
+    "classGone": "Cette classe n’existe plus, ou vous n’y enseignez plus."
+  },
+  "list": {
+    "description": "Créez des classes, ajoutez des élèves et partagez les codes de classe.",
+    "activeTitle": "Classes actives",
+    "archivedSummary": "{count, plural, one {# classe archivée} other {# classes archivées}}",
+    "archivedHint": "Les classes archivées gardent leurs élèves, leur progression et leurs travaux. Leurs codes de classe ne fonctionnent plus.",
+    "empty": {
+      "title": "Aucune classe pour l’instant",
+      "description": "Créez une classe pour ajouter des élèves, attribuer des cours et suivre leur progression."
+    },
+    "noActive": {
+      "title": "Aucune classe active",
+      "description": "Toutes vos classes sont archivées. Créez une classe pour commencer avec un nouveau groupe."
+    }
+  },
+  "card": {
+    "students": "{count, plural, =0 {Aucun élève} one {# élève} other {# élèves}}",
+    "courses": "{count, plural, =0 {Aucun cours attribué} one {# cours attribué} other {# cours attribués}}",
+    "coTeacher": "Co-enseignant(e)",
+    "codeOpen": "Code de classe ouvert",
+    "codeClosed": "Code de classe fermé"
+  },
+  "verification": {
+    "title": "Votre compte enseignant n’est pas encore vérifié",
+    "description": "Vous pouvez créer des classes et partager leur code de classe avec des élèves de 13\u00a0ans et plus qui ont déjà leur propre compte. Pour créer vous-même des comptes d’élèves, un administrateur RoboHolic doit d’abord vérifier votre compte."
+  },
+  "form": {
+    "name": "Nom de la classe",
+    "nameHint": "Par exemple «\u00a06e A\u00a0» ou «\u00a0Club de robotique\u00a0».",
+    "gradeLabel": "Niveau",
+    "gradeLabelHint": "Par exemple «\u00a06e\u00a0» ou «\u00a0CM2\u00a0».",
+    "ageBand": "Tranche d’âge",
+    "ageBandHint": "Les élèves que vous ajoutez à la classe reçoivent cette tranche d’âge, sauf si vous en choisissez une autre.",
+    "ageBandHintNoSchool": "Les élèves que vous ajoutez à la classe reçoivent cette tranche d’âge. En dehors d’une école, vous ne pouvez créer des comptes que pour des élèves de 13\u00a0ans et plus."
+  },
+  "create": {
+    "action": "Nouvelle classe",
+    "title": "Créer une classe",
+    "description": "Vous pourrez modifier ces informations plus tard.",
+    "submit": "Créer la classe",
+    "success": "Classe «\u00a0{name}\u00a0» créée.",
+    "errors": {
+      "conflict": "Vous enseignez déjà dans 30\u00a0classes, le maximum autorisé. Archivez une classe que vous n’utilisez plus, puis réessayez."
+    }
+  },
+  "edit": {
+    "action": "Modifier les informations",
+    "title": "Modifier les informations de la classe",
+    "submit": "Enregistrer les modifications",
+    "success": "Informations de la classe enregistrées."
+  },
+  "archive": {
+    "action": "Archiver la classe",
+    "title": "Archiver «\u00a0{name}\u00a0»\u00a0?",
+    "description": "La classe rejoint vos classes archivées et son code de classe cesse de fonctionner. Les élèves gardent leur compte et leur progression, et vous pouvez toujours ouvrir la classe depuis la liste des classes archivées. Une classe archivée ne peut pas être restaurée.",
+    "confirm": "Archiver la classe",
+    "success": "Classe «\u00a0{name}\u00a0» archivée."
+  },
+  "detail": {
+    "studentsCount": "{count, plural, =0 {Aucun élève} one {# élève} other {# élèves}}",
+    "report": "Rapport de progression",
+    "archived": {
+      "title": "Cette classe est archivée",
+      "description": "Vous pouvez toujours voir ses élèves, leur progression et leurs travaux. Rien ne peut y être modifié, et son code de classe ne fonctionne pas."
+    },
+    "settings": {
+      "title": "Paramètres de la classe",
+      "description": "Renommez la classe ou changez sa tranche d’âge plus haut. Archivez la classe quand le groupe ne se réunit plus."
+    }
+  },
+  "roster": {
+    "title": "Élèves",
+    "count": "{count, plural, one {# élève} other {# élèves}}",
+    "caption": "Élèves de {className}",
+    "student": "Élève",
+    "ageBand": "Tranche d’âge",
+    "joined": "Arrivée",
+    "actions": "Actions",
+    "usernameLabel": "Nom d’utilisateur\u00a0:",
+    "ownAccount": "Compte personnel",
+    "method": {
+      "code": "Avec le code de classe",
+      "you": "Ajouté(e) par vous",
+      "staff": "Ajouté(e) par l’école"
+    },
+    "empty": {
+      "title": "Aucun élève pour l’instant",
+      "description": "Ajoutez des élèves, ou partagez le code de classe avec votre classe.",
+      "descriptionCodeOnly": "Partagez le code de classe avec des élèves qui ont déjà leur propre compte.",
+      "descriptionAddOnly": "Ajoutez des élèves avec «\u00a0Ajouter des élèves\u00a0». Votre école a désactivé les codes de classe.",
+      "descriptionNone": "Impossible d’ajouter des élèves à cette classe pour le moment.",
+      "descriptionArchived": "Cette classe est archivée\u00a0: aucun élève ne peut y être ajouté."
+    }
+  },
+  "remove": {
+    "action": "Retirer",
+    "actionLabel": "Retirer {name} de la classe",
+    "title": "Retirer {name} de {className}\u00a0?",
+    "description": "{name} garde son compte et sa progression. Ses résultats aux quiz et ses projets dans cette classe restent dans Évaluations et Projets, mais cette classe ne suit plus ses cours.",
+    "confirm": "Retirer l’élève",
+    "success": "{name} ne fait plus partie de {className}.",
+    "errors": {
+      "notFound": "Cet élève avait déjà quitté la classe.",
+      "forbidden": "Vous ne pouvez pas retirer d’élèves de cette classe."
+    }
+  },
+  "joinCode": {
+    "title": "Code de classe",
+    "codeLabel": "Code de classe de {className}\u00a0: {code}",
+    "state": {
+      "open": "Ouvert jusqu’au {date}",
+      "expired": "Expiré le {date}",
+      "off": "Fermé"
+    },
+    "hint": {
+      "anyAge": "Les élèves sans compte en créent un avec ce code. Les élèves qui ont déjà un compte se connectent, puis rejoignent la classe avec ce code.",
+      "thirteenPlus": "Les élèves de 13\u00a0ans et plus peuvent créer leur compte avec ce code. Les élèves qui ont déjà un compte se connectent, puis rejoignent la classe avec ce code.",
+      "existingOnly": "Seuls les élèves qui ont déjà leur propre compte peuvent rejoindre la classe avec ce code\u00a0: ils se connectent, puis le saisissent."
+    },
+    "ttl": "Un code fonctionne pendant 24\u00a0heures après son ouverture.",
+    "open": "Ouvrir pour 24\u00a0heures",
+    "extend": "Prolonger de 24\u00a0heures à partir de maintenant",
+    "close": "Fermer le code",
+    "opened": "Le code de classe est ouvert pour 24\u00a0heures.",
+    "extended": "Le code de classe est ouvert pour les 24\u00a0prochaines heures.",
+    "closed": "Le code de classe est fermé.",
+    "copyCode": "Copier le code",
+    "copyLink": "Copier le lien d’invitation",
+    "copyFailed": "Impossible de copier. Sélectionnez le code et copiez-le vous-même.",
+    "present": "Afficher pour la classe",
+    "presentTitle": "Rejoindre {className}",
+    "presentInstructions": "Ouvrez {url} et saisissez ce code\u00a0:",
+    "regenerate": "Nouveau code",
+    "regenerateTitle": "Remplacer le code de classe\u00a0?",
+    "regenerateDescription": "Le code {code} cesse de fonctionner immédiatement. Partagez le nouveau code avec vos élèves.",
+    "regenerateConfirm": "Remplacer le code",
+    "regenerated": "Nouveau code de classe\u00a0: {code}.",
+    "schoolOff": {
+      "title": "Votre école a désactivé les codes de classe",
+      "description": "Les élèves ne peuvent pas rejoindre la classe avec un code. Ajoutez-les avec «\u00a0Ajouter des élèves\u00a0», ou adressez-vous à l’administrateur de votre école.",
+      "descriptionNoAdd": "Les élèves ne peuvent pas rejoindre la classe avec un code. Adressez-vous à l’administrateur de votre école."
+    }
+  },
+  "addStudents": {
+    "title": "Ajouter des élèves",
+    "description": "Créez des comptes pour les élèves qui n’en ont pas. Vous obtenez leurs noms d’utilisateur et mots de passe à imprimer ou à copier.",
+    "action": "Ajouter des élèves",
+    "capacity": "{count, plural, one {Encore # place dans la classe.} other {Encore # places dans la classe.}}",
+    "under13Hint": "En dehors d’une école, seuls des comptes d’élèves de 13\u00a0ans et plus peuvent être créés.",
+    "full": {
+      "title": "Cette classe est complète",
+      "description": "Une classe compte au maximum {max}\u00a0élèves."
+    },
+    "blocked": {
+      "educator_not_verified": {
+        "title": "Vous ne pouvez pas encore créer de comptes d’élèves",
+        "description": "Votre compte enseignant n’est pas vérifié. Les élèves qui ont déjà un compte peuvent rejoindre la classe avec le code de classe."
+      },
+      "school_inactive": {
+        "title": "Impossible de créer de nouveaux comptes",
+        "description": "Le compte de votre école n’est pas actif. Adressez-vous à l’administrateur de votre école."
+      }
+    },
+    "dialogTitle": "Ajouter des élèves à {className}",
+    "names": "Noms des élèves",
+    "namesHint": "Un élève par ligne, par exemple «\u00a0Léa D.\u00a0». Chaque nom compte de 2 à 40\u00a0caractères.",
+    "namesCount": "{count, plural, =0 {Aucun nom pour l’instant} one {# élève} other {# élèves}} ({max} au maximum)",
+    "ageBand": "Tranche d’âge",
+    "submit": "{count, plural, =0 {Créer les comptes} one {Créer # compte} other {Créer # comptes}}",
+    "creating": "Création des comptes un par un…",
+    "lineError": "Ligne {line} ({name})\u00a0: {message}",
+    "errors": {
+      "noNames": "Saisissez au moins un nom.",
+      "tooMany": "{max, plural, one {Cette classe a encore de la place pour # élève.} other {Cette classe a encore de la place pour # élèves.}}",
+      "forbidden": "Votre compte ne peut pas créer de comptes d’élèves dans cette classe.",
+      "conflict": "Tous les comptes n’ont pas pu être créés\u00a0: la classe est peut-être complète ou archivée, ou aucun nom d’utilisateur libre n’a été trouvé. Vérifiez la liste des élèves, et réinitialisez le mot de passe de tout nouvel élève dont vous n’avez pas reçu le mot de passe.",
+      "partial": "Un problème est survenu pendant la création des comptes. Certains existent peut-être déjà\u00a0: vérifiez la liste des élèves et réinitialisez leur mot de passe pour en obtenir de nouveaux."
+    }
+  },
+  "credentials": {
+    "title": "{count, plural, one {# compte créé} other {# comptes créés}}",
+    "resetTitle": "Nouveau mot de passe pour {name}",
+    "warningTitle": "Les mots de passe ne s’affichent qu’une seule fois",
+    "warning": "Imprimez cette feuille ou copiez-la maintenant. Les mots de passe ne sont pas conservés et ne peuvent plus être affichés\u00a0: vous pourrez seulement les réinitialiser.",
+    "caption": "Noms d’utilisateur et mots de passe",
+    "name": "Élève",
+    "username": "Nom d’utilisateur",
+    "password": "Mot de passe",
+    "print": "Imprimer",
+    "copy": "Tout copier",
+    "copied": "Copié.",
+    "copyFailed": "Impossible de copier. Imprimez plutôt la feuille.",
+    "confirm": "J’ai imprimé ou enregistré ces mots de passe",
+    "done": "Terminé",
+    "slip": {
+      "sheetTitle": "Comptes RoboHolic AI – {className}",
+      "sheetTitleNoClass": "Compte RoboHolic AI",
+      "heading": "Votre compte RoboHolic AI",
+      "class": "Classe\u00a0: {className}",
+      "name": "Nom",
+      "username": "Nom d’utilisateur",
+      "password": "Mot de passe",
+      "signIn": "Connectez-vous sur {url}",
+      "private": "Gardez cette carte pour vous."
+    }
+  },
+  "courses": {
+    "title": "Cours attribués",
+    "assign": "Attribuer un cours",
+    "due": "Date limite\u00a0: {date}",
+    "noDue": "Pas de date limite",
+    "overdue": "Date limite dépassée",
+    "assignedOn": "Attribué le {date}",
+    "unavailable": "Cours plus disponible",
+    "unavailableHint": "Vous ne pouvez plus ouvrir ce cours. Vous pouvez toujours annuler son attribution.",
+    "report": "Rapport de progression",
+    "reportLabel": "Rapport de progression pour {course}",
+    "dueDateAction": "Date limite",
+    "dueDateActionLabel": "Modifier la date limite de {course}",
+    "empty": {
+      "title": "Aucun cours attribué",
+      "description": "Attribuez un cours\u00a0: tous les élèves de la classe y sont inscrits, et vous pouvez suivre leur progression.",
+      "descriptionArchived": "Cette classe est archivée\u00a0: aucun cours ne peut lui être attribué."
+    }
+  },
+  "assign": {
+    "title": "Attribuer un cours",
+    "description": "Les élèves de {className} sont inscrits à chaque cours que vous attribuez.",
+    "back": "Retour à {className}",
+    "schoolTitle": "Partagés dans votre école",
+    "mineTitle": "Mes cours",
+    "assigned": "Attribué",
+    "action": "Attribuer",
+    "actionLabel": "Attribuer {course} à {className}",
+    "dialogTitle": "Attribuer {course}",
+    "dialogDescription": "Tous les élèves de {className} seront inscrits à ce cours.",
+    "dueDateHint": "Facultatif. Un repère pour vous et votre classe\u00a0; le cours reste ouvert après cette date.",
+    "submit": "Attribuer le cours",
+    "success": "{course} attribué à {className}.",
+    "archived": "Cette classe est archivée\u00a0: on ne peut plus lui attribuer de cours.",
+    "empty": {
+      "title": "Aucun cours à attribuer",
+      "description": "Les cours publiés pour les élèves apparaissent ici."
+    },
+    "errors": {
+      "license": "Ce cours premium nécessite une licence ou un abonnement qui le couvre.",
+      "conflict": "Ce cours ne peut pas être attribué\u00a0: il n’est pas publié, il est destiné aux enseignants, ou la classe est archivée.",
+      "notFound": "Cette classe ou ce cours n’existe plus.",
+      "forbidden": "Vous ne pouvez pas attribuer ce cours."
+    }
+  },
+  "dueDate": {
+    "title": "Date limite pour {course}",
+    "label": "Date limite",
+    "hint": "Laissez vide pour ne pas fixer de date limite.",
+    "submit": "Enregistrer la date limite",
+    "clear": "Supprimer la date limite",
+    "saved": "Date limite enregistrée."
+  },
+  "unassign": {
+    "action": "Ne plus attribuer",
+    "actionLabel": "Ne plus attribuer {course} à la classe",
+    "title": "Ne plus attribuer {course} à la classe\u00a0?",
+    "description": "Les élèves gardent leur progression dans le cours, et leurs travaux restent visibles pour vous. Le cours n’est plus listé pour {className}.",
+    "confirm": "Ne plus attribuer le cours",
+    "success": "{course} n’est plus attribué à la classe."
+  },
+  "student": {
+    "backToClass": "Retour à la classe",
+    "summary": {
+      "ownAccount": "Compte personnel (e-mail)"
+    },
+    "progress": {
+      "title": "Progression dans cette classe",
+      "notStarted": "Pas commencé",
+      "lessons": "{completed} sur {total, plural, one {# leçon terminée} other {# leçons terminées}}",
+      "quizzes": "Quiz réussis\u00a0: {passed} sur {attempted}",
+      "quizAverage": "Moyenne aux quiz\u00a0: {value}",
+      "projects": "Projets\u00a0: {approved, plural, one {# approuvé} other {# approuvés}}, {pending} en attente d’évaluation",
+      "lastActivity": "Dernière activité le {date}",
+      "certificate": "Voir le certificat",
+      "unavailable": "Cours non disponible pour vous",
+      "empty": {
+        "title": "Aucune progression pour l’instant",
+        "description": "Les cours attribués à cette classe apparaissent ici une fois l’élève inscrit."
+      }
+    },
+    "attempts": {
+      "title": "Tentatives aux quiz",
+      "caption": "Tentatives aux quiz de {name} dans {className}",
+      "quiz": "Quiz",
+      "course": "Cours",
+      "attempt": "Tentative",
+      "score": "Score",
+      "result": "Résultat",
+      "date": "Date",
+      "number": "N°\u00a0{number}",
+      "passed": "Réussi",
+      "failed": "Non réussi",
+      "more": "Affichage des {count}\u00a0tentatives les plus récentes.",
+      "viewAll": "Tous les résultats aux quiz de la classe",
+      "empty": {
+        "title": "Aucune tentative pour l’instant",
+        "description": "Les quiz que cet élève passe dans cette classe apparaissent ici."
+      }
+    },
+    "submissions": {
+      "title": "Projets",
+      "empty": {
+        "title": "Aucun projet pour l’instant",
+        "description": "Les projets que cet élève envoie dans cette classe apparaissent ici."
+      }
+    },
+    "badges": {
+      "title": "Badges",
+      "empty": "Aucun badge pour l’instant."
+    },
+    "manage": {
+      "title": "Appartenance à la classe"
+    },
+    "notMember": {
+      "title": "Cet élève ne fait plus partie de {className}",
+      "description": "Ses résultats aux quiz et ses projets passés dans cette classe restent dans Évaluations et Projets.",
+      "back": "Retour à {className}"
+    }
+  },
+  "resetPassword": {
+    "title": "Mot de passe",
+    "description": "Donnez un nouveau mot de passe à {name} en cas d’oubli. Toutes ses sessions sont fermées, sur chaque appareil.",
+    "action": "Réinitialiser le mot de passe",
+    "confirmTitle": "Réinitialiser le mot de passe de {name}\u00a0?",
+    "confirmDescription": "Un nouveau mot de passe est créé et affiché une seule fois. Toutes les sessions de {name} sont fermées\u00a0: il faudra se reconnecter avec le nouveau mot de passe.",
+    "confirm": "Réinitialiser le mot de passe",
+    "notAvailable": "{name} se connecte avec sa propre adresse e-mail\u00a0: le mot de passe se change avec «\u00a0Mot de passe oublié\u00a0» sur la page de connexion.",
+    "notManaged": "Seul l’enseignant qui a créé ce compte, ou un enseignant de l’école de l’élève, peut réinitialiser ce mot de passe.",
+    "errors": {
+      "forbidden": "Vous ne pouvez pas réinitialiser le mot de passe de cet élève.",
+      "notFound": "Cet élève ne fait plus partie de votre classe."
+    }
+  },
+  "badge": {
+    "title": "Décerner un badge",
+    "description": "Récompensez {name} avec un badge. Il apparaît avec ses réussites et peut rapporter des XP en bonus.",
+    "badge": "Badge",
+    "placeholder": "Choisissez un badge",
+    "held": "{badge} (déjà décerné)",
+    "note": "Note",
+    "noteHint": "Pourquoi vous le décernez. Jusqu’à {max}\u00a0caractères.",
+    "submit": "Décerner le badge",
+    "awarded": "{badge} décerné à {name}.",
+    "alreadyHeld": "{name} a déjà ce badge.",
+    "noneAvailable": "Aucun badge à décerner pour le moment.",
+    "allHeld": "{name} a déjà tous les badges que vous pouvez décerner.",
+    "errors": {
+      "conflict": "Ce badge ne peut plus être décerné manuellement.",
+      "notFound": "Cet élève ou ce badge n’existe plus."
+    }
+  },
+  "join": {
+    "code": "Code de classe",
+    "codeHint": "8\u00a0lettres et chiffres. Les espaces et les tirets sont ignorés.",
+    "submit": "Rejoindre la classe",
+    "success": "Vous avez rejoint {className}.",
+    "errors": {
+      "notFound": "Ce code n’est pas reconnu. Vérifiez-le auprès de votre enseignant\u00a0: un code cesse de fonctionner 24\u00a0heures après son ouverture.",
+      "conflict": "Vous ne pouvez pas rejoindre cette classe\u00a0: elle est peut-être complète, ou elle appartient à une autre école que la vôtre. Adressez-vous à votre enseignant.",
+      "forbidden": "Seuls les élèves peuvent rejoindre une classe."
+    }
+  }
+}

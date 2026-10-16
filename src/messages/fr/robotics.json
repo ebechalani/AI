@@ -1,0 +1,83 @@
+{
+  "description": "Construis des robots qui voient, détectent et décident tout seuls. Apprends avec les cours, relève un défi robotique et utilise n’importe quel kit doté des bons capteurs.",
+  "pathwayLink": "Parcours Robotique IA",
+  "sectionError": "Cette partie de la page n’a pas pu être chargée. Actualise la page pour réessayer.",
+  "courses": {
+    "title": "Cours de robotique IA",
+    "description": "Des cours pour apprendre aux robots à voir, détecter et se déplacer tout seuls.",
+    "empty": {
+      "title": "Aucun cours de robotique pour le moment",
+      "description": "Les cours de robotique s’afficheront ici dès leur publication."
+    }
+  },
+  "themes": {
+    "title": "Projets de robotique",
+    "description": "Chaque cours se termine par un projet. Choisis un thème pour trouver les cours qui le construisent.",
+    "vision": {
+      "title": "Projets de vision",
+      "description": "Des robots qui utilisent une caméra pour reconnaître des objets, des couleurs et des panneaux."
+    },
+    "sensors": {
+      "title": "Projets de capteurs",
+      "description": "Des robots qui mesurent la distance, la lumière, le son et le mouvement pour réagir au monde qui les entoure."
+    },
+    "autonomous": {
+      "title": "Projets autonomes",
+      "description": "Des robots qui suivent des lignes, évitent les obstacles et prennent leurs propres décisions."
+    },
+    "courseCount": "{count, plural, =0 {Aucun cours pour le moment} one {# cours} other {# cours}}",
+    "empty": "Aucun cours sur ce thème pour le moment."
+  },
+  "challenges": {
+    "title": "Défis robotiques",
+    "description": "Les défis ouverts et à venir où ton robot peut concourir.",
+    "viewAll": "Tous les défis",
+    "empty": {
+      "title": "Aucun défi robotique pour le moment",
+      "description": "Les nouveaux défis robotiques sont annoncés dans l’Arène des défis."
+    }
+  },
+  "hardware": {
+    "title": "Matériel compatible",
+    "description": "RoboHolic fonctionne avec n’importe quel kit doté des capacités dont un cours a besoin, quelle que soit la marque.",
+    "capabilities": "Capacités",
+    "programming": "Programmation",
+    "connectivity": "Connexion",
+    "fits": "Convient pour\u00a0: {courses}",
+    "empty": {
+      "title": "Aucun matériel répertorié pour le moment",
+      "description": "Les kits que tu peux utiliser seront répertoriés ici."
+    },
+    "kinds": {
+      "robot": "Robot",
+      "microcontroller": "Microcontrôleur",
+      "sensor_kit": "Kit de capteurs",
+      "simulator": "Simulateur"
+    },
+    "modes": {
+      "blocks": "Blocs",
+      "python": "Python",
+      "javascript": "JavaScript",
+      "cpp": "C++"
+    },
+    "links": {
+      "usb": "USB",
+      "bluetooth": "Bluetooth",
+      "wifi": "Wi-Fi",
+      "none": "Aucune connexion nécessaire"
+    }
+  },
+  "capabilities": {
+    "drive": "Roues",
+    "camera": "Caméra",
+    "distance": "Capteur de distance",
+    "line": "Capteur de ligne",
+    "color": "Capteur de couleur",
+    "imu": "Capteur de mouvement",
+    "microphone": "Microphone",
+    "speaker": "Haut-parleur",
+    "gripper": "Pince",
+    "display": "Écran"
+  },
+  "vendor": "Fabriqué par {vendor}"
+}

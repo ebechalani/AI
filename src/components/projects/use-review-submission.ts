@@ -34,6 +34,8 @@ export interface ReviewDraft {
 
 export interface UseReviewSubmissionArgs {
   submissionId: string;
+  /** The AI suggestion the form shows (null: none), sent so an approve grades with it. */
+  aiReviewId: string | null;
   studentName: string;
   /** The criteria in the order of their inputs. */
   criteriaOrder: readonly RubricKey[];
@@ -47,6 +49,7 @@ export interface UseReviewSubmissionArgs {
 
 export function useReviewSubmission({
   submissionId,
+  aiReviewId,
   studentName,
   criteriaOrder,
   formRef,
@@ -126,6 +129,7 @@ export function useReviewSubmission({
       decision: draft.decision,
       criteria: scores?.ok === true ? scores.criteria : null,
       feedback: draft.feedback,
+      aiReviewId,
     });
     const parsed = parseInput(reviewInputSchema, input);
     if (scores?.ok === false || !parsed.success) {
@@ -166,6 +170,8 @@ export function useReviewSubmission({
         return;
       }
       case 'conflict':
+        // Reviewed meanwhile, or a newer suggestion than the one shown: the refresh brings the
+        // new state, and a new suggestion seeds the form again (ReviewForm).
         onConflict();
         router.refresh();
         return;

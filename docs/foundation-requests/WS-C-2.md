@@ -1,7 +1,9 @@
 # WS-C-2: a path with a dot renders a French page in English
 
 - **From:** WS-C (Quizzes + assessments; build spec 11.1), 2026-10-16
-- **Status:** open
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-16 as a variant of option (a):
+  the proxy keeps its matcher for un-prefixed paths and gains a second pattern that matches every
+  locale-prefixed path, dotted ones included.
 - **Frozen files concerned:** `src/proxy.ts` (option a), or the area layouts
   `src/app/[locale]/{student,teacher,school,admin}/**/layout.tsx` (option b)
 
@@ -74,3 +76,41 @@ layout today.
 `/fr/teacher/assessments/bad.id` and `/fr/teacher/classes/bad.id` show "Page introuvable", the
 French shell navigation and the French title. `/en/...` stays English. `/favicon.ico` returns
 200.
+
+## Change (landed)
+
+Landed by the foundation maintainer on 2026-10-16.
+
+Option (a) as written (an allowlist of static extensions) would also start locale-redirecting
+any file that is later added to `public/` with an extension the list forgets (`.pdf`, `.mp4`,
+`.json`...). The landed matcher changes nothing for paths without a locale prefix and adds the
+prefixed ones instead:
+
+```ts
+export const config = {
+  matcher: [
+    '/((?!api|_next|_vercel|.*\\..*).*)', // as before: no route handler, internal or public file
+    '/(en|fr)/:path*', // every locale-prefixed path, with or without a dot
+  ],
+};
+```
+
+- `src/proxy.ts`: the matcher above. Next reads the matcher statically, so the locales are
+  spelled out; `public/` has no `en/` or `fr/` folder, so no static file is caught.
+- `tests/unit/proxy-matcher.test.ts` (new): compiles `config.matcher` with Next's own
+  `getMiddlewareMatchers` and runs it with `getMiddlewareRouteMatcher`: the proxy runs for page
+  paths and for `/fr/teacher/assessments/bad.id`, `/fr/teacher/classes/bad.id`,
+  `/en/student/challenges/x.y`...; it skips `/favicon.ico`, `/icon.svg`, `/robots.txt`, `/api/*`,
+  `/_next/*`, `/_vercel/*` and every file of `public/`; the locale pattern names exactly `LOCALES`.
+- `docs/ARCHITECTURE.md` 1.3: the new matcher and the reason.
+
+A dotted path under a signed-in area now also gets the proxy's signed-out redirect to the login
+page (before, `requireRole` redirected it one step later).
+
+Checked against the running dev server: signed out, `/fr/teacher/assessments/bad.id` answers 307
+to `/fr/login?next=%2Fteacher%2Fassessments%2Fbad.id`; `/favicon.ico` and `/icon.svg` answer 200.
+In Chromium as teacher@demo: `/fr/teacher/assessments/bad.id` shows `lang="fr"`, the title
+"Tentative de quiz · RoboHolic AI", "Page introuvable", the French navigation ("Tableau de bord,
+Classes, Cours, Créer") and skip link ("Aller au contenu"); `/fr/teacher/classes/bad.id` shows the
+French shell around WS-E's page (a stub this round); `/en/teacher/assessments/bad.id` stays
+English ("Page not found").

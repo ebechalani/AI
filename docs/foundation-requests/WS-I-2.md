@@ -1,7 +1,7 @@
 # WS-I-2: `next dev` writes learners' AI Lab prompts and session ID tokens to its log
 
 - **From:** WS-I (AI Tutor + AI Lab; build spec 0, "Privacy in code"), 2026-10-16
-- **Status:** open
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-16 as wanted.
 - **Frozen files concerned:** `next.config.ts`, `docs/ARCHITECTURE.md` (2, the paragraph on
   `next dev` output before the `src/` tree)
 
@@ -60,3 +60,19 @@ WS-I's own code logs AI failures only through `describeAiFailure()` and never lo
 reply text (`src/lib/ai/**`, `src/app/api/ai/tutor/route.ts`, `src/actions/ai.ts`). The tutor
 uses a route handler, not a Server Function, so tutor messages are not in the log; only the
 AI Lab prompt is.
+
+## Change (landed)
+
+Landed by the foundation maintainer on 2026-10-16.
+
+- `next.config.ts`: `logging: { serverFunctions: false }` in `nextConfig`, with the reason in a
+  comment; the rest of the config is untouched (incoming requests and fetches are still logged
+  with their paths and status).
+- `tests/unit/next-config-logging.test.ts` (new): after the next-intl plugin has run, the resolved
+  config has `logging` equal to `{ serverFunctions: false }`.
+- `docs/ARCHITECTURE.md` 2: the sentence on `next dev` logging server action arguments is replaced
+  by one saying that Server Function logging is switched off, and why.
+
+Checked: `next dev` restarted itself on the config change; since then `next-dev.log` has no
+`ƒ <action>(…)` line (sign-ins, a review action and three tutor messages were made), only
+`POST /en/login 200 …`-style request lines. Lines written before the change stay in that log file.

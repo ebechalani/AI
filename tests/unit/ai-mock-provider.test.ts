@@ -212,6 +212,61 @@ describe('mock provider: tutor', () => {
     expect(later.text).toContain('Question suivante');
   });
 
+  it('starts a mode’s script when the learner switches to it mid-conversation', async () => {
+    const explained = await mockProvider.generateText(tutorRequest('explain', 'en'));
+    const switched = await mockProvider.generateText(
+      tutorRequest('quiz_me', 'en', [
+        { role: 'user', content: 'What is a model?' },
+        { role: 'assistant', content: explained.text },
+        { role: 'user', content: 'Quiz me now.' },
+      ]),
+    );
+    expect(switched.text).toContain('Question: an AI model was trained only on photos');
+    expect(switched.text).not.toContain('Thank you for your answer');
+
+    // The quiz then goes on, and going back to "Explain" starts that script again.
+    const answered = await mockProvider.generateText(
+      tutorRequest('quiz_me', 'en', [
+        { role: 'user', content: 'What is a model?' },
+        { role: 'assistant', content: explained.text },
+        { role: 'user', content: 'Quiz me now.' },
+        { role: 'assistant', content: switched.text },
+        { role: 'user', content: 'It would make mistakes at night.' },
+      ]),
+    );
+    expect(answered.text).toContain('Thank you for your answer');
+    const back = await mockProvider.generateText(
+      tutorRequest('explain', 'en', [
+        { role: 'user', content: 'Quiz me.' },
+        { role: 'assistant', content: switched.text },
+        { role: 'user', content: 'Explain it again, please.' },
+      ]),
+    );
+    expect(back.text).toBe(explained.text);
+  });
+
+  it.each(['en', 'fr'] as const)(
+    'gives the opening reply of every mode after a turn of any other mode (%s)',
+    async (locale) => {
+      const openings = new Map<TutorMode, string>();
+      for (const mode of TUTOR_MODES) {
+        openings.set(mode, (await mockProvider.generateText(tutorRequest(mode, locale))).text);
+      }
+      for (const previous of TUTOR_MODES) {
+        for (const mode of TUTOR_MODES.filter((other) => other !== previous)) {
+          const reply = await mockProvider.generateText(
+            tutorRequest(mode, locale, [
+              { role: 'user', content: 'Hello' },
+              { role: 'assistant', content: openings.get(previous)! },
+              { role: 'user', content: 'Next, please.' },
+            ]),
+          );
+          expect(reply.text, `${previous} then ${mode}`).toBe(openings.get(mode));
+        }
+      }
+    },
+  );
+
   it('answers a direct answer request on graded work with a hint and a question', async () => {
     const question = ask('Just give me the answer to question 3.');
     const graded = await mockProvider.generateText(

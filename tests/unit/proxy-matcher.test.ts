@@ -19,9 +19,9 @@ vi.mock('next-intl/middleware', () => ({ default: () => () => undefined }));
 // applies per request, so the test checks what Next does with the patterns, not a copy of them.
 // The compiler is exported at runtime but missing from Next's type declarations.
 const nextRequire = createRequire(import.meta.url);
-const { getMiddlewareMatchers } = nextRequire(
-  'next/dist/build/analysis/get-page-static-info',
-) as { getMiddlewareMatchers: (matcher: string[], nextConfig: object) => ProxyMatcher[] };
+const { getMiddlewareMatchers } = nextRequire('next/dist/build/analysis/get-page-static-info') as {
+  getMiddlewareMatchers: (matcher: string[], nextConfig: object) => ProxyMatcher[];
+};
 const { getMiddlewareRouteMatcher } = nextRequire(
   'next/dist/shared/lib/router/utils/middleware-route-matcher',
 ) as typeof import('next/dist/shared/lib/router/utils/middleware-route-matcher');

@@ -1,0 +1,47 @@
+{
+  "description": "Ton niveau, tes XP et les badges que tu as obtenus.",
+  "sectionError": "Cette partie de la page n’a pas pu être chargée. Actualise la page pour réessayer.",
+  "level": {
+    "title": "Ton niveau"
+  },
+  "stats": {
+    "title": "Ta progression",
+    "lessonsCompleted": "Leçons terminées",
+    "quizzesPassed": "Quiz réussis",
+    "projectsAccepted": "Projets acceptés",
+    "challengesCompleted": "Défis réussis",
+    "coursesCompleted": "Cours terminés",
+    "certificates": "Certificats"
+  },
+  "badges": {
+    "title": "Badges",
+    "summary": "{earned, number} sur {total, number} obtenus",
+    "earned": "Obtenus",
+    "locked": "À obtenir",
+    "noneEarned": "Aucun badge pour le moment. Termine un cours ou un parcours pour obtenir ton premier badge.",
+    "empty": {
+      "title": "Aucun badge pour le moment",
+      "description": "Les badges s’afficheront ici dès qu’ils seront disponibles."
+    }
+  },
+  "history": {
+    "title": "Historique des XP",
+    "description": "Tes récompenses en XP les plus récentes, de la plus récente à la plus ancienne.",
+    "limited": "Seules tes {count, number} récompenses les plus récentes sont affichées.",
+    "gain": "+{xp, number}\u00a0XP",
+    "loss": "−{xp, number}\u00a0XP",
+    "empty": {
+      "title": "Aucun XP pour le moment",
+      "description": "Termine une leçon ou réussis un quiz pour gagner tes premiers XP."
+    },
+    "reasons": {
+      "lesson": "Leçon terminée",
+      "quiz": "Quiz réussi",
+      "project": "Projet accepté",
+      "challenge": "Participation à un défi acceptée",
+      "badge": "Bonus de badge",
+      "badgeNamed": "Bonus de badge\u00a0: {name}",
+      "adjustment": "Ajustement par un administrateur"
+    }
+  }
+}

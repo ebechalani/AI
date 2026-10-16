@@ -130,8 +130,14 @@ types. A dynamic import does not say which names it uses, so in `src/actions`, `
 ### 1.3 Request flow: server-rendered page
 
 1. `src/proxy.ts` runs next-intl's middleware (locale detection, redirect `/` → `/en`). It
-   exports `config = { matcher: '/((?!api|_next|_vercel|.*\\..*).*)' }`, so route handlers
-   under `/api`, Next internals and static files are never locale-redirected. For paths under
+   exports `config = { matcher: ['/((?!api|_next|_vercel|.*\\..*).*)', '/(en|fr)/:path*'] }`:
+   route handlers under `/api`, Next internals and files with an extension (`public/`) are
+   never locale-redirected, and a locale-prefixed path always runs the proxy, even with a dot in
+   it (`/fr/teacher/classes/bad.id`; without the locale header its layouts and not-found boundary
+   would render in English, foundation request WS-C-2). Next reads the matcher statically, so the
+   locales are spelled out; `tests/unit/proxy-matcher.test.ts` keeps them equal to `LOCALES` and
+   checks the patterns with Next's own matcher compiler. `public/` must not get an `en/` or `fr/`
+   folder. For paths under
    `/{locale}/(student|teacher|school|admin|certificates|preview)` it redirects to
    `/{locale}/login?next=<locale-less path>` when the `__session` cookie is absent. This is a
    UX shortcut only; it verifies nothing. `next` is the path alone (`/teacher/classes/abc`):
@@ -628,8 +634,11 @@ no environment variables but does need outbound network: `[locale]/layout.tsx` l
 through `next/font/google`, and a production build fails offline with "Failed to fetch
 `Inter` from Google Fonts" (`next dev` logs the error and uses the fallback font); switch to
 `next/font/local` with a vendored file if offline builds are needed (`font-src 'self'` in
-the CSP already allows it). `next dev` logs every server action call with its arguments,
-the ID token of `createSessionAction` included; that is development output only.
+the CSP already allows it). Server Function logging is switched off in `next.config.ts`
+(`logging: { serverFunctions: false }`): `next dev` would otherwise log every server action
+call with its arguments, which carry learners' text (AI Lab prompts, project work, quiz
+answers, names) and session ID tokens (`createSessionAction`); no personal data in logs (8.1,
+12; foundation request WS-I-2). Incoming requests are still logged (method, path, status).
 
 `src/`:
 
@@ -798,7 +807,8 @@ src/
 │  │  ├─ namespaces.ts                       NAMESPACES (ordered list), type Namespace
 │  │  ├─ routing.ts                          routing = defineRouting(); narrows next-intl's Locale type to LOCALES
 │  │  ├─ navigation.ts                       Link, redirect, usePathname, useRouter, getPathname
-│  │  ├─ request.ts                          getRequestConfig(): loads and merges namespace files; a missing file is an empty namespace
+│  │  ├─ request.ts                          getRequestConfig(): loads and merges namespace files (a missing file is an empty namespace); timeZone from the `tz` cookie
+│  │  ├─ time-zone.ts                        shared pure: TIME_ZONE_COOKIE, DEFAULT_TIME_ZONE ('UTC'), toSupportedTimeZone(), resolveTimeZone(), readTimeZoneCookie(), timeZoneCookie()
 │  │  └─ content.ts                          shared pure: pickTranslation(), hasTranslation()
 │  └─ navigation/
 │     └─ nav-config.ts                       shared: NAV_ITEMS, PROFILE_ITEMS per role, isNavItemActive(), roleHome re-export
@@ -829,7 +839,7 @@ src/
    ├─ layout/
    │  ├─ PublicShell.tsx · PublicHeader.tsx · PublicFooter.tsx · AuthShell.tsx
    │  ├─ AppShell.tsx · SidebarNav.tsx · MobileNav.tsx · TopBar.tsx · UserMenu.tsx
-   │  ├─ LocaleSwitcher.tsx · PageHeader.tsx · LessonShell.tsx · tutor-bridge.tsx · index.ts
+   │  ├─ LocaleSwitcher.tsx · PageHeader.tsx · LessonShell.tsx · tutor-bridge.tsx · TimeZoneCookie.tsx · index.ts
    │  └─ Drawer.tsx · NavLinks.tsx · SkipLink.tsx · LessonSidePane.tsx · lesson-scroll-padding.ts · field-reveal.ts · sign-out.tsx   layout-private (section 7.5)
    ├─ lesson/                                lesson player (section 7.6)
    │  ├─ LessonPlayer.tsx · LessonTopBar.tsx · StageStepper.tsx · LessonContent.tsx
@@ -2655,8 +2665,8 @@ from `ICON_NAMES`, a fixed list of about 95 icons rather than lucide's full expo
 the library out of the client bundle); an unknown name draws the `Shapes` fallback,
 kebab-case names are accepted, and seed or migration data must use names from `ICON_NAMES`
 (add an icon there when new data needs one). `format.ts` exports three hooks:
-`useDateFormat()` (`formatDate` in next-intl's time zone, so server and client print the
-same day), `useDurationFormat()` ("45 min", "2 h", "1 h 30 min" from `common.units.*`) and
+`useDateFormat()` (`formatDate` in next-intl's time zone, which is the viewer's (section 12,
+`TimeZoneCookie` in 7.5), so server and client print the same day and time), `useDurationFormat()` ("45 min", "2 h", "1 h 30 min" from `common.units.*`) and
 `useAgeRangeLabel()` (`domain.course.ages` / `agesFrom` / `agesUpTo`, or null).
 
 `AIChatPanel` is split into `AIChatPanel.tsx` (the mode radio group of chips),
@@ -2706,10 +2716,11 @@ decorative next to a title, and a `sizes` that matches the grid (cards use
 | `AppShell` `{ role: Role; user: ShellUser; persistLocale?: PersistLocale \| null; children }` with `ShellUser = { displayName: string; avatarId: string; xp?: number; level?: number }` (exported from `TopBar.tsx` and the index) | Authenticated areas: `SidebarNav` (desktop), `MobileNav` (bottom bar for students, drawer for staff), `TopBar` `{ role; user; persistLocale? }` (exported too) with `XPBadge` (students, who therefore need `xp` and `level`; the student `(shell)/layout.tsx` reads them from `users.getUser(session, session.uid)`, as the `Session` carries neither), `LocaleSwitcher`, `UserMenu`. For students the `TopBar` always shows the signed-in display name (truncated on phones; staff names hide below `md`) with a visible one-click **Sign out** button (shared classroom computers). The area layouts pass `persistLocale={updateProfileAction}`. Must sit under `ToastProvider` (sign-out failures are toasts) |
 | `SidebarNav`, `MobileNav` | Render `NAV_ITEMS[role]`; active state from `usePathname()` + `isNavItemActive`. `MobileNav` for students is a bottom bar with the first four items (Home, Learn, AI Lab, Robotics) plus a "More" button (`nav.shell.more`) that opens a bottom sheet with Challenges, Projects, AI Tutor and the three `PROFILE_ITEMS` (the brief's seven items do not fit a 375 px bar); staff get a menu button in the `TopBar` that opens a start-side drawer with `NAV_ITEMS` then `PROFILE_ITEMS` |
 | `UserMenu` `{ role; user: { displayName; avatarId } }` | A "Signed in as {name}" heading (`nav.shell.signedInAs`), `PROFILE_ITEMS[role]` and Sign out (a separator always precedes Sign out, also for roles with no profile items) |
-| `LocaleSwitcher` `{ persist?: PersistLocale \| null; align?: 'start' \| 'end'; compact?: boolean }` with `PersistLocale = (patch: { locale: Locale }) => Promise<unknown>` | Lists `LOCALES`; switches with the i18n router keeping the current path; calls `persist({ locale })` when given one. `src/actions/settings.ts` does not exist before F8 and components may not create it, so the switcher cannot import `updateProfileAction`: `AppShell` carries `persistLocale` down to it through `TopBar`; without it the page still switches language, the preference is just not saved |
+| `LocaleSwitcher` `{ persist?: PersistLocale \| null; align?: 'start' \| 'end'; compact?: boolean \| 'narrow' }` with `PersistLocale = (patch: { locale: Locale }) => Promise<unknown>` | Lists `LOCALES`; below `sm` the button shows the globe and the language code, `compact` drops the code below `sm` and `compact="narrow"` only below 360 px (`PublicHeader`, which also tightens its gaps there so French fits a 320 px screen); the accessible name always names the language; switches with the i18n router keeping the current path; calls `persist({ locale })` when given one. `src/actions/settings.ts` does not exist before F8 and components may not create it, so the switcher cannot import `updateProfileAction`: `AppShell` carries `persistLocale` down to it through `TopBar`; without it the page still switches language, the preference is just not saved |
 | `PageHeader` `{ title; description?; actions?; breadcrumbs? }` | Standard page title row |
 | `LessonShell` `{ top; nav; children; aside?; footer? }` (client component; its slots are server-rendered nodes) | Three-pane player frame. From Tailwind `xl` (80rem = 1280 px): nav 280 px, content fluid, aside 360 px. Below: the outline is a start-side slide-over opened by a button in the top bar (`nav.lesson.openOutline`), the aside an end-side slide-over opened by a floating "Ask Robo AI" button (`nav.lesson.askTutor`); while one is open the page is `inert`, Escape closes it and focus returns to the opener; following an outline link closes the outline. `aside={null}` (tutor disabled) removes the pane and the floating button. Wraps all its slots in `TutorBridgeProvider` and binds the slide-over to the bridge; on wide screens it resets the bridge's `isOpen` to false so the pane does not slide in later when the window is narrowed. The `top` slot sits in a flex row next to the outline button (keep it one flex row with `min-w-0` on the title); the `footer` slot is centred in a `max-w-3xl` box (three full-width buttons wrap to two rows at 375 px, so make the previous/next controls compact on phones) |
 | `tutor-bridge.tsx` | The channel between lesson blocks and the tutor panel (below) |
+| `TimeZoneCookie` (no props; client; renders nothing) | Mounted once in `[locale]/layout.tsx`, inside `NextIntlClientProvider`. Records the browser's time zone (`Intl.DateTimeFormat().resolvedOptions().timeZone`, checked with `toSupportedTimeZone`) in the `tz` cookie (`Path=/`, `SameSite=Lax`, one year, `Secure` on https) when the cookie is missing or different; when it wrote the cookie and the page was rendered in another zone, it calls `router.refresh()` once. `src/lib/i18n/request.ts` reads the cookie, keeps it only when it is an IANA name that the server's Intl supports, and returns it as next-intl's `timeZone` (`'UTC'` otherwise, and outside a request), so server and client components format in the same zone and nothing mismatches on hydration. Reading the cookie renders every page dynamically (the auth pages were the only static ones). Foundation request WS-C-3 |
 | `Drawer.tsx`, `NavLinks.tsx`, `SkipLink.tsx`, `LessonSidePane.tsx`, `sign-out.tsx` | Layout-private: a native modal `<dialog>` drawer (Escape, backdrop, close button, scroll lock); the vertical link list with active state; "Skip to content" → `#main-content` (every shell's `<main>` has `id="main-content"`, so pages must not add another `<main>`); one pane of `LessonShell`; `useSignOut()` and `SignOutButton { variant?, size?, compact?, className? }` (both exported from the index), which call `signOutAction`, do the best-effort client sign-out, then a full page load of `/login` (not `router.push`) so nothing of the previous user stays in memory on a shared computer, and show a danger toast (`errors.<code>`, or `errors.offline`) on failure |
 
 ```ts
@@ -4671,14 +4682,18 @@ Semantics that the signatures do not show:
   (3.7).
 - **`reviewSubmission`** decision semantics: input re-parsed with `reviewInputSchema`;
   `approve` copies the AI suggestion's criteria and overall score, and is accepted only when
-  the AI review is `ready`, has no flag, its confidence is not `low` and `criteria` and
+  `input.aiReviewId`, if the input carries it (an id, or null when no suggestion was shown), is
+  the submission's `latestAiReviewId` (`ConflictError` otherwise, before any suggestion is read:
+  a co-teacher asked for a new suggestion after the page was loaded, so the grade would not be
+  the one the teacher saw; the review screen always sends it, foundation request WS-D-4; an input
+  without it approves the latest), and when the AI review is `ready`, has no flag, its confidence is not `low` and `criteria` and
   `overallSuggestedScore` are non-null (`ConflictError` otherwise, as for a failed or absent
   review); `modify` uses the teacher's `criteria` (`ValidationError { criteria:
   ['required'] }` without them) and computes the score with the submission's rubric weights
   (`weightedScore`: round(Σ score × weight / 100), clamped 0–100, unlisted criteria weigh
   nothing); `return` records feedback only, sets status `returned`, awards nothing. In all
   three the teacher's `feedback` is what the student sees and `NewReview.aiReviewId =
-  submission.latestAiReviewId`. Audit `submission.reviewed` (meta `{ decision, score,
+  submission.latestAiReviewId` (`modify` and `return` do not depend on `input.aiReviewId`). Audit `submission.reviewed` (meta `{ decision, score,
   studentUid }`) is written before the gamification handler; for approve/modify the handler
   runs through `applyEffects` and the submission is re-read when it succeeded, else the
   reviewed submission is answered with `gamification: null`.
@@ -4739,7 +4754,9 @@ submitWorkAction(SubmitWorkInput) → { submissionId: string }                  
 
 // review.ts (WS-D)
 reviewSubmissionAction(ReviewInput) → { status: SubmissionStatus }                                 T P
-  // ReviewInput = { submissionId, decision, criteria, feedback }
+  // ReviewInput = { submissionId, decision, criteria, feedback, aiReviewId? }
+  //   aiReviewId: the AI suggestion the teacher saw (null: none); an approve that names another
+  //   one than the latest answers conflict (10.3, WS-D-4)
 regenerateAiReviewAction({ submissionId }) → null                                                  S T P
 
 // classes.ts (WS-E)
@@ -5372,7 +5389,7 @@ answer would materially change the product or its cost, per the working agreemen
 | Role edge cases | Individual teachers, teachers in two schools, school admins who also teach or learn, a student in two classes that assign the same course | One role and at most one school per user; individual teachers can run classes with `schoolId: null` under the limits above; school admins do not teach or take courses in the MVP; a student's work in a course has one supervising class (chosen deterministically), though every class report shows their progress | Multi-role and multi-school are future |
 | Platform admin scope | The brief lists pathways, badges and certificates among the things a platform admin manages, but no platform admin dashboard is in the MVP list | Admin pages for schools, users, licences/subscriptions, official courses, certificates and challenges (section 6.7). Pathways, badge definitions and hardware platforms are edited through versioned migration scripts | Add those admin pages when reference data starts changing often |
 | Certificates | Format, legal name, verification | HTML page printed to PDF; shows display name; public verification page shows course, date, issuer and status but not the learner's name | Accept |
-| Time zones | Deadlines and daily limits | Stored in UTC, displayed in the browser's time zone; AI and upload limits reset at 00:00 UTC | Accept |
+| Time zones | Deadlines and daily limits | Stored in UTC, displayed in the browser's time zone (the `tz` cookie set by `TimeZoneCookie` and read by the request config, 7.5; UTC until the browser has reported its zone); AI and upload limits reset at 00:00 UTC | Accept |
 | Monitoring | Errors and uptime | Vercel logs only; no personal data in logs; audit entries are read in the Firebase console | Add error tracking before launch |
 | Testing | Not mentioned in the brief | Unit tests (schemas and their message keys, runAction, env guard and Firebase initialisation, authz, account policy, grading and answer normalisation, levels, badges and gamification events, learning helpers, course derivation, the AI layer on the mock provider, every service over mocked repositories, nav config, translation fallback); Security Rules tests on the emulators; an emulator-backed integration suite over the services (section 11.1); manual end-to-end script in Stage 2. No DOM test runs the components (node-only Vitest, no DOM library in the frozen `package.json`); they are checked by hand in a browser | Automated browser end-to-end and component tests later |
 | Mobile apps and offline | Brief asks for responsive web only | Responsive web, no offline mode | Later phase |

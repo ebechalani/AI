@@ -1,0 +1,47 @@
+{
+  "description": "Your level, your XP and the badges you’ve earned.",
+  "sectionError": "This part of the page couldn’t be loaded. Refresh the page to try again.",
+  "level": {
+    "title": "Your level"
+  },
+  "stats": {
+    "title": "Your progress",
+    "lessonsCompleted": "Lessons completed",
+    "quizzesPassed": "Quizzes passed",
+    "projectsAccepted": "Projects accepted",
+    "challengesCompleted": "Challenges completed",
+    "coursesCompleted": "Courses completed",
+    "certificates": "Certificates"
+  },
+  "badges": {
+    "title": "Badges",
+    "summary": "{earned, number} of {total, number} earned",
+    "earned": "Earned",
+    "locked": "Still to earn",
+    "noneEarned": "No badge yet. Finish a course or a pathway to earn your first one.",
+    "empty": {
+      "title": "No badges yet",
+      "description": "Badges will appear here when they’re available."
+    }
+  },
+  "history": {
+    "title": "XP history",
+    "description": "Your most recent XP rewards, newest first.",
+    "limited": "Only your {count, number} most recent rewards are shown.",
+    "gain": "+{xp, number} XP",
+    "loss": "−{xp, number} XP",
+    "empty": {
+      "title": "No XP yet",
+      "description": "Complete a lesson or pass a quiz to earn your first XP."
+    },
+    "reasons": {
+      "lesson": "Lesson completed",
+      "quiz": "Quiz passed",
+      "project": "Project accepted",
+      "challenge": "Challenge entry accepted",
+      "badge": "Badge bonus",
+      "badgeNamed": "Badge bonus: {name}",
+      "adjustment": "Adjustment by an administrator"
+    }
+  }
+}

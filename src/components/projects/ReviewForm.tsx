@@ -104,6 +104,7 @@ export function ReviewForm({ submission, aiReview, approveBlock, onConflict }: R
 
   const { pending, errors, formAlert, submit, clearError } = useReviewSubmission({
     submissionId: submission.id,
+    aiReviewId: suggestionId,
     studentName: submission.studentName,
     criteriaOrder: rows.map((row) => row.key),
     formRef,
