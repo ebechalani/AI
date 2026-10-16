@@ -51,14 +51,18 @@ export function AttemptsTable({ attempts, courseTitles, showCourse, caption }: A
           return (
             <TableRow key={attempt.id}>
               <TableHeaderCell scope="row">
+                {/* One label that starts with the visible name (WCAG 2.5.3): a visually hidden
+                    suffix would be read with a stray space before its comma. */}
                 <Link
                   href={attemptHref(attempt.id)}
+                  aria-label={t('list.rowLink', {
+                    name: attempt.studentName,
+                    number: attempt.attemptNumber,
+                    quiz: quizTitle,
+                  })}
                   className="text-brand-700 underline-offset-4 hover:underline"
                 >
                   {attempt.studentName}
-                  <span className="sr-only">
-                    {t('list.rowLink', { number: attempt.attemptNumber, quiz: quizTitle })}
-                  </span>
                 </Link>
               </TableHeaderCell>
               <TableCell className="min-w-44">{quizTitle}</TableCell>

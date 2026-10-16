@@ -134,8 +134,13 @@ interface UsageCounts {
   cache_read_input_tokens?: number | null;
 }
 
+/** One `usage.iterations` entry (`message`, `fallback_message`, `compaction`, …): every kind is summed. */
+interface IterationCounts extends UsageCounts {
+  type?: string;
+}
+
 export interface UsageLike extends UsageCounts {
-  iterations?: readonly UsageCounts[] | null;
+  iterations?: readonly IterationCounts[] | null;
 }
 
 const tokens = (value: number | null | undefined): number =>

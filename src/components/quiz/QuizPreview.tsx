@@ -25,7 +25,7 @@ export function QuizPreview({ quiz }: QuizPreviewProps) {
         {t('preview.notice')}
       </Alert>
       {instructions && instructions.trim() !== '' && (
-        <p className="whitespace-pre-line text-ink">{instructions}</p>
+        <p className="break-words whitespace-pre-line text-ink">{instructions}</p>
       )}
       <QuizFacts quiz={quiz} remaining={quiz.maxAttempts} />
       {count === 0 ? (

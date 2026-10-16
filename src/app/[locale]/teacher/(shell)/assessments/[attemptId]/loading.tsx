@@ -9,7 +9,7 @@ export default function TeacherAttemptLoading() {
         <Skeleton className="h-9 w-2/3 max-w-md" />
         <Skeleton className="h-5 w-full max-w-sm" />
       </div>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }, (_, index) => (
           <Skeleton key={index} className="h-24 w-full rounded-card" />
         ))}

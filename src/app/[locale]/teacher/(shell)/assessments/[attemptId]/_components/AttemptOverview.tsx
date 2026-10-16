@@ -15,7 +15,9 @@ export function AttemptOverview({ attempt, languageName }: AttemptOverviewProps)
   const formatDate = useDateFormat();
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    // One column on a phone: beside its icon a card has about 60 px for its value there, which
+    // would break "Not passed" mid-word.
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <StatCard
         label={t('detail.score')}
         value={tCommon('units.percent', { value: attempt.scorePercent })}

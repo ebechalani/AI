@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button, ProgressBar } from '@/components/ui';
 import type { Quiz, QuizAnswer, QuizQuestion } from '@/types/quiz';
+import { revealChoiceCard } from './focus';
 import { QuestionField, type DraftUpdate } from './QuestionField';
 
 export interface QuizStepProps {
@@ -43,7 +44,12 @@ export function QuizStep({
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-5">
+    <form
+      noValidate
+      onSubmit={onSubmit}
+      onFocus={(event) => revealChoiceCard(event.target)}
+      className="flex flex-col gap-5"
+    >
       <div className="flex flex-col gap-2">
         <h4
           ref={headingRef}
@@ -74,7 +80,8 @@ export function QuizStep({
         ) : (
           <span />
         )}
-        <Button type="submit" variant="primary">
+        {/* ms-auto: when the row wraps on a phone, Next stays at the end. */}
+        <Button type="submit" variant="primary" className="ms-auto">
           {nextLabel === 'next' ? t('step.next') : t('step.toReview')}
           <ChevronRight aria-hidden="true" className="rtl:rotate-180" />
         </Button>

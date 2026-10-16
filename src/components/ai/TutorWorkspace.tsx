@@ -39,7 +39,9 @@ export function TutorWorkspace({ courses, initialCourseId }: TutorWorkspaceProps
           />
         </FormField>
       )}
-      <div className="h-[calc(100dvh-25rem)] min-h-[22rem] overflow-hidden rounded-card border border-border bg-surface shadow-sm lg:h-[calc(100dvh-19rem)] lg:min-h-[28rem]">
+      {/* Phones: the viewport between the top bar and the bottom bar, so the thread keeps room
+          next to the wrapped mode chips. From `sm` the header and the frame share one screen. */}
+      <div className="h-[calc(100dvh-8rem)] min-h-[30rem] overflow-hidden rounded-card border border-border bg-surface shadow-sm sm:h-[calc(100dvh-25rem)] sm:min-h-[22rem] lg:h-[calc(100dvh-21rem)] lg:min-h-[28rem]">
         {/* Another course starts another conversation. */}
         <TutorPanel key={courseId ?? 'general'} courseId={courseId ?? undefined} variant="page" />
       </div>

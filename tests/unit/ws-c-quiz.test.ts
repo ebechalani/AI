@@ -537,6 +537,7 @@ const VALUES = {
   level: 2,
   awarded: 1,
   points: 2,
+  text: 'data',
 };
 
 type Translate = (key: string, values?: Record<string, string | number>) => string;
@@ -627,6 +628,9 @@ describe.each(['en', 'fr'])('quiz catalog (%s)', (locale) => {
     if (locale === 'fr') {
       expect(t('facts.passMark', { percent: 70 })).toBe(`Seuil de réussite${nb}: 70${nb}%`);
       expect(t('result.passedTitle')).toBe(`Quiz réussi${nb}!`);
+      expect(t('question.quotedAnswer', { text: 'données' })).toBe(`«${nb}données${nb}»`);
+    } else {
+      expect(t('question.quotedAnswer', { text: 'data' })).toBe('“data”');
     }
   });
 

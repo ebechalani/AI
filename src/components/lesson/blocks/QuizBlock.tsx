@@ -48,7 +48,7 @@ export function QuizBlock({ block, runtime }: BlockRendererProps<'quiz'>) {
           </h3>
         </div>
         {typeof intro === 'string' && intro.trim() !== '' && (
-          <p className="whitespace-pre-line text-ink-muted">{intro}</p>
+          <p className="break-words whitespace-pre-line text-ink-muted">{intro}</p>
         )}
         {/* Keyed by lesson and quiz: router.refresh() keeps the runner and its result. */}
         <QuizRunner

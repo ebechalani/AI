@@ -245,14 +245,28 @@ describe.each(['en', 'fr'])('assessments catalog (%s)', (locale) => {
     });
     const nb = String.fromCharCode(0xa0);
     const expected: Record<string, string[]> = {
-      en: ['1 of 1 point', '4 of 6 points', '#2', '4/6 · 66%'],
-      fr: ['1 sur 1 point', '4 sur 6 points', `n°${nb}2`, `4/6 · 66${nb}%`],
+      en: [
+        '1 of 1 point',
+        '4 of 6 points',
+        '#2',
+        '4/6 · 66%',
+        'Omar Demo, attempt 2 at “Check: meet AI”',
+      ],
+      fr: [
+        '1 sur 1 point',
+        '4 sur 6 points',
+        `n°${nb}2`,
+        `4/6 · 66${nb}%`,
+        `Omar Demo, tentative 2 au quiz «${nb}Check: meet AI${nb}»`,
+      ],
     };
     expect([
       t('detail.scoreHint', { score: 1, max: 1 }),
       t('detail.scoreHint', { score: 4, max: 6 }),
       t('list.attemptNumber', { number: 2 }),
       t('list.scoreValue', { score: 4, max: 6, percent: 66 }),
+      // The row link's whole accessible name, starting with the visible name.
+      t('list.rowLink', { name: 'Omar Demo', number: 2, quiz: 'Check: meet AI' }),
     ]).toEqual(expected[locale]);
   });
 

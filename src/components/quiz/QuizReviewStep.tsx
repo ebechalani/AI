@@ -91,7 +91,14 @@ export function QuizReviewStep({
           <ChevronLeft aria-hidden="true" className="rtl:rotate-180" />
           {t('review.backToQuestions')}
         </Button>
-        <Button ref={submitRef} variant="primary" loading={pending} onClick={onSubmit}>
+        {/* ms-auto: when the row wraps on a phone, Send stays at the end. */}
+        <Button
+          ref={submitRef}
+          variant="primary"
+          loading={pending}
+          onClick={onSubmit}
+          className="ms-auto"
+        >
           {t('review.submit')}
           {!pending && <Send aria-hidden="true" className="rtl:-scale-x-100" />}
         </Button>

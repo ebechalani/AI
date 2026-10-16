@@ -79,6 +79,7 @@
     "pointsAwarded": "{awarded, plural, one {# point} other {# points}}",
     "yourAnswer": "Your answer",
     "studentAnswer": "Student’s answer",
+    "quotedAnswer": "“{text}”",
     "noAnswer": "No answer",
     "rightAnswer": "Right answer",
     "explanation": "Explanation",

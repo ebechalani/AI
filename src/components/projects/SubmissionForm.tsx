@@ -1,10 +1,8 @@
 'use client';
 
-import type { ComponentType } from 'react';
-import { useTranslations } from 'next-intl';
-import { EmptyState } from '@/components/ui';
 import type { SubmissionType } from '@/types/common';
 import type { SubmissionTarget } from '@/types/project';
+import { SubmissionEditor } from './SubmissionEditor';
 
 export interface SubmissionFormProps {
   target: SubmissionTarget;
@@ -13,8 +11,10 @@ export interface SubmissionFormProps {
   previousSubmissionId?: string | null;
 }
 
-// Stub (F8): WS-D fills it in (ARCHITECTURE.md 7.7).
-export const SubmissionForm: ComponentType<SubmissionFormProps> = function SubmissionForm() {
-  const t = useTranslations('errors');
-  return <EmptyState variant="plain" title={t('not_implemented')} />;
-};
+/**
+ * The submission form of ARCHITECTURE.md 7.7, for other workstreams (a challenge page): it
+ * starts empty. On success it shows a toast and refreshes the page; it handles its own errors.
+ */
+export function SubmissionForm(props: SubmissionFormProps) {
+  return <SubmissionEditor {...props} seed={null} />;
+}

@@ -32,3 +32,16 @@ export function focusInView(target: HTMLElement): void {
   target.focus({ preventScroll: true });
   target.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 }
+
+/**
+ * An answer card's focus ring is drawn around its whole row, but on Tab or an arrow key the
+ * browser scrolls only the small radio or checkbox into view, so the rest of the card can stay
+ * under the lesson's sticky footer or the floating tutor button. Scrolls the card (the input's
+ * label) into view instead; keyboard focus only, so a click never moves the page.
+ */
+export function revealChoiceCard(target: EventTarget): void {
+  if (!(target instanceof HTMLInputElement)) return;
+  if (target.type !== 'radio' && target.type !== 'checkbox') return;
+  if (!hasKeyboardFocus(target)) return;
+  target.closest('label')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}

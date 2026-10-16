@@ -25,7 +25,7 @@ export function QuestionField({ quiz, question, answer, onChange }: QuestionFiel
   const name = `${quiz.id}-${question.id}`;
   const disabled = onChange === undefined;
   const legend = (
-    <span className="block text-base font-semibold whitespace-pre-line text-ink sm:text-lg">
+    <span className="block text-base font-semibold break-words whitespace-pre-line text-ink sm:text-lg">
       {prompt}
     </span>
   );
@@ -67,7 +67,7 @@ export function QuestionField({ quiz, question, answer, onChange }: QuestionFiel
         : '';
     return {
       value: option.id,
-      label: <span className="whitespace-pre-line">{text.trim() !== '' ? text : fallback}</span>,
+      label: <span className="break-words whitespace-pre-line">{text.trim() !== '' ? text : fallback}</span>,
       disabled,
     };
   });

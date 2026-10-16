@@ -79,6 +79,7 @@
     "pointsAwarded": "{awarded, plural, one {# point} other {# points}}",
     "yourAnswer": "Votre réponse",
     "studentAnswer": "Réponse de l’élève",
+    "quotedAnswer": "«\u00a0{text}\u00a0»",
     "noAnswer": "Pas de réponse",
     "rightAnswer": "Bonne réponse",
     "explanation": "Explication",

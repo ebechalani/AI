@@ -21,7 +21,7 @@
     "passed": "Réussi",
     "notPassed": "Non réussi",
     "unknownCourse": "Cours indisponible",
-    "rowLink": ", tentative {number} au quiz «\u00a0{quiz}\u00a0»"
+    "rowLink": "{name}, tentative {number} au quiz «\u00a0{quiz}\u00a0»"
   },
   "empty": {
     "noClassesTitle": "Aucune classe pour l’instant",

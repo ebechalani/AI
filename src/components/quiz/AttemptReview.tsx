@@ -101,7 +101,10 @@ function ReviewItem({
           {!isChoice && hasText && (
             <p className="text-sm break-words text-ink">
               <span className="font-semibold">{answerLabel}</span>{' '}
-              <q className="whitespace-pre-line">{row.textAnswer}</q>
+              {/* The catalog quotes it: the browser's French <q> marks lack the no-break spaces. */}
+              <span className="whitespace-pre-line">
+                {t('question.quotedAnswer', { text: row.textAnswer ?? '' })}
+              </span>
             </p>
           )}
           {!row.answered && <p className="text-sm text-ink-muted">{t('question.noAnswer')}</p>}

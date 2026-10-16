@@ -25,7 +25,7 @@ export function QuizIntro({ quiz, latest, remaining, start, onStart }: QuizIntro
   return (
     <div className="flex flex-col gap-4">
       {instructions && instructions.trim() !== '' && (
-        <p className="whitespace-pre-line text-ink">{instructions}</p>
+        <p className="break-words whitespace-pre-line text-ink">{instructions}</p>
       )}
       <QuizFacts quiz={quiz} remaining={remaining} />
       {latest !== null && <LatestAttempt quiz={quiz} attempt={latest} />}
