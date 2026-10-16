@@ -1,0 +1,94 @@
+{
+  "block": {
+    "unavailable": "Ce quiz n’est pas disponible pour le moment."
+  },
+  "facts": {
+    "label": "À propos de ce quiz",
+    "questions": "{count, plural, one {# question} other {# questions}}",
+    "passMark": "Seuil de réussite\u00a0: {percent}\u00a0%",
+    "attemptsUnlimited": "Tentatives illimitées",
+    "attemptsLeft": "{remaining, plural, =0 {Aucune tentative restante sur {max}} one {# tentative restante sur {max}} other {# tentatives restantes sur {max}}}",
+    "xpReward": "{xp, number}\u00a0XP en cas de réussite"
+  },
+  "intro": {
+    "start": "Commencer le quiz",
+    "retry": "Réessayer",
+    "retake": "Refaire le quiz",
+    "noQuestions": "Ce quiz n’a pas encore de questions.",
+    "noAttemptsLeft": "Toutes les tentatives de ce quiz ont été utilisées. La leçon peut tout de même être terminée."
+  },
+  "latest": {
+    "title": "Dernière tentative",
+    "passed": "Réussi",
+    "notPassed": "Sous le seuil de réussite",
+    "summary": "Tentative {number} · {percent}\u00a0% · {date}",
+    "review": "Revoir cette tentative"
+  },
+  "preview": {
+    "notice": "Les quiz ne peuvent pas être passés dans l’aperçu.",
+    "showQuestions": "Afficher {count, plural, one {la question} other {les # questions}}"
+  },
+  "step": {
+    "progress": "Question {number} sur {total}",
+    "progressLabel": "Progression dans le quiz",
+    "back": "Question précédente",
+    "next": "Question suivante",
+    "toReview": "Vérifier les réponses"
+  },
+  "answer": {
+    "chooseOne": "Choisissez une réponse.",
+    "chooseAll": "Choisissez toutes les bonnes réponses.",
+    "shortHint": "Saisissez une réponse courte ({max, number}\u00a0caractères au maximum).",
+    "true": "Vrai",
+    "false": "Faux"
+  },
+  "review": {
+    "title": "Vérifiez les réponses avant de les envoyer",
+    "answered": "Réponse donnée",
+    "unanswered": "Pas encore de réponse",
+    "change": "Modifier",
+    "changeLabel": "Modifier la réponse à la question {number}",
+    "unansweredWarning": "{count, plural, one {# question n’a pas de réponse} other {# questions n’ont pas de réponse}}. Une question sans réponse compte comme fausse.",
+    "backToQuestions": "Retour aux questions",
+    "submit": "Envoyer les réponses"
+  },
+  "result": {
+    "passedTitle": "Quiz réussi\u00a0!",
+    "failedTitle": "Pas réussi cette fois",
+    "scoreLabel": "Score",
+    "points": "{score, number} sur {max, plural, one {# point} other {# points}}",
+    "attempt": "Tentative {number}",
+    "attemptsLeft": "{count, plural, one {# tentative restante.} other {# tentatives restantes.}}",
+    "attemptsUnlimited": "Le quiz peut être refait à tout moment.",
+    "exhausted": "C’était la dernière tentative. La leçon peut tout de même être terminée.",
+    "xp": "+{xp, number}\u00a0XP",
+    "xpToast": "+{xp, number}\u00a0XP pour la réussite du quiz",
+    "levelUp": "Niveau supérieur\u00a0! Niveau {level} atteint.",
+    "badges": "Nouveaux badges",
+    "alreadyEarned": "Les XP de ce quiz ont déjà été gagnés.",
+    "pending": "Les récompenses sont en cours d’ajout et apparaîtront bientôt.",
+    "hiddenAfterPass": "Réussissez le quiz pour voir les bonnes réponses et les explications.",
+    "hiddenNever": "Les réponses de ce quiz ne sont pas affichées.",
+    "reviewTitle": "Réponses"
+  },
+  "question": {
+    "label": "Question {number}",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "points": "{awarded, number} sur {points, plural, one {# point} other {# points}}",
+    "pointsAwarded": "{awarded, plural, one {# point} other {# points}}",
+    "yourAnswer": "Votre réponse",
+    "studentAnswer": "Réponse de l’élève",
+    "noAnswer": "Pas de réponse",
+    "rightAnswer": "Bonne réponse",
+    "explanation": "Explication",
+    "removed": "Cette question ne fait plus partie du quiz.",
+    "notInAttempt": "Cette question a été ajoutée après cette tentative.",
+    "unavailable": "Le texte de cette question n’est pas disponible.",
+    "answerRemoved": "Une réponse choisie lors de cette tentative ne fait plus partie des options."
+  },
+  "errors": {
+    "conflict": "Les réponses n’ont pas été enregistrées\u00a0: il ne reste aucune tentative, ou une autre tentative a été envoyée au même moment. Le quiz a été mis à jour.",
+    "notFound": "Ce quiz est introuvable, ou il n’y a pas d’inscription à son cours."
+  }
+}

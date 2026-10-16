@@ -1,0 +1,94 @@
+{
+  "block": {
+    "unavailable": "This quiz is not available right now."
+  },
+  "facts": {
+    "label": "About this quiz",
+    "questions": "{count, plural, one {# question} other {# questions}}",
+    "passMark": "Pass mark: {percent}%",
+    "attemptsUnlimited": "Unlimited attempts",
+    "attemptsLeft": "{remaining, plural, =0 {No attempt left out of {max}} one {# attempt left out of {max}} other {# attempts left out of {max}}}",
+    "xpReward": "{xp, number} XP for passing"
+  },
+  "intro": {
+    "start": "Start the quiz",
+    "retry": "Try again",
+    "retake": "Take the quiz again",
+    "noQuestions": "This quiz has no questions yet.",
+    "noAttemptsLeft": "Every attempt at this quiz has been used. The lesson can still be completed."
+  },
+  "latest": {
+    "title": "Last attempt",
+    "passed": "Passed",
+    "notPassed": "Below the pass mark",
+    "summary": "Attempt {number} · {percent}% · {date}",
+    "review": "Review this attempt"
+  },
+  "preview": {
+    "notice": "Quizzes cannot be taken in the preview.",
+    "showQuestions": "Show the {count, plural, one {question} other {# questions}}"
+  },
+  "step": {
+    "progress": "Question {number} of {total}",
+    "progressLabel": "Progress through the quiz",
+    "back": "Previous question",
+    "next": "Next question",
+    "toReview": "Review the answers"
+  },
+  "answer": {
+    "chooseOne": "Choose one answer.",
+    "chooseAll": "Choose every answer that is right.",
+    "shortHint": "Type a short answer ({max, number} characters at most).",
+    "true": "True",
+    "false": "False"
+  },
+  "review": {
+    "title": "Check the answers before sending them",
+    "answered": "Answered",
+    "unanswered": "No answer yet",
+    "change": "Change",
+    "changeLabel": "Change the answer to question {number}",
+    "unansweredWarning": "{count, plural, one {# question has no answer} other {# questions have no answer}}. A question without an answer counts as wrong.",
+    "backToQuestions": "Back to the questions",
+    "submit": "Send the answers"
+  },
+  "result": {
+    "passedTitle": "Quiz passed!",
+    "failedTitle": "Not passed this time",
+    "scoreLabel": "Score",
+    "points": "{score, number} of {max, plural, one {# point} other {# points}}",
+    "attempt": "Attempt {number}",
+    "attemptsLeft": "{count, plural, one {# attempt left.} other {# attempts left.}}",
+    "attemptsUnlimited": "The quiz can be taken again at any time.",
+    "exhausted": "That was the last attempt. The lesson can still be completed.",
+    "xp": "+{xp, number} XP",
+    "xpToast": "+{xp, number} XP for passing the quiz",
+    "levelUp": "Level up! Level {level} reached.",
+    "badges": "New badges",
+    "alreadyEarned": "The XP for this quiz was already earned.",
+    "pending": "The rewards are being added and will appear soon.",
+    "hiddenAfterPass": "Pass the quiz to see the right answers and the explanations.",
+    "hiddenNever": "The answers to this quiz are not shown.",
+    "reviewTitle": "Answers"
+  },
+  "question": {
+    "label": "Question {number}",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "points": "{awarded, number} of {points, plural, one {# point} other {# points}}",
+    "pointsAwarded": "{awarded, plural, one {# point} other {# points}}",
+    "yourAnswer": "Your answer",
+    "studentAnswer": "Student’s answer",
+    "noAnswer": "No answer",
+    "rightAnswer": "Right answer",
+    "explanation": "Explanation",
+    "removed": "This question is no longer part of the quiz.",
+    "notInAttempt": "This question was added after this attempt.",
+    "unavailable": "The text of this question is not available.",
+    "answerRemoved": "An answer chosen in this attempt is no longer one of the options."
+  },
+  "errors": {
+    "conflict": "The answers were not saved: no attempt is left, or another attempt was sent at the same moment. The quiz has been updated.",
+    "notFound": "This quiz could not be found, or there is no enrollment in its course."
+  }
+}

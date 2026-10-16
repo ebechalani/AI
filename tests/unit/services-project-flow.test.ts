@@ -46,13 +46,14 @@ import { weightedScore } from '@/lib/services/internal-common';
 import {
   deleteAttachment,
   generateAiReview,
+  getFileForDownload,
   getSubmissionForViewer,
   regenerateAiReview,
   registerUpload,
   reviewSubmission,
   submitWork,
 } from '@/lib/services/project-flow';
-import type { AiReview, Submission, SubmitWorkInput } from '@/types';
+import type { AiReview, Course, FileRecord, Submission, SubmitWorkInput } from '@/types';
 import {
   aiReview,
   challenge,
@@ -965,6 +966,205 @@ describe('getSubmissionForViewer', () => {
     const view = await getSubmissionForViewer(teacher, 's1');
     expect(suggestReview).not.toHaveBeenCalled();
     expect(view.submission.aiReviewStatus).toBe('failed');
+  });
+});
+
+// --- getFileForDownload ------------------------------------------------------------------------
+
+describe('getFileForDownload', () => {
+  const MEDIA_ID = '6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b';
+  const OFFICIAL_ID = '9b2e4c1a-5d6f-4e7a-8b9c-0d1e2f3a4b5c';
+  const UNKNOWN_ID = '11111111-1111-1111-1111-111111111111';
+  const classmate = session('student', 'student-2', 'school-a', ['class-a']);
+  const otherSchoolAdmin = session('school_admin', 'admin-b', 'school-b');
+  const enrolledLearner = session('student', 'student-5');
+  const stranger = session('student', 'student-6');
+  const attached = {
+    fileId: FILE_ID,
+    kind: 'image' as const,
+    fileName: 'photo.png',
+    contentType: 'image/png',
+    sizeBytes: 1234,
+  };
+  /** A private course of teacher-1; student-5 is enrolled in it. */
+  const teacherCourse = course({
+    id: 'course-t',
+    isOfficial: false,
+    ownerUid: 'teacher-1',
+    schoolId: 'school-a',
+    visibility: 'private',
+    pathwayId: null,
+  });
+
+  let files: Map<string, FileRecord>;
+  let courses: Map<string, Course>;
+
+  beforeEach(() => {
+    files = new Map(
+      [
+        fileRecord({ id: FILE_ID, submissionId: 's1' }),
+        fileRecord({
+          id: MEDIA_ID,
+          ownerUid: 'teacher-1',
+          schoolId: 'school-a',
+          purpose: 'course_media',
+          storagePath: `course-media/authors/teacher-1/${MEDIA_ID}/diagram.png`,
+          fileName: 'diagram.png',
+          courseId: 'course-t',
+        }),
+        fileRecord({
+          id: OFFICIAL_ID,
+          ownerUid: 'root',
+          purpose: 'course_media',
+          storagePath: `course-media/official/${OFFICIAL_ID}/robot.png`,
+          fileName: 'robot.png',
+          courseId: 'course-1',
+        }),
+      ].map((file) => [file.id, file]),
+    );
+    courses = new Map([
+      ['course-t', teacherCourse],
+      ['course-1', studentCourse],
+    ]);
+    store(
+      submission({ id: 's1', classId: 'class-a', schoolId: 'school-a', attachments: [attached] }),
+    );
+
+    // The repositories as they answer: getFile for the owner, platform admins and the system.
+    vi.mocked(getFile).mockImplementation(async (actor: Actor, fileId: string) => {
+      const found = files.get(fileId);
+      const allowed =
+        found !== undefined &&
+        (actor === SYSTEM_ACTOR ||
+          ('uid' in actor && (actor.role === 'platform_admin' || actor.uid === found.ownerUid)));
+      if (!allowed) throw new NotFoundError(`files/${fileId}`);
+      return found;
+    });
+    vi.mocked(getCourse).mockImplementation(async (_actor, courseId) => {
+      const found = courses.get(courseId);
+      if (found === undefined) throw new NotFoundError(`courses/${courseId}`);
+      return found;
+    });
+    vi.mocked(getCourseAccess).mockImplementation(async (actor, target) =>
+      target.id === 'course-t' && 'uid' in actor && actor.uid !== 'student-5'
+        ? { allowed: false, reason: 'not_visible' }
+        : { allowed: true, via: 'free' },
+    );
+  });
+
+  it('gives the owner their own file, read as the system', async () => {
+    await expect(getFileForDownload(student, FILE_ID)).resolves.toMatchObject({
+      id: FILE_ID,
+      storagePath: `user-uploads/student-1/image/${FILE_ID}/photo.png`,
+    });
+    expect(getFile).toHaveBeenCalledWith(SYSTEM_ACTOR, FILE_ID);
+    expect(getSubmission).not.toHaveBeenCalled();
+  });
+
+  it('gives a platform admin any file', async () => {
+    await expect(getFileForDownload(platformAdmin, FILE_ID)).resolves.toMatchObject({
+      id: FILE_ID,
+    });
+    await expect(getFileForDownload(platformAdmin, MEDIA_ID)).resolves.toMatchObject({
+      id: MEDIA_ID,
+    });
+    expect(getCourseAccess).not.toHaveBeenCalled();
+  });
+
+  it('gives a submission file to the reviewing teacher and a school admin of the school', async () => {
+    await expect(getFileForDownload(teacher, FILE_ID)).resolves.toMatchObject({ id: FILE_ID });
+    expect(getSubmission).toHaveBeenCalledWith(teacher, 's1');
+    await expect(getFileForDownload(schoolAdmin, FILE_ID)).resolves.toMatchObject({
+      id: FILE_ID,
+    });
+  });
+
+  it('hides a submission file from a classmate, another teacher and another school', async () => {
+    for (const actor of [classmate, otherTeacher, otherSchoolAdmin, stranger]) {
+      await expect(getFileForDownload(actor, FILE_ID)).rejects.toBeInstanceOf(NotFoundError);
+    }
+  });
+
+  it('hides a removed or not yet attached file from staff, but not from its owner', async () => {
+    patch('s1', { attachments: [] });
+    await expect(getFileForDownload(teacher, FILE_ID)).rejects.toBeInstanceOf(NotFoundError);
+    await expect(getFileForDownload(schoolAdmin, FILE_ID)).rejects.toBeInstanceOf(NotFoundError);
+    await expect(getFileForDownload(student, FILE_ID)).resolves.toMatchObject({ id: FILE_ID });
+
+    files.set(FILE_ID, fileRecord({ id: FILE_ID, submissionId: null }));
+    patch('s1', { attachments: [attached] });
+    await expect(getFileForDownload(teacher, FILE_ID)).rejects.toBeInstanceOf(NotFoundError);
+  });
+
+  it('gives teacher-made course media to a learner the course lets in, not to a stranger', async () => {
+    await expect(getFileForDownload(enrolledLearner, MEDIA_ID)).resolves.toMatchObject({
+      id: MEDIA_ID,
+    });
+    expect(getCourse).toHaveBeenCalledWith(SYSTEM_ACTOR, 'course-t');
+    expect(getCourseAccess).toHaveBeenCalledWith(enrolledLearner, teacherCourse);
+
+    for (const actor of [stranger, classmate, otherTeacher]) {
+      await expect(getFileForDownload(actor, MEDIA_ID)).rejects.toBeInstanceOf(NotFoundError);
+    }
+  });
+
+  it('refuses course media of a premium course without a cover', async () => {
+    vi.mocked(getCourseAccess).mockResolvedValue({ allowed: false, reason: 'license_required' });
+    await expect(getFileForDownload(enrolledLearner, MEDIA_ID)).rejects.toBeInstanceOf(
+      NotFoundError,
+    );
+  });
+
+  it('lets whoever may edit the course reach its media, and nobody once the course is gone', async () => {
+    // Uploaded by a platform admin for teacher-1's course (5.2: lands under the admin's uid).
+    files.set(
+      MEDIA_ID,
+      fileRecord({
+        id: MEDIA_ID,
+        ownerUid: 'root',
+        purpose: 'course_media',
+        storagePath: `course-media/authors/root/${MEDIA_ID}/diagram.png`,
+        courseId: 'course-t',
+      }),
+    );
+    vi.mocked(getCourseAccess).mockResolvedValue({ allowed: false, reason: 'not_visible' });
+    await expect(getFileForDownload(teacher, MEDIA_ID)).resolves.toMatchObject({ id: MEDIA_ID });
+    expect(getCourseAccess).not.toHaveBeenCalled();
+
+    courses.delete('course-t');
+    await expect(getFileForDownload(teacher, MEDIA_ID)).rejects.toBeInstanceOf(NotFoundError);
+  });
+
+  it('gives official media to any session without reading the course', async () => {
+    for (const actor of [stranger, schoolAdmin, otherTeacher]) {
+      await expect(getFileForDownload(actor, OFFICIAL_ID)).resolves.toMatchObject({
+        id: OFFICIAL_ID,
+      });
+    }
+    expect(getCourse).not.toHaveBeenCalled();
+    expect(getCourseAccess).not.toHaveBeenCalled();
+  });
+
+  it('answers a malformed id with no read, and a missing file like a hidden one', async () => {
+    for (const fileId of ['../etc/passwd', 'not-a-uuid', '', `${FILE_ID}x`]) {
+      await expect(getFileForDownload(student, fileId)).rejects.toBeInstanceOf(NotFoundError);
+    }
+    expect(getFile).not.toHaveBeenCalled();
+
+    const missing = await getFileForDownload(teacher, UNKNOWN_ID).catch((error: unknown) => error);
+    expect(missing).toBeInstanceOf(NotFoundError);
+    patch('s1', { attachments: [] });
+    files.set(UNKNOWN_ID, fileRecord({ id: UNKNOWN_ID, submissionId: 's1' }));
+    const hidden = await getFileForDownload(teacher, UNKNOWN_ID).catch((error: unknown) => error);
+    expect(hidden).toBeInstanceOf(NotFoundError);
+    expect((hidden as Error).message).toBe((missing as Error).message);
+  });
+
+  it('refuses the system actor: a download is always made by a person', async () => {
+    await expect(getFileForDownload(SYSTEM_ACTOR, FILE_ID)).rejects.toBeInstanceOf(
+      ForbiddenError,
+    );
+    expect(getFile).not.toHaveBeenCalled();
   });
 });
 

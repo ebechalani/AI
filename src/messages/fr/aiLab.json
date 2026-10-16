@@ -1,0 +1,139 @@
+{
+  "overview": {
+    "description": "Teste des outils d’IA et découvre comment ils fonctionnent. Les outils en direct utilisent un vrai modèle d’IA\u00a0; les outils de démonstration montrent un exemple de résultat.",
+    "safety": "L’IA peut se tromper et sembler sûre d’elle même quand elle a tort. N’écris jamais ton nom, ton adresse, ton école ni tes mots de passe."
+  },
+  "sections": {
+    "tryIt": "Essaie un outil",
+    "comingSoon": "Bientôt disponibles"
+  },
+  "status": {
+    "live": "IA en direct",
+    "mock": "Démo",
+    "coming_soon": "Bientôt"
+  },
+  "comingSoon": "Bientôt disponible",
+  "comingSoonDescription": "Cet outil n’est pas encore prêt. Reviens plus tard pour l’essayer.",
+  "backToLab": "Retour au Labo IA",
+  "disabled": {
+    "title": "Le Labo IA est désactivé",
+    "description": "Ton école a désactivé les outils d’IA pour le moment. Si tu as une question, demande à ton enseignant.",
+    "action": "Aller à mes cours"
+  },
+  "limitReached": "Tu n’as plus d’essais dans le Labo IA pour aujourd’hui. Reviens demain.",
+  "unavailable": "L’IA n’a pas pu répondre pour le moment. Réessaie dans un instant.",
+  "howItWorks": {
+    "title": "Comment fonctionne cet outil",
+    "live": "Ta consigne est envoyée à un modèle d’IA, qui écrit une réponse. Rien de ce que tu écris n’est enregistré.",
+    "mock": "Ceci est une démonstration. Elle montre comment l’outil fonctionne avec un exemple de résultat\u00a0: aucune IA n’est utilisée et rien n’est enregistré."
+  },
+  "form": {
+    "generate": "Générer",
+    "tryDemo": "Voir le résultat de démonstration",
+    "clear": "Effacer",
+    "charCount": "{count, number} / {max, number} caractères",
+    "examples": "Besoin d’une idée\u00a0? Essaie l’une de celles-ci\u00a0:"
+  },
+  "result": {
+    "title": "Résultat",
+    "empty": "Ton résultat s’affichera ici.",
+    "yourPrompt": "Ta consigne",
+    "option": "Choix",
+    "aiLabel": "Écrit par une IA",
+    "mockLabel": "Résultat de démonstration\u00a0: aucune IA n’a été utilisée",
+    "disclaimer": "L’IA peut se tromper. Vérifie les faits importants avec ton enseignant ou une source fiable.",
+    "earlier": "Résultats précédents"
+  },
+  "tools": {
+    "text": {
+      "title": "IA texte",
+      "description": "Écris une consigne et découvre ce qu’écrit un modèle de langage\u00a0: une histoire, un poème, une explication ou une liste.",
+      "promptLabel": "Ta consigne",
+      "placeholder": "Écris une courte histoire sur un robot qui apprend à peindre.",
+      "examples": {
+        "story": "Écris une courte histoire sur un robot qui veut apprendre à danser.",
+        "poem": "Écris un poème de quatre vers sur la lune pour un enfant de 10\u00a0ans.",
+        "explain": "Explique ce qu’est un réseau de neurones en trois phrases simples."
+      },
+      "tips": {
+        "title": "Conseils pour une bonne consigne",
+        "audience": "Dis à qui le texte est destiné.",
+        "length": "Dis quelle longueur il doit avoir.",
+        "tone": "Dis quel ton tu veux\u00a0: drôle, calme ou sérieux."
+      }
+    },
+    "image": {
+      "title": "IA image",
+      "description": "Décris une image et découvre comment un générateur d’images transforme des mots en dessin.",
+      "promptLabel": "Décris ton image",
+      "placeholder": "Un robot sympathique qui arrose des plantes sur un balcon ensoleillé",
+      "optionLabel": "Style",
+      "options": {
+        "cartoon": "Dessin animé",
+        "watercolor": "Aquarelle",
+        "pixel": "Pixel art"
+      },
+      "mockResult": "Résultat de démonstration\u00a0: un vrai générateur d’images dessinerait maintenant ton image. Il a appris à partir de millions d’images et de leurs descriptions, donc les mots que tu choisis changent ce qu’il dessine. Essaie de changer un mot, comme le style ou le lieu, et réfléchis à la façon dont l’image changerait."
+    },
+    "video": {
+      "title": "IA vidéo",
+      "description": "Décris une courte scène et découvre comment les générateurs de vidéos créent des images animées, une image après l’autre.",
+      "promptLabel": "Décris ta scène",
+      "placeholder": "Un bateau en papier qui descend une rue sous la pluie",
+      "optionLabel": "Durée",
+      "options": {
+        "short": "5\u00a0secondes",
+        "long": "10\u00a0secondes"
+      },
+      "mockResult": "Résultat de démonstration\u00a0: un vrai générateur de vidéos créerait maintenant un court clip. Il fabrique de nombreuses images, qui changent un peu à chaque fois, et les fait défiler très vite pour que les choses semblent bouger. Les clips plus longs demandent beaucoup plus d’images, c’est pourquoi ils prennent plus de temps à créer."
+    },
+    "voice": {
+      "title": "IA vocale",
+      "description": "Tape une phrase et découvre comment la synthèse vocale transforme l’écrit en voix.",
+      "promptLabel": "Texte à lire à voix haute",
+      "placeholder": "Bonjour\u00a0! Je suis un robot et j’adore apprendre de nouvelles choses.",
+      "optionLabel": "Voix",
+      "options": {
+        "robot": "Robot",
+        "friendly": "Amicale",
+        "calm": "Calme"
+      },
+      "mockResult": "Résultat de démonstration\u00a0: un vrai générateur de voix lirait maintenant ton texte à voix haute. Il découpe le texte en petits sons et a appris, grâce à de nombreux enregistrements, à les enchaîner avec le bon rythme. N’oublie pas\u00a0: copier la voix d’une vraie personne sans son accord n’est pas correct."
+    },
+    "vision": {
+      "title": "IA de vision",
+      "description": "Découvre comment un modèle de vision par ordinateur trouve et nomme les objets d’une image.",
+      "promptLabel": "Que doit chercher l’IA\u00a0?",
+      "placeholder": "Trouve tous les animaux de l’image",
+      "optionLabel": "Image d’exemple",
+      "options": {
+        "park": "Un parc",
+        "street": "Une rue",
+        "kitchen": "Une cuisine"
+      },
+      "samplesNote": "Pour protéger ta vie privée, cette démonstration utilise seulement des images d’exemple. N’envoie jamais de photos de personnes.",
+      "mockResult": "Résultat de démonstration\u00a0: un vrai modèle de vision dessinerait maintenant des cadres autour des objets qu’il reconnaît, chacun avec une étiquette et un score qui dit à quel point il en est sûr, comme «\u00a0chien\u00a0: 92\u00a0%\u00a0». Les modèles peuvent se tromper quand la lumière est mauvaise ou qu’un objet est en partie caché, donc une personne doit toujours vérifier."
+    },
+    "chatbot-builder": {
+      "title": "Créateur de chatbot",
+      "description": "Donne une personnalité et un message d’accueil à un chatbot, puis découvre comment il répondrait.",
+      "promptLabel": "Le message d’accueil de ton chatbot",
+      "placeholder": "Salut\u00a0! Je suis Sparky. Pose-moi tes questions sur les planètes.",
+      "optionLabel": "Personnalité",
+      "options": {
+        "friendly": "Amical",
+        "curious": "Curieux",
+        "funny": "Drôle"
+      },
+      "mockResult": "Résultat de démonstration\u00a0: ton chatbot répondrait maintenant avec la personnalité que tu as choisie. Les vrais chatbots suivent des instructions comme les tiennes, appelées «\u00a0prompt système\u00a0», qui leur disent comment se comporter. Les bons créateurs de chatbots décident aussi ce que le robot ne doit jamais faire, comme demander des informations personnelles."
+    },
+    "ml-lab": {
+      "title": "Labo d’apprentissage automatique",
+      "description": "Entraîne un petit modèle avec tes propres exemples et teste à quel point il apprend bien."
+    },
+    "agent-builder": {
+      "title": "Créateur d’agent IA",
+      "description": "Imagine un agent IA qui utilise des outils, étape par étape, pour atteindre un objectif."
+    }
+  }
+}

@@ -32,3 +32,8 @@ export function getLabTool(id: LabToolId): LabTool {
   if (!tool) throw new Error(`Unknown lab tool: ${id}`);
   return tool;
 }
+
+/** Narrows a route parameter or a block field before getLabTool, which throws on an unknown id. */
+export function isLabToolId(value: string): value is LabToolId {
+  return (LAB_TOOL_IDS as readonly string[]).includes(value);
+}

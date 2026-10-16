@@ -1,0 +1,32 @@
+{
+  "cannotHelp": "Je ne peux pas vous aider avec cela ici. Si quelque chose vous inquiète, parlez-en à un parent, à un enseignant ou à un autre adulte de confiance. Vous pouvez me poser une question sur l’IA, le code, la robotique ou votre leçon.",
+  "unavailable": "Robo AI ne peut pas répondre pour le moment. Réessayez dans un instant.",
+  "cutShort": "(Cette réponse a été interrompue.)",
+  "limitReached": "Robo AI ne peut plus répondre à de nouveaux messages aujourd’hui. Vous pourrez poser vos questions demain.",
+  "modeChanged": "Robo AI est prêt\u00a0: {mode}.",
+  "slowDown": "{seconds, plural, one {Vous envoyez des messages très vite. Attendez # seconde, puis réessayez.} other {Vous envoyez des messages très vite. Attendez # secondes, puis réessayez.}}",
+  "notAvailable": "Robo AI n’est pas disponible ici.",
+  "sendFailed": "Votre message n’a pas été envoyé. Il est revenu dans la zone de message, vous pouvez donc réessayer.",
+  "aiLabel": "Réponses écrites par une IA",
+  "newChat": "Nouvelle conversation",
+  "newChatStarted": "Nouvelle conversation commencée.",
+  "privacyTip": "Ne communiquez jamais votre nom, votre adresse, votre école ni vos mots de passe à Robo AI.",
+  "page": {
+    "description": "Posez vos questions à Robo AI sur l’IA, le code et la robotique. Il vous aide à réfléchir étape par étape au lieu de vous donner les réponses.",
+    "contextLabel": "Sujet de la conversation",
+    "contextGeneral": "Tous les sujets (aucun cours)",
+    "contextHint": "Choisissez l’un de vos cours pour que Robo AI sache ce que vous apprenez. Changer de cours commence une nouvelle conversation."
+  },
+  "disabled": {
+    "title": "Robo AI est désactivé",
+    "description": "Votre école a désactivé les outils d’IA pour le moment. Si vous avez une question, demandez à votre enseignant.",
+    "action": "Aller à mes cours"
+  },
+  "activity": {
+    "title": "Activité avec l’IA",
+    "starterLabel": "Question suggérée",
+    "open": "Essayer avec Robo AI",
+    "openLab": "Essayer dans le Labo IA",
+    "hint": "Robo AI s’ouvre avec cette question prête. Vous pouvez la modifier avant de l’envoyer."
+  }
+}

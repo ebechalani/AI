@@ -219,7 +219,8 @@ client component ──▶ someAction(input)
   (browsers do not send it on same-origin navigations, `<img>`, `<video>` or `<a href>`); it
   is a read with no side effects, protected by the `SameSite=Lax` cookie and the resource
   authorization, and it answers with `Cache-Control: private, no-store` and
-  `Referrer-Policy: no-referrer`.
+  `Referrer-Policy: no-referrer` (the latter set by `next.config.ts` for `/api/files/:path*`,
+  11.1).
 
 ### 1.5 Auth and session flow
 
@@ -435,8 +436,14 @@ Review:  submitWorkAction → services/project-flow.submitWork → after(() => g
            → lib/ai/grading.suggestReview(input) → submissions/{id}/aiReviews/{id}
            a review still 'pending' after 2 minutes is re-triggered when the submission is read
            (data/submissions.setAiReviewPending counts each re-trigger; the first run is free)
-Lab:     runLabToolAction (students only) → checkAndCountAiUsage(session, 'lab')
-           → lib/ai/lab.runLabToolWithReport(toolId, input, ctx)  (result + usage + outcome; 8.5)
+Lab:     runLabToolAction (students only)
+           live tool ('text'): checkAndCountAiUsage(session, 'lab')
+             → lib/ai/lab.runLabToolWithReport(toolId, input, ctx)  (result + usage + outcome; 8.5)
+             → recordAiTokens
+           canned tools (status 'mock' and 'coming_soon'): no provider call, so no
+             checkAndCountAiUsage and nothing counted against the 30 lab requests a day; the
+             school switch is checked with getSchool instead (8.6.3)
+             → lib/ai/lab.runLabToolWithReport(toolId, input, ctx)  (outcome 'canned', no usage)
 ```
 
 `lib/ai/index.ts#getAiProvider()` returns the mock provider unless `AI_PROVIDER=anthropic`
@@ -1752,13 +1759,16 @@ composite indexes, so a missing index only fails in production).
 | Student Challenges | the two challenge queries (global; school only when `schoolId` is not null) without the `deadlineAt` filter; own entries with **one** query `submissions` where `studentUid == uid` and `context == 'challenge'` (equality only), `entered` derived in memory. Challenge detail: latest entry `submissions` where `studentUid == uid` and `challengeId == id` order by `attemptNumber desc` limit 1 |
 | Achievements | `users/{uid}`; `badges` (the whole collection; `activeOnly` and `order` applied in memory); `users/{uid}/badges`; `xpLedger` order by `createdAt desc` limit 20 |
 | Certificates (student) | `certificates` where `userUid == uid` order by `issuedAt desc` |
+| Student AI Tutor (`/student/tutor`) | `schools/{schoolId}` for the AI switch, only when the learner has a school. When the switch is on, also the Student Learn enrolment query (`enrollments` where `userUid == uid` order by `lastActivityAt desc`) → `getAll` courses, for the course selector. Each message then costs the reads of the row "Tutor context" |
+| AI Lab (`/student/ai-lab`, `/student/ai-lab/[toolId]`) | `schools/{schoolId}`, only when the learner has a school. `runLabToolAction`: for the live tool the reads of `checkAndCountAiUsage` (8.7: the `aiUsage` documents, and the school document); for the canned tools `schools/{schoolId}` only (1.7) |
 | Teacher Dashboard | `classes` where `teacherUids array-contains uid` and `archived == false` order by `name`; `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` limit 5 (+ `count()`); `quizAttempts` where `classId in classIds` order by `submittedAt desc` limit 10 (rows render from the `studentName` and `quizTitle` snapshots; no user or quiz reads). **When `classIds` is empty (every new teacher) these two queries are skipped and return empty** |
 | Class detail | `classes/{id}`; `members` order by `displayName`; `assignments`; `getAll` assigned courses |
 | Student detail (teacher) | student summary (`users/{uid}`, reduced projection); then, **always filtered by the route's class**: `enrollments` where `classId == X` and `userUid == uid` (equality only); `quizAttempts` where `classId == X` and `userUid == uid` order by `submittedAt desc`; `submissions` where `classId == X` and `studentUid == uid` order by `submittedAt desc`; active `manual` badges and `users/{uid}/badges` for the award control |
 | Teacher Courses | published official catalog by pathway; `courses` where `ownerUid == uid` order by `updatedAt desc`; `courses` where `schoolId == X` and `isOfficial == false` order by `updatedAt desc` (`listSchoolCourses`: for a **teacher** actor filtered to `visibility == 'school'` in memory; a school admin on `/school/courses` gets every non-official course of the school that `canViewCourse` allows, section 6.6; skipped when `schoolId` is null) |
-| Assessments | `quizAttempts` where `classId == X` and `courseId == Y` order by `submittedAt desc` (paginated, 50); attempt detail by direct get |
-| Teacher Projects (queue) | `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` (skipped when `classIds` is empty); tab "All": `classId == X` order by `submittedAt desc` (paginated) |
-| Review screen, student submission detail | `submissions/{id}`; `aiReviews/{latestAiReviewId}` when the viewer may see it; `reviews` order by `createdAt desc` (staff); project or challenge doc |
+| Assessments | the teacher's classes for the class picker: the Teacher Dashboard query with `includeArchived` (`classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name`; same index); `getAll` of the selected class's assigned courses and of any other course named on the page; `quizAttempts` where `classId == X` and `courseId == Y` order by `submittedAt desc`, or, for "All courses", where `classId == X` order by `submittedAt desc` without the `courseId` filter (paginated, 50; the cursor is the last attempt id of the previous page, and the earlier cursors travel in the URL). Attempt detail: `quizAttempts/{id}`, `quizzes/{quizId}`, `courses/{courseId}` and `classes/{classId}` by direct get. Course reads as in the row "Course access" (`getCourses` / `getQuiz` may read `enrollments/{uid}_{courseId}` for a teacher-made course) |
+| Teacher Projects (queue) | the teacher's classes, for the class names and the picker of the tab "All": the Teacher Dashboard query with `includeArchived` (`classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name`; same index); `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` (skipped when `classIds` is empty); tab "All": `classId == X` order by `submittedAt desc` (paginated) |
+| Review screen, student submission detail | `submissions/{id}`; `aiReviews/{latestAiReviewId}` when the viewer may see it; `reviews` order by `createdAt desc` (staff); project or challenge doc. The student page, for a `returned` submission only, also reads the latest attempt with `getLatestSubmission` to decide whether a new version may be sent: `enrollments/{uid}_{courseId}` and `submissions/{latestSubmissionId}` by id (project), or the Challenge detail query (challenge) |
+| File download (`GET /api/files/[fileId]`, `project-flow.getFileForDownload`) | `files/{fileId}`; then, unless the caller owns the file or is a platform admin: `submissions/{submissionId}` (submission files), or `courses/{courseId}` plus the reads of the row "Course access" (media of a teacher-made course; none for official media). Direct gets only |
 | Reports | `classes/{id}`; `members`; `getAll(enrollments/{uid}_{courseId})` for each member (≤ 60). All columns come from the enrollment (`progressPercent`, `quizSummary`, `projectSummary`, `certificateId`); **no attempt or submission query** |
 | School Dashboard / Analytics | `schools/{id}` (teachers, students, classes and seats used come from `counts`); `count()` on `enrollments` (`schoolId`, `status`), per course (`schoolId`, `courseId`, `status`) for the union of `assignedCourseIds`; `count()` on `certificates` (`schoolId`); `licenses` where `schoolId` order by `endsAt desc` |
 | School Teachers / Students | `users` where `schoolId == X` and `role == R` order by `displayName` (paginated, 50) |
@@ -2410,8 +2420,8 @@ and `isNavItemActive`.
 
 | Handler | Contract |
 |---|---|
-| `POST /api/ai/tutor` | Body `TutorRequest` (section 8.3). `Origin` must be present and equal to the host. Auth with `getSession()` (**not** `requireSession`: a route handler answers JSON, it never redirects). Roles `student`, `teacher` only. Success: `200 application/x-ndjson; charset=utf-8`, one `TutorStreamEvent` per line (section 8.3). Errors: JSON `{ error: { code: ActionErrorCode; retryAfterSeconds?: number } }` with `400 validation`, `401 unauthenticated`, `403 forbidden`, `429 rate_limited` (carries `retryAfterSeconds`) |
-| `GET /api/files/[fileId]` | No `Origin` check (section 1.4). Loads `files/{fileId}`; allows the owner; anyone passing `canViewSubmission` on `file.submissionId`; for `purpose: 'course_media'`, anyone for whom `getCourseAccess` allows `file.courseId` (or who passes `canEditCourse`). Responds through `storage-admin.serveFile(storagePath, { inline })`: a `302` to a V4 signed URL valid 10 minutes in production (the object is not read); on the emulator, where URLs cannot be signed, the whole object is streamed by the handler with no `Range` support (seeking in an uploaded video does not work locally) and `serveFile` throws `NotFoundError` for a missing object, which the handler maps to `404`. Headers: `Cache-Control: private, no-store`, `Referrer-Policy: no-referrer`. `404` when the file does not exist or the caller is not allowed |
+| `POST /api/ai/tutor` | Body `TutorRequest` (section 8.3). `Origin` must be present and equal to the host. Auth with `getSession()` (**not** `requireSession`: a route handler answers JSON, it never redirects). Roles `student`, `teacher` only. Success: `200 application/x-ndjson; charset=utf-8`, one `TutorStreamEvent` per line (section 8.3). Errors: JSON `{ error: { code: ActionErrorCode; retryAfterSeconds?: number } }` with `400 validation` (also a body over 128 KiB, whether declared in `content-length` or counted while reading), `401 unauthenticated`, `403 forbidden` (also a course hidden from the caller, 10.4), `429 rate_limited` (carries `retryAfterSeconds`, and the same number of seconds in a `Retry-After` header), `500 internal` for an unexpected server fault (for example a Firestore or session failure) |
+| `GET /api/files/[fileId]` | No `Origin` check (section 1.4). Authorizes through `project-flow.getFileForDownload(session, fileId)` (10.3), which loads `files/{fileId}` as the system and allows the owner and platform admins; anyone passing `canViewSubmission` on `file.submissionId` while that submission still lists the file; for `purpose: 'course_media'`, any session when the media is official (`isPublicMediaPath`), else anyone for whom `getCourseAccess` allows `file.courseId` (or who passes `canEditCourse`). Every other case, a malformed id included, is the same `NotFoundError` (no existence oracle). Responds through `storage-admin.serveFile(storagePath, { inline })`: a `302` to a V4 signed URL valid 10 minutes in production (the object is not read); on the emulator, where URLs cannot be signed, the whole object is streamed by the handler with no `Range` support (seeking in an uploaded video does not work locally) and `serveFile` throws `NotFoundError` for a missing object, which the handler maps to `404`. Headers: `Cache-Control: private, no-store`, `Referrer-Policy: no-referrer` (set for `/api/files/:path*` by `next.config.ts`, 11.1, on every answer, 404 included). `404` when the file does not exist or the caller is not allowed |
 
 Everything else is a server action. Session creation and sign-out are server actions
 (`createSessionAction`, `signOutAction` in `actions/session.ts`), not route handlers.
@@ -2918,7 +2928,33 @@ model names). Adding provider B = one file in `providers/` and one branch in
   for `tutor` and `lab`, `medium` for `review`); a `refusal` stop reason maps to
   `stopReason: 'refusal'` and is shown to the learner as a neutral "I can't help with that
   here" message. The implementer follows the SDK's current documentation for request shapes
-  rather than this document.
+  rather than this document. The shape WS-I chose is recorded here, so that the integration
+  gate's check of the real adapter can be reproduced:
+  - **No `thinking` field** (the default model thinks adaptively and rejects a disabled or
+    budgeted thinking setting); no sampling parameters, no assistant prefill, no `metadata`.
+  - **An explicit `output_config.effort`**: `low` for `tutor` and `lab`, `medium` for
+    `review` (for `review` next to `output_config.format`, the JSON schema that the SDK's
+    `betaZodOutputFormat` builds from the zod schema).
+  - **The system prompt as one text block with `cache_control: { type: 'ephemeral' }`**. It
+    holds no learner or course text (8.3), so the same prefix serves every learner of a mode,
+    age band and locale.
+  - **The server-side refusal fallback** for the models that support it: `betas:
+    ['server-side-fallback-2026-07-01']` and `fallbacks: 'default'`. A reply produced by the
+    fallback still passes the policy prompt and `checkOutput`.
+  - **Structured output**: `betaZodOutputFormat` sends enums and numeric bounds only as
+    descriptions, so the API does not enforce them; the zod re-validation does (a violation is
+    `invalid_output`).
+  - **Model**: `ANTHROPIC_MODEL` must name a model that accepts `output_config.effort`. Older
+    models answer `400` on every call, so every tutor, lab and review call fails as a provider
+    error.
+  - **Client**: built with the key only (`apiKey`, and `authToken: null`, so the SDK does not
+    also read `ANTHROPIC_AUTH_TOKEN` from the environment) and `logLevel: 'warn'` (it wins
+    over `ANTHROPIC_LOG`, so request bodies, children's text, are never logged).
+  - **Whole-call deadlines** (combined with the caller's signal): 50 s for `tutor` and `lab`
+    (the tutor route and the lab page allow 60 s), 100 s for `review`. The review deadline
+    stays below the 2-minute re-trigger of a review still `pending` (1.7, 9.4;
+    `AI_LIMITS.reviewRetriggerAfterMs`), so the first review, started right after the
+    submission, has finished or failed before a read of the submission may start it again.
 - **Output caps**: `maxOutputTokens` in our interface is a **visible-length target**
   (`AI_LIMITS`: tutor 700, lab 700, review 1 500 tokens), enforced by the prompt and by
   `checkOutput`. It is not passed to the provider as its hard cap: on the default model
@@ -2986,13 +3022,15 @@ export async function* streamTutorReply(context: TutorContext, messages: TutorTu
 export type GuardedTutorEvent =
   | { type: 'text'; text: string }
   | { type: 'replace'; messageKey: 'cannotHelp' | 'unavailable' }    // TUTOR_REPLACE_KEYS
-  | { type: 'done'; outcome: 'ok' | 'cut_short' | 'blocked' | 'refused' | 'error'; usage: AiUsage; stopReason: AiStopReason | null; model: string | null; error: string | null };
+  | { type: 'done'; outcome: 'ok' | 'cut_short' | 'blocked' | 'refused' | 'error'; usage: AiUsage; stopReason: AiStopReason; model: string; error: unknown };
+  // usage: what to record (NO_USAGE when the provider failed before reporting); stopReason 'error' when the stream failed;
+  // model 'unknown' when the provider never reported one; error: what the provider threw, for the server log (null otherwise)
 export function guardTutorStream(source: AsyncIterable<AiStreamEvent>, ageBand: AgeBand): AsyncGenerator<GuardedTutorEvent>;
   // the buffering + checkOutput of the "Stream" paragraph below; never throws; always ends with exactly one done
 export function toTutorStreamEvent(event: GuardedTutorEvent, remainingToday: number): TutorStreamEvent;
 export function encodeTutorEvent(event: TutorStreamEvent): string;   // one NDJSON line
 export const TUTOR_STREAM_CONTENT_TYPE: string;                      // 'application/x-ndjson; charset=utf-8'
-export function buildTutorRequest(context: TutorContext, messages: TutorTurn[]): AiTextRequest;
+export function buildTutorRequest(context: TutorContext, messages: TutorTurn[], signal?: AbortSignal): AiTextRequest;   // the signal is passed on to the provider
 ```
 
 This covers the brief's list (age, language, pathway, course, lesson, previous quiz
@@ -3037,10 +3075,12 @@ guardTutorStream(streamTutorReply(context, messages, { signal }), context.ageBan
 `encodeTutorEvent(toTutorStreamEvent(event, remainingToday))` with the header
 `TUTOR_STREAM_CONTENT_TYPE`, and on the `done` event calls `recordAiTokens` with
 `event.usage`, increments `blockedCount` when `event.outcome === 'blocked'` and logs
-`event.error` when not null. After a reply is blocked or cut, `guardTutorStream` keeps
-reading the provider stream to the end to learn the token usage (with a real provider that
-spends the remaining output tokens; aborting through the signal would lose the figure —
-WS-I decides).
+`event.error` when not null. **Decision (WS-I):** after a reply is blocked or cut,
+`guardTutorStream` keeps reading the provider stream to the end, so the token usage is
+accurate (with a real provider that spends the remaining output tokens, bounded by the
+provider cap of 8.1 at `low` effort). The provider call is aborted only when the client
+disconnects (`request.signal`) or the adapter's deadline passes (8.1); the usage known by
+then is recorded, and a reply cut off because the learner left is not logged as an error.
 
 ### 8.4 Grading output
 
@@ -3147,8 +3187,10 @@ code.
    school-provisioned account.
 3. The school switch `settings.aiEnabled` covers **all three** AI features. It is enforced
    inside `checkAndCountAiUsage` (which has the caller's `schoolId`), so the tutor, the AI Lab
-   and AI review all honour it: with the switch off the tutor and the lab answer `403`, and a
-   submission's `aiReviewStatus` becomes `skipped`.
+   and AI review all honour it (the AI Lab's canned tools make no provider call and skip
+   `checkAndCountAiUsage`; `runLabToolAction` checks the switch for them with `getSchool`,
+   1.7): with the switch off the tutor and the lab answer `403`, and a submission's
+   `aiReviewStatus` becomes `skipped`.
 4. Input: length caps; `sanitizeUserText` redacts emails, phone numbers and URLs with
    credentials on every string before anything leaves the server; history capped at 10
    turns and 16 000 characters; review input cut to a fixed budget (8.4).
@@ -3183,12 +3225,19 @@ is redacted and raises `possible_personal_data` on a review, which prevents one-
 approve), with year ranges, ISO and day-month-year dates, decimals and IPv4 addresses
 exempt. `checkOutput`'s list refuses any reply containing a URL or an email address, so a
 real model that puts a link inside a code example has the whole reply replaced by the
-neutral message; WS-I tunes the list. `prompts/{tutor,grading,lab}.ts` hold
-`Record<Locale, …>` tables (language names, limitation texts, lab notices): adding a locale
-to `LOCALES` is a compile error there until entries are added. The regexes in `safety.ts`
-are written with escapes, never with literal invisible characters (the editing tools on the
-development machine turn `\u`-style escapes into the literal character; files there are
-checked for non-ASCII characters after editing).
+neutral message; WS-I tunes the list. WS-I's tuning: `http(s)://localhost` and
+`http(s)://127.0.0.1` links are exempt from the URL ban for the scheme, host and port only
+(coding lessons need "open http://localhost:3000"); the path is still checked, so
+`http://localhost:3000/?next=https://example.com` is still refused, as is a host that only
+starts with `localhost` (`localhost.example.com`, `localhost@example.com`). Two groups are
+added: proposals to meet in person, and requests for photos of the learner (English and
+French). No secrecy patterns are added ("keep your password secret" and the quoted warnings
+of online-safety lessons would be false positives; the policy prompt covers secrecy).
+`prompts/{tutor,grading,lab}.ts` hold `Record<Locale, …>` tables (language names, limitation
+texts, lab notices): adding a locale to `LOCALES` is a compile error there until entries are
+added. The regexes in `safety.ts` are written with escapes, never with literal invisible
+characters (the editing tools on the development machine turn `\u`-style escapes into the
+literal character; files there are checked for non-ASCII characters after editing).
 
 ### 8.7 Rate limiting and budgets
 
@@ -3210,7 +3259,7 @@ or to the next UTC day (per-day limit, token cap, budget). The repository export
 |---|---|---|
 | Tutor messages per UTC day | 60, or `schools.settings.aiDailyMessageLimit` clamped to 1–200 | 150 |
 | Tutor messages per minute | 6 | 10 |
-| Lab requests per day | 30 | — |
+| Lab requests per day (live tool only: canned tools make no provider call and are not counted, 1.7) | 30 | — |
 | AI reviews per day (submissions that get an AI review; beyond that `aiReviewStatus: 'skipped'`) | 5 | — |
 | AI review regenerations per submission | 3 (own unsupervised submission) | 3 |
 | Tokens per user per UTC day (input + output, all kinds) | 200 000 | 400 000 |
@@ -4207,7 +4256,7 @@ removeAttachment(actor, submissionId, fileId): Promise<void>                    
 registerFile(actor, input: NewFile): Promise<FileRecord>                               // system only; create(), ConflictError if files/{fileId} exists
 checkAndCountUpload(actor, sizeBytes: number): Promise<{ allowed: boolean }>           // uploadUsage transaction (UPLOAD_QUOTAS); ForbiddenError for a SystemActor
                                                                                        // (a quota belongs to a session user); allowed: false counts nothing
-getFile(actor, fileId): Promise<FileRecord>                                            // owner or platform admin, else NotFoundError (4.4); services load others as system
+getFile(actor, fileId): Promise<FileRecord>                                            // owner or platform admin, else NotFoundError (4.4); services load others as system (project-flow.getFileForDownload)
 getOwnFiles(actor, fileIds: string[]): Promise<FileRecord[]>                           // in the order of fileIds; NotFoundError if any is not owned by the actor
 getCourseMediaFiles(actor, courseId, fileIds: string[]): Promise<FileRecord[]>         // canEditCourse; throws if any file is not media of that course
 attachFilesToSubmission(actor, fileIds: string[], submissionId): Promise<void>         // system only
@@ -4385,6 +4434,7 @@ submitWork(actor, input: SubmitWorkInput & { locale: Locale }): Promise<Submissi
 deleteAttachment(actor, submissionId: string, fileId: string): Promise<void>
 getSubmissionForViewer(actor, submissionId): Promise<{ submission: Submission; aiReview: AiReview | null; reviews: TeacherReview[] }>
   // authorizes, repairs effectsApplied, re-triggers a stale pending AI review (section 9.4); aiReview only if canViewAiReview
+getFileForDownload(actor, fileId): Promise<FileRecord>                                // GET /api/files/[fileId] (6.9); NotFoundError when not allowed
 generateAiReview(submissionId: string): Promise<void>                               // system; never throws (records failure or 'skipped')
 regenerateAiReview(actor, submissionId): Promise<void>
 reviewSubmission(actor, input: ReviewInput): Promise<{ submission: Submission; gamification: GamificationOutcome | null }>
@@ -4565,6 +4615,20 @@ Semantics that the signatures do not show:
   from the definition; `locale` from the input. One open attempt at a time and at most 10
   (section 3.4). The action then runs `after(() => generateAiReview(submission.id))`.
 - **`deleteAttachment`**: section 5.2.
+- **`getFileForDownload`** (the authorization of `GET /api/files/[fileId]`, 6.9): a
+  `SystemActor` is refused (`ForbiddenError`); an id that does not match `FILE_ID_PATTERN` is
+  `NotFoundError` with no read; the record is read as the system (`data/files.getFile`
+  answers only the owner and platform admins). Allowed: the owner and platform admins; for
+  `purpose: 'submission'` with `submissionId` set, whoever `getSubmission(actor,
+  submissionId)` answers (`canViewSubmission`: the reviewing teacher, a school admin of the
+  school) while the submission still lists the file in `attachments`; for `purpose:
+  'course_media'`, any session when `isPublicMediaPath(storagePath)` (official media is
+  public anyway), otherwise the course read as the system must exist and pass
+  `canEditCourse(actor, course) || (await getCourseAccess(actor, course)).allowed`
+  (`getCourseAccess` applies `canViewCourse` first, so a private free course stays private,
+  and a premium course needs a cover). Everything else, a missing file, a removed or not yet
+  attached submission file and a deleted course included, is the same `NotFoundError`. The
+  reads are those of the 3.7 row "File download".
 - **`generateAiReview`** (system, never throws): returns without doing anything unless
   `status === 'submitted'` and `aiReviewStatus === 'pending'`; reads the student profile as
   the system for the usage subject and `ageBand`; every `checkAndCountAiUsage` refusal (role,
@@ -4782,10 +4846,16 @@ How the workstream actions call the services (the error codes each form must han
 - `issueCertificateAction` → `const certificate = await issueCertificate(session, data);
   return ok({ certificateId: certificate.id })`; `revokeCertificateAction` →
   `revokeCertificate(session, certificateId, reason)`.
-- `runLabToolAction` → `runLabToolWithReport` (8.5). The tutor route calls
-  `buildTutorContext` inside a try/catch that maps `AppError` codes to JSON (a hidden course
-  answers `403 forbidden`; 6.9 lists only validation, unauthenticated, forbidden and
-  rate_limited), then `guardTutorStream(streamTutorReply(…))` (8.3).
+- `runLabToolAction` → `runLabToolWithReport` (8.5). Only the live tool (`text`) makes a
+  provider call, so only it goes through `checkAndCountAiUsage(session, 'lab')` and
+  `recordAiTokens`. Canned tools (status `mock` and `coming_soon`) make no provider call:
+  `runLabToolAction` does not call `checkAndCountAiUsage` for them and they do not count
+  against the 30 lab requests a day (8.7 counts provider calls). For them the school switch is
+  checked with `getSchool` instead (`settings.aiEnabled` off or the school missing →
+  `forbidden`), so 8.6.3 still holds. The tutor route calls `buildTutorContext` inside a
+  try/catch that maps `AppError` codes to JSON (a hidden course answers `403 forbidden`; the
+  codes are those of 6.9, with `500 internal` for an unexpected fault), then
+  `guardTutorStream(streamTutorReply(…))` (8.3).
 
 ### 10.5 Message namespaces (`src/messages/<locale>/<namespace>.json`)
 
@@ -4895,9 +4965,10 @@ parallel (two people, or one after the other): the **server track** (F4 → F5 �
   Nothing else: non-official media and all emulator media are rendered `unoptimized` by
   `MediaImage` (section 7.4), so `images.dangerouslyAllowLocalIP` is not needed.
 - Headers on every response: `X-Content-Type-Options: nosniff`,
-  `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` (camera,
-  microphone, geolocation off), and this Content-Security-Policy (a static header, so
-  `script-src` uses `'unsafe-inline'`; a nonce cannot be set from `next.config` headers):
+  `Referrer-Policy: strict-origin-when-cross-origin` (except `/api/files/:path*`, below),
+  `Permissions-Policy` (camera, microphone, geolocation off), and this
+  Content-Security-Policy (a static header, so `script-src` uses `'unsafe-inline'`; a nonce
+  cannot be set from `next.config` headers):
 
   ```
   default-src 'self';
@@ -4919,6 +4990,13 @@ parallel (two people, or one after the other): the **server track** (F4 → F5 �
   `src/lib/learning/embed-allowlist.ts` exists (F5), so it carries its own copy of the list:
   `EMBED_HOSTS` MUST be exactly `['www.youtube-nocookie.com', 'player.vimeo.com']`, and a
   host is added to both files together or the browser blocks the frame.
+- A second `headers()` entry, **after** the catch-all: `{ source: '/api/files/:path*',
+  headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }] }` (1.4, 6.9). When two entries
+  set the same key, the last one wins (Next's `headers.md`). The route handler's own
+  `Referrer-Policy` (and `serveFile`'s) cannot do it: the router writes the config headers on
+  the response before the handler runs, and `send-response` adds a handler header only when
+  the response does not have it yet, so the catch-all's value would win (WS-D-3).
+  `Cache-Control` is not affected, since no config entry sets it.
 - The default export is an async function that wraps the config with
   `createNextIntlPlugin('./src/lib/i18n/request.ts')`. The plugin is imported dynamically,
   after `SWC_NATIVE_BINDING_CACHE` has been defaulted, **on Windows only**, to

@@ -56,6 +56,13 @@ const nextConfig: NextConfig = {
           { key: 'Content-Security-Policy', value: contentSecurityPolicy },
         ],
       },
+      // Files of learners and of private courses (ARCHITECTURE.md 1.4, 6.9). Must come after the
+      // catch-all: the last matching entry wins for a key. The route's own header cannot do it,
+      // because Next writes the config headers first and keeps them over the handler's.
+      {
+        source: '/api/files/:path*',
+        headers: [{ key: 'Referrer-Policy', value: 'no-referrer' }],
+      },
     ];
   },
 };

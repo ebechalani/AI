@@ -1,0 +1,139 @@
+{
+  "overview": {
+    "description": "Experiment with AI tools and see how they work. Live tools use a real AI model; demo tools show an example result.",
+    "safety": "AI can make mistakes and can sound sure even when it is wrong. Never type your name, address, school or passwords."
+  },
+  "sections": {
+    "tryIt": "Try a tool",
+    "comingSoon": "Coming soon"
+  },
+  "status": {
+    "live": "Live AI",
+    "mock": "Demo",
+    "coming_soon": "Coming soon"
+  },
+  "comingSoon": "Coming soon",
+  "comingSoonDescription": "This tool is not ready yet. Come back later to try it.",
+  "backToLab": "Back to the AI Lab",
+  "disabled": {
+    "title": "The AI Lab is switched off",
+    "description": "Your school has turned off the AI tools for now. If you have a question, ask your teacher.",
+    "action": "Go to my courses"
+  },
+  "limitReached": "No more AI Lab tries are left for today. Come back tomorrow.",
+  "unavailable": "The AI could not answer just now. Try again in a moment.",
+  "howItWorks": {
+    "title": "How this tool works",
+    "live": "Your prompt is sent to an AI model, which writes a reply. Nothing you type is saved.",
+    "mock": "This is a demo. It shows how the tool works with an example result: no AI runs and nothing is saved."
+  },
+  "form": {
+    "generate": "Generate",
+    "tryDemo": "Show the demo result",
+    "clear": "Clear",
+    "charCount": "{count, number} / {max, number} characters",
+    "examples": "Need an idea? Try one of these:"
+  },
+  "result": {
+    "title": "Result",
+    "empty": "Your result will appear here.",
+    "yourPrompt": "Your prompt",
+    "option": "Choice",
+    "aiLabel": "Written by AI",
+    "mockLabel": "Demo result: no AI was used",
+    "disclaimer": "AI can make mistakes. Check important facts with your teacher or a trusted source.",
+    "earlier": "Earlier results"
+  },
+  "tools": {
+    "text": {
+      "title": "Text AI",
+      "description": "Write a prompt and see what a language model writes: a story, a poem, an explanation or a list.",
+      "promptLabel": "Your prompt",
+      "placeholder": "Write a short story about a robot who learns to paint.",
+      "examples": {
+        "story": "Write a short story about a robot who wants to learn to dance.",
+        "poem": "Write a four-line poem about the moon for a 10-year-old.",
+        "explain": "Explain what a neural network is in three simple sentences."
+      },
+      "tips": {
+        "title": "Tips for a good prompt",
+        "audience": "Say who the text is for.",
+        "length": "Say how long it should be.",
+        "tone": "Say which tone you want: funny, calm or serious."
+      }
+    },
+    "image": {
+      "title": "Image AI",
+      "description": "Describe a picture and see how an image generator turns words into a drawing.",
+      "promptLabel": "Describe your picture",
+      "placeholder": "A friendly robot watering plants on a sunny balcony",
+      "optionLabel": "Style",
+      "options": {
+        "cartoon": "Cartoon",
+        "watercolor": "Watercolour",
+        "pixel": "Pixel art"
+      },
+      "mockResult": "Demo result: a real image generator would now draw your picture. It learned from millions of pictures and their descriptions, so the words you choose change what it draws. Try changing one word, like the style or the place, and think about how the picture would change."
+    },
+    "video": {
+      "title": "Video AI",
+      "description": "Describe a short scene and learn how video generators build moving pictures frame by frame.",
+      "promptLabel": "Describe your scene",
+      "placeholder": "A paper boat sailing down a rainy street",
+      "optionLabel": "Length",
+      "options": {
+        "short": "5 seconds",
+        "long": "10 seconds"
+      },
+      "mockResult": "Demo result: a real video generator would now make a short clip. It creates many pictures, called frames, that change a little each time, and plays them quickly so things seem to move. Longer clips need many more frames, which is why they take longer to make."
+    },
+    "voice": {
+      "title": "Voice AI",
+      "description": "Type a sentence and discover how text-to-speech turns writing into a voice.",
+      "promptLabel": "Text to read aloud",
+      "placeholder": "Hello! I am a robot and I love learning new things.",
+      "optionLabel": "Voice",
+      "options": {
+        "robot": "Robot",
+        "friendly": "Friendly",
+        "calm": "Calm"
+      },
+      "mockResult": "Demo result: a real voice generator would now read your text aloud. It splits the text into small sounds and learned from many recordings how to join them with the right rhythm. Remember: copying the voice of a real person without their permission is not okay."
+    },
+    "vision": {
+      "title": "Vision AI",
+      "description": "See how a computer vision model finds and labels the things in a picture.",
+      "promptLabel": "What should the AI look for?",
+      "placeholder": "Find all the animals in the picture",
+      "optionLabel": "Sample picture",
+      "options": {
+        "park": "A park",
+        "street": "A street",
+        "kitchen": "A kitchen"
+      },
+      "samplesNote": "To protect your privacy, this demo uses sample pictures only. Never upload photos of people.",
+      "mockResult": "Demo result: a real vision model would now draw boxes around the things it recognises, each with a label and a score that says how sure it is, like “dog: 92%”. Models can be wrong when the light is bad or something is partly hidden, so a person should always check."
+    },
+    "chatbot-builder": {
+      "title": "Chatbot Builder",
+      "description": "Give a chatbot a personality and a greeting, then see how it would answer.",
+      "promptLabel": "Your chatbot’s greeting",
+      "placeholder": "Hi! I am Sparky. Ask me anything about planets.",
+      "optionLabel": "Personality",
+      "options": {
+        "friendly": "Friendly",
+        "curious": "Curious",
+        "funny": "Funny"
+      },
+      "mockResult": "Demo result: your chatbot would now answer in the personality you chose. Real chatbots follow instructions like yours, called a system prompt, that tell them how to behave. Good chatbot builders also decide what the bot must never do, such as asking for personal information."
+    },
+    "ml-lab": {
+      "title": "Machine Learning Lab",
+      "description": "Train a small model with your own examples and test how well it learns."
+    },
+    "agent-builder": {
+      "title": "AI Agent Builder",
+      "description": "Plan an AI agent that uses tools step by step to reach a goal."
+    }
+  }
+}

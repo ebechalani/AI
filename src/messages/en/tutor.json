@@ -1,0 +1,32 @@
+{
+  "cannotHelp": "I can’t help with that here. If something is worrying you, talk to a parent, a teacher or another adult you trust. You can ask me about AI, coding, robotics or your lesson.",
+  "unavailable": "Robo AI can’t answer right now. Try again in a moment.",
+  "cutShort": "(This reply was cut short.)",
+  "limitReached": "Robo AI can’t answer any more messages today. You can ask again tomorrow.",
+  "modeChanged": "Robo AI is ready: {mode}.",
+  "slowDown": "{seconds, plural, one {You are sending messages quickly. Wait # second, then try again.} other {You are sending messages quickly. Wait # seconds, then try again.}}",
+  "notAvailable": "Robo AI is not available here.",
+  "sendFailed": "Your message was not sent. It is back in the message box, so you can try again.",
+  "aiLabel": "Replies are written by AI",
+  "newChat": "New conversation",
+  "newChatStarted": "New conversation started.",
+  "privacyTip": "Never share your name, address, school or passwords with Robo AI.",
+  "page": {
+    "description": "Ask Robo AI about AI, coding and robotics. It helps you think step by step instead of giving you the answers.",
+    "contextLabel": "Talk about",
+    "contextGeneral": "Anything (no course)",
+    "contextHint": "Pick one of your courses so Robo AI knows what you are learning. Changing it starts a new conversation."
+  },
+  "disabled": {
+    "title": "Robo AI is switched off",
+    "description": "Your school has turned off the AI tools for now. If you have a question, ask your teacher.",
+    "action": "Go to my courses"
+  },
+  "activity": {
+    "title": "AI activity",
+    "starterLabel": "Suggested question",
+    "open": "Try it with Robo AI",
+    "openLab": "Try it in the AI Lab",
+    "hint": "Robo AI opens with this question ready. You can change it before you send it."
+  }
+}

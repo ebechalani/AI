@@ -1,0 +1,55 @@
+{
+  "description": "Les résultats aux quiz des classes où vous enseignez, du plus récent au plus ancien.",
+  "filters": {
+    "label": "Filtrer les résultats",
+    "class": "Classe",
+    "course": "Cours",
+    "allCourses": "Tous les cours",
+    "archivedClass": "{name} (archivée)"
+  },
+  "list": {
+    "caption": "Tentatives de quiz de la classe {className}\u00a0: {course}",
+    "student": "Élève",
+    "quiz": "Quiz",
+    "course": "Cours",
+    "attempt": "Tentative",
+    "score": "Score",
+    "result": "Résultat",
+    "submitted": "Envoi",
+    "attemptNumber": "n°\u00a0{number}",
+    "scoreValue": "{score, number}/{max, number} · {percent}\u00a0%",
+    "passed": "Réussi",
+    "notPassed": "Non réussi",
+    "unknownCourse": "Cours indisponible",
+    "rowLink": ", tentative {number} au quiz «\u00a0{quiz}\u00a0»"
+  },
+  "empty": {
+    "noClassesTitle": "Aucune classe pour l’instant",
+    "noClassesDescription": "Créez une classe et attribuez-lui un cours. Les résultats de vos élèves aux quiz apparaîtront ici.",
+    "noClassesAction": "Aller à mes classes",
+    "noAttemptsTitle": "Aucun résultat de quiz pour l’instant",
+    "noAttemptsDescription": "Quand les élèves de cette classe passeront un quiz, leurs résultats apparaîtront ici.",
+    "noAttemptsCourseDescription": "Aucun élève de cette classe n’a encore passé de quiz de ce cours."
+  },
+  "detail": {
+    "metaTitle": "Tentative de quiz",
+    "title": "{name}\u00a0: {quiz}",
+    "breadcrumb": "Tentative {number}",
+    "context": "{course} · {className}",
+    "contextCourse": "{course}",
+    "studentLink": "Voir {name} dans cette classe",
+    "backToList": "Retour aux résultats",
+    "score": "Score",
+    "scoreHint": "{score, number} sur {max, plural, one {# point} other {# points}}",
+    "result": "Résultat",
+    "passed": "Réussi",
+    "notPassed": "Non réussi",
+    "attempt": "Tentative",
+    "attemptValue": "n°\u00a0{number}",
+    "submitted": "Envoi",
+    "submittedHint": "À {time}, langue des réponses\u00a0: {language}",
+    "questions": "Questions et réponses",
+    "keyNote": "Chaque réponse est marquée comme juste ou fausse. Les bonnes réponses ne sont pas affichées sur cette page.",
+    "quizUnavailable": "Les questions de ce quiz ne vous sont pas accessibles. Chaque réponse est indiquée avec son résultat seulement."
+  }
+}

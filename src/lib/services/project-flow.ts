@@ -4,7 +4,7 @@ import { getAiProvider } from '@/lib/ai/index';
 import { GRADING_PROMPT_VERSION } from '@/lib/ai/prompts/grading';
 import { sanitizeUserText } from '@/lib/ai/safety';
 import { AiError } from '@/lib/ai/types';
-import { SYSTEM_ACTOR, type Actor } from '@/lib/auth/actor';
+import { SYSTEM_ACTOR, type Actor, type Session } from '@/lib/auth/actor';
 import {
   assertCan,
   assertRole,
@@ -54,20 +54,29 @@ import { clearDownloadTokens, deleteObject, statObject } from '@/lib/firebase/st
 import {
   authorMediaPath,
   checkUpload,
+  isPublicMediaPath,
   officialMediaPath,
   userUploadPath,
 } from '@/lib/firebase/storage-paths';
 import { onSubmissionAccepted } from '@/lib/gamification/events';
 import { pickTranslation } from '@/lib/i18n/content';
 import { getChallengePhase } from '@/lib/learning/challenge-phase';
-import { AI_LIMITS } from '@/lib/limits';
+import { AI_LIMITS, FILE_ID_PATTERN } from '@/lib/limits';
 import { parseInput } from '@/lib/schemas/common';
 import {
   registerUploadInputSchema,
   reviewInputSchema,
   submitWorkInputSchema,
 } from '@/lib/schemas/submission';
-import type { AgeBand, FileRef, Locale, Localized, MediaRef, SubmissionType } from '@/types/common';
+import type {
+  AgeBand,
+  FileRecord,
+  FileRef,
+  Locale,
+  Localized,
+  MediaRef,
+  SubmissionType,
+} from '@/types/common';
 import type { GamificationOutcome } from '@/types/gamification';
 import type { RegisterUploadInput, ReviewInput, SubmitWorkInput } from '@/types/inputs';
 import type {
@@ -80,6 +89,7 @@ import type {
   SubmissionStatus,
   TeacherReview,
 } from '@/types/project';
+import { getCourseAccess } from './access';
 import { resolveClassContext } from './classroom';
 import {
   applyEffects,
@@ -619,6 +629,49 @@ export async function getSubmissionForViewer(
     staff ? listReviews(actor, submissionId) : [],
   ]);
   return { submission, aiReview, reviews };
+}
+
+// --- Downloads ---------------------------------------------------------------------------------
+
+/**
+ * Whether a session other than the owner or a platform admin may download the file (6.9): a
+ * submission file for whoever may view the submission that still lists it (canViewSubmission:
+ * the reviewing teacher, a school admin of the school); course media for any session when it
+ * is official (public anyway), else for whoever may edit the course or open it (getCourseAccess
+ * applies canViewCourse first, so the media of a private course is as private as the course).
+ */
+async function mayDownload(session: Session, file: FileRecord): Promise<boolean> {
+  if (file.purpose === 'submission') {
+    if (file.submissionId === null) return false;
+    const submission = await orNullIfMissing(getSubmission(session, file.submissionId));
+    return (
+      submission !== null &&
+      submission.attachments.some((attachment) => attachment.fileId === file.id)
+    );
+  }
+  if (isPublicMediaPath(file.storagePath)) return true;
+  if (file.courseId === null) return false;
+  const course = await orNullIfMissing(getCourse(SYSTEM_ACTOR, file.courseId));
+  if (course === null) return false;
+  return canEditCourse(session, course) || (await getCourseAccess(session, course)).allowed;
+}
+
+/**
+ * For GET /api/files/[fileId] (6.9): the file record when the actor may download the file. The
+ * record is read as the system, since data/files.getFile answers only the owner and platform
+ * admins. Every refusal, a malformed id, a missing file or a removed attachment alike, is the
+ * same NotFoundError, so the route gives away no existence oracle.
+ */
+export async function getFileForDownload(actor: Actor, fileId: string): Promise<FileRecord> {
+  const session = requireSessionActor(actor, 'file.download');
+  const hidden = new NotFoundError(`files/${fileId} does not exist.`);
+  if (typeof fileId !== 'string' || !FILE_ID_PATTERN.test(fileId)) throw hidden;
+
+  const file = await orNullIfMissing(getFile(SYSTEM_ACTOR, fileId));
+  if (file === null) throw hidden;
+  if (file.ownerUid === session.uid || isPlatformAdmin(actor)) return file;
+  if (await mayDownload(session, file)) return file;
+  throw hidden;
 }
 
 // --- Teacher review ----------------------------------------------------------------------------

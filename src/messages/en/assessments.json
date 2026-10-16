@@ -1,0 +1,55 @@
+{
+  "description": "Quiz results of the classes you teach, newest first.",
+  "filters": {
+    "label": "Filter the results",
+    "class": "Class",
+    "course": "Course",
+    "allCourses": "All courses",
+    "archivedClass": "{name} (archived)"
+  },
+  "list": {
+    "caption": "Quiz attempts in {className}: {course}",
+    "student": "Student",
+    "quiz": "Quiz",
+    "course": "Course",
+    "attempt": "Attempt",
+    "score": "Score",
+    "result": "Result",
+    "submitted": "Submitted",
+    "attemptNumber": "#{number}",
+    "scoreValue": "{score, number}/{max, number} · {percent}%",
+    "passed": "Passed",
+    "notPassed": "Not passed",
+    "unknownCourse": "Unavailable course",
+    "rowLink": ", attempt {number} at “{quiz}”"
+  },
+  "empty": {
+    "noClassesTitle": "No classes yet",
+    "noClassesDescription": "Create a class and assign a course to it. Your students’ quiz results will appear here.",
+    "noClassesAction": "Go to my classes",
+    "noAttemptsTitle": "No quiz results yet",
+    "noAttemptsDescription": "When students of this class take a quiz, their results appear here.",
+    "noAttemptsCourseDescription": "No student of this class has taken a quiz of this course yet."
+  },
+  "detail": {
+    "metaTitle": "Quiz attempt",
+    "title": "{name}: {quiz}",
+    "breadcrumb": "Attempt {number}",
+    "context": "{course} · {className}",
+    "contextCourse": "{course}",
+    "studentLink": "See {name} in this class",
+    "backToList": "Back to the results",
+    "score": "Score",
+    "scoreHint": "{score, number} of {max, plural, one {# point} other {# points}}",
+    "result": "Result",
+    "passed": "Passed",
+    "notPassed": "Not passed",
+    "attempt": "Attempt",
+    "attemptValue": "#{number}",
+    "submitted": "Submitted",
+    "submittedHint": "At {time}, answered in {language}",
+    "questions": "Questions and answers",
+    "keyNote": "Each answer is marked correct or incorrect. The right answers are not shown on this page.",
+    "quizUnavailable": "The questions of this quiz are not available to you. Each answer is listed with its result only."
+  }
+}

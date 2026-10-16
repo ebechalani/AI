@@ -15,6 +15,7 @@ import {
 } from './prompts/tutor';
 import { checkOutput, fitOutput, outputCharLimit, sanitizeUserText, wrapUntrusted } from './safety';
 import {
+  AiError,
   NO_USAGE,
   type AiStopReason,
   type AiStreamEvent,
@@ -253,7 +254,11 @@ export async function* guardTutorStream(
     }
   } catch (caught) {
     error = caught ?? new Error('The provider stream failed.');
-    final = { ...final, stopReason: 'error' };
+    // An AiError carries what the call consumed before it failed, so the caller records it.
+    final =
+      caught instanceof AiError
+        ? { ...final, usage: caught.usage, stopReason: 'error' }
+        : { ...final, stopReason: 'error' };
   }
 
   if (decided() === null && final.stopReason === 'refusal') {

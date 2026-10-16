@@ -197,10 +197,24 @@ const BANNED_OUTPUT_PATTERNS: readonly RegExp[] = [
   /(?<![\w-])(?:putain|merde|connard|connasse|salope|encule\w*|pute|nique)\b/,
   /\bkill\s+yourself\b/,
   /\b(?:tue|suicide)[- ]toi\b/,
+  // Proposals to meet in person (8.6, tuned by WS-I). "Let's meet the perceptron" stays legal.
+  /\b(?:let's|lets|we\s+(?:could|should|can))\s+meet\s+(?:up|in\s+person|in\s+real\s+life|irl|after\s+school|somewhere)\b/,
+  /\bmeet\s+me\s+(?:at|in|after|outside|somewhere)\b/,
+  /\b(?:se|nous)\s+(?:voir|rencontrer|retrouver)\s+(?:en\s+vrai|en\s+personne|apres\s+l'ecole|quelque\s+part)\b/,
+  // Requests for photos of the learner.
+  /\b(?:send|show)\s+me\s+(?:a\s+)?(?:photo|picture|selfie|pic)s?\s+of\s+(?:you|yourself)\b/,
+  /\benvoie[- ]moi\s+(?:une\s+)?(?:photo|image|selfie)s?\s+de\s+toi\b/,
   // The reply is quoting its instructions or the block delimiters.
   new RegExp(POLICY_MARKER.toLowerCase()),
   /<\s*\/?\s*untrusted_data/,
 ];
+
+// Coding lessons need "open http://localhost:3000": it leads nowhere outside the learner's
+// computer. Only the scheme, host and port are exempt; the path stays and is checked like any
+// other text, so a link smuggled into it (`?next=https://...`, `/www....`) is still refused. The
+// lookahead keeps look-alikes such as `localhost.evil.example` or `localhost@evil.example` out.
+const LOOPBACK_ORIGIN =
+  /\bhttps?:\/\/(?:localhost|127\.0\.0\.1)(?::\d{1,5})?(?=[/?#\s)\]]|[.,;:!?](?:\s|$)|$)/g;
 
 export type OutputCheck = { ok: true } | { ok: false; reason: 'banned_pattern' | 'too_long' };
 
@@ -209,7 +223,7 @@ export type OutputCheck = { ok: true } | { ok: false; reason: 'banned_pattern' |
  * first, so `too_long` also says that the text itself was clean.
  */
 export function checkOutput(text: string, purpose: AiPurpose): OutputCheck {
-  const normalized = normalizeForMatching(text);
+  const normalized = normalizeForMatching(text).replace(LOOPBACK_ORIGIN, ' ');
   if (BANNED_OUTPUT_PATTERNS.some((pattern) => pattern.test(normalized))) {
     return { ok: false, reason: 'banned_pattern' };
   }
