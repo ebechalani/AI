@@ -28,7 +28,17 @@ export default function proxy(request: NextRequest) {
   return handleI18nRouting(request);
 }
 
+// Next reads the matcher statically, so the locales are spelled out here; a unit test keeps
+// them equal to LOCALES (tests/unit/proxy-matcher.test.ts).
 export const config = {
-  // Route handlers, Next internals and files with an extension are never locale-routed.
-  matcher: '/((?!api|_next|_vercel|.*\\..*).*)',
+  matcher: [
+    // Route handlers, Next internals and files with an extension (public/) are never
+    // locale-routed.
+    '/((?!api|_next|_vercel|.*\\..*).*)',
+    // A locale-prefixed path always is, even with a dot in it (/fr/teacher/classes/bad.id):
+    // without the proxy its layouts and not-found boundary render in the default locale
+    // (foundation request WS-C-2). public/ has no en/ or fr/ folder, so no static file is
+    // caught by this.
+    '/(en|fr)/:path*',
+  ],
 };
