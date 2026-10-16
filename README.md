@@ -183,6 +183,14 @@ scripts run with `tsx --conditions=react-server`, and `vitest.config.mts` aliase
 
 ## Deploying
 
+Steps 2 to 4 can also run from GitHub without a local setup: add the repository secret
+`FIREBASE_SERVICE_ACCOUNT` (the JSON key of step 1) and, for the demo accounts,
+`SEED_DEMO_PASSWORD` (16+ characters), then run the **Firebase setup** workflow from the Actions
+tab (`.github/workflows/firebase-setup.yml`). It deploys the rules and indexes, migrates,
+optionally seeds the demo content, creates or promotes the first platform admin and runs
+`smoke:queries`. The repository is public, so the workflow never prints keys, passwords or the
+admin's password-reset link: set the admin's password with "Forgot password" on the login page.
+
 ### 1. Create the Firebase project
 
 Section 12 of the architecture document lists the decisions this depends on. Defaults:

@@ -1,0 +1,150 @@
+name: Firebase setup
+
+# One-click setup of a real Firebase project (README, "Deploying", steps 2 to 4): deploys the
+# Firestore and Storage rules and the indexes, writes the reference data, optionally seeds the
+# demo content, creates or promotes the first platform admin, and checks every query against the
+# indexes. Run it from the Actions tab ("Run workflow") after creating the project in the
+# Firebase console. Safe to run again: every step is idempotent.
+#
+# Needs the repository secret FIREBASE_SERVICE_ACCOUNT (the JSON key from Project settings >
+# Service accounts > Generate new private key) and, for the demo accounts, SEED_DEMO_PASSWORD
+# (16 characters or more). The optional repository variable FIREBASE_STORAGE_BUCKET overrides
+# the default bucket name <project-id>.firebasestorage.app.
+#
+# The repository is public, so this workflow never prints a key, a password or a
+# password-reset link.
+
+on:
+  workflow_dispatch:
+    inputs:
+      admin_email:
+        description: Email address of the first platform admin
+        required: true
+        type: string
+      admin_name:
+        description: Display name of the first platform admin (optional)
+        required: false
+        type: string
+      seed_demo_content:
+        description: Add the five demo courses and the sample challenges
+        required: true
+        type: boolean
+        default: true
+      seed_demo_users:
+        description: Also add the demo school, class and accounts (needs SEED_DEMO_PASSWORD)
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: firebase-setup
+  cancel-in-progress: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  setup:
+    name: Set up the Firebase project
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Prepare credentials
+        env:
+          SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          SEED_DEMO_PASSWORD: ${{ secrets.SEED_DEMO_PASSWORD }}
+          STORAGE_BUCKET: ${{ vars.FIREBASE_STORAGE_BUCKET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SERVICE_ACCOUNT}" ]; then
+            echo "::error::The repository secret FIREBASE_SERVICE_ACCOUNT is missing (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          key_file="${RUNNER_TEMP}/service-account.json"
+          printf '%s' "${SERVICE_ACCOUNT}" > "${key_file}"
+          if ! jq -e '.project_id and .client_email and .private_key' "${key_file}" > /dev/null; then
+            echo "::error::FIREBASE_SERVICE_ACCOUNT is not a service account JSON key (project_id, client_email and private_key are required)."
+            exit 1
+          fi
+          project_id="$(jq -r .project_id "${key_file}")"
+          bucket="${STORAGE_BUCKET:-${project_id}.firebasestorage.app}"
+          rate_limit_secret="$(openssl rand -hex 32)"
+          echo "::add-mask::${rate_limit_secret}"
+          env_file="${RUNNER_TEMP}/project.env"
+          {
+            echo "FIREBASE_PROJECT_ID=${project_id}"
+            echo "FIREBASE_STORAGE_BUCKET=${bucket}"
+            echo "FIREBASE_CLIENT_EMAIL=$(jq -r .client_email "${key_file}")"
+            # One line with literal \n escapes, as src/lib/env.ts expects.
+            echo "FIREBASE_PRIVATE_KEY=\"$(jq -r .private_key "${key_file}" | awk 'BEGIN { ORS = "\\n" } { print }')\""
+            echo "RATE_LIMIT_SECRET=${rate_limit_secret}"
+            if [ -n "${SEED_DEMO_PASSWORD}" ]; then echo "SEED_DEMO_PASSWORD=${SEED_DEMO_PASSWORD}"; fi
+          } > "${env_file}"
+          {
+            echo "PROJECT_ID=${project_id}"
+            echo "ENV_FILE=${env_file}"
+            echo "GOOGLE_APPLICATION_CREDENTIALS=${key_file}"
+          } >> "${GITHUB_ENV}"
+          echo "Project: ${project_id}"
+          echo "Storage bucket: ${bucket}"
+
+      - name: Deploy the Firestore and Storage rules and the indexes
+        run: npx firebase deploy --only firestore:rules,firestore:indexes,storage --project "${PROJECT_ID}" --non-interactive --force
+
+      - name: Write the reference data (pathways, badges, hardware)
+        run: npm run migrate -- --allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes
+
+      - name: Seed the demo content
+        if: ${{ inputs.seed_demo_content }}
+        env:
+          WITH_DEMO_USERS: ${{ inputs.seed_demo_users }}
+        run: |
+          set -euo pipefail
+          if [ "${WITH_DEMO_USERS}" = "true" ]; then
+            npm run seed -- --allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes --with-demo-users
+          else
+            npm run seed -- --allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes
+          fi
+
+      - name: Create or promote the first platform admin
+        env:
+          ADMIN_EMAIL: ${{ inputs.admin_email }}
+          ADMIN_NAME: ${{ inputs.admin_name }}
+        run: |
+          set -euo pipefail
+          args=("${ADMIN_EMAIL}" --allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes)
+          if [ -n "${ADMIN_NAME}" ]; then args+=(--name "${ADMIN_NAME}"); fi
+          # The script prints a password-reset link for a new account. The repository is public,
+          # so the link is hidden; use "Forgot password" on the site's login page instead.
+          npm run admin:bootstrap -- "${args[@]}" 2>&1 \
+            | sed -E 's#https?://[^[:space:]]*(oobCode|mode=resetPassword)[^[:space:]]*#[link hidden: use "Forgot password" on the login page]#g'
+
+      - name: Check every query against the indexes
+        run: |
+          set -uo pipefail
+          # New composite indexes take a few minutes to build.
+          for attempt in 1 2 3 4 5 6 7 8; do
+            if npm run smoke:queries -- --allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes; then
+              exit 0
+            fi
+            echo "Some indexes are not ready yet (attempt ${attempt} of 8); waiting 60 s."
+            sleep 60
+          done
+          echo "::error::Queries still fail after 8 attempts. Check the indexes in the Firebase console (Firestore > Indexes)."
+          exit 1
+
+      - name: Remove the credentials
+        if: ${{ always() }}
+        run: rm -f "${RUNNER_TEMP}/service-account.json" "${RUNNER_TEMP}/project.env"
