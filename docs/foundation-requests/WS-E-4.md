@@ -1,7 +1,7 @@
 # WS-E-4: a table header cell cannot be allowed to wrap through `className`
 
 - **From:** WS-E (Teacher workspace; review fix round), 2026-10-16
-- **Status:** open
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-16.
 - **Frozen files concerned:** `src/components/ui/Table.tsx` (or `src/lib/utils.ts`)
 
 ## Problem
@@ -33,3 +33,15 @@ override in the kit at once.
 The WS-E tables pass `whitespace-normal!` (Tailwind's important modifier): `ReportTable` (column
 and row headers), `RosterTable`, `StudentAttemptsTable` and `CredentialsDialog` (row headers). The
 class report now fits 1366 px in en and fr. It can be replaced by the prop once this lands.
+
+## Change (landed)
+
+- `src/components/ui/Table.tsx`: `TableHeaderCell` takes `wrap?: boolean` (default `false`):
+  `whitespace-normal` instead of `whitespace-nowrap`, for column and row headers alike. `cn` is
+  unchanged.
+- `docs/ARCHITECTURE.md` 7.3: the prop, and why `className` cannot do it.
+- `tests/unit/foundation-kit.test.ts`: `nowrap` by default; with `wrap`, `whitespace-normal` and
+  no `whitespace-nowrap`, for `scope="col"` and `scope="row"`.
+
+WS-E's `whitespace-normal!` workaround keeps working; WS-E may switch to `wrap` when it next
+touches those tables.

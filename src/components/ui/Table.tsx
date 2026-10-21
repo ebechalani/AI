@@ -52,12 +52,19 @@ export function TableRow({ className, ...props }: ComponentProps<'tr'>) {
 
 export interface TableHeaderCellProps extends Omit<ComponentProps<'th'>, 'align'> {
   align?: Align;
+  /**
+   * Lets the text wrap (`whitespace-normal`) instead of keeping it on one line: a long column
+   * header, or a row header that holds a name. `className` cannot do it, because `cn` does not
+   * resolve two `white-space` utilities.
+   */
+  wrap?: boolean;
 }
 
 /** A column header by default; pass `scope="row"` for the cell that names a row. */
 export function TableHeaderCell({
   align = 'start',
   scope = 'col',
+  wrap = false,
   className,
   ...props
 }: TableHeaderCellProps) {
@@ -65,7 +72,8 @@ export function TableHeaderCell({
     <th
       scope={scope}
       className={cn(
-        'px-4 py-3 font-semibold whitespace-nowrap',
+        'px-4 py-3 font-semibold',
+        wrap ? 'whitespace-normal' : 'whitespace-nowrap',
         scope === 'col' ? 'text-xs text-ink-muted' : 'text-ink',
         ALIGN[align],
         className,

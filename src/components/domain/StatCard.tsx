@@ -27,7 +27,9 @@ export function StatCard({ label, value, icon, hint, tone = 'default', className
 
   return (
     <Card tone={tone === 'brand' ? 'brand' : 'default'} className={cn('gap-3 p-5', className)}>
-      <div className="flex items-start gap-4">
+      {/* The text sits beside the icon while it has at least 5rem; in a card narrower than about
+          180 px (ARCHITECTURE.md 7.4) it moves under the icon and takes the whole width. */}
+      <div className="flex flex-wrap items-start gap-x-4 gap-y-3">
         {icon && (
           <span
             className={cn(
@@ -38,9 +40,18 @@ export function StatCard({ label, value, icon, hint, tone = 'default', className
             <NamedIcon name={icon} className="size-5" />
           </span>
         )}
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <p className="text-sm font-medium text-ink-muted">{label}</p>
-          <p className="text-2xl leading-tight font-bold break-words text-ink tabular-nums">
+        <div className="flex min-w-0 flex-1 basis-20 flex-col gap-0.5">
+          {/* A long word ("Progression", "d’évaluation") wraps inside the card, hyphenated in
+              the page's language, instead of running into its padding. */}
+          <p className="text-sm font-medium break-words hyphens-auto text-ink-muted">{label}</p>
+          {/* Never broken inside a word: a number, or "50 %" with its no-break space, stays on one
+              line; a value of several words ("Not passed", a date) wraps between them only. */}
+          <p
+            className={cn(
+              'text-2xl leading-tight font-bold text-ink tabular-nums',
+              typeof value === 'number' && 'whitespace-nowrap',
+            )}
+          >
             {shown}
           </p>
         </div>

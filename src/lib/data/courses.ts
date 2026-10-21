@@ -22,6 +22,7 @@ import {
   serverTimestamp,
   updatedNow,
 } from '@/lib/firebase/converters';
+import { getPublishProblems } from '@/lib/learning/publish-readiness';
 import { CONTENT_LIMITS } from '@/lib/limits';
 import { parseInput } from '@/lib/schemas/common';
 import {
@@ -389,8 +390,11 @@ export async function updateCourse(
 }
 
 /**
- * Any status may follow any other. `publishedAt` records the first publication, and the
- * pathway's `publishedCourseCount` follows the course in and out of 'published'.
+ * Any status may follow any other, but a course is published only when it has content: the
+ * transaction reads its modules and lessons and refuses with `ValidationError { status:
+ * ['content_required'] }` while `getPublishProblems` finds anything missing (a course already
+ * published stays a no-op). `publishedAt` records the first publication, and the pathway's
+ * `publishedCourseCount` follows the course in and out of 'published'.
  */
 export async function setCourseStatus(
   actor: Actor,
@@ -407,6 +411,16 @@ export async function setCourseStatus(
     const course = fromSnapshot<Course>(await tx.get(ref));
     if (course.status === status) return;
     const publishing = status === 'published';
+    if (publishing) {
+      // The rule of the editor's readiness list (WS-F-2), read in the same transaction.
+      const modules = fromQuery<Module>(await tx.get(collections.modules(courseId)), { courseId });
+      const lessons = fromQuery<Lesson>(await tx.get(collections.lessons(courseId)), { courseId });
+      if (getPublishProblems({ modules, lessons }).length > 0) {
+        throw new ValidationError('The course is not ready to publish.', {
+          status: ['content_required'],
+        });
+      }
+    }
     const crossesPublished = publishing || course.status === 'published';
     const pathwayRef =
       crossesPublished && course.pathwayId !== null

@@ -245,6 +245,7 @@ describe('platform-admin functions', () => {
     'challenges.setChallengeStatus': (actor) =>
       challenges.setChallengeStatus(actor, 'challenge-1', 'published'),
     'billing.upsertLicense': (actor) => billing.upsertLicense(actor, null, licenseInput),
+    'billing.listAllLicenses': (actor) => billing.listAllLicenses(actor),
     'billing.listSubscriptions': (actor) => billing.listSubscriptions(actor),
     'billing.upsertSubscription': (actor) =>
       billing.upsertSubscription(actor, null, subscriptionInput),

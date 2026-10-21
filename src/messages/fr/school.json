@@ -1,0 +1,474 @@
+{
+  "shared": {
+    "form": "Certaines informations ne sont pas valides. Vérifiez-les et réessayez.",
+    "classGone": "Cette classe n’existe plus dans votre école.",
+    "schoolGone": "Votre école est introuvable. Actualisez la page."
+  },
+  "alerts": {
+    "suspendedTitle": "Le compte de votre école est suspendu",
+    "suspended": "Les enseignants et les élèves peuvent toujours se connecter, mais aucun nouveau compte d’élève ne peut être créé, même avec un code de classe. Contactez RoboHolic pour réactiver votre école.",
+    "overLimitTitle": "Plus d’élèves que de places",
+    "overLimit": "{used, plural, one {# élève actif} other {# élèves actifs}} pour {total, plural, one {# place} other {# places}}. Personne n’est bloqué\u00a0: contactez RoboHolic pour ajouter des places.",
+    "noLicenseTitle": "Aucune licence active",
+    "noLicense": "Les cours gratuits restent ouverts à votre école. Les cours premium nécessitent une licence\u00a0: contactez RoboHolic.",
+    "contact": "Contacter RoboHolic"
+  },
+  "dashboard": {
+    "schoolLine": "{name}, {city}",
+    "stats": {
+      "label": "Votre école en chiffres",
+      "teachers": "Enseignants",
+      "teachersHint": "Comptes actifs",
+      "students": "Élèves",
+      "studentsHint": "Comptes actifs, une place chacun",
+      "classes": "Classes",
+      "completion": "Taux d’achèvement",
+      "completionHint": "Inscriptions à des cours terminées\u00a0: {completed, number} sur {enrollments, number}",
+      "completionNone": "Aucune inscription à un cours pour l’instant",
+      "noValue": "—"
+    },
+    "start": {
+      "title": "Pour commencer",
+      "description": "Deux étapes pour configurer votre école.",
+      "teachers": "Ajoutez vos enseignants. Chacun reçoit un e-mail pour choisir son mot de passe.",
+      "teachersAction": "Ajouter des enseignants",
+      "classes": "Créez une classe pour un enseignant, puis ajoutez des élèves et attribuez des cours.",
+      "classesAction": "Créer une classe"
+    },
+    "seats": {
+      "title": "Licence",
+      "used": "Places utilisées\u00a0: {used, number} sur {total, number}",
+      "usedNoLicense": "{used, plural, one {# élève actif} other {# élèves actifs}}",
+      "barLabel": "Places utilisées",
+      "validUntil": "Valable jusqu’au {date}",
+      "endsSoon": "{days, plural, one {Se termine dans # jour} other {Se termine dans # jours}}",
+      "view": "Voir les licences"
+    },
+    "recent": {
+      "title": "Activité récente",
+      "description": "Les derniers certificats obtenus dans votre école.",
+      "item": "{name} a obtenu un certificat pour {course}",
+      "viewAll": "Tous les certificats",
+      "empty": {
+        "title": "Aucun certificat pour l’instant",
+        "description": "Les certificats obtenus par vos élèves apparaissent ici."
+      }
+    },
+    "settings": {
+      "title": "Paramètres de l’école",
+      "ai": "Outils d’IA",
+      "joinCodes": "Codes de classe",
+      "on": "Activés",
+      "off": "Désactivés",
+      "limit": "Messages au tuteur par élève et par jour",
+      "limitDefault": "Valeur RoboHolic par défaut ({count, number})",
+      "change": "Modifier les paramètres"
+    }
+  },
+  "teachers": {
+    "description": "Ajoutez les enseignants de votre école. Chaque nouvel enseignant reçoit un e-mail pour choisir son mot de passe.",
+    "caption": "Enseignants de votre école",
+    "name": "Enseignant",
+    "classes": "Classes",
+    "noClass": "Aucune classe",
+    "status": "Statut",
+    "lastSignIn": "Dernière connexion",
+    "never": "Jamais",
+    "actions": "Actions",
+    "empty": {
+      "title": "Aucun enseignant pour l’instant",
+      "description": "Ajoutez votre premier enseignant avec «\u00a0Ajouter un enseignant\u00a0». Il reçoit un e-mail pour choisir son mot de passe."
+    },
+    "add": {
+      "action": "Ajouter un enseignant",
+      "title": "Ajouter un enseignant",
+      "description": "L’enseignant reçoit un e-mail de RoboHolic AI pour choisir un mot de passe, puis se connecte avec cette adresse.",
+      "name": "Nom",
+      "nameHint": "Tel que les élèves le verront, par exemple «\u00a0Mme Haddad\u00a0».",
+      "email": "Adresse e-mail",
+      "emailHint": "Une adresse que l’enseignant peut consulter dès maintenant.",
+      "submit": "Ajouter l’enseignant",
+      "sending": "Envoi de l’e-mail de mot de passe…",
+      "success": "{name} a été ajouté(e). Un e-mail de mot de passe a été envoyé à {email}.",
+      "emailFailed": {
+        "title": "Le compte a été créé, mais l’e-mail n’a pas été envoyé",
+        "description": "{name} ne peut pas se connecter tant qu’aucun mot de passe n’a été choisi. {reason}"
+      },
+      "retry": "Renvoyer l’e-mail",
+      "close": "Fermer",
+      "errors": {
+        "conflict": "Un compte existe déjà avec cette adresse e-mail. Utilisez une autre adresse."
+      }
+    },
+    "email": {
+      "action": "Envoyer l’e-mail de mot de passe",
+      "actionLabel": "Envoyer un e-mail de mot de passe à {name}",
+      "sent": "E-mail de mot de passe envoyé à {email}."
+    }
+  },
+  "status": {
+    "disable": "Désactiver",
+    "disableLabel": "Désactiver le compte de {name}",
+    "title": "Désactiver le compte de {name}\u00a0?",
+    "teacherDescription": "{name} est déconnecté(e) partout et ne peut plus se connecter tant que vous ne réactivez pas le compte. Ses classes restent telles quelles.",
+    "studentDescription": "{name} est déconnecté(e) partout et ne peut plus se connecter tant que vous ne réactivez pas le compte. L’élève reste dans ses classes, garde sa progression et n’utilise plus de place.",
+    "confirm": "Désactiver le compte",
+    "disabled": "Le compte de {name} est désactivé.",
+    "enable": "Réactiver",
+    "enableLabel": "Réactiver le compte de {name}",
+    "enabled": "Le compte de {name} est de nouveau actif.",
+    "errors": {
+      "forbidden": "Vous ne pouvez pas modifier ce compte. Un élève inscrit avec sa propre adresse e-mail est plutôt retiré de ses classes.",
+      "notFound": "Ce compte ne fait plus partie de votre école."
+    }
+  },
+  "students": {
+    "description": "Toutes les personnes qui apprennent dans votre école. Les élèves sont ajoutés dans leurs classes.",
+    "addHint": "Pour ajouter des élèves, ouvrez l’une de vos classes.",
+    "openClasses": "Ouvrir les classes",
+    "caption": "Élèves de votre école",
+    "name": "Élève",
+    "username": "Nom d’utilisateur\u00a0:",
+    "ownAccount": "Compte personnel (e-mail)",
+    "ageBand": "Tranche d’âge",
+    "classes": "Classes",
+    "noClass": "Aucune classe",
+    "status": "Statut",
+    "lastSignIn": "Dernière connexion",
+    "never": "Jamais",
+    "actions": "Actions",
+    "ownAccountNote": "Les élèves inscrits avec leur propre adresse e-mail ne peuvent pas être désactivés par l’école\u00a0: retirez-les plutôt de leurs classes. Ils changent leur mot de passe avec «\u00a0Mot de passe oublié\u00a0?\u00a0» sur la page de connexion.",
+    "empty": {
+      "title": "Aucun élève pour l’instant",
+      "description": "Les élèves apparaissent ici dès qu’ils sont ajoutés à une classe ou qu’ils en rejoignent une avec son code."
+    }
+  },
+  "resetPassword": {
+    "action": "Réinitialiser le mot de passe",
+    "actionLabel": "Réinitialiser le mot de passe de {name}",
+    "title": "Réinitialiser le mot de passe de {name}\u00a0?",
+    "description": "Un nouveau mot de passe est créé et affiché une seule fois. {name} est déconnecté(e) partout et se reconnecte avec le nouveau mot de passe.",
+    "confirm": "Réinitialiser le mot de passe",
+    "credentialsTitle": "Nouveau mot de passe pour {name}",
+    "errors": {
+      "forbidden": "Vous ne pouvez pas réinitialiser ce mot de passe. Les élèves qui ont leur propre adresse e-mail utilisent «\u00a0Mot de passe oublié\u00a0?\u00a0» sur la page de connexion.",
+      "notFound": "Cet élève ne fait plus partie de votre école."
+    }
+  },
+  "classes": {
+    "description": "Toutes les classes de votre école. Créez une classe pour l’un de vos enseignants, puis ajoutez des élèves et attribuez des cours.",
+    "activeTitle": "Classes actives",
+    "teachers": "{count, plural, =0 {Aucun enseignant} one {Enseignant\u00a0: {names}} other {Enseignants\u00a0: {names}}}",
+    "students": "{count, plural, =0 {Aucun élève} one {# élève} other {# élèves}}",
+    "courses": "{count, plural, =0 {Aucun cours attribué} one {# cours attribué} other {# cours attribués}}",
+    "codeOpen": "Code de classe ouvert",
+    "codeClosed": "Code de classe fermé",
+    "archivedName": "{name} (archivée)",
+    "archivedSummary": "{count, plural, one {# classe archivée} other {# classes archivées}}",
+    "archivedHint": "Les classes archivées gardent leurs élèves, leur progression et leurs travaux. Leurs codes de classe ne fonctionnent plus.",
+    "empty": {
+      "title": "Aucune classe pour l’instant",
+      "description": "Créez une classe pour l’un de vos enseignants avec «\u00a0Nouvelle classe\u00a0».",
+      "descriptionNoTeacher": "Ajoutez d’abord un enseignant\u00a0: chaque classe appartient à un enseignant de votre école.",
+      "addTeachers": "Ajouter des enseignants"
+    },
+    "noActive": {
+      "title": "Aucune classe active",
+      "description": "Toutes les classes sont archivées. Créez une classe pour un nouveau groupe avec «\u00a0Nouvelle classe\u00a0»."
+    },
+    "create": {
+      "action": "Nouvelle classe",
+      "title": "Créer une classe",
+      "description": "La classe appartient à l’enseignant que vous choisissez. Vous pourrez modifier ses informations plus tard.",
+      "owner": "Enseignant",
+      "ownerHint": "L’enseignant titulaire de la classe. Vous pourrez ajouter des co-enseignants sur la page de la classe.",
+      "ownerPlaceholder": "Choisissez un enseignant",
+      "submit": "Créer la classe",
+      "success": "Classe «\u00a0{name}\u00a0» créée.",
+      "errors": {
+        "conflict": "Cet enseignant enseigne déjà dans 30\u00a0classes, le maximum autorisé. Archivez une classe qu’il n’utilise plus, ou choisissez un autre enseignant.",
+        "ownerGone": "Cet enseignant n’est plus un enseignant actif de votre école. Choisissez-en un autre."
+      }
+    }
+  },
+  "class": {
+    "studentsCount": "{count, plural, =0 {Aucun élève} one {# élève} other {# élèves}}",
+    "archived": {
+      "title": "Cette classe est archivée",
+      "description": "Vous pouvez toujours voir ses élèves et ses cours. Rien ne peut y être modifié, et son code de classe ne fonctionne pas."
+    },
+    "teachers": {
+      "title": "Enseignants",
+      "owner": "Titulaire",
+      "unknown": "Ancien enseignant",
+      "ownerDisabled": "Le compte du titulaire est désactivé. Réactivez-le sur la page Enseignants avant de modifier les enseignants de cette classe.",
+      "change": "Modifier les enseignants",
+      "dialogTitle": "Enseignants de {className}",
+      "dialogDescription": "Choisissez jusqu’à {max, plural, one {# enseignant} other {# enseignants}}. Le titulaire enseigne toujours dans la classe.",
+      "legend": "Enseignants de la classe",
+      "ownerLocked": "{name} (titulaire)",
+      "count": "Choisis\u00a0: {count, number} sur {max, number}",
+      "dropped": "Ces enseignants quittent la classe à l’enregistrement, car leur compte est désactivé ou ils ont quitté votre école\u00a0: {names}.",
+      "noOthers": "Votre école n’a pas d’autre enseignant actif à ajouter.",
+      "submit": "Enregistrer les enseignants",
+      "saved": "Enseignants de {className} enregistrés.",
+      "errors": {
+        "invalid": "L’un de ces enseignants ne peut plus enseigner dans cette classe\u00a0: son compte est désactivé ou il a quitté votre école. Actualisez la page et réessayez.",
+        "tooMany": "Une classe a au plus {max, plural, one {# enseignant} other {# enseignants}}.",
+        "conflict": "Ces enseignants n’ont pas pu être enregistrés\u00a0: le titulaire doit rester, et un enseignant peut enseigner dans 30\u00a0classes au plus."
+      }
+    },
+    "joinCodesOff": {
+      "cardTitle": "Code de classe",
+      "title": "Les codes de classe sont désactivés",
+      "description": "Les élèves ne peuvent rejoindre aucune classe de votre école avec un code. Ajoutez-les avec «\u00a0Ajouter des élèves\u00a0», ou réactivez les codes de classe dans les paramètres.",
+      "action": "Ouvrir les paramètres"
+    },
+    "addStudents": {
+      "title": "Ajouter des élèves",
+      "description": "Créez des comptes pour les élèves qui n’en ont pas. Vous obtenez leurs noms d’utilisateur et mots de passe à imprimer ou à copier.",
+      "capacity": "{count, plural, one {Place pour # élève de plus.} other {Place pour # élèves de plus.}}",
+      "seats": "Chaque nouvel élève utilise une place de votre licence.",
+      "full": {
+        "title": "Cette classe est complète",
+        "description": "Une classe compte au plus {max, number} élèves."
+      },
+      "inactive": {
+        "title": "Impossible de créer de nouveaux comptes",
+        "description": "Le compte de votre école est suspendu. Contactez RoboHolic pour le réactiver."
+      }
+    },
+    "roster": {
+      "title": "Élèves",
+      "count": "{count, plural, one {# élève} other {# élèves}}",
+      "caption": "Élèves de {className}",
+      "student": "Élève",
+      "username": "Nom d’utilisateur\u00a0:",
+      "ownAccount": "Compte personnel",
+      "ageBand": "Tranche d’âge",
+      "joined": "Arrivée",
+      "actions": "Actions",
+      "method": {
+        "code": "Avec le code de classe",
+        "you": "Ajouté(e) par vous",
+        "staff": "Ajouté(e) par l’école"
+      },
+      "empty": {
+        "title": "Aucun élève pour l’instant",
+        "both": "Ajoutez des élèves, ou ouvrez le code de classe et partagez-le avec la classe.",
+        "addOnly": "Ajoutez des élèves avec «\u00a0Ajouter des élèves\u00a0». Les codes de classe sont désactivés pour votre école.",
+        "codeOnly": "Partagez le code de classe avec les élèves qui ont déjà leur propre compte.",
+        "none": "Aucun élève ne peut être ajouté à cette classe pour le moment.",
+        "archived": "Cette classe est archivée\u00a0: aucun élève ne peut y être ajouté."
+      }
+    },
+    "remove": {
+      "action": "Retirer",
+      "actionLabel": "Retirer {name} de la classe",
+      "title": "Retirer {name} de {className}\u00a0?",
+      "description": "{name} garde son compte et sa progression, mais cette classe ne suit plus ses cours. Un élève inscrit avec sa propre adresse e-mail et sans autre classe dans votre école quitte aussi votre école.",
+      "confirm": "Retirer l’élève",
+      "success": "{name} ne fait plus partie de {className}.",
+      "errors": {
+        "notFound": "Cet élève avait déjà quitté la classe.",
+        "forbidden": "Vous ne pouvez pas retirer d’élèves de cette classe."
+      }
+    },
+    "courses": {
+      "title": "Cours attribués",
+      "assign": "Attribuer un cours",
+      "due": "Date limite\u00a0: {date}",
+      "noDue": "Pas de date limite",
+      "overdue": "Date limite dépassée",
+      "assignedOn": "Attribué le {date}",
+      "unavailable": "Cours plus disponible",
+      "unavailableHint": "Ce cours ne peut plus être ouvert. Vous pouvez toujours annuler son attribution.",
+      "dueDateAction": "Date limite",
+      "dueDateActionLabel": "Modifier la date limite de {course}",
+      "empty": {
+        "title": "Aucun cours attribué",
+        "description": "Attribuez un cours\u00a0: chaque élève de la classe y est inscrit.",
+        "descriptionArchived": "Cette classe est archivée\u00a0: aucun cours ne peut lui être attribué."
+      }
+    },
+    "settings": {
+      "title": "Paramètres de la classe",
+      "description": "Renommez la classe ou changez sa tranche d’âge avec «\u00a0Modifier les informations\u00a0». Archivez la classe quand le groupe ne se réunit plus."
+    }
+  },
+  "assign": {
+    "title": "Attribuer un cours",
+    "description": "Les élèves de {className} sont inscrits à chaque cours que vous attribuez.",
+    "back": "Retour à {className}",
+    "schoolTitle": "Créés dans votre école",
+    "schoolDescription": "Les cours publiés que les enseignants de votre école ont partagés avec l’école.",
+    "assigned": "Attribué",
+    "action": "Attribuer",
+    "actionLabel": "Attribuer {course} à {className}",
+    "archived": "Cette classe est archivée\u00a0: plus aucun cours ne peut lui être attribué.",
+    "empty": {
+      "title": "Aucun cours à attribuer",
+      "description": "Les cours publiés pour les élèves apparaissent ici."
+    }
+  },
+  "courses": {
+    "description": "Le catalogue RoboHolic et les cours créés par vos enseignants, avec leur utilisation dans vos classes.",
+    "officialTitle": "Cours RoboHolic",
+    "officialDescription": "Les cours officiels que vos classes peuvent suivre, par parcours.",
+    "academyTitle": "Académie des enseignants",
+    "academyDescription": "Des formations pour vos enseignants. Les enseignants s’y inscrivent eux-mêmes.",
+    "schoolTitle": "Créés dans votre école",
+    "schoolDescription": "Les cours créés par vos enseignants, brouillons et cours privés compris.",
+    "schoolEmpty": {
+      "title": "Aucun cours pour l’instant",
+      "description": "Les cours créés par vos enseignants apparaissent ici."
+    },
+    "by": "Par {name}",
+    "visibility": {
+      "private": "Réservé à son auteur",
+      "school": "Partagé avec l’école"
+    },
+    "usage": "{enrolled, plural, one {# élève inscrit} other {# élèves inscrits}} · {completed, number} {completed, plural, one {a terminé} other {ont terminé}} ({rate})",
+    "usageNone": "Attribué à aucune classe"
+  },
+  "course": {
+    "previewFirst": "Aperçu de la première leçon",
+    "outlineTitle": "Leçons",
+    "outlineDescription": "Ouvrez une leçon pour la voir comme les élèves. Rien de ce que vous faites dans l’aperçu n’est enregistré.",
+    "otherLessons": "Autres leçons",
+    "previewLabel": "Aperçu de la leçon {lesson}",
+    "noLessons": {
+      "title": "Aucune leçon pour l’instant",
+      "description": "Ce cours n’a pas encore de leçon à prévisualiser."
+    },
+    "license": {
+      "title": "Non couvert par votre licence",
+      "description": "Ce cours premium nécessite une licence qui le couvre avant de pouvoir être prévisualisé ou attribué. Contactez RoboHolic."
+    },
+    "draft": {
+      "title": "Pas encore publié",
+      "description": "Son auteur y travaille encore\u00a0: vous pouvez le prévisualiser, mais il ne peut pas être attribué à une classe."
+    },
+    "archived": "Ce cours est archivé\u00a0: il ne peut plus être attribué.",
+    "usage": {
+      "title": "Utilisation dans votre école",
+      "enrolled": "Élèves inscrits",
+      "completed": "Ont terminé",
+      "rate": "Taux d’achèvement",
+      "none": "Aucune classe de votre école ne suit encore ce cours."
+    },
+    "classes": {
+      "title": "Classes qui le suivent",
+      "empty": "Aucune classe active ne suit ce cours."
+    }
+  },
+  "analytics": {
+    "description": "La progression de vos classes dans leurs cours.",
+    "stats": {
+      "label": "Inscriptions aux cours dans votre école",
+      "rate": "Taux d’achèvement",
+      "rateHint": "Inscriptions terminées\u00a0: {completed, number} sur {enrollments, number}",
+      "rateNone": "Aucune inscription à un cours pour l’instant",
+      "enrollments": "Inscriptions",
+      "inProgress": "{count, plural, one {# en cours} other {# en cours}}",
+      "completed": "Terminées",
+      "certificates": "Certificats délivrés"
+    },
+    "usage": {
+      "title": "Utilisation des cours",
+      "description": "Les cours attribués à vos classes actives, les plus suivis d’abord.",
+      "caption": "Utilisation des cours dans votre école",
+      "course": "Cours",
+      "enrolled": "Inscrits",
+      "completed": "Terminés",
+      "rate": "Achèvement",
+      "rateLabel": "Taux d’achèvement de {course}",
+      "empty": {
+        "title": "Aucun cours utilisé pour l’instant",
+        "description": "Attribuez des cours à vos classes pour suivre leur utilisation.",
+        "action": "Ouvrir les classes"
+      }
+    },
+    "classes": {
+      "title": "Classes",
+      "description": "Les élèves et les cours attribués de chaque classe active.",
+      "caption": "Classes actives de votre école",
+      "class": "Classe",
+      "grade": "Niveau",
+      "students": "Élèves",
+      "courses": "Cours attribués",
+      "empty": {
+        "title": "Aucune classe pour l’instant",
+        "description": "Les classes que vous créez apparaissent ici."
+      }
+    }
+  },
+  "certificates": {
+    "description": "Les certificats obtenus par les élèves et les enseignants de votre école.",
+    "caption": "Certificats de votre école",
+    "learner": "Apprenant",
+    "course": "Cours",
+    "issued": "Délivré le",
+    "issuedBy": "Délivré par",
+    "status": "Statut",
+    "code": "Code de vérification",
+    "view": "Voir",
+    "viewLabel": "Voir le certificat de {name} pour {course}",
+    "empty": {
+      "title": "Aucun certificat pour l’instant",
+      "description": "Les certificats apparaissent ici quand vos élèves terminent des cours ou que leurs enseignants les délivrent."
+    }
+  },
+  "licenses": {
+    "description": "Les licences et les places de votre école. RoboHolic les gère pour vous.",
+    "seats": {
+      "title": "Places",
+      "explain": "Chaque élève actif utilise une place. Les places sont comptées, pas imposées\u00a0: personne n’est bloqué en cas de dépassement."
+    },
+    "listTitle": "Licences",
+    "scopeAll": "Tous les cours RoboHolic",
+    "scopePathways": "Parcours\u00a0: {names}",
+    "seatsCount": "{count, plural, one {# place} other {# places}}",
+    "endsSoon": "{days, plural, one {Se termine dans # jour} other {Se termine dans # jours}}",
+    "countsNote": "Cette licence ne compte pas dans vos places.",
+    "labels": {
+      "scope": "Cours",
+      "seats": "Places",
+      "period": "Validité"
+    },
+    "contactText": "Besoin de plus de places ou d’une modification de licence\u00a0? RoboHolic met à jour les licences pour vous.",
+    "empty": {
+      "title": "Aucune licence",
+      "description": "Les cours gratuits sont ouverts à votre école sans licence. Contactez RoboHolic pour les cours premium."
+    }
+  },
+  "settings": {
+    "description": "Le profil de votre école, la langue des nouveaux comptes, et les réglages de l’IA et des codes de classe.",
+    "profile": {
+      "title": "Profil de l’école",
+      "name": "Nom de l’école",
+      "nameHint": "Affiché aux enseignants et aux élèves, et imprimé sur les nouveaux certificats.",
+      "city": "Ville",
+      "country": "Pays",
+      "countryHint": "Contactez RoboHolic pour changer de pays.",
+      "language": "Langue par défaut",
+      "languageHint": "Les nouveaux comptes d’enseignants et d’élèves commencent dans cette langue. Chacun peut changer sa propre langue.",
+      "submit": "Enregistrer le profil",
+      "saved": "Profil de l’école enregistré."
+    },
+    "features": {
+      "title": "IA et codes de classe",
+      "ai": "Outils d’IA",
+      "aiDescription": "Le tuteur IA, le Labo IA et les suggestions de l’IA pour évaluer les projets, pour toute votre école.",
+      "limit": "Messages au tuteur par élève et par jour",
+      "limitHint": "De {min, number} à {max, number}. Laissez vide pour la valeur RoboHolic par défaut ({fallback, number}). Elle s’applique quand les outils d’IA sont activés.",
+      "joinCodes": "Codes de classe",
+      "joinCodesDescription": "Les élèves peuvent rejoindre des classes avec un code. Désactivés, les codes cessent de fonctionner dans toutes les classes et les enseignants ajoutent eux-mêmes les élèves.",
+      "submit": "Enregistrer les paramètres",
+      "saved": "Paramètres enregistrés."
+    },
+    "errors": {
+      "forbidden": "Vous ne pouvez pas modifier ces paramètres."
+    }
+  }
+}

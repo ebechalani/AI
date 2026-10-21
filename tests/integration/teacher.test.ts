@@ -4,6 +4,13 @@ import { usernameToEmail } from '@/lib/auth/username';
 import { listUserBadges } from '@/lib/data/badges';
 import { getCertificate, getCertificateByCode } from '@/lib/data/certificates';
 import { getClass, listAssignments, listMembers, updateClass } from '@/lib/data/classes';
+import {
+  createBlock,
+  createCourse,
+  createLesson,
+  createModule,
+  setCourseStatus,
+} from '@/lib/data/courses';
 import { getEnrollment } from '@/lib/data/enrollments';
 import { getSchool, updateSchool } from '@/lib/data/schools';
 import {
@@ -711,5 +718,66 @@ describe('teacher flow: classes, accounts, assignments, reviews and recognition'
     await refusal(removeStudentFromClass(indie, cls.id, jadUid), NotFoundError);
     await removeStudentFromClass(schoolAdmin, cls.id, jadUid);
     expect((await profileOf(jadUid)).classIds).toEqual([]);
+  });
+
+  it('setCourseStatus publishes a teacher-made course only once every module and lesson has content', async () => {
+    const draft = await createCourse(teacher, {
+      defaultLocale: 'en',
+      translations: {
+        en: {
+          title: 'Sorting robots',
+          summary: 'A course the teacher writes.',
+          description: 'Written by the integration suite.',
+          outcomes: ['Sort by colour'],
+        },
+      },
+      audience: 'student',
+      area: 'robotics',
+      tags: [],
+      ageMin: null,
+      ageMax: null,
+      estimatedMinutes: 20,
+      visibility: 'school',
+      certificateEnabled: false,
+      coverImageFileId: null,
+      hardwarePlatformIds: [],
+      requiredCapabilities: [],
+    });
+    expect(draft).toMatchObject({ status: 'draft', isOfficial: false, ownerUid: teacher.uid });
+    const notReady = async () => {
+      const error = await refusal(setCourseStatus(teacher, draft.id, 'published'), ValidationError);
+      expect(error.fieldErrors).toEqual({ status: ['content_required'] });
+      expect((await collections.courses().doc(draft.id).get()).get('status')).toBe('draft');
+    };
+
+    await notReady(); // no module
+    const courseModule = await createModule(teacher, draft.id, {
+      defaultLocale: 'en',
+      translations: { en: { title: 'Colours', description: 'The only module.' } },
+    });
+    await notReady(); // a module without lessons
+    const lesson = await createLesson(teacher, draft.id, courseModule.id, {
+      defaultLocale: 'en',
+      translations: { en: { title: 'Red and blue', summary: 'The only lesson.' } },
+      estimatedMinutes: 10,
+      xpReward: 50,
+    });
+    await notReady(); // a lesson without blocks
+    await createBlock(teacher, draft.id, lesson.id, {
+      type: 'rich_text',
+      stage: 'learn',
+      defaultLocale: 'en',
+      translations: { en: { heading: null, body: 'Robots sort by colour with a sensor.' } },
+      data: {},
+    });
+
+    const published = await setCourseStatus(teacher, draft.id, 'published');
+    expect(published.status).toBe('published');
+    expect(published.publishedAt).not.toBeNull();
+    // Publishing again is a no-op; leaving 'published' asks nothing of the content.
+    expect((await setCourseStatus(teacher, draft.id, 'published')).publishedAt).toBe(
+      published.publishedAt,
+    );
+    expect((await setCourseStatus(teacher, draft.id, 'archived')).status).toBe('archived');
   });
 });

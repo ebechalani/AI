@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import type { ComponentProps, MouseEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils';
@@ -61,17 +61,47 @@ export function buttonClasses({
 }
 
 /**
- * A loading button is natively disabled, which also stops a second submit by Enter in a field;
- * it only fades less than a disabled one, because the spinner already says why.
+ * A disabled button fades; a loading one fades less, because the spinner already says why. A
+ * loading button is `aria-disabled` rather than natively disabled (`loadingProps`), so its look
+ * comes from `aria-disabled:` variants (with `disabled:` kept for one that is both).
  */
 export function inactiveClasses(loading: boolean): string {
-  return loading ? 'disabled:opacity-80' : 'disabled:opacity-60';
+  return loading
+    ? 'disabled:opacity-80 aria-disabled:pointer-events-none aria-disabled:opacity-80'
+    : 'disabled:opacity-60';
+}
+
+/** Cancels the click of a loading button: its action, and the form submission it would start. */
+function ignoreWhileLoading(event: MouseEvent<HTMLButtonElement>): void {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+/**
+ * The state attributes of a `Button` or `IconButton` (ARCHITECTURE.md 7.3). `disabled` stays
+ * native. A button that is only `loading` keeps the keyboard focus for the whole request
+ * (a natively disabled control drops it to `<body>`): it is `aria-disabled` and `aria-busy`,
+ * and its click is cancelled, which also cancels the implicit submission of its form by Enter
+ * in a field (the browser submits by clicking the default button), so a form still cannot be
+ * sent twice. The caller's `onClick` runs only when the button is neither.
+ */
+export function loadingProps(
+  loading: boolean,
+  disabled: boolean | undefined,
+  onClick: ComponentProps<'button'>['onClick'],
+): Pick<ComponentProps<'button'>, 'disabled' | 'aria-disabled' | 'aria-busy' | 'onClick'> {
+  if (disabled) return { disabled: true, onClick, ...(loading && { 'aria-busy': true }) };
+  if (!loading) return { onClick };
+  return { 'aria-disabled': true, 'aria-busy': true, onClick: ignoreWhileLoading };
 }
 
 export interface ButtonProps extends ComponentProps<'button'> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** Shows a spinner and disables the button. */
+  /**
+   * Shows a spinner and makes the button unavailable while it keeps the keyboard focus:
+   * `aria-disabled` and `aria-busy`, clicks and the form submission they would start ignored.
+   */
   loading?: boolean;
   fullWidth?: boolean;
 }
@@ -84,6 +114,7 @@ export function Button({
   fullWidth,
   type = 'button',
   disabled,
+  onClick,
   className,
   children,
   ...props
@@ -91,14 +122,13 @@ export function Button({
   return (
     <button
       type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
       className={cn(
         buttonClasses({ variant, size, fullWidth }),
         inactiveClasses(loading),
         className,
       )}
       {...props}
+      {...loadingProps(loading, disabled, onClick)}
     >
       {loading && <SpinnerIcon size={size === 'lg' ? 'md' : 'sm'} />}
       {children}

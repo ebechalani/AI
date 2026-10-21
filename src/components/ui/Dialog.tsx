@@ -103,7 +103,9 @@ export function Dialog({
         }
       }}
       className={cn(
-        'm-auto w-[calc(100vw-2rem)] overflow-hidden rounded-card bg-surface p-0 text-ink shadow-2xl',
+        // text-start: the <dialog> stays where its owner renders it and would inherit the
+        // alignment there (a centred empty state, an end-aligned table cell).
+        'm-auto w-[calc(100vw-2rem)] overflow-hidden rounded-card bg-surface p-0 text-start text-ink shadow-2xl',
         'max-h-[calc(100dvh-2rem)] backdrop:bg-ink/50',
         'transition-[opacity,translate] duration-200 starting:translate-y-2 starting:opacity-0',
         SIZES[size],
@@ -119,11 +121,11 @@ export function Dialog({
             )}
           >
             <div className="min-w-0">
-              <h2 id={titleId} className="text-lg leading-snug font-semibold">
+              <h2 id={titleId} className="text-lg leading-snug font-semibold break-words">
                 {title}
               </h2>
               {description && (
-                <p id={descriptionId} className="mt-1 text-sm text-ink-muted">
+                <p id={descriptionId} className="mt-1 text-sm break-words text-ink-muted">
                   {description}
                 </p>
               )}
