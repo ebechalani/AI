@@ -53,7 +53,10 @@ interface TutorScript {
   closing: string;
 }
 
-/** `first` opens a conversation; `next` answers once the transcript holds a tutor turn. */
+/**
+ * `first` opens a conversation in a mode, also when the learner switches to it mid-conversation;
+ * `next` answers once the newest tutor turn is this mode's (see `continuesMode`).
+ */
 interface TutorModeScripts {
   first: TutorScript;
   next: TutorScript;
@@ -270,9 +273,68 @@ function isTutorMode(value: string | undefined): value is TutorMode {
   return (TUTOR_MODES as readonly string[]).includes(value ?? '');
 }
 
-function hasEarlierTutorTurn(transcript: string): boolean {
-  const prefix = `${TUTOR_TRANSCRIPT_LABELS.assistant}: `;
-  return transcript.split('\n\n').some((entry) => entry.startsWith(prefix));
+/** The tutor turns of a transcript, oldest first. A turn may span several paragraphs. */
+function tutorTurns(transcript: string): string[] {
+  const tutor = `${TUTOR_TRANSCRIPT_LABELS.assistant}: `;
+  const learner = `${TUTOR_TRANSCRIPT_LABELS.user}: `;
+  const turns: string[] = [];
+  let inTutorTurn = false;
+  for (const piece of transcript.split('\n\n')) {
+    if (piece.startsWith(tutor)) {
+      turns.push(piece.slice(tutor.length));
+      inTutorTurn = true;
+    } else if (piece.startsWith(learner)) {
+      inTutorTurn = false;
+    } else if (inTutorTurn) {
+      turns[turns.length - 1] += `\n\n${piece}`;
+    }
+  }
+  return turns;
+}
+
+// Compared without case, accents, apostrophe styles or any spacing, so a reply still matches
+// its script after the learner's device and sanitizeUserText have handled it.
+function comparable(text: string): string {
+  return normalizeForMatching(text).replace(/ /g, '');
+}
+
+/** Which script wrote a tutor turn: a mode's, the graded-work reply, or none of the mock's. */
+type TurnOrigin = TutorMode | 'graded' | null;
+
+const SCRIPT_MARKS: { origin: Exclude<TurnOrigin, null>; mark: string }[] = [
+  ...Object.values(TUTOR_SCRIPTS).flatMap((byMode) =>
+    TUTOR_MODES.flatMap((mode) =>
+      [byMode[mode].first, byMode[mode].next].map((script) => ({
+        origin: mode,
+        mark: comparable(script.body),
+      })),
+    ),
+  ),
+  ...Object.values(GRADED_WORK_SCRIPT).map((script) => ({
+    origin: 'graded' as const,
+    mark: comparable(script.body),
+  })),
+];
+
+function originOf(turn: string): TurnOrigin {
+  const text = comparable(turn);
+  return SCRIPT_MARKS.find(({ mark }) => text.includes(mark))?.origin ?? null;
+}
+
+/**
+ * Whether this reply continues the conversation in `mode` (its `next` script) rather than
+ * starting the mode (`first`). The newest tutor turn written by a mode's script decides: the
+ * same mode continues, another mode starts this one, so switching to "Quiz me" asks the first
+ * question. A graded-work reply is skipped; a turn the mock did not write counts as this mode's.
+ */
+function continuesMode(transcript: string, mode: TutorMode): boolean {
+  const turns = tutorTurns(transcript);
+  for (const turn of turns.toReversed()) {
+    const origin = originOf(turn);
+    if (origin === 'graded') continue;
+    return origin === null || origin === mode;
+  }
+  return turns.length > 0;
 }
 
 function tutorReply(fields: Record<string, string | undefined>, content: string): string {
@@ -292,7 +354,7 @@ function tutorReply(fields: Record<string, string | undefined>, content: string)
   const script =
     fields.graded === 'yes' && wantsAnswer
       ? GRADED_WORK_SCRIPT[locale]
-      : hasEarlierTutorTurn(transcript)
+      : continuesMode(transcript, mode)
         ? scripts.next
         : scripts.first;
 

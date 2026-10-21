@@ -1257,6 +1257,52 @@ describe('reviewSubmission', () => {
     expect(addReview).not.toHaveBeenCalled();
   });
 
+  it('approves only the suggestion the teacher saw, when the input names one (WS-D-4)', async () => {
+    withReview();
+    // A co-teacher asked for a new suggestion after this teacher loaded the page.
+    world.aiReviews.set(
+      'ai-0',
+      aiReview({ id: 'ai-0', submissionId: 's1', overallSuggestedScore: 40 }),
+    );
+    await expect(
+      reviewSubmission(teacher, { ...review('approve'), aiReviewId: 'ai-0' }),
+    ).rejects.toBeInstanceOf(ConflictError);
+    // Nothing shown while one exists is not a suggestion either.
+    await expect(
+      reviewSubmission(teacher, { ...review('approve'), aiReviewId: null }),
+    ).rejects.toBeInstanceOf(ConflictError);
+    // Refused before any suggestion is read, and nothing is written.
+    expect(getAiReview).not.toHaveBeenCalled();
+    expect(addReview).not.toHaveBeenCalled();
+    expect(writeAudit).not.toHaveBeenCalled();
+
+    const result = await reviewSubmission(teacher, { ...review('approve'), aiReviewId: 'ai-1' });
+    expect(addReview).toHaveBeenCalledWith(
+      teacher,
+      's1',
+      expect.objectContaining({ decision: 'approve', score: 75, aiReviewId: 'ai-1' }),
+    );
+    expect(result.submission.status).toBe('approved');
+  });
+
+  it('keeps modify and return independent of which suggestion is the newest', async () => {
+    withReview();
+    const scores = { creativity: 50, technicalQuality: 50, understanding: 50, responsibleAi: 50 };
+    await reviewSubmission(teacher, { ...review('modify', scores), aiReviewId: 'ai-0' });
+    expect(addReview).toHaveBeenLastCalledWith(
+      teacher,
+      's1',
+      expect.objectContaining({ decision: 'modify', score: 50, aiReviewId: 'ai-1' }),
+    );
+    withReview();
+    await reviewSubmission(teacher, { ...review('return'), aiReviewId: null });
+    expect(addReview).toHaveBeenLastCalledWith(
+      teacher,
+      's1',
+      expect.objectContaining({ decision: 'return', aiReviewId: 'ai-1' }),
+    );
+  });
+
   it("grades a modification with the teacher's scores weighted by the submission's rubric", async () => {
     withReview();
     patch('s1', {

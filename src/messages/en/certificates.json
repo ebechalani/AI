@@ -1,0 +1,100 @@
+{
+  "list": {
+    "description": "Certificates of the courses you’ve completed. Open one to print it, save it as a PDF or share its verification link.",
+    "heading": "Your certificates",
+    "count": "{count, plural, one {# certificate} other {# certificates}}",
+    "empty": {
+      "title": "No certificate yet",
+      "description": "Complete a course to earn its certificate. It will appear here.",
+      "action": "Find a course"
+    }
+  },
+  "document": {
+    "heading": "Certificate of completion",
+    "presentedTo": "This certifies that",
+    "completed": "has successfully completed the course",
+    "school": "Through {school}",
+    "date": "Date",
+    "issuer": "Issued by",
+    "code": "Verification code",
+    "verifyLabel": "Check this certificate at",
+    "revoked": "Revoked"
+  },
+  "page": {
+    "metaTitle": "Certificate – {course}",
+    "printHint": "To keep a copy, print the certificate and choose “Save as PDF” in the print dialog.",
+    "copyLink": "Copy verification link",
+    "copyFailed": "The link couldn’t be copied. You can select it on the certificate instead.",
+    "back": {
+      "student": "My certificates",
+      "teacherOwn": "Settings",
+      "teacher": "Reports",
+      "school_admin": "Certificates",
+      "platform_admin": "Certificates"
+    },
+    "status": {
+      "issuedTitle": "Valid certificate",
+      "issued": "Anyone can check it with its verification code or link.",
+      "revokedTitle": "Revoked on {date}",
+      "revoked": "This certificate is no longer valid. Its verification link now shows it as revoked.",
+      "reason": "Reason: {reason}"
+    }
+  },
+  "issue": {
+    "action": "Issue certificate",
+    "view": "View certificate",
+    "reissueAction": "Issue again",
+    "success": "Certificate issued.",
+    "dialog": {
+      "title": "Issue this certificate?",
+      "description": "The certificate is issued in the learner’s name for this course, with you as the issuer. The learner can then print it from their Certificates page.",
+      "confirm": "Issue certificate",
+      "reissueTitle": "Issue this certificate again?",
+      "reissueDescription": "The certificate becomes valid again with a new verification code and today’s date. The old code stops working.",
+      "reissueConfirm": "Issue again"
+    },
+    "errors": {
+      "invalid": "This certificate request isn’t valid. Reload the page and try again.",
+      "conflict": "This certificate can’t be issued: the course doesn’t give certificates, or (for a RoboHolic Certified course) the learner hasn’t completed it yet.",
+      "forbidden": "You can issue a certificate only for a course assigned to a class you teach this learner in.",
+      "notFound": "This learner isn’t enrolled in the course, or isn’t in one of your classes any more."
+    }
+  },
+  "revoke": {
+    "action": "Revoke",
+    "success": "Certificate revoked.",
+    "dialog": {
+      "title": "Revoke this certificate?",
+      "description": "It stops being valid at once: its verification link will show it as revoked. You can issue it again later.",
+      "reason": "Reason",
+      "reasonHint": "The learner sees this reason. Up to {max, number} characters.",
+      "confirm": "Revoke certificate"
+    },
+    "errors": {
+      "invalid": "This request isn’t valid. Reload the page and try again.",
+      "forbidden": "Only the teacher who issued this certificate, or a platform administrator, can revoke it.",
+      "notFound": "This certificate no longer exists, or you can no longer see it."
+    }
+  },
+  "verify": {
+    "description": "Check that a RoboHolic certificate is genuine and still valid.",
+    "valid": {
+      "title": "Valid certificate",
+      "description": "This certificate was issued through RoboHolic AI and is valid."
+    },
+    "revoked": {
+      "title": "Revoked certificate",
+      "description": "This certificate was revoked and is no longer valid."
+    },
+    "notFound": {
+      "title": "No certificate found",
+      "description": "No certificate matches the code {code}. Check the code printed on the certificate: it starts with RH- followed by 10 letters and digits."
+    },
+    "course": "Course",
+    "issuedOn": "Issued on",
+    "issuer": "Issued by",
+    "school": "School",
+    "code": "Verification code",
+    "privacy": "To protect learners’ privacy, this page never shows the name of the person who holds the certificate."
+  }
+}

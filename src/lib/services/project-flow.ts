@@ -711,6 +711,14 @@ export async function reviewSubmission(
   let criteria: CriteriaScores | null = null;
   let score: number | null = null;
   if (decision === 'approve') {
+    // The grade must be the suggestion the teacher saw: a co-teacher may have asked for a new one
+    // since the page was loaded (foundation request WS-D-4).
+    const seen = parsed.data.aiReviewId;
+    if (seen !== undefined && seen !== submission.latestAiReviewId) {
+      throw new ConflictError(
+        `submissions/${submissionId} has a newer AI suggestion than the one approved.`,
+      );
+    }
     const aiReview =
       submission.aiReviewStatus === 'ready' && submission.latestAiReviewId !== null
         ? await getAiReview(actor, submissionId, submission.latestAiReviewId)

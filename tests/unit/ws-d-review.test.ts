@@ -199,10 +199,32 @@ describe('the decision', () => {
   it('sends scores with modify only, and each decision passes the schema', () => {
     const criteria = { creativity: 1, technicalQuality: 2, understanding: 3, responsibleAi: 4 };
     for (const decision of ['approve', 'modify', 'return'] as const) {
-      const input = toReviewInput({ submissionId: ID, decision, criteria, feedback: 'Good.' });
+      const input = toReviewInput({
+        submissionId: ID,
+        decision,
+        criteria,
+        feedback: 'Good.',
+        aiReviewId: 'q4XChK972fSu4wO56qhE',
+      });
       expect(input.criteria).toEqual(decision === 'modify' ? criteria : null);
       expect(parseInput(reviewInputSchema, input).success).toBe(true);
     }
+  });
+
+  it('names the suggestion the form shows, or none (WS-D-4)', () => {
+    const base = {
+      submissionId: ID,
+      decision: 'approve' as const,
+      criteria: null,
+      feedback: 'Ok.',
+    };
+    const shown = toReviewInput({ ...base, aiReviewId: 'q4XChK972fSu4wO56qhE' });
+    expect(shown.aiReviewId).toBe('q4XChK972fSu4wO56qhE');
+    const parsed = parseInput(reviewInputSchema, shown);
+    expect(parsed.success && parsed.data.aiReviewId).toBe('q4XChK972fSu4wO56qhE');
+    const none = toReviewInput({ ...base, aiReviewId: null });
+    expect(none.aiReviewId).toBeNull();
+    expect(parseInput(reviewInputSchema, none).success).toBe(true);
   });
 
   it.each([

@@ -1,0 +1,230 @@
+{
+  "dashboard": {
+    "greeting": "Welcome, {name}",
+    "description": "Your classes, the work waiting for your review and the latest quiz results.",
+    "browseCourses": "Browse courses",
+    "stats": {
+      "label": "At a glance",
+      "classes": "Active classes",
+      "students": "Students",
+      "pending": "Waiting for review",
+      "courses": "Courses assigned"
+    },
+    "classes": {
+      "title": "Your classes",
+      "viewAll": "All classes",
+      "more": "{count, plural, one {and # more class} other {and # more classes}}",
+      "noActive": {
+        "title": "No active classes",
+        "description": "All your classes are archived. Create a class to start with a new group."
+      }
+    },
+    "pending": {
+      "title": "Waiting for review",
+      "count": "{count, plural, =0 {Nothing waiting} one {# project waiting} other {# projects waiting}}",
+      "openQueue": "Open the review queue",
+      "empty": {
+        "title": "You’re up to date",
+        "description": "New projects from your classes appear here."
+      }
+    },
+    "quizzes": {
+      "title": "Recent quiz results",
+      "listLabel": "Latest quiz attempts",
+      "row": "{name} – {quiz}",
+      "passed": "Passed",
+      "failed": "Not passed",
+      "unknownClass": "Another class",
+      "viewAll": "All quiz results",
+      "empty": {
+        "title": "No quiz results yet",
+        "description": "When your students take quizzes, their results appear here."
+      }
+    },
+    "onboarding": {
+      "title": "Create your first class",
+      "description": "A class groups your students. Assign courses to it, follow their progress and review their projects.",
+      "nextTitle": "While you get started",
+      "catalog": {
+        "title": "Explore the catalog",
+        "description": "Official RoboHolic courses for ages 8 to 18, ready to assign."
+      },
+      "academy": {
+        "title": "Teacher Academy",
+        "description": "Short courses for teachers on using AI in the classroom."
+      },
+      "create": {
+        "title": "Create a course",
+        "description": "Build your own lessons, quizzes and projects."
+      }
+    }
+  },
+  "courses": {
+    "description": "The RoboHolic catalog, the Teacher Academy and the courses of your school.",
+    "tabsLabel": "Course lists",
+    "tabs": {
+      "catalog": "Catalog",
+      "academy": "Teacher Academy",
+      "school": "My school",
+      "mine": "My courses"
+    },
+    "catalog": {
+      "description": "Official courses, by learning pathway. Open a course to preview it or assign it to a class.",
+      "empty": {
+        "title": "No courses yet",
+        "description": "Published courses appear here."
+      }
+    },
+    "academy": {
+      "description": "Courses for teachers. Enrol to learn at your own pace and earn a certificate.",
+      "empty": {
+        "title": "No Teacher Academy course yet",
+        "description": "New courses for teachers appear here."
+      }
+    },
+    "school": {
+      "description": "Courses your colleagues share with the school.",
+      "empty": {
+        "title": "No shared courses yet",
+        "description": "Courses that teachers of your school share appear here."
+      }
+    },
+    "mine": {
+      "description": "Courses you created, published or not.",
+      "create": "Create a course",
+      "edit": "Edit",
+      "editLabel": "Edit {course}",
+      "updated": "Updated {date}",
+      "audience": {
+        "student": "For students",
+        "teacher": "For teachers"
+      },
+      "empty": {
+        "title": "You haven’t created a course yet",
+        "description": "Create your own course with lessons, quizzes and projects."
+      }
+    }
+  },
+  "course": {
+    "about": "About this course",
+    "outcomes": "What learners will be able to do",
+    "preview": "Preview lessons",
+    "edit": "Edit course",
+    "outline": {
+      "title": "Lessons",
+      "module": "Module {number}: {title}",
+      "completed": "Completed",
+      "current": "Next",
+      "empty": {
+        "title": "No lessons yet",
+        "description": "This course has no lessons yet."
+      }
+    },
+    "facts": {
+      "title": "Course details",
+      "area": "Area",
+      "ages": "Ages",
+      "agesNone": "All ages",
+      "duration": "Duration",
+      "content": "Content",
+      "audience": "For",
+      "forStudents": "Students",
+      "forTeachers": "Teachers",
+      "certificate": "Certificate",
+      "certificateYes": "Certificate on completion",
+      "certificateNo": "No certificate",
+      "access": "Access",
+      "free": "Free",
+      "status": "Status"
+    },
+    "license": {
+      "title": "This course needs a licence",
+      "description": "No licence or subscription of yours covers this premium course. You can see its outline, but you can’t open, assign or enrol in it."
+    },
+    "assignPanel": {
+      "title": "Assign to a class",
+      "description": "Every student of the class is enrolled in the course.",
+      "assigned": "Assigned",
+      "assign": "Assign",
+      "actionLabel": "Assign this course to {className}",
+      "notPublished": "Publish this course before you assign it.",
+      "noClasses": {
+        "description": "Create a class to assign this course.",
+        "action": "Go to my classes"
+      }
+    },
+    "academyPanel": {
+      "title": "Learn this course",
+      "description": "Enrol to save your progress, take the quizzes and earn the certificate.",
+      "enroll": "Enrol and start",
+      "enrolled": "You are enrolled.",
+      "start": "Start the course",
+      "continue": "Continue",
+      "review": "Review the course",
+      "progress": "Your progress",
+      "lessons": "{completed} of {total, plural, one {# lesson} other {# lessons}} completed",
+      "completedTitle": "Course completed",
+      "completedDescription": "Well done! You finished every lesson.",
+      "certificate": "View my certificate",
+      "draft": "This course is not published yet. Publish it to enrol.",
+      "errors": {
+        "conflict": "This course is not published.",
+        "forbidden": "You can’t enrol in this course.",
+        "notFound": "This course no longer exists."
+      }
+    }
+  },
+  "settings": {
+    "description": "Your profile, your language and your certificates.",
+    "profile": {
+      "title": "Profile",
+      "description": "Your students and colleagues see your name and avatar.",
+      "displayName": "Display name",
+      "displayNameHint": "2 to 40 characters.",
+      "avatar": "Avatar",
+      "submit": "Save profile",
+      "saved": "Profile saved."
+    },
+    "avatars": {
+      "robot": "Robot",
+      "rocket": "Rocket",
+      "planet": "Planet",
+      "star": "Star",
+      "bolt": "Lightning bolt",
+      "atom": "Atom",
+      "bulb": "Light bulb",
+      "gear": "Gear",
+      "chip": "Chip",
+      "compass": "Compass",
+      "satellite": "Satellite",
+      "puzzle": "Puzzle piece"
+    },
+    "language": {
+      "title": "Language",
+      "description": "The language RoboHolic AI uses for you.",
+      "label": "Language",
+      "submit": "Save language",
+      "saved": "Language saved."
+    },
+    "account": {
+      "title": "Account",
+      "email": "Email",
+      "role": "Role",
+      "verification": "Educator verification",
+      "verified": "Verified educator",
+      "notVerified": "Not verified yet",
+      "notVerifiedHint": "Without a school, only a verified educator can create student accounts. A RoboHolic administrator verifies educators.",
+      "school": "Your account belongs to a school.",
+      "passwordHint": "To change your password, log out and choose “Forgot password” on the login page."
+    },
+    "certificates": {
+      "title": "My certificates",
+      "description": "Certificates you earned in the Teacher Academy.",
+      "empty": {
+        "title": "No certificates yet",
+        "description": "Complete a Teacher Academy course to earn one.",
+        "action": "Open the Teacher Academy"
+      }
+    }
+  }
+}

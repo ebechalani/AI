@@ -130,8 +130,14 @@ types. A dynamic import does not say which names it uses, so in `src/actions`, `
 ### 1.3 Request flow: server-rendered page
 
 1. `src/proxy.ts` runs next-intl's middleware (locale detection, redirect `/` → `/en`). It
-   exports `config = { matcher: '/((?!api|_next|_vercel|.*\\..*).*)' }`, so route handlers
-   under `/api`, Next internals and static files are never locale-redirected. For paths under
+   exports `config = { matcher: ['/((?!api|_next|_vercel|.*\\..*).*)', '/(en|fr)/:path*'] }`:
+   route handlers under `/api`, Next internals and files with an extension (`public/`) are
+   never locale-redirected, and a locale-prefixed path always runs the proxy, even with a dot in
+   it (`/fr/teacher/classes/bad.id`; without the locale header its layouts and not-found boundary
+   would render in English, foundation request WS-C-2). Next reads the matcher statically, so the
+   locales are spelled out; `tests/unit/proxy-matcher.test.ts` keeps them equal to `LOCALES` and
+   checks the patterns with Next's own matcher compiler. `public/` must not get an `en/` or `fr/`
+   folder. For paths under
    `/{locale}/(student|teacher|school|admin|certificates|preview)` it redirects to
    `/{locale}/login?next=<locale-less path>` when the `__session` cookie is absent. This is a
    UX shortcut only; it verifies nothing. `next` is the path alone (`/teacher/classes/abc`):
@@ -628,8 +634,11 @@ no environment variables but does need outbound network: `[locale]/layout.tsx` l
 through `next/font/google`, and a production build fails offline with "Failed to fetch
 `Inter` from Google Fonts" (`next dev` logs the error and uses the fallback font); switch to
 `next/font/local` with a vendored file if offline builds are needed (`font-src 'self'` in
-the CSP already allows it). `next dev` logs every server action call with its arguments,
-the ID token of `createSessionAction` included; that is development output only.
+the CSP already allows it). Server Function logging is switched off in `next.config.ts`
+(`logging: { serverFunctions: false }`): `next dev` would otherwise log every server action
+call with its arguments, which carry learners' text (AI Lab prompts, project work, quiz
+answers, names) and session ID tokens (`createSessionAction`); no personal data in logs (8.1,
+12; foundation request WS-I-2). Incoming requests are still logged (method, path, status).
 
 `src/`:
 
@@ -798,7 +807,8 @@ src/
 │  │  ├─ namespaces.ts                       NAMESPACES (ordered list), type Namespace
 │  │  ├─ routing.ts                          routing = defineRouting(); narrows next-intl's Locale type to LOCALES
 │  │  ├─ navigation.ts                       Link, redirect, usePathname, useRouter, getPathname
-│  │  ├─ request.ts                          getRequestConfig(): loads and merges namespace files; a missing file is an empty namespace
+│  │  ├─ request.ts                          getRequestConfig(): loads and merges namespace files (a missing file is an empty namespace); timeZone from the `tz` cookie
+│  │  ├─ time-zone.ts                        shared pure: TIME_ZONE_COOKIE, DEFAULT_TIME_ZONE ('UTC'), toSupportedTimeZone(), resolveTimeZone(), readTimeZoneCookie(), timeZoneCookie()
 │  │  └─ content.ts                          shared pure: pickTranslation(), hasTranslation()
 │  └─ navigation/
 │     └─ nav-config.ts                       shared: NAV_ITEMS, PROFILE_ITEMS per role, isNavItemActive(), roleHome re-export
@@ -829,7 +839,7 @@ src/
    ├─ layout/
    │  ├─ PublicShell.tsx · PublicHeader.tsx · PublicFooter.tsx · AuthShell.tsx
    │  ├─ AppShell.tsx · SidebarNav.tsx · MobileNav.tsx · TopBar.tsx · UserMenu.tsx
-   │  ├─ LocaleSwitcher.tsx · PageHeader.tsx · LessonShell.tsx · tutor-bridge.tsx · index.ts
+   │  ├─ LocaleSwitcher.tsx · PageHeader.tsx · LessonShell.tsx · tutor-bridge.tsx · TimeZoneCookie.tsx · index.ts
    │  └─ Drawer.tsx · NavLinks.tsx · SkipLink.tsx · LessonSidePane.tsx · lesson-scroll-padding.ts · field-reveal.ts · sign-out.tsx   layout-private (section 7.5)
    ├─ lesson/                                lesson player (section 7.6)
    │  ├─ LessonPlayer.tsx · LessonTopBar.tsx · StageStepper.tsx · LessonContent.tsx
@@ -1755,21 +1765,27 @@ composite indexes, so a missing index only fails in production).
 | Course detail | course outline: `courses/{id}`; `modules` order by `order`; `lessons` (all, sorted in memory by module then `order`); `enrollments/{uid}_{courseId}`; course access (row "Course access"; no read for a free course). When the outline read is `forbidden`, the student page reads `courses/{id}` again through `getPublishedCourse` to recognise a Teacher Academy course |
 | Lesson player | course outline (as above, `cache`d per request by `services/learning`; the lesson is taken from the outline, not read again); `blocks` order by `order`; `enrollments/{uid}_{courseId}`; `lessonProgress/{lessonId}`; `schools/{schoolId}` (for `tutorEnabled`, only when the learner has a school); for each id in `lesson.quizIds`: quiz doc + latest attempt by direct get `quizAttempts/{uid}_{courseId}_{quizId}_{quizSummary[quizId].attempts}` (only when `attempts > 0`); for each id in `lesson.projectIds`: project doc + latest submission by direct get `submissions/{projectSummary[projectId].latestSubmissionId}` (only when one exists). An unenrolled viewer costs no attempt or submission read |
 | Student Projects | `submissions` where `studentUid == uid` order by `submittedAt desc` |
-| Student Robotics | `courses` where `area == 'robotics'`, `status == 'published'`, `isOfficial == true` order by `order` (grouped by `tags` in memory); global challenge query filtered to `area == 'robotics'` in memory; `hardwarePlatforms` (the whole collection; `activeOnly` and `order` applied in memory) |
-| Student Challenges | the two challenge queries (global; school only when `schoolId` is not null) without the `deadlineAt` filter; own entries with **one** query `submissions` where `studentUid == uid` and `context == 'challenge'` (equality only), `entered` derived in memory. Challenge detail: latest entry `submissions` where `studentUid == uid` and `challengeId == id` order by `attemptNumber desc` limit 1 |
+| Student Robotics | `courses` where `area == 'robotics'`, `status == 'published'`, `isOfficial == true` order by `order` (grouped by `tags` in memory); the Student Home challenge queries without the limit (global; school only when `schoolId` is not null; `deadlineAt >= now`), filtered to `area == 'robotics'` in memory (`listChallengesForUser` with `upcomingOrOpenOnly`; same shapes and indexes as Student Home, a limit does not change the shape); `hardwarePlatforms` (the whole collection; `activeOnly` and `order` applied in memory) |
+| Student Challenges | the two challenge queries (global; school only when `schoolId` is not null) without the `deadlineAt` filter; own entries with **one** query `submissions` where `studentUid == uid` and `context == 'challenge'` (equality only), `entered` derived in memory. Challenge detail: `challenges/{id}` by id (`getChallenge`); latest entry `submissions` where `studentUid == uid` and `challengeId == id` order by `attemptNumber desc` limit 1 |
 | Achievements | `users/{uid}`; `badges` (the whole collection; `activeOnly` and `order` applied in memory); `users/{uid}/badges`; `xpLedger` order by `createdAt desc` limit 20 |
 | Certificates (student) | `certificates` where `userUid == uid` order by `issuedAt desc` |
+| Certificate (printable, `/certificates/[certificateId]`) | `certificates/{id}` (`getCertificate`), plus `users/{holderUid}` inside `getCertificate` when the viewer is a teacher (a teacher reaches a certificate through its holder, a pupil of a class they teach). Direct gets only |
+| Student Settings | `users/{uid}` (`getUser`: sign-in identifier, age band, class count; the same document the session reads) |
 | Student AI Tutor (`/student/tutor`) | `schools/{schoolId}` for the AI switch, only when the learner has a school. When the switch is on, also the Student Learn enrolment query (`enrollments` where `userUid == uid` order by `lastActivityAt desc`) → `getAll` courses, for the course selector. Each message then costs the reads of the row "Tutor context" |
 | AI Lab (`/student/ai-lab`, `/student/ai-lab/[toolId]`) | `schools/{schoolId}`, only when the learner has a school. `runLabToolAction`: for the live tool the reads of `checkAndCountAiUsage` (8.7: the `aiUsage` documents, and the school document); for the canned tools `schools/{schoolId}` only (1.7) |
-| Teacher Dashboard | `classes` where `teacherUids array-contains uid` and `archived == false` order by `name`; `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` limit 5 (+ `count()`); `quizAttempts` where `classId in classIds` order by `submittedAt desc` limit 10 (rows render from the `studentName` and `quizTitle` snapshots; no user or quiz reads). **When `classIds` is empty (every new teacher) these two queries are skipped and return empty** |
-| Class detail | `classes/{id}`; `members` order by `displayName`; `assignments`; `getAll` assigned courses |
-| Student detail (teacher) | student summary (`users/{uid}`, reduced projection); then, **always filtered by the route's class**: `enrollments` where `classId == X` and `userUid == uid` (equality only); `quizAttempts` where `classId == X` and `userUid == uid` order by `submittedAt desc`; `submissions` where `classId == X` and `studentUid == uid` order by `submittedAt desc`; active `manual` badges and `users/{uid}/badges` for the award control |
-| Teacher Courses | published official catalog by pathway; `courses` where `ownerUid == uid` order by `updatedAt desc`; `courses` where `schoolId == X` and `isOfficial == false` order by `updatedAt desc` (`listSchoolCourses`: for a **teacher** actor filtered to `visibility == 'school'` in memory; a school admin on `/school/courses` gets every non-official course of the school that `canViewCourse` allows, section 6.6; skipped when `schoolId` is null) |
+| Teacher Dashboard | `classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name` (`includeArchived`; same index): active classes are filtered in memory, and archived ones name the rows of the two lists below and separate the onboarding state (no class at all) from "no active class"; `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` limit 5 (+ `count()`); `quizAttempts` where `classId in classIds` order by `submittedAt desc` limit 10 (rows render from the `studentName` and `quizTitle` snapshots; no user or quiz reads). `classIds` is `session.classIds`, archived classes included (the same ids the Teacher Projects queue uses). **When `classIds` is empty (every new teacher) these two queries are skipped and return empty** |
+| Teacher Classes (`/teacher/classes`) | the Teacher Dashboard class query with `includeArchived` (`classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name`; same index), split into active and archived in memory |
+| Class detail | `classes/{id}`; `members` order by `displayName`; `assignments`; `getAll` assigned courses; `schools/{schoolId}` by id when the class has a school (the school's join-code switch and the account-policy hint of the add-students card) |
+| Assign a course (`/teacher/classes/[classId]/assign`) | `classes/{id}`; then, only for a class that is not archived, the reads of the row "Teacher Courses" without the teacher's enrollments, filtered in memory to `audience == 'student'` and `status == 'published'` |
+| Student detail (teacher) | `classes/{id}` by id (title, breadcrumbs); student summary (`getStudentForTeacher`: `classes/{id}`, then the class's `members` order by `displayName` for the membership check, then `users/{uid}`, reduced projection); then, **always filtered by the route's class**: `enrollments` where `classId == X` and `userUid == uid` (equality only); `quizAttempts` where `classId == X` and `userUid == uid` order by `submittedAt desc` limit 50; `submissions` where `classId == X` and `studentUid == uid` order by `submittedAt desc` (no limit); `getAll` of the courses named by those enrollments and attempts (`getCourses`; hidden ones are dropped, and a teacher-made course may cost `enrollments/{uid}_{courseId}` as in the row "Course access"); `badges` (the whole collection, as on Achievements; active `manual` badges filtered in memory) and `users/{uid}/badges` for the award control |
+| Teacher Courses | published official catalog by pathway: the Public home pathway query (`pathways` where `status == 'published'` order by `order`), then the Pathway detail course query (`courses` where `pathwayId == id` and `status == 'published'` order by `order`) for each pathway whose `publishedCourseCount > 0`, `teacher-academy` included (both audiences); the teacher's own enrollments (the Student Learn shape: `enrollments` where `userUid == uid` order by `lastActivityAt desc`) for Teacher Academy progress; `courses` where `ownerUid == uid` order by `updatedAt desc`; `courses` where `schoolId == X` and `isOfficial == false` order by `updatedAt desc` (`listSchoolCourses`: for a **teacher** actor filtered to `visibility == 'school'` in memory; a school admin on `/school/courses` gets every non-official course of the school that `canViewCourse` allows, section 6.6; skipped when `schoolId` is null) |
+| Teacher course detail (`/teacher/courses/[courseId]`) | course outline (as in the row "Course detail"); course access (row "Course access"); `enrollments/{uid}_{courseId}` for a course with `audience == 'teacher'`; the Teacher Dashboard class query (`archived == false`) for a course with `audience == 'student'` (the assign panel) |
 | Assessments | the teacher's classes for the class picker: the Teacher Dashboard query with `includeArchived` (`classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name`; same index); `getAll` of the selected class's assigned courses and of any other course named on the page; `quizAttempts` where `classId == X` and `courseId == Y` order by `submittedAt desc`, or, for "All courses", where `classId == X` order by `submittedAt desc` without the `courseId` filter (paginated, 50; the cursor is the last attempt id of the previous page, and the earlier cursors travel in the URL). Attempt detail: `quizAttempts/{id}`, `quizzes/{quizId}`, `courses/{courseId}` and `classes/{classId}` by direct get. Course reads as in the row "Course access" (`getCourses` / `getQuiz` may read `enrollments/{uid}_{courseId}` for a teacher-made course) |
 | Teacher Projects (queue) | the teacher's classes, for the class names and the picker of the tab "All": the Teacher Dashboard query with `includeArchived` (`classes` where `teacherUids array-contains uid` and `archived in [false, true]` order by `name`; same index); `submissions` where `classId in classIds` and `status == 'submitted'` order by `submittedAt` (skipped when `classIds` is empty); tab "All": `classId == X` order by `submittedAt desc` (paginated) |
 | Review screen, student submission detail | `submissions/{id}`; `aiReviews/{latestAiReviewId}` when the viewer may see it; `reviews` order by `createdAt desc` (staff); project or challenge doc. The student page, for a `returned` submission only, also reads the latest attempt with `getLatestSubmission` to decide whether a new version may be sent: `enrollments/{uid}_{courseId}` and `submissions/{latestSubmissionId}` by id (project), or the Challenge detail query (challenge) |
 | File download (`GET /api/files/[fileId]`, `project-flow.getFileForDownload`) | `files/{fileId}`; then, unless the caller owns the file or is a platform admin: `submissions/{submissionId}` (submission files), or `courses/{courseId}` plus the reads of the row "Course access" (media of a teacher-made course; none for official media). Direct gets only |
-| Reports | `classes/{id}`; `members`; `getAll(enrollments/{uid}_{courseId})` for each member (≤ 60). All columns come from the enrollment (`progressPercent`, `quizSummary`, `projectSummary`, `certificateId`); **no attempt or submission query** |
+| Reports | the teacher's classes for the class picker: the Teacher Dashboard query with `includeArchived` (same index); `getAll` of the selected class's assigned courses for the course picker; `classes/{id}`; `members`; `getAll(enrollments/{uid}_{courseId})` for each member (≤ 60). All columns come from the enrollment (`progressPercent`, `quizSummary`, `projectSummary`, `certificateId`); **no attempt or submission query** |
+| Teacher Settings | `users/{uid}` (`getUser`, for the email address); `certificates` where `userUid == uid` order by `issuedAt desc` (the "Certificates (student)" shape) |
 | School Dashboard / Analytics | `schools/{id}` (teachers, students, classes and seats used come from `counts`); `count()` on `enrollments` (`schoolId`, `status`), per course (`schoolId`, `courseId`, `status`) for the union of `assignedCourseIds`; `count()` on `certificates` (`schoolId`); `licenses` where `schoolId` order by `endsAt desc` |
 | School Teachers / Students | `users` where `schoolId == X` and `role == R` order by `displayName` (paginated, 50) |
 | School Classes | `classes` where `schoolId == X` and `archived == false` order by `name` |
@@ -2343,6 +2359,7 @@ User menu: Settings.
 | Dashboard | `/teacher` | Classes overview, pending reviews, recent quiz results |
 | Classes | `/teacher/classes` | List + create class |
 | | `/teacher/classes/[classId]` | Roster (shows how each student joined), join code (enable for 24 h, regenerate), add students, assigned courses |
+| | `/teacher/classes/[classId]/assign` | Assign a course to the class: the catalog of assignable courses (official, school, own) with an optional due date |
 | | `/teacher/classes/[classId]/students/[studentUid]` | One student's progress, attempts and submissions **in this class**; reset password; award a manual badge |
 | Courses | `/teacher/courses` | Official catalog, Teacher Academy, school courses, own courses |
 | | `/teacher/courses/[courseId]` | Course detail, assign to class, enroll (Teacher Academy), preview |
@@ -2648,8 +2665,8 @@ from `ICON_NAMES`, a fixed list of about 95 icons rather than lucide's full expo
 the library out of the client bundle); an unknown name draws the `Shapes` fallback,
 kebab-case names are accepted, and seed or migration data must use names from `ICON_NAMES`
 (add an icon there when new data needs one). `format.ts` exports three hooks:
-`useDateFormat()` (`formatDate` in next-intl's time zone, so server and client print the
-same day), `useDurationFormat()` ("45 min", "2 h", "1 h 30 min" from `common.units.*`) and
+`useDateFormat()` (`formatDate` in next-intl's time zone, which is the viewer's (section 12,
+`TimeZoneCookie` in 7.5), so server and client print the same day and time), `useDurationFormat()` ("45 min", "2 h", "1 h 30 min" from `common.units.*`) and
 `useAgeRangeLabel()` (`domain.course.ages` / `agesFrom` / `agesUpTo`, or null).
 
 `AIChatPanel` is split into `AIChatPanel.tsx` (the mode radio group of chips),
@@ -2699,10 +2716,11 @@ decorative next to a title, and a `sizes` that matches the grid (cards use
 | `AppShell` `{ role: Role; user: ShellUser; persistLocale?: PersistLocale \| null; children }` with `ShellUser = { displayName: string; avatarId: string; xp?: number; level?: number }` (exported from `TopBar.tsx` and the index) | Authenticated areas: `SidebarNav` (desktop), `MobileNav` (bottom bar for students, drawer for staff), `TopBar` `{ role; user; persistLocale? }` (exported too) with `XPBadge` (students, who therefore need `xp` and `level`; the student `(shell)/layout.tsx` reads them from `users.getUser(session, session.uid)`, as the `Session` carries neither), `LocaleSwitcher`, `UserMenu`. For students the `TopBar` always shows the signed-in display name (truncated on phones; staff names hide below `md`) with a visible one-click **Sign out** button (shared classroom computers). The area layouts pass `persistLocale={updateProfileAction}`. Must sit under `ToastProvider` (sign-out failures are toasts) |
 | `SidebarNav`, `MobileNav` | Render `NAV_ITEMS[role]`; active state from `usePathname()` + `isNavItemActive`. `MobileNav` for students is a bottom bar with the first four items (Home, Learn, AI Lab, Robotics) plus a "More" button (`nav.shell.more`) that opens a bottom sheet with Challenges, Projects, AI Tutor and the three `PROFILE_ITEMS` (the brief's seven items do not fit a 375 px bar); staff get a menu button in the `TopBar` that opens a start-side drawer with `NAV_ITEMS` then `PROFILE_ITEMS` |
 | `UserMenu` `{ role; user: { displayName; avatarId } }` | A "Signed in as {name}" heading (`nav.shell.signedInAs`), `PROFILE_ITEMS[role]` and Sign out (a separator always precedes Sign out, also for roles with no profile items) |
-| `LocaleSwitcher` `{ persist?: PersistLocale \| null; align?: 'start' \| 'end'; compact?: boolean }` with `PersistLocale = (patch: { locale: Locale }) => Promise<unknown>` | Lists `LOCALES`; switches with the i18n router keeping the current path; calls `persist({ locale })` when given one. `src/actions/settings.ts` does not exist before F8 and components may not create it, so the switcher cannot import `updateProfileAction`: `AppShell` carries `persistLocale` down to it through `TopBar`; without it the page still switches language, the preference is just not saved |
+| `LocaleSwitcher` `{ persist?: PersistLocale \| null; align?: 'start' \| 'end'; compact?: boolean \| 'narrow' }` with `PersistLocale = (patch: { locale: Locale }) => Promise<unknown>` | Lists `LOCALES`; below `sm` the button shows the globe and the language code, `compact` drops the code below `sm` and `compact="narrow"` only below 360 px (`PublicHeader`, which also tightens its gaps there so French fits a 320 px screen); the accessible name always names the language; switches with the i18n router keeping the current path; calls `persist({ locale })` when given one. `src/actions/settings.ts` does not exist before F8 and components may not create it, so the switcher cannot import `updateProfileAction`: `AppShell` carries `persistLocale` down to it through `TopBar`; without it the page still switches language, the preference is just not saved |
 | `PageHeader` `{ title; description?; actions?; breadcrumbs? }` | Standard page title row |
 | `LessonShell` `{ top; nav; children; aside?; footer? }` (client component; its slots are server-rendered nodes) | Three-pane player frame. From Tailwind `xl` (80rem = 1280 px): nav 280 px, content fluid, aside 360 px. Below: the outline is a start-side slide-over opened by a button in the top bar (`nav.lesson.openOutline`), the aside an end-side slide-over opened by a floating "Ask Robo AI" button (`nav.lesson.askTutor`); while one is open the page is `inert`, Escape closes it and focus returns to the opener; following an outline link closes the outline. `aside={null}` (tutor disabled) removes the pane and the floating button. Wraps all its slots in `TutorBridgeProvider` and binds the slide-over to the bridge; on wide screens it resets the bridge's `isOpen` to false so the pane does not slide in later when the window is narrowed. The `top` slot sits in a flex row next to the outline button (keep it one flex row with `min-w-0` on the title); the `footer` slot is centred in a `max-w-3xl` box (three full-width buttons wrap to two rows at 375 px, so make the previous/next controls compact on phones) |
 | `tutor-bridge.tsx` | The channel between lesson blocks and the tutor panel (below) |
+| `TimeZoneCookie` (no props; client; renders nothing) | Mounted once in `[locale]/layout.tsx`, inside `NextIntlClientProvider`. Records the browser's time zone (`Intl.DateTimeFormat().resolvedOptions().timeZone`, checked with `toSupportedTimeZone`) in the `tz` cookie (`Path=/`, `SameSite=Lax`, one year, `Secure` on https) when the cookie is missing or different; when it wrote the cookie and the page was rendered in another zone, it calls `router.refresh()` once. `src/lib/i18n/request.ts` reads the cookie, keeps it only when it is an IANA name that the server's Intl supports, and returns it as next-intl's `timeZone` (`'UTC'` otherwise, and outside a request), so server and client components format in the same zone and nothing mismatches on hydration. Reading the cookie renders every page dynamically (the auth pages were the only static ones). Foundation request WS-C-3 |
 | `Drawer.tsx`, `NavLinks.tsx`, `SkipLink.tsx`, `LessonSidePane.tsx`, `sign-out.tsx` | Layout-private: a native modal `<dialog>` drawer (Escape, backdrop, close button, scroll lock); the vertical link list with active state; "Skip to content" → `#main-content` (every shell's `<main>` has `id="main-content"`, so pages must not add another `<main>`); one pane of `LessonShell`; `useSignOut()` and `SignOutButton { variant?, size?, compact?, className? }` (both exported from the index), which call `signOutAction`, do the best-effort client sign-out, then a full page load of `/login` (not `router.push`) so nothing of the previous user stays in memory on a shared computer, and show a danger toast (`errors.<code>`, or `errors.offline`) on failure |
 
 ```ts
@@ -2856,6 +2874,13 @@ components/lesson/blocks/*.tsx                BlockRendererProps<T>
 `registerUploadAction` and reports the registered file. `SubmissionForm` uses it for
 attachments; the course editors (WS-F) use it for block media and cover images.
 `TutorPanel` receives a starter prompt only through the tutor bridge.
+`IssueCertificateButton` (behaviour; the props are unchanged): `existingCertificateId` is the
+enrollment's `certificateId`, which a revocation clears (9.5). With `null`, the control issues
+after a confirmation through `issueCertificateAction`; the service decides (9.5), and a revoked
+certificate is issued again with a new code. With an id, it links to `/certificates/{id}`, whose
+page lets the issuing teacher or a platform admin revoke the certificate or issue a revoked one
+again. Consumers keep the control mounted across the refresh (they pass the new id) so focus
+moves to the new link.
 
 ---
 
@@ -4238,6 +4263,8 @@ createSubmission(actor, input: NewSubmission): Promise<Submission>
   // stored; a non-null value naming an attempt other than the stored latest one is ConflictError; the document always
   // records the latest attempt found in the transaction.
 addReview(actor, submissionId, input: NewReview): Promise<Submission>                  // review + final* + status + projectSummary + effectsApplied, one transaction
+                                                                                       // ConflictError unless status is 'submitted'; for 'approve' also unless aiReviewStatus
+                                                                                       // is 'ready' and latestAiReviewId still equals input.aiReviewId (checked in the transaction)
 listReviews(actor, submissionId): Promise<TeacherReview[]>
 getAiReview(actor, submissionId, aiReviewId): Promise<AiReview>                        // canViewAiReview
 saveAiReview(actor, submissionId, review: NewAiReview): Promise<AiReview>              // system only
@@ -4415,7 +4442,7 @@ addStudentToClass(actor, classId, student: UserProfile, addedByUid: string | nul
 joinClassWithCode(actor, joinCode: string): Promise<SchoolClass>                    // signed-in student; rate limit 'join_class' keyed by uid
 removeStudentFromClass(actor, classId, studentUid): Promise<void>
 assignCourseToClass(actor, classId, courseId, dueAt: IsoDateString | null): Promise<void>
-unassignCourseFromClass(actor, classId, courseId): Promise<void>                    // keeps existing enrollments
+unassignCourseFromClass(actor, classId, courseId): Promise<void>                    // keeps existing enrollments; ConflictError on an archived class
 getStudentForTeacher(actor, classId, studentUid): Promise<StudentSummary>
 
 // learning.ts
@@ -4499,8 +4526,9 @@ Semantics that the signatures do not show:
   `applyIdentityChange` without invalidation, `upsertClassEnrollments` for every assigned
   course, then the re-pointing of every open unsupervised submission of the student (3.6).
 - **`removeStudentFromClass`**: `NotFoundError` when the class is not visible to the actor or
-  the student is not on its roster (no existence oracle); `removeMember`; "self-registered"
-  is `username === null` (an email account), so a username account provisioned by a
+  the student is not on its roster (no existence oracle); `ConflictError` on an archived class
+  (its roster is read-only); `removeMember`; "self-registered" is `username === null` (an
+  email account), so a username account provisioned by a
   school-less verified teacher who later joined a school class stays attached; the detach
   decision reads the student's remaining classes once; the class's enrollments and open
   submissions are re-resolved after the detach (3.6).
@@ -4657,14 +4685,18 @@ Semantics that the signatures do not show:
   (3.7).
 - **`reviewSubmission`** decision semantics: input re-parsed with `reviewInputSchema`;
   `approve` copies the AI suggestion's criteria and overall score, and is accepted only when
-  the AI review is `ready`, has no flag, its confidence is not `low` and `criteria` and
+  `input.aiReviewId`, if the input carries it (an id, or null when no suggestion was shown), is
+  the submission's `latestAiReviewId` (`ConflictError` otherwise, before any suggestion is read:
+  a co-teacher asked for a new suggestion after the page was loaded, so the grade would not be
+  the one the teacher saw; the review screen always sends it, foundation request WS-D-4; an input
+  without it approves the latest), and when the AI review is `ready`, has no flag, its confidence is not `low` and `criteria` and
   `overallSuggestedScore` are non-null (`ConflictError` otherwise, as for a failed or absent
   review); `modify` uses the teacher's `criteria` (`ValidationError { criteria:
   ['required'] }` without them) and computes the score with the submission's rubric weights
   (`weightedScore`: round(Σ score × weight / 100), clamped 0–100, unlisted criteria weigh
   nothing); `return` records feedback only, sets status `returned`, awards nothing. In all
   three the teacher's `feedback` is what the student sees and `NewReview.aiReviewId =
-  submission.latestAiReviewId`. Audit `submission.reviewed` (meta `{ decision, score,
+  submission.latestAiReviewId` (`modify` and `return` do not depend on `input.aiReviewId`). Audit `submission.reviewed` (meta `{ decision, score,
   studentUid }`) is written before the gamification handler; for approve/modify the handler
   runs through `applyEffects` and the submission is re-read when it succeeded, else the
   reviewed submission is answered with `gamification: null`.
@@ -4725,7 +4757,9 @@ submitWorkAction(SubmitWorkInput) → { submissionId: string }                  
 
 // review.ts (WS-D)
 reviewSubmissionAction(ReviewInput) → { status: SubmissionStatus }                                 T P
-  // ReviewInput = { submissionId, decision, criteria, feedback }
+  // ReviewInput = { submissionId, decision, criteria, feedback, aiReviewId? }
+  //   aiReviewId: the AI suggestion the teacher saw (null: none); an approve that names another
+  //   one than the latest answers conflict (10.3, WS-D-4)
 regenerateAiReviewAction({ submissionId }) → null                                                  S T P
 
 // classes.ts (WS-E)
@@ -4824,10 +4858,11 @@ How the workstream actions call the services (the error codes each form must han
 - `createClassAction` → `createClass(session, data)` → `{ classId: cls.id }`;
   `addStudentsAction` → `provisionStudents(session, classId, students)` → `{ credentials }`
   (passwords are shown once and never stored); `removeStudentAction` →
-  `removeStudentFromClass`; `resetStudentPasswordAction` → `resetStudentPassword(session,
-  studentUid)`; `assignCourseAction` → `assignCourseToClass(session, classId, courseId,
-  dueAt)` (expect `license_required`, and `conflict` for a teacher course);
-  `unassignCourseAction` → `unassignCourseFromClass`; `joinClassAction` → `const cls = await
+  `removeStudentFromClass` (`conflict` on an archived class); `resetStudentPasswordAction` →
+  `resetStudentPassword(session, studentUid)`; `assignCourseAction` →
+  `assignCourseToClass(session, classId, courseId, dueAt)` (expect `license_required`, and
+  `conflict` for a teacher course); `unassignCourseAction` → `unassignCourseFromClass`
+  (`conflict` on an archived class); `joinClassAction` → `const cls = await
   joinClassWithCode(session, joinCode)` → `{ classId: cls.id, className: cls.name }`
   (`conflict` = pupil of another school); `awardBadgeAction` → `awardManualBadge(session,
   data)`. The teacher's student page calls `getStudentForTeacher(session, classId,
@@ -5358,7 +5393,7 @@ answer would materially change the product or its cost, per the working agreemen
 | Role edge cases | Individual teachers, teachers in two schools, school admins who also teach or learn, a student in two classes that assign the same course | One role and at most one school per user; individual teachers can run classes with `schoolId: null` under the limits above; school admins do not teach or take courses in the MVP; a student's work in a course has one supervising class (chosen deterministically), though every class report shows their progress | Multi-role and multi-school are future |
 | Platform admin scope | The brief lists pathways, badges and certificates among the things a platform admin manages, but no platform admin dashboard is in the MVP list | Admin pages for schools, users, licences/subscriptions, official courses, certificates and challenges (section 6.7). Pathways, badge definitions and hardware platforms are edited through versioned migration scripts | Add those admin pages when reference data starts changing often |
 | Certificates | Format, legal name, verification | HTML page printed to PDF; shows display name; public verification page shows course, date, issuer and status but not the learner's name | Accept |
-| Time zones | Deadlines and daily limits | Stored in UTC, displayed in the browser's time zone; AI and upload limits reset at 00:00 UTC | Accept |
+| Time zones | Deadlines and daily limits | Stored in UTC, displayed in the browser's time zone (the `tz` cookie set by `TimeZoneCookie` and read by the request config, 7.5; UTC until the browser has reported its zone); AI and upload limits reset at 00:00 UTC | Accept |
 | Monitoring | Errors and uptime | Vercel logs only; no personal data in logs; audit entries are read in the Firebase console | Add error tracking before launch |
 | Testing | Not mentioned in the brief | Unit tests (schemas and their message keys, runAction, env guard and Firebase initialisation, authz, account policy, grading and answer normalisation, levels, badges and gamification events, learning helpers, course derivation, the AI layer on the mock provider, every service over mocked repositories, nav config, translation fallback); Security Rules tests on the emulators; an emulator-backed integration suite over the services (section 11.1); manual end-to-end script in Stage 2. No DOM test runs the components (node-only Vitest, no DOM library in the frozen `package.json`); they are checked by hand in a browser | Automated browser end-to-end and component tests later |
 | Mobile apps and offline | Brief asks for responsive web only | Responsive web, no offline mode | Later phase |

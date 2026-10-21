@@ -1,0 +1,375 @@
+{
+  "errors": {
+    "form": "Some of the information is not valid. Check it and try again.",
+    "archived": "This class is archived and can no longer be changed.",
+    "classGone": "This class no longer exists, or you no longer teach it."
+  },
+  "list": {
+    "description": "Create classes, add students and share join codes.",
+    "activeTitle": "Active classes",
+    "archivedSummary": "{count, plural, one {# archived class} other {# archived classes}}",
+    "archivedHint": "Archived classes keep their students, progress and work. Their join codes no longer work.",
+    "empty": {
+      "title": "No classes yet",
+      "description": "Create a class to add students, assign courses and follow their progress."
+    },
+    "noActive": {
+      "title": "No active classes",
+      "description": "All your classes are archived. Create a class to start with a new group."
+    }
+  },
+  "card": {
+    "students": "{count, plural, =0 {No students} one {# student} other {# students}}",
+    "courses": "{count, plural, =0 {No courses assigned} one {# course assigned} other {# courses assigned}}",
+    "coTeacher": "Co-teacher",
+    "codeOpen": "Join code open",
+    "codeClosed": "Join code closed"
+  },
+  "verification": {
+    "title": "Your educator account is not verified yet",
+    "description": "You can create classes and share their join code with students aged 13 and over who already have their own account. To create student accounts yourself, a RoboHolic administrator must first verify your account."
+  },
+  "form": {
+    "name": "Class name",
+    "nameHint": "For example “Grade 6 A” or “Robotics club”.",
+    "gradeLabel": "Grade or level",
+    "gradeLabelHint": "For example “Grade 6” or “Year 8”.",
+    "ageBand": "Age group",
+    "ageBandHint": "Students you add to the class get this age group, unless you choose another one.",
+    "ageBandHintNoSchool": "Students you add to the class get this age group. Outside a school, you can create accounts only for students aged 13 and over."
+  },
+  "create": {
+    "action": "New class",
+    "title": "Create a class",
+    "description": "You can change these details later.",
+    "submit": "Create class",
+    "success": "Class “{name}” created.",
+    "errors": {
+      "conflict": "You already teach 30 classes, the most allowed. Archive a class you no longer use, then try again."
+    }
+  },
+  "edit": {
+    "action": "Edit details",
+    "title": "Edit class details",
+    "submit": "Save changes",
+    "success": "Class details saved."
+  },
+  "archive": {
+    "action": "Archive class",
+    "title": "Archive “{name}”?",
+    "description": "The class moves to your archived classes and its join code stops working. Students keep their accounts and their progress, and you can still open the class from the archived list. An archived class cannot be restored.",
+    "confirm": "Archive class",
+    "success": "Class “{name}” archived."
+  },
+  "detail": {
+    "studentsCount": "{count, plural, =0 {No students} one {# student} other {# students}}",
+    "report": "Progress report",
+    "archived": {
+      "title": "This class is archived",
+      "description": "You can still see its students, their progress and their work. Nothing in it can be changed, and its join code does not work."
+    },
+    "settings": {
+      "title": "Class settings",
+      "description": "Rename the class or change its age group above. Archive the class when the group no longer meets."
+    }
+  },
+  "roster": {
+    "title": "Students",
+    "count": "{count, plural, one {# student} other {# students}}",
+    "caption": "Students of {className}",
+    "student": "Student",
+    "ageBand": "Age group",
+    "joined": "Joined",
+    "actions": "Actions",
+    "usernameLabel": "Username:",
+    "ownAccount": "Own account",
+    "method": {
+      "code": "With the join code",
+      "you": "Added by you",
+      "staff": "Added by school staff"
+    },
+    "empty": {
+      "title": "No students yet",
+      "description": "Add students, or share the join code with your class.",
+      "descriptionCodeOnly": "Share the join code with students who already have their own account.",
+      "descriptionAddOnly": "Add students with “Add students”. Your school has turned join codes off.",
+      "descriptionNone": "Students can’t be added to this class right now.",
+      "descriptionArchived": "This class is archived: no students can be added to it."
+    }
+  },
+  "remove": {
+    "action": "Remove",
+    "actionLabel": "Remove {name} from the class",
+    "title": "Remove {name} from {className}?",
+    "description": "{name} keeps their account and their progress. Their quiz results and projects from this class stay in Assessments and Projects, but this class no longer follows their courses.",
+    "confirm": "Remove student",
+    "success": "{name} is no longer in {className}.",
+    "errors": {
+      "notFound": "This student had already left the class.",
+      "forbidden": "You cannot remove students from this class."
+    }
+  },
+  "joinCode": {
+    "title": "Join code",
+    "codeLabel": "Join code of {className}: {code}",
+    "state": {
+      "open": "Open until {date}",
+      "expired": "Expired on {date}",
+      "off": "Closed"
+    },
+    "hint": {
+      "anyAge": "Students without an account create one with this code. Students who already have an account log in, then join with it.",
+      "thirteenPlus": "Students aged 13 and over can create their account with this code. Students who already have an account log in, then join with it.",
+      "existingOnly": "Only students who already have their own account can join with this code: they log in, then type it."
+    },
+    "ttl": "A code works for 24 hours after you open it.",
+    "open": "Open for 24 hours",
+    "extend": "Extend to 24 hours from now",
+    "close": "Close the code",
+    "opened": "The join code is open for 24 hours.",
+    "extended": "The join code is open for the next 24 hours.",
+    "closed": "The join code is closed.",
+    "copyCode": "Copy code",
+    "copyLink": "Copy invite link",
+    "copyFailed": "Could not copy. Select the code and copy it yourself.",
+    "present": "Show to the class",
+    "presentTitle": "Join {className}",
+    "presentInstructions": "Open {url} and type this code:",
+    "regenerate": "New code",
+    "regenerateTitle": "Replace the join code?",
+    "regenerateDescription": "The code {code} stops working at once. Share the new code with your students.",
+    "regenerateConfirm": "Replace code",
+    "regenerated": "New join code: {code}.",
+    "schoolOff": {
+      "title": "Your school has turned join codes off",
+      "description": "Students cannot join with a code. Add them with “Add students”, or ask your school administrator.",
+      "descriptionNoAdd": "Students cannot join with a code. Ask your school administrator."
+    }
+  },
+  "addStudents": {
+    "title": "Add students",
+    "description": "Create accounts for students who don’t have one. You get their usernames and passwords to print or copy.",
+    "action": "Add students",
+    "capacity": "{count, plural, one {Room for # more student.} other {Room for # more students.}}",
+    "under13Hint": "Outside a school, accounts can be created only for students aged 13 and over.",
+    "full": {
+      "title": "This class is full",
+      "description": "A class holds at most {max} students."
+    },
+    "blocked": {
+      "educator_not_verified": {
+        "title": "You can’t create student accounts yet",
+        "description": "Your educator account is not verified. Students who already have an account can join with the join code."
+      },
+      "school_inactive": {
+        "title": "New accounts can’t be created",
+        "description": "Your school’s account is not active. Ask your school administrator."
+      }
+    },
+    "dialogTitle": "Add students to {className}",
+    "names": "Student names",
+    "namesHint": "One student per line, for example “Lea D.” Each name has 2 to 40 characters.",
+    "namesCount": "{count, plural, =0 {No names yet} one {# student} other {# students}} ({max} at most)",
+    "ageBand": "Age group",
+    "submit": "{count, plural, =0 {Create accounts} one {Create # account} other {Create # accounts}}",
+    "creating": "Creating the accounts one by one…",
+    "lineError": "Line {line} ({name}): {message}",
+    "errors": {
+      "noNames": "Type at least one name.",
+      "tooMany": "{max, plural, one {This class has room for # more student.} other {This class has room for # more students.}}",
+      "forbidden": "Your account can’t create student accounts in this class.",
+      "conflict": "Not every account could be created: the class may be full or archived, or no free username was found. Check the student list, and reset the password of any new student whose password you did not get.",
+      "partial": "Something went wrong while the accounts were being created. Some may exist already: check the student list and reset their passwords to get new ones."
+    }
+  },
+  "credentials": {
+    "title": "{count, plural, one {# account created} other {# accounts created}}",
+    "resetTitle": "New password for {name}",
+    "warningTitle": "Passwords are shown only once",
+    "warning": "Print this sheet or copy it now. Passwords are not stored and cannot be shown again: you can only reset them.",
+    "caption": "Usernames and passwords",
+    "name": "Student",
+    "username": "Username",
+    "password": "Password",
+    "print": "Print",
+    "copy": "Copy all",
+    "copied": "Copied.",
+    "copyFailed": "Could not copy. Print the sheet instead.",
+    "confirm": "I have printed or saved these passwords",
+    "done": "Done",
+    "slip": {
+      "sheetTitle": "RoboHolic AI accounts – {className}",
+      "sheetTitleNoClass": "RoboHolic AI account",
+      "heading": "Your RoboHolic AI account",
+      "class": "Class: {className}",
+      "name": "Name",
+      "username": "Username",
+      "password": "Password",
+      "signIn": "Log in at {url}",
+      "private": "Keep this card private."
+    }
+  },
+  "courses": {
+    "title": "Assigned courses",
+    "assign": "Assign a course",
+    "due": "Due {date}",
+    "noDue": "No due date",
+    "overdue": "Past the due date",
+    "assignedOn": "Assigned {date}",
+    "unavailable": "Course no longer available",
+    "unavailableHint": "You can no longer open this course. You can still unassign it.",
+    "report": "Progress report",
+    "reportLabel": "Progress report for {course}",
+    "dueDateAction": "Due date",
+    "dueDateActionLabel": "Change the due date of {course}",
+    "empty": {
+      "title": "No courses assigned",
+      "description": "Assign a course: every student of the class is enrolled in it, and you can follow their progress.",
+      "descriptionArchived": "This class is archived: no course can be assigned to it."
+    }
+  },
+  "assign": {
+    "title": "Assign a course",
+    "description": "Students of {className} are enrolled in every course you assign.",
+    "back": "Back to {className}",
+    "schoolTitle": "Shared in your school",
+    "mineTitle": "My courses",
+    "assigned": "Assigned",
+    "action": "Assign",
+    "actionLabel": "Assign {course} to {className}",
+    "dialogTitle": "Assign {course}",
+    "dialogDescription": "Every student of {className} will be enrolled in this course.",
+    "dueDateHint": "Optional. A reminder for you and your class; the course stays open after it.",
+    "submit": "Assign course",
+    "success": "{course} assigned to {className}.",
+    "archived": "This class is archived: courses can no longer be assigned to it.",
+    "empty": {
+      "title": "No course to assign",
+      "description": "Published courses for students appear here."
+    },
+    "errors": {
+      "license": "This premium course needs a licence or subscription that covers it.",
+      "conflict": "This course can’t be assigned: it is not published, it is for teachers, or the class is archived.",
+      "notFound": "This class or this course no longer exists.",
+      "forbidden": "You can’t assign this course."
+    }
+  },
+  "dueDate": {
+    "title": "Due date for {course}",
+    "label": "Due date",
+    "hint": "Leave it empty for no due date.",
+    "submit": "Save due date",
+    "clear": "Remove the due date",
+    "saved": "Due date saved."
+  },
+  "unassign": {
+    "action": "Unassign",
+    "actionLabel": "Unassign {course}",
+    "title": "Unassign {course}?",
+    "description": "Students keep their progress in the course, and their work stays visible to you. The course is no longer listed for {className}.",
+    "confirm": "Unassign course",
+    "success": "{course} unassigned."
+  },
+  "student": {
+    "backToClass": "Back to the class",
+    "summary": {
+      "ownAccount": "Own account (email)"
+    },
+    "progress": {
+      "title": "Progress in this class",
+      "notStarted": "Not started",
+      "lessons": "{completed} of {total, plural, one {# lesson} other {# lessons}} completed",
+      "quizzes": "Quizzes passed: {passed} of {attempted}",
+      "quizAverage": "Quiz average: {value}",
+      "projects": "Projects: {approved} approved, {pending} waiting for review",
+      "lastActivity": "Last activity {date}",
+      "certificate": "View certificate",
+      "unavailable": "Course not available to you",
+      "empty": {
+        "title": "No progress yet",
+        "description": "Courses assigned to this class appear here once the student is enrolled."
+      }
+    },
+    "attempts": {
+      "title": "Quiz attempts",
+      "caption": "Quiz attempts of {name} in {className}",
+      "quiz": "Quiz",
+      "course": "Course",
+      "attempt": "Attempt",
+      "score": "Score",
+      "result": "Result",
+      "date": "Date",
+      "number": "No. {number}",
+      "passed": "Passed",
+      "failed": "Not passed",
+      "more": "Showing the {count} most recent attempts.",
+      "viewAll": "All quiz results of the class",
+      "empty": {
+        "title": "No quiz attempts yet",
+        "description": "Quizzes this student takes in this class appear here."
+      }
+    },
+    "submissions": {
+      "title": "Projects",
+      "empty": {
+        "title": "No projects yet",
+        "description": "Projects this student sends in this class appear here."
+      }
+    },
+    "badges": {
+      "title": "Badges",
+      "empty": "No badges yet."
+    },
+    "manage": {
+      "title": "Class membership"
+    },
+    "notMember": {
+      "title": "This student is no longer in {className}",
+      "description": "Their earlier quiz results and projects in this class stay in Assessments and Projects.",
+      "back": "Back to {className}"
+    }
+  },
+  "resetPassword": {
+    "title": "Password",
+    "description": "Give {name} a new password if they forgot theirs. They are signed out on every device.",
+    "action": "Reset password",
+    "confirmTitle": "Reset the password of {name}?",
+    "confirmDescription": "A new password is created and shown only once. {name} is signed out everywhere and logs in again with the new password.",
+    "confirm": "Reset password",
+    "notAvailable": "{name} logs in with their own email address: they change their password with “Forgot password” on the login page.",
+    "notManaged": "Only the teacher who created this account, or a teacher of the student’s school, can reset this password.",
+    "errors": {
+      "forbidden": "You can’t reset this student’s password.",
+      "notFound": "This student is no longer in your class."
+    }
+  },
+  "badge": {
+    "title": "Award a badge",
+    "description": "Recognise {name} with a badge. It appears with their achievements and may give bonus XP.",
+    "badge": "Badge",
+    "placeholder": "Choose a badge",
+    "held": "{badge} (already awarded)",
+    "note": "Note",
+    "noteHint": "Why you award it. Up to {max} characters.",
+    "submit": "Award badge",
+    "awarded": "{badge} awarded to {name}.",
+    "alreadyHeld": "{name} already has this badge.",
+    "noneAvailable": "There is no badge to award right now.",
+    "allHeld": "{name} already has every badge you can award.",
+    "errors": {
+      "conflict": "This badge can no longer be awarded by hand.",
+      "notFound": "This student or this badge no longer exists."
+    }
+  },
+  "join": {
+    "code": "Class code",
+    "codeHint": "8 letters and numbers. Spaces and dashes are ignored.",
+    "submit": "Join class",
+    "success": "You joined {className}.",
+    "errors": {
+      "notFound": "This code is not recognised. Check it with your teacher: a code stops working 24 hours after it is opened.",
+      "conflict": "You can’t join this class: it may be full, or it belongs to a different school from yours. Ask your teacher.",
+      "forbidden": "Only students can join a class."
+    }
+  }
+}

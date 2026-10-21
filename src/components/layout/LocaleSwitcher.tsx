@@ -20,8 +20,11 @@ export interface LocaleSwitcherProps {
   persist?: PersistLocale | null;
   /** Which edge of the button the list lines up with; use `start` when the button is not at the end of its row. */
   align?: 'start' | 'end';
-  /** Below `sm` the button is the globe alone, without the language code: for a crowded top bar. */
-  compact?: boolean;
+  /**
+   * `true`: below `sm` the button is the globe alone, without the language code (a crowded top
+   * bar). `'narrow'`: the same only below 360 px (the public header on the smallest phones).
+   */
+  compact?: boolean | 'narrow';
 }
 
 /** Lists the languages, each named in itself, and reloads the current page in the chosen one. */
@@ -58,7 +61,17 @@ export function LocaleSwitcher({ persist, align = 'end', compact = false }: Loca
         <>
           <Globe aria-hidden="true" className="size-5 shrink-0" />
           <span className="max-sm:hidden">{LOCALE_LABELS[locale]}</span>
-          {!compact && <span className="uppercase sm:hidden">{locale}</span>}
+          {compact !== true && (
+            <span
+              className={
+                compact === 'narrow'
+                  ? 'uppercase max-[22.5rem]:hidden sm:hidden'
+                  : 'uppercase sm:hidden'
+              }
+            >
+              {locale}
+            </span>
+          )}
         </>
       }
     />
