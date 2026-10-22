@@ -1,4 +1,4 @@
-import { useRef, useState, type RefObject } from 'react';
+import { useState, type RefObject } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Locale } from '@/types/common';
 import { showErrorsAndFocus } from './focus';
@@ -8,10 +8,14 @@ import type { FormFailure } from './use-editor-action';
 
 // Field errors of a form that edits several languages (5.6): the first error in reading order
 // decides the language shown, its field takes the focus, and the form alert counts the problems
-// left in the other language. Paths no field shows go to the form alert.
+// left in the other language. Paths no field shows go to the form alert. The caller owns the
+// alert's ref: a result object holding a `*Ref` property would count as a ref container for the
+// React Compiler lint, and none of its properties could be read while rendering.
 
 export interface FormErrorsOptions {
   formRef: RefObject<HTMLElement | null>;
+  /** The `FormAlert` wrapper, created by the caller with `useRef` (focused when no field is invalid). */
+  alertRef: RefObject<HTMLDivElement | null>;
   language: Locale;
   setLanguage(locale: Locale): void;
   /** Path prefixes in reading order. */
@@ -25,10 +29,11 @@ export interface FormErrorsOptions {
 export interface FormErrors {
   /** The message under the field of `path`. */
   errorFor(path: string): string | undefined;
+  /** The message of `prefix` itself, or of the first path under it ('tags' → 'tags.2'). */
+  errorUnder(prefix: string): string | undefined;
   failure: FormFailure | null;
   /** "2 problems in French." for the languages not shown, or null. */
   otherLanguageNote: string | null;
-  alertRef: RefObject<HTMLDivElement | null>;
   /** Shows a parse's (or the server's) field errors and moves the focus. */
   show(fieldErrors: Record<string, string[]>): void;
   /** Shows a failure in the form alert and focuses it. */
@@ -40,10 +45,9 @@ export function useFormErrors(options: FormErrorsOptions): FormErrors {
   const t = useTranslations('courseEditor');
   const tCommon = useTranslations('common');
   const validationMessage = useValidationMessage();
-  const alertRef = useRef<HTMLDivElement>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [failure, setFailure] = useState<FormFailure | null>(null);
-  const { formRef, language, setLanguage, order, isShown, message } = options;
+  const { formRef, alertRef, language, setLanguage, order, isShown, message } = options;
 
   function show(fieldErrors: Record<string, string[]>) {
     const paths = orderedErrorPaths(fieldErrors, order);
@@ -89,9 +93,11 @@ export function useFormErrors(options: FormErrorsOptions): FormErrors {
 
   return {
     errorFor: (path) => errors[path],
+    errorUnder: (prefix) =>
+      errors[prefix] ??
+      Object.entries(errors).find(([path]) => path.startsWith(`${prefix}.`))?.[1],
     failure,
     otherLanguageNote: notes.length > 0 ? notes.join(' ') : null,
-    alertRef,
     show,
     fail,
     clear,

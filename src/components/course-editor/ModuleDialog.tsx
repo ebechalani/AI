@@ -54,6 +54,7 @@ export function ModuleDialog({
   const { run } = useEditorAction();
   const formId = useId();
   const formRef = useRef<HTMLFormElement>(null);
+  const alertRef = useRef<HTMLDivElement>(null);
   const [draft, setDraft] = useState<ModuleDraft>(() =>
     module === null ? newModuleDraft(defaultLocale) : moduleToDraft(module),
   );
@@ -61,6 +62,7 @@ export function ModuleDialog({
   const [pending, setPending] = useState(false);
   const errors = useFormErrors({
     formRef,
+    alertRef,
     language,
     setLanguage,
     order: ORDER,
@@ -167,7 +169,7 @@ export function ModuleDialog({
         {module !== null && module.lessonCount > 0 && (
           <p className="text-sm text-ink-muted">{t('module.deleteHint')}</p>
         )}
-        <FormAlert ref={errors.alertRef} failure={errors.failure}>
+        <FormAlert ref={alertRef} failure={errors.failure}>
           {errors.otherLanguageNote && <p className="mt-1">{errors.otherLanguageNote}</p>}
         </FormAlert>
       </form>

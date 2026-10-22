@@ -1,0 +1,663 @@
+{
+  "shared": {
+    "form": "Certaines informations ne sont pas valides. Vérifiez les champs signalés, puis réessayez.",
+    "noValue": "—",
+    "never": "Jamais",
+    "noSchool": "Aucune école",
+    "unknownSchool": "École inconnue",
+    "deletedUser": "Compte supprimé",
+    "you": "Vous",
+    "yourAccount": "Votre compte\u00a0: seul un autre administrateur de la plateforme peut le modifier.",
+    "schoolOption": "{name}",
+    "suspendedSchoolOption": "{name} (suspendue)",
+    "showAll": "Tout afficher",
+    "schoolGone": "Cette école n’existe plus. Rechargez la page.",
+    "userGone": "Ce compte n’existe plus, ou il vient de changer. Rechargez la page.",
+    "challengeGone": "Ce défi n’existe plus. Rechargez la page.",
+    "timeZone": "Les dates et heures sont dans votre fuseau horaire\u00a0: {zone}.",
+    "dateRange": "{start} – {end}"
+  },
+  "dashboard": {
+    "description": "RoboHolic AI en un coup d’œil\u00a0: écoles, personnes, apprentissage et reconnaissance.",
+    "stats": {
+      "label": "Chiffres de la plateforme",
+      "schools": "Écoles",
+      "students": "Élèves",
+      "teachers": "Enseignants",
+      "schoolAdmins": "Administrateurs d’école",
+      "platformAdmins": "Administrateurs de la plateforme",
+      "officialCourses": "Cours officiels",
+      "enrollments": "Inscriptions aux cours",
+      "completion": "Taux d’achèvement",
+      "completionHint": "{completed, number} inscriptions terminées sur {total, number}",
+      "completionNone": "Aucune inscription pour le moment",
+      "submissions": "Projets et participations aux défis",
+      "certificates": "Certificats"
+    },
+    "start": {
+      "title": "Créer la première école",
+      "description": "Les écoles ne peuvent pas s’inscrire elles-mêmes\u00a0: créez ici chaque école et son premier administrateur.",
+      "action": "Aller aux écoles"
+    },
+    "manage": {
+      "title": "Gérer la plateforme",
+      "schools": {
+        "title": "Écoles",
+        "description": "Créez des écoles avec leur premier administrateur, suspendez-les ou réactivez-les, et consultez leurs personnes et leurs licences."
+      },
+      "users": {
+        "title": "Utilisateurs",
+        "description": "Tous les comptes par rôle\u00a0: changez les rôles, désactivez des comptes et vérifiez les enseignants."
+      },
+      "subscriptions": {
+        "title": "Abonnements",
+        "description": "Saisissez à la main les abonnements et les licences des écoles."
+      },
+      "courses": {
+        "title": "Cours",
+        "description": "Rédigez et publiez les cours officiels RoboHolic."
+      },
+      "certificates": {
+        "title": "Certificats",
+        "description": "Tous les certificats délivrés\u00a0: délivrez, révoquez ou vérifiez un certificat."
+      },
+      "challenges": {
+        "title": "Défis",
+        "description": "Créez des défis, publiez-les dans l’Arène des défis et suivez les participations."
+      },
+      "open": "Ouvrir",
+      "openLabel": "Ouvrir {section}"
+    }
+  },
+  "schools": {
+    "description": "Toutes les écoles de RoboHolic AI, par nom.",
+    "caption": "Écoles",
+    "columns": {
+      "school": "École",
+      "status": "Statut",
+      "teachers": "Enseignants",
+      "students": "Élèves",
+      "classes": "Classes",
+      "created": "Créée le"
+    },
+    "location": "{city}, {country}",
+    "empty": {
+      "title": "Aucune école pour le moment",
+      "description": "Créez la première école et son administrateur. Les écoles ne peuvent pas s’inscrire elles-mêmes."
+    },
+    "fields": {
+      "name": "Nom de l’école",
+      "nameHint": "De {min, number} à {max, number} caractères.",
+      "country": "Code du pays",
+      "countryHint": "Deux lettres, par exemple LB, FR ou US.",
+      "countryPreview": "Pays\u00a0: {country}",
+      "city": "Ville",
+      "defaultLocale": "Langue par défaut",
+      "defaultLocaleHint": "Les nouveaux comptes de l’école démarrent dans cette langue."
+    },
+    "create": {
+      "action": "Nouvelle école",
+      "title": "Créer une école",
+      "description": "L’école et son premier administrateur sont créés ensemble. L’administrateur reçoit un e-mail pour choisir un mot de passe.",
+      "schoolLegend": "École",
+      "adminLegend": "Premier administrateur",
+      "adminName": "Nom de l’administrateur",
+      "adminEmail": "Adresse e-mail de l’administrateur",
+      "adminEmailHint": "Il reçoit un e-mail pour choisir son mot de passe.",
+      "submit": "Créer l’école",
+      "sending": "{school} a été créée. Envoi de l’e-mail de mot de passe à {email}…",
+      "success": "{school} a été créée. Un e-mail de mot de passe a été envoyé à {email}.",
+      "emailFailed": {
+        "title": "L’e-mail de mot de passe n’a pas été envoyé",
+        "description": "{school} et son administrateur ont été créés, mais l’e-mail à {email} n’a pas pu être envoyé. {reason} Réessayez, ou demandez-lui d’utiliser «\u00a0Mot de passe oublié\u00a0?\u00a0» sur la page de connexion."
+      },
+      "retry": "Renvoyer l’e-mail",
+      "openSchool": "Ouvrir l’école",
+      "errors": {
+        "conflict": "Un compte existe déjà avec cette adresse e-mail. Utilisez une autre adresse, ou attribuez le rôle à cette personne depuis la page Utilisateurs."
+      }
+    },
+    "edit": {
+      "action": "Modifier l’école",
+      "title": "Modifier {name}",
+      "profileLegend": "École",
+      "featuresLegend": "Fonctionnalités",
+      "aiEnabled": "Fonctions d’IA",
+      "aiEnabledDescription": "Le tuteur IA, le Labo IA et les suggestions de l’IA sur les projets, pour toute l’école.",
+      "aiLimit": "Messages quotidiens au tuteur par élève",
+      "aiLimitHint": "De {min, number} à {max, number}. Laissez vide pour la valeur par défaut de RoboHolic ({count, number}).",
+      "joinCodes": "Codes de classe",
+      "joinCodesDescription": "Les élèves peuvent rejoindre les classes de l’école avec un code de classe.",
+      "submit": "Enregistrer les modifications",
+      "success": "{name} a été enregistrée."
+    },
+    "status": {
+      "suspend": "Suspendre l’école",
+      "reactivate": "Réactiver l’école",
+      "suspendTitle": "Suspendre {name}\u00a0?",
+      "suspendDescription": "Tant que l’école est suspendue, son personnel ne peut pas créer de comptes élèves\u00a0: l’ajout d’élèves et l’inscription avec un code de classe sont refusés. Chacun conserve son compte, ses cours et son travail. Vous pouvez réactiver l’école à tout moment.",
+      "suspendConfirm": "Suspendre l’école",
+      "suspended": "{name} est suspendue.",
+      "reactivated": "{name} est de nouveau active."
+    },
+    "detail": {
+      "suspendedAlert": {
+        "title": "Cette école est suspendue",
+        "description": "Son personnel ne peut pas créer de comptes élèves tant que vous ne l’avez pas réactivée."
+      },
+      "overview": {
+        "title": "Aperçu",
+        "country": "Pays",
+        "city": "Ville",
+        "defaultLocale": "Langue par défaut",
+        "created": "Créée le",
+        "ai": "Fonctions d’IA",
+        "aiLimit": "Messages quotidiens au tuteur par élève",
+        "aiLimitDefault": "Valeur par défaut de RoboHolic ({count, number})",
+        "joinCodes": "Codes de classe",
+        "on": "Activées",
+        "off": "Désactivées"
+      },
+      "stats": {
+        "label": "Chiffres de l’école",
+        "teachers": "Enseignants",
+        "students": "Élèves actifs",
+        "classes": "Classes",
+        "seats": "Places utilisées",
+        "seatsValue": "{used, number} / {total, number}",
+        "seatsNoLicense": "Aucune licence",
+        "overLimit": "{used, number} élèves actifs pour {total, number} places. Les places sont indiquées, pas imposées."
+      },
+      "licenses": {
+        "title": "Licences",
+        "description": "Ce que le personnel et les élèves de l’école peuvent utiliser, et pour combien d’élèves.",
+        "empty": {
+          "title": "Aucune licence pour le moment",
+          "description": "Sans licence, l’école n’utilise que les cours gratuits."
+        }
+      },
+      "subscriptions": {
+        "title": "Abonnements",
+        "description": "Ce que l’école a payé. Une licence peut être liée à l’un d’eux.",
+        "empty": {
+          "title": "Aucun abonnement pour le moment",
+          "description": "Ajoutez-en un quand l’école a payé."
+        }
+      },
+      "people": {
+        "title": "Personnes",
+        "tabsLabel": "Personnes de l’école par rôle",
+        "caption": "{role} de {school}",
+        "empty": {
+          "school_admin": "Cette école n’a pas d’administrateur.",
+          "teacher": "Cette école n’a pas encore d’enseignant.",
+          "student": "Cette école n’a pas encore d’élève."
+        },
+        "adminHint": "Pour ajouter un autre administrateur, changez le rôle d’un enseignant de l’école."
+      }
+    }
+  },
+  "users": {
+    "description": "Tous les comptes par rôle, du plus récent au plus ancien.",
+    "tabsLabel": "Utilisateurs par rôle",
+    "caption": "Comptes ayant le rôle {role}",
+    "columns": {
+      "name": "Nom",
+      "school": "École",
+      "status": "Statut",
+      "educator": "Enseignant vérifié",
+      "joined": "Inscription",
+      "lastSignIn": "Dernière connexion",
+      "actions": "Actions"
+    },
+    "username": "Nom d’utilisateur",
+    "noIdentifier": "Aucun identifiant de connexion",
+    "verified": "Vérifié",
+    "notVerified": "Non vérifié",
+    "links": {
+      "certificates": "Certificats",
+      "certificatesLabel": "Certificats de {name}",
+      "subscriptions": "Abonnements",
+      "subscriptionsLabel": "Abonnements de {name}"
+    },
+    "empty": {
+      "student": "Aucun compte élève pour le moment.",
+      "teacher": "Aucun compte enseignant pour le moment.",
+      "school_admin": "Aucun administrateur d’école pour le moment.",
+      "platform_admin": "Aucun administrateur de la plateforme."
+    },
+    "emptyDescription": "Les comptes ayant ce rôle apparaissent ici, du plus récent au plus ancien.",
+    "role": {
+      "action": "Changer le rôle",
+      "actionLabel": "Changer le rôle de {name}",
+      "title": "Changer le rôle de {name}",
+      "current": "Rôle actuel\u00a0: {role}.",
+      "currentWithSchool": "Rôle actuel\u00a0: {role}, {school}.",
+      "roleLegend": "Nouveau rôle",
+      "school": "École",
+      "schoolRequired": "Un administrateur d’école appartient toujours à une école.",
+      "schoolOptional": "Facultatif. Choisissez «\u00a0Aucune école\u00a0» pour un compte individuel.",
+      "adultsOnly": "Les rôles du personnel ne sont proposés qu’aux comptes adultes qui se connectent avec une adresse e-mail.",
+      "effectsTitle": "Ce qui se passe",
+      "effects": {
+        "signOut": "{name} est déconnecté sur tous ses appareils.",
+        "leaveClasses": "{name} quitte {count, plural, one {sa classe} other {ses # classes}}.",
+        "loseVerification": "{name} n’est plus un enseignant vérifié.",
+        "fullAccess": "{name} obtient un accès complet à toute la plateforme, comme vous.",
+        "schoolAdmin": "{name} administre {school}.",
+        "leaveSchool": "{name} n’appartient plus à aucune école.",
+        "joinSchool": "{name} rejoint {school}."
+      },
+      "unchanged": "Choisissez un autre rôle ou une autre école pour continuer.",
+      "submit": "Changer le rôle",
+      "success": "{name} a désormais le rôle «\u00a0{role}\u00a0».",
+      "errors": {
+        "conflict": "{name} est encore responsable d’une classe qui n’est pas archivée. La classe doit d’abord être archivée, par son enseignant ou par l’administrateur de l’école.",
+        "forbidden": "Vous ne pouvez pas changer le rôle de votre propre compte.",
+        "notFound": "Ce compte ou cette école n’existe plus. Rechargez la page."
+      }
+    },
+    "status": {
+      "disable": "Désactiver",
+      "disableLabel": "Désactiver le compte de {name}",
+      "enable": "Activer",
+      "enableLabel": "Activer le compte de {name}",
+      "title": "Désactiver le compte de {name}\u00a0?",
+      "description": "{name} est déconnecté sur tous ses appareils et ne peut plus se connecter tant que vous n’avez pas réactivé le compte. Son travail, sa progression et ses certificats sont conservés.",
+      "confirm": "Désactiver le compte",
+      "disabled": "Le compte de {name} est désactivé.",
+      "enabled": "Le compte de {name} est activé.",
+      "errors": {
+        "forbidden": "Vous ne pouvez pas désactiver votre propre compte.",
+        "notFound": "Ce compte n’existe plus. Rechargez la page."
+      }
+    },
+    "verify": {
+      "verify": "Vérifier le compte",
+      "verifyLabel": "Vérifier le compte enseignant de {name}",
+      "unverify": "Retirer la vérification",
+      "unverifyLabel": "Retirer la vérification du compte enseignant de {name}",
+      "verifyTitle": "Vérifier le compte enseignant de {name}\u00a0?",
+      "verifyDescription": "Un enseignant vérifié sans école peut créer des comptes pour les élèves de 13 ans et plus de ses classes. Ne vérifiez qu’un enseignant dont vous avez contrôlé l’identité.",
+      "verifyConfirm": "Vérifier le compte",
+      "unverifyTitle": "Retirer la vérification de {name}\u00a0?",
+      "unverifyDescription": "{name} ne peut plus créer de comptes élèves pour des classes hors d’une école. Les élèves qui ont déjà un compte le conservent.",
+      "unverifyConfirm": "Retirer la vérification",
+      "verified": "{name} est un enseignant vérifié.",
+      "unverified": "{name} n’est plus un enseignant vérifié.",
+      "errors": {
+        "conflict": "Seuls les enseignants peuvent être des enseignants vérifiés. Rechargez la page.",
+        "notFound": "Ce compte n’existe plus. Rechargez la page."
+      }
+    }
+  },
+  "billing": {
+    "description": "Les abonnements et les licences sont saisis à la main\u00a0: il n’y a pas encore de paiement en ligne.",
+    "tabsLabel": "Abonnements et licences",
+    "tabs": {
+      "subscriptions": "Abonnements",
+      "licenses": "Licences"
+    },
+    "filter": {
+      "user": "Abonnements de {name}.",
+      "school": "{tab, select, licenses {Licences} other {Abonnements}} de {name}.",
+      "notLearner": "{name} a un rôle du personnel. Le personnel ne suit pas de cours, son compte ne porte donc aucun abonnement."
+    },
+    "plans": {
+      "individual_monthly": "Individuel, mensuel",
+      "individual_yearly": "Individuel, annuel",
+      "school_annual": "École, annuel",
+      "course_purchase": "Achat de cours",
+      "teacher_training": "Formation des enseignants"
+    },
+    "subscriptionStatus": {
+      "trialing": "Essai",
+      "active": "Actif",
+      "past_due": "Paiement en retard",
+      "canceled": "Annulé",
+      "expired": "Expiré"
+    },
+    "subscriptions": {
+      "caption": "Abonnements",
+      "columns": {
+        "owner": "Titulaire",
+        "plan": "Formule",
+        "status": "Statut",
+        "period": "Période",
+        "covers": "Donne accès à",
+        "notes": "Notes",
+        "actions": "Actions"
+      },
+      "ownerSchool": "École",
+      "ownerUser": "Personne",
+      "periodEnded": "Période terminée",
+      "coversIndividual": "Tous les cours premium pour élèves",
+      "coversSchool": "Par les licences de l’école",
+      "coversCourses": "{count, plural, one {# cours} other {# cours}}\u00a0: {names}",
+      "unknownCourse": "un cours qui n’existe plus",
+      "empty": {
+        "title": "Aucun abonnement pour le moment",
+        "description": "Ajoutez-en un quand une école ou une personne a payé."
+      },
+      "add": "Nouvel abonnement",
+      "edit": "Modifier",
+      "editLabel": "Modifier l’abonnement de {owner}"
+    },
+    "subscriptionForm": {
+      "createTitle": "Nouvel abonnement",
+      "editTitle": "Modifier l’abonnement de {owner}",
+      "description": "Les paiements sont gérés en dehors de RoboHolic AI. L’abonnement d’une personne lui donne accès par lui-même\u00a0; une école obtient l’accès par ses licences.",
+      "owner": "Pour",
+      "school": "École",
+      "userOwnerHint": "Pour une personne, ouvrez-la depuis la page Utilisateurs et choisissez «\u00a0Abonnements\u00a0».",
+      "plan": "Formule",
+      "planHint": "Les formules individuelles ouvrent tous les cours premium pour élèves. L’achat de cours et la formation des enseignants n’ouvrent que les cours que vous choisissez.",
+      "schoolOwnerHint": "Pour une école, il s’agit du relevé de paiement\u00a0: l’accès vient des licences que vous ajoutez sur la page de l’école, qui peuvent y être liées.",
+      "status": "Statut",
+      "statusHint": "Seuls «\u00a0Essai\u00a0» et «\u00a0Actif\u00a0» donnent accès, jusqu’à la fin de la période.",
+      "periodStart": "Début de la période",
+      "periodEnd": "Fin de la période",
+      "periodEndHint": "L’accès s’arrête au début de ce jour.",
+      "courses": "Cours",
+      "coursesHint": "Choisissez au moins un cours.",
+      "studentCourses": "Cours pour élèves",
+      "teacherCourses": "Académie des enseignants",
+      "notes": "Notes",
+      "notesHint": "Visibles seulement par les administrateurs de la plateforme. Jusqu’à {max, number} caractères.",
+      "endAccessWarning": "Avec ce statut, {owner} perd l’accès que donne cet abonnement. N’enregistrez que si c’est voulu.",
+      "submitCreate": "Créer l’abonnement",
+      "submitEdit": "Enregistrer l’abonnement",
+      "created": "Abonnement créé.",
+      "saved": "Abonnement enregistré.",
+      "errors": {
+        "owner": "Ce titulaire n’existe plus ou ne peut pas avoir d’abonnement. Rechargez la page.",
+        "courses": "L’un de ces cours n’existe plus ou n’est pas un cours officiel. Rechargez la page.",
+        "plan": "Cette formule ne convient pas à ce titulaire\u00a0: les formules individuelles sont pour une personne, la formule école pour une école.",
+        "notFound": "Cet abonnement n’existe plus. Rechargez la page."
+      }
+    },
+    "licenses": {
+      "caption": "Licences",
+      "columns": {
+        "license": "Licence",
+        "school": "École",
+        "scope": "Donne accès à",
+        "seats": "Places",
+        "dates": "Validité",
+        "status": "Statut",
+        "actions": "Actions"
+      },
+      "scopeAll": "Tous les cours officiels",
+      "scopePathways": "{count, plural, one {# parcours} other {# parcours}}\u00a0: {names}",
+      "unknownPathway": "un parcours qui n’existe plus",
+      "seats": "{total, number} places",
+      "seatsUsed": "{used, number} sur {total, number} utilisées",
+      "linked": "Liée à un abonnement",
+      "empty": {
+        "title": "Aucune licence pour le moment",
+        "description": "Une licence ouvre les cours officiels premium à une école."
+      },
+      "add": "Nouvelle licence",
+      "edit": "Modifier",
+      "editLabel": "Modifier la licence {name}"
+    },
+    "licenseForm": {
+      "createTitle": "Nouvelle licence",
+      "editTitle": "Modifier la licence {name}",
+      "description": "Une licence ouvre les cours officiels premium au personnel et aux élèves d’une école. Les places sont indiquées, pas imposées.",
+      "school": "École",
+      "name": "Nom de la licence",
+      "nameHint": "Par exemple «\u00a0Année scolaire 2026–2027\u00a0».",
+      "seats": "Places",
+      "seatsHint": "Le nombre d’élèves actifs pour lesquels l’école paie.",
+      "scopeLegend": "Donne accès à",
+      "scopeAll": "Tous les cours officiels",
+      "scopeAllDescription": "Tous les cours officiels premium, nouveaux cours compris.",
+      "scopePathways": "Parcours sélectionnés",
+      "scopePathwaysDescription": "Seulement les cours premium des parcours que vous cochez.",
+      "pathwaysLegend": "Parcours",
+      "startsOn": "Début",
+      "endsOn": "Fin",
+      "endsOnHint": "La licence s’arrête au début de ce jour.",
+      "statusLegend": "Statut",
+      "statusActive": "Active",
+      "statusSuspended": "Suspendue",
+      "statusSuspendedDescription": "Ne donne aucun accès tant qu’elle n’est pas de nouveau active.",
+      "suspendWarning": "Tant que cette licence est suspendue, le personnel et les élèves de l’école perdent les cours qu’elle ouvre. N’enregistrez que si c’est voulu.",
+      "subscription": "Abonnement lié",
+      "subscriptionNone": "Aucun",
+      "subscriptionOption": "{plan}, {start} – {end}",
+      "submitCreate": "Créer la licence",
+      "submitEdit": "Enregistrer la licence",
+      "created": "Licence créée.",
+      "saved": "Licence enregistrée.",
+      "errors": {
+        "notFound": "Cette école ou cette licence n’existe plus. Rechargez la page.",
+        "subscription": "Cet abonnement n’appartient pas à l’école. Rechargez la page.",
+        "pathways": "L’un de ces parcours n’existe plus. Rechargez la page."
+      }
+    }
+  },
+  "certificates": {
+    "description": "Tous les certificats délivrés sur RoboHolic AI, du plus récent au plus ancien.",
+    "caption": "Certificats",
+    "columns": {
+      "learner": "Apprenant",
+      "course": "Cours",
+      "school": "École",
+      "issued": "Délivré le",
+      "issuer": "Délivré par",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "code": "Code {code}",
+    "independent": "Apprenant indépendant",
+    "revokedOn": "Révoqué le {date}",
+    "issueHint": "Pour délivrer un certificat, ouvrez l’apprenant depuis la page Utilisateurs et choisissez «\u00a0Certificats\u00a0».",
+    "empty": {
+      "title": "Aucun certificat pour le moment",
+      "description": "Les certificats apparaissent ici quand des apprenants terminent des cours ou en reçoivent un."
+    },
+    "learner": {
+      "title": "Certificats de {name}",
+      "back": "Tous les certificats",
+      "coursesTitle": "Cours de {name}",
+      "coursesDescription": "Délivrez un certificat pour un cours auquel la personne est inscrite, terminé ou non.",
+      "coursesCaption": "Cours de {name}",
+      "columns": {
+        "course": "Cours",
+        "progress": "Progression",
+        "status": "Statut",
+        "certificate": "Certificat"
+      },
+      "certificatesOff": "Ce cours ne donne pas de certificat",
+      "hiddenCourse": "Un cours qui n’est plus disponible",
+      "noCourses": {
+        "title": "Inscrit à aucun cours",
+        "description": "Un certificat est toujours délivré pour un cours auquel l’apprenant est inscrit."
+      },
+      "notLearner": "Seuls les élèves et les enseignants suivent des cours\u00a0: ce compte n’a donc aucun certificat à délivrer.",
+      "certificatesTitle": "Ses certificats",
+      "noCertificates": {
+        "title": "Aucun certificat pour le moment",
+        "description": "Les certificats délivrés à cette personne apparaissent ici."
+      }
+    },
+    "revoke": {
+      "action": "Révoquer",
+      "actionLabel": "Révoquer le certificat de {name} pour {course}",
+      "title": "Révoquer ce certificat\u00a0?",
+      "description": "Le certificat de {name} pour {course} cesse d’être valide immédiatement\u00a0: son lien de vérification l’indique comme révoqué. Vous pourrez le délivrer de nouveau plus tard.",
+      "reason": "Motif",
+      "reasonHint": "L’apprenant voit ce motif. Jusqu’à {max, number} caractères.",
+      "confirm": "Révoquer le certificat",
+      "success": "Certificat révoqué.",
+      "errors": {
+        "notFound": "Ce certificat n’existe plus. Rechargez la page."
+      }
+    }
+  },
+  "challenges": {
+    "description": "Créez des défis, publiez-les dans l’Arène des défis et suivez les participations.",
+    "new": "Nouveau défi",
+    "filterLabel": "Défis par statut",
+    "filters": {
+      "all": "Tous",
+      "draft": "Brouillons",
+      "published": "Publiés",
+      "archived": "Archivés"
+    },
+    "caption": "Défis",
+    "columns": {
+      "challenge": "Défi",
+      "audience": "Pour",
+      "status": "Statut",
+      "dates": "Dates",
+      "entries": "Participations",
+      "actions": "Actions"
+    },
+    "everyone": "Tous les élèves",
+    "schoolOnly": "Les élèves de {school}",
+    "entriesLink": "{count, plural, =0 {Aucune participation} one {# participation} other {# participations}}",
+    "entriesLabel": "Participations à {title}",
+    "edit": "Modifier",
+    "editLabel": "Modifier {title}",
+    "untitled": "Défi sans titre",
+    "empty": {
+      "title": "Aucun défi pour le moment",
+      "description": "Créez un défi, puis publiez-le pour l’afficher dans l’Arène des défis."
+    },
+    "emptyFilter": {
+      "title": "Aucun défi avec ce statut",
+      "description": "Choisissez un autre statut, ou affichez tous les défis."
+    },
+    "transitions": {
+      "publish": "Publier",
+      "publishLabel": "Publier {title}",
+      "unpublish": "Repasser en brouillon",
+      "unpublishLabel": "Repasser {title} en brouillon",
+      "archive": "Archiver",
+      "archiveLabel": "Archiver {title}",
+      "restore": "Restaurer en brouillon",
+      "restoreLabel": "Restaurer {title} en brouillon",
+      "publishTitle": "Publier «\u00a0{title}\u00a0»\u00a0?",
+      "publishDescription": "{audience} le verront dans l’Arène des défis. Les participations ouvrent le {start} et se terminent le {end}.",
+      "audienceEveryone": "Tous les élèves",
+      "audienceSchool": "Les élèves de {school}",
+      "pastDeadline": "Sa date limite est passée\u00a0: les élèves le verront comme clôturé.",
+      "publishConfirm": "Publier",
+      "unpublishTitle": "Repasser «\u00a0{title}\u00a0» en brouillon\u00a0?",
+      "unpublishDescription": "Il disparaît de l’Arène des défis. Les participations déjà envoyées sont conservées.",
+      "unpublishConfirm": "Repasser en brouillon",
+      "archiveTitle": "Archiver «\u00a0{title}\u00a0»\u00a0?",
+      "archiveDescription": "Il disparaît de l’Arène des défis. Les participations déjà envoyées sont conservées, et vous pourrez le restaurer en brouillon plus tard.",
+      "archiveConfirm": "Archiver",
+      "published": "«\u00a0{title}\u00a0» est publié.",
+      "unpublished": "«\u00a0{title}\u00a0» est de nouveau un brouillon.",
+      "archived": "«\u00a0{title}\u00a0» est archivé.",
+      "restored": "«\u00a0{title}\u00a0» est de nouveau un brouillon."
+    },
+    "detail": {
+      "statusTitle": "Statut",
+      "phase": "Participations\u00a0: {phase}",
+      "viewEntries": "Voir les participations ({count, number})",
+      "draftHint": "Les élèves ne voient pas un brouillon. Publiez-le quand il est prêt.",
+      "archivedHint": "Les élèves ne voient pas un défi archivé."
+    },
+    "form": {
+      "newTitle": "Nouveau défi",
+      "newDescription": "Un nouveau défi est enregistré comme brouillon. Les élèves ne le voient qu’une fois publié.",
+      "publishedHint": "Ce défi est publié\u00a0: les élèves voient vos modifications dès l’enregistrement.",
+      "basicsLegend": "Défi",
+      "type": "Type",
+      "area": "Domaine d’apprentissage",
+      "scopeLegend": "Qui peut participer",
+      "scopeGlobal": "Tous les élèves",
+      "scopeGlobalDescription": "Affiché à tous les élèves de RoboHolic AI.",
+      "scopeSchool": "Les élèves d’une seule école",
+      "scopeSchoolDescription": "Affiché seulement aux élèves de l’école que vous choisissez.",
+      "school": "École",
+      "ageMin": "Âge minimum",
+      "ageMax": "Âge maximum",
+      "agesHint": "Facultatif. Les âges sont indicatifs\u00a0: tous les élèves peuvent participer.",
+      "xpReward": "Récompense en XP",
+      "xpRewardHint": "De 0 à {max, number}. Attribuée quand une participation est acceptée.",
+      "datesLegend": "Dates",
+      "startAt": "Ouverture",
+      "deadlineAt": "Date limite",
+      "entriesLegend": "Participations",
+      "types": "Les élèves peuvent envoyer",
+      "typesHint": "Choisissez au moins un type.",
+      "rubricLegend": "Critères d’évaluation",
+      "rubricHint": "Cochez les critères que les évaluateurs notent et donnez un poids à chacun. Les poids totalisent 100.",
+      "rubricWeight": "Poids de «\u00a0{criterion}\u00a0»",
+      "rubricTotal": "Total\u00a0: {total, number} sur 100",
+      "hardwareLegend": "Matériel (facultatif)",
+      "capabilities": "Capacités requises",
+      "capabilitiesHint": "Un kit convient quand il les possède toutes.",
+      "platforms": "Kits recommandés",
+      "capabilityNames": {
+        "drive": "Se déplace",
+        "camera": "Caméra",
+        "distance": "Capteur de distance",
+        "line": "Capteur de ligne",
+        "color": "Capteur de couleur",
+        "imu": "Capteur de mouvement",
+        "microphone": "Microphone",
+        "speaker": "Haut-parleur",
+        "gripper": "Pince",
+        "display": "Écran"
+      },
+      "coverLegend": "Image de couverture (facultative)",
+      "coverNone": "Aucune image de couverture.",
+      "coverNew": "Nouvelle couverture\u00a0: elle est utilisée dès que vous enregistrez le défi.",
+      "coverRemove": "Retirer la couverture",
+      "textTitle": "Texte",
+      "defaultLocale": "Langue par défaut",
+      "defaultLocaleHint": "Remplissez tous les champs obligatoires dans cette langue. Les autres langues sont facultatives\u00a0: un champ vide affiche le texte de la langue par défaut.",
+      "languageLegend": "{language}",
+      "defaultBadge": "Langue par défaut",
+      "translated": "Traduit",
+      "notTranslated": "Non traduit",
+      "title": "Titre",
+      "description": "Description",
+      "submissionRequirements": "Ce qu’il faut envoyer",
+      "prizes": "Récompenses",
+      "prizesHint": "Facultatif.",
+      "submitCreate": "Créer le brouillon",
+      "submitEdit": "Enregistrer les modifications",
+      "created": "Défi enregistré comme brouillon.",
+      "saved": "Défi enregistré.",
+      "errors": {
+        "school": "Cette école n’existe plus. Choisissez-en une autre.",
+        "cover": "Cette image ne peut pas servir de couverture. Importez-la de nouveau.",
+        "notFound": "Ce défi n’existe plus. Rechargez la page.",
+        "platforms": "L’un de ces kits n’existe plus. Rechargez la page."
+      }
+    },
+    "entries": {
+      "metaTitle": "Participations\u00a0: {title}",
+      "title": "Participations",
+      "description": "Participations envoyées à «\u00a0{title}\u00a0», de la plus récente à la plus ancienne. Les enseignants évaluent les participations de leurs classes\u00a0; les autres reçoivent une évaluation par l’IA.",
+      "caption": "Participations à {title}",
+      "columns": {
+        "student": "Élève",
+        "entry": "Participation",
+        "type": "Type",
+        "submitted": "Envoyée le",
+        "status": "Statut",
+        "score": "Note",
+        "reviewer": "Évaluée par"
+      },
+      "attempt": "Tentative {number, number}",
+      "score": "{score, number} / 100",
+      "teacher": "Son enseignant",
+      "ai": "Évaluation par l’IA",
+      "empty": {
+        "title": "Aucune participation pour le moment",
+        "description": "Les participations apparaissent ici au fur et à mesure que les élèves les envoient."
+      },
+      "back": "Retour au défi"
+    }
+  }
+}

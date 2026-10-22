@@ -29,7 +29,9 @@ export function SchoolCertificatesTable({ certificates }: { certificates: Certif
           <TableHeaderCell>{t('certificates.issuedBy')}</TableHeaderCell>
           <TableHeaderCell>{t('certificates.status')}</TableHeaderCell>
           <TableHeaderCell>{t('certificates.code')}</TableHeaderCell>
-          <TableHeaderCell align="end">
+          {/* `relative`: the sr-only text is absolutely positioned; anchored to this cell it stays
+              inside the scroll region instead of widening the page at 375 px. */}
+          <TableHeaderCell align="end" className="relative">
             <span className="sr-only">{t('certificates.view')}</span>
           </TableHeaderCell>
         </TableRow>

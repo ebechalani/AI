@@ -1,0 +1,663 @@
+{
+  "shared": {
+    "form": "Some of the information isn’t valid. Check the highlighted fields and try again.",
+    "noValue": "—",
+    "never": "Never",
+    "noSchool": "No school",
+    "unknownSchool": "Unknown school",
+    "deletedUser": "Deleted account",
+    "you": "You",
+    "yourAccount": "Your account: another platform administrator can change it.",
+    "schoolOption": "{name}",
+    "suspendedSchoolOption": "{name} (suspended)",
+    "showAll": "Show all",
+    "schoolGone": "This school no longer exists. Reload the page.",
+    "userGone": "This account no longer exists, or it has just changed. Reload the page.",
+    "challengeGone": "This challenge no longer exists. Reload the page.",
+    "timeZone": "Dates and times are in your time zone: {zone}.",
+    "dateRange": "{start} – {end}"
+  },
+  "dashboard": {
+    "description": "RoboHolic AI at a glance: schools, people, learning and recognition.",
+    "stats": {
+      "label": "Platform numbers",
+      "schools": "Schools",
+      "students": "Students",
+      "teachers": "Teachers",
+      "schoolAdmins": "School administrators",
+      "platformAdmins": "Platform administrators",
+      "officialCourses": "Official courses",
+      "enrollments": "Course enrollments",
+      "completion": "Completion rate",
+      "completionHint": "{completed, number} of {total, number} enrollments completed",
+      "completionNone": "No enrollment yet",
+      "submissions": "Projects and challenge entries",
+      "certificates": "Certificates"
+    },
+    "start": {
+      "title": "Create the first school",
+      "description": "Schools can’t sign up by themselves: create each school and its first administrator here.",
+      "action": "Go to schools"
+    },
+    "manage": {
+      "title": "Manage the platform",
+      "schools": {
+        "title": "Schools",
+        "description": "Create schools with their first administrator, suspend or reactivate them, and see their people and licenses."
+      },
+      "users": {
+        "title": "Users",
+        "description": "Every account by role: change roles, disable accounts and verify educators."
+      },
+      "subscriptions": {
+        "title": "Subscriptions",
+        "description": "Enter subscriptions and school licenses by hand."
+      },
+      "courses": {
+        "title": "Courses",
+        "description": "Write and publish the official RoboHolic courses."
+      },
+      "certificates": {
+        "title": "Certificates",
+        "description": "Every certificate issued: issue, revoke or check one."
+      },
+      "challenges": {
+        "title": "Challenges",
+        "description": "Create challenges, publish them in the Challenge Arena and follow the entries."
+      },
+      "open": "Open",
+      "openLabel": "Open {section}"
+    }
+  },
+  "schools": {
+    "description": "Every school on RoboHolic AI, by name.",
+    "caption": "Schools",
+    "columns": {
+      "school": "School",
+      "status": "Status",
+      "teachers": "Teachers",
+      "students": "Students",
+      "classes": "Classes",
+      "created": "Created"
+    },
+    "location": "{city}, {country}",
+    "empty": {
+      "title": "No schools yet",
+      "description": "Create the first school and its administrator. Schools can’t sign up by themselves."
+    },
+    "fields": {
+      "name": "School name",
+      "nameHint": "{min, number} to {max, number} characters.",
+      "country": "Country code",
+      "countryHint": "Two letters, such as LB, FR or US.",
+      "countryPreview": "Country: {country}",
+      "city": "City",
+      "defaultLocale": "Default language",
+      "defaultLocaleHint": "New accounts of the school start in this language."
+    },
+    "create": {
+      "action": "New school",
+      "title": "Create a school",
+      "description": "The school and its first administrator are created together. The administrator receives an email to choose a password.",
+      "schoolLegend": "School",
+      "adminLegend": "First administrator",
+      "adminName": "Administrator’s name",
+      "adminEmail": "Administrator’s email",
+      "adminEmailHint": "They receive an email to choose their password.",
+      "submit": "Create school",
+      "sending": "{school} was created. Sending the password email to {email}…",
+      "success": "{school} was created. A password email was sent to {email}.",
+      "emailFailed": {
+        "title": "The password email wasn’t sent",
+        "description": "{school} and its administrator were created, but the email to {email} couldn’t be sent. {reason} Try again, or ask them to use “Forgot your password?” on the login page."
+      },
+      "retry": "Send the email again",
+      "openSchool": "Open the school",
+      "errors": {
+        "conflict": "An account with this email already exists. Use another address, or give that person the role on the Users page."
+      }
+    },
+    "edit": {
+      "action": "Edit school",
+      "title": "Edit {name}",
+      "profileLegend": "School",
+      "featuresLegend": "Features",
+      "aiEnabled": "AI features",
+      "aiEnabledDescription": "The AI tutor, the AI Lab and AI suggestions on projects, for the whole school.",
+      "aiLimit": "Daily tutor messages per student",
+      "aiLimitHint": "From {min, number} to {max, number}. Leave empty for the RoboHolic default ({count, number}).",
+      "joinCodes": "Class codes",
+      "joinCodesDescription": "Students can join the school’s classes with a class code.",
+      "submit": "Save changes",
+      "success": "{name} was saved."
+    },
+    "status": {
+      "suspend": "Suspend school",
+      "reactivate": "Reactivate school",
+      "suspendTitle": "Suspend {name}?",
+      "suspendDescription": "While the school is suspended, its staff can’t create student accounts: adding students and signing up with a class code are refused. Everyone keeps their account, courses and work. You can reactivate the school at any time.",
+      "suspendConfirm": "Suspend school",
+      "suspended": "{name} is suspended.",
+      "reactivated": "{name} is active again."
+    },
+    "detail": {
+      "suspendedAlert": {
+        "title": "This school is suspended",
+        "description": "Its staff can’t create student accounts until you reactivate it."
+      },
+      "overview": {
+        "title": "Overview",
+        "country": "Country",
+        "city": "City",
+        "defaultLocale": "Default language",
+        "created": "Created",
+        "ai": "AI features",
+        "aiLimit": "Daily tutor messages per student",
+        "aiLimitDefault": "RoboHolic default ({count, number})",
+        "joinCodes": "Class codes",
+        "on": "On",
+        "off": "Off"
+      },
+      "stats": {
+        "label": "School numbers",
+        "teachers": "Teachers",
+        "students": "Active students",
+        "classes": "Classes",
+        "seats": "Seats used",
+        "seatsValue": "{used, number} / {total, number}",
+        "seatsNoLicense": "No license",
+        "overLimit": "{used, number} active students for {total, number} seats. Seats are shown, not enforced."
+      },
+      "licenses": {
+        "title": "Licenses",
+        "description": "What the school’s staff and students may use, and for how many students.",
+        "empty": {
+          "title": "No license yet",
+          "description": "Without a license the school uses free courses only."
+        }
+      },
+      "subscriptions": {
+        "title": "Subscriptions",
+        "description": "What the school has paid for. A license can be linked to one of them.",
+        "empty": {
+          "title": "No subscription yet",
+          "description": "Add one when the school has paid."
+        }
+      },
+      "people": {
+        "title": "People",
+        "tabsLabel": "People of the school by role",
+        "caption": "{role} of {school}",
+        "empty": {
+          "school_admin": "This school has no administrator.",
+          "teacher": "This school has no teacher yet.",
+          "student": "This school has no student yet."
+        },
+        "adminHint": "To add another administrator, change the role of a teacher of the school."
+      }
+    }
+  },
+  "users": {
+    "description": "Every account by role, newest first.",
+    "tabsLabel": "Users by role",
+    "caption": "Accounts with the role {role}",
+    "columns": {
+      "name": "Name",
+      "school": "School",
+      "status": "Status",
+      "educator": "Educator",
+      "joined": "Joined",
+      "lastSignIn": "Last sign-in",
+      "actions": "Actions"
+    },
+    "username": "Username",
+    "noIdentifier": "No sign-in identifier",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "links": {
+      "certificates": "Certificates",
+      "certificatesLabel": "Certificates of {name}",
+      "subscriptions": "Subscriptions",
+      "subscriptionsLabel": "Subscriptions of {name}"
+    },
+    "empty": {
+      "student": "No student accounts yet.",
+      "teacher": "No teacher accounts yet.",
+      "school_admin": "No school administrators yet.",
+      "platform_admin": "No platform administrators."
+    },
+    "emptyDescription": "Accounts with this role appear here, newest first.",
+    "role": {
+      "action": "Change role",
+      "actionLabel": "Change the role of {name}",
+      "title": "Change the role of {name}",
+      "current": "Current role: {role}.",
+      "currentWithSchool": "Current role: {role}, {school}.",
+      "roleLegend": "New role",
+      "school": "School",
+      "schoolRequired": "A school administrator always belongs to a school.",
+      "schoolOptional": "Optional. Choose “No school” for an individual account.",
+      "adultsOnly": "Staff roles are offered only for adult accounts that sign in with an email.",
+      "effectsTitle": "What happens",
+      "effects": {
+        "signOut": "{name} is signed out on every device.",
+        "leaveClasses": "{name} leaves {count, plural, one {their class} other {their # classes}}.",
+        "loseVerification": "{name} is no longer a verified educator.",
+        "fullAccess": "{name} gets full access to the whole platform, as you have.",
+        "schoolAdmin": "{name} manages {school}.",
+        "leaveSchool": "{name} no longer belongs to a school.",
+        "joinSchool": "{name} joins {school}."
+      },
+      "unchanged": "Choose another role or school to continue.",
+      "submit": "Change role",
+      "success": "{name} now has the role “{role}”.",
+      "errors": {
+        "conflict": "{name} still owns a class that isn’t archived. The class must be archived first, by its teacher or by the school’s administrator.",
+        "forbidden": "You can’t change the role of your own account.",
+        "notFound": "This account or this school no longer exists. Reload the page."
+      }
+    },
+    "status": {
+      "disable": "Disable",
+      "disableLabel": "Disable the account of {name}",
+      "enable": "Enable",
+      "enableLabel": "Enable the account of {name}",
+      "title": "Disable the account of {name}?",
+      "description": "{name} is signed out on every device and can’t sign in until you enable the account again. Their work, progress and certificates are kept.",
+      "confirm": "Disable account",
+      "disabled": "The account of {name} is disabled.",
+      "enabled": "The account of {name} is enabled.",
+      "errors": {
+        "forbidden": "You can’t disable your own account.",
+        "notFound": "This account no longer exists. Reload the page."
+      }
+    },
+    "verify": {
+      "verify": "Verify educator",
+      "verifyLabel": "Verify {name} as an educator",
+      "unverify": "Remove verification",
+      "unverifyLabel": "Remove the educator verification of {name}",
+      "verifyTitle": "Verify {name} as an educator?",
+      "verifyDescription": "A verified educator without a school can create accounts for students aged 13 and over in their classes. Verify only a teacher whose identity you have checked.",
+      "verifyConfirm": "Verify educator",
+      "unverifyTitle": "Remove the verification of {name}?",
+      "unverifyDescription": "{name} can no longer create student accounts for classes outside a school. Students who already have an account keep it.",
+      "unverifyConfirm": "Remove verification",
+      "verified": "{name} is a verified educator.",
+      "unverified": "{name} is no longer a verified educator.",
+      "errors": {
+        "conflict": "Only teachers can be verified educators. Reload the page.",
+        "notFound": "This account no longer exists. Reload the page."
+      }
+    }
+  },
+  "billing": {
+    "description": "Subscriptions and licenses are entered by hand: there are no online payments yet.",
+    "tabsLabel": "Subscriptions and licenses",
+    "tabs": {
+      "subscriptions": "Subscriptions",
+      "licenses": "Licenses"
+    },
+    "filter": {
+      "user": "Subscriptions of {name}.",
+      "school": "{tab, select, licenses {Licenses} other {Subscriptions}} of {name}.",
+      "notLearner": "{name} has a staff role. Staff take no courses, so their account holds no subscription."
+    },
+    "plans": {
+      "individual_monthly": "Individual, monthly",
+      "individual_yearly": "Individual, yearly",
+      "school_annual": "School, yearly",
+      "course_purchase": "Course purchase",
+      "teacher_training": "Teacher training"
+    },
+    "subscriptionStatus": {
+      "trialing": "Trial",
+      "active": "Active",
+      "past_due": "Payment overdue",
+      "canceled": "Canceled",
+      "expired": "Expired"
+    },
+    "subscriptions": {
+      "caption": "Subscriptions",
+      "columns": {
+        "owner": "Owner",
+        "plan": "Plan",
+        "status": "Status",
+        "period": "Period",
+        "covers": "Gives access to",
+        "notes": "Notes",
+        "actions": "Actions"
+      },
+      "ownerSchool": "School",
+      "ownerUser": "Person",
+      "periodEnded": "Period ended",
+      "coversIndividual": "Every premium student course",
+      "coversSchool": "Through the school’s licenses",
+      "coversCourses": "{count, plural, one {# course} other {# courses}}: {names}",
+      "unknownCourse": "a course that no longer exists",
+      "empty": {
+        "title": "No subscriptions yet",
+        "description": "Add one when a school or a person has paid."
+      },
+      "add": "New subscription",
+      "edit": "Edit",
+      "editLabel": "Edit the subscription of {owner}"
+    },
+    "subscriptionForm": {
+      "createTitle": "New subscription",
+      "editTitle": "Edit the subscription of {owner}",
+      "description": "Payments are handled outside RoboHolic AI. A person’s subscription gives them access by itself; a school gets access through its licenses.",
+      "owner": "For",
+      "school": "School",
+      "userOwnerHint": "For one person, open them on the Users page and choose “Subscriptions”.",
+      "plan": "Plan",
+      "planHint": "Individual plans open every premium student course. Course purchase and teacher training open only the courses you choose.",
+      "schoolOwnerHint": "For a school this is the payment record: access comes from the licenses you add on the school’s page, which can be linked to it.",
+      "status": "Status",
+      "statusHint": "Only “Trial” and “Active” give access, until the end of the period.",
+      "periodStart": "Period starts on",
+      "periodEnd": "Period ends on",
+      "periodEndHint": "Access stops at the start of this day.",
+      "courses": "Courses",
+      "coursesHint": "Choose at least one course.",
+      "studentCourses": "Student courses",
+      "teacherCourses": "Teacher Academy",
+      "notes": "Notes",
+      "notesHint": "Seen only by platform administrators. Up to {max, number} characters.",
+      "endAccessWarning": "With this status, {owner} loses the access this subscription gives. Save only if that is intended.",
+      "submitCreate": "Create subscription",
+      "submitEdit": "Save subscription",
+      "created": "Subscription created.",
+      "saved": "Subscription saved.",
+      "errors": {
+        "owner": "This owner no longer exists or can’t hold a subscription. Reload the page.",
+        "courses": "One of these courses no longer exists or isn’t an official course. Reload the page.",
+        "plan": "This plan doesn’t fit this owner: individual plans are for a person, the school plan for a school.",
+        "notFound": "This subscription no longer exists. Reload the page."
+      }
+    },
+    "licenses": {
+      "caption": "Licenses",
+      "columns": {
+        "license": "License",
+        "school": "School",
+        "scope": "Gives access to",
+        "seats": "Seats",
+        "dates": "Valid",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "scopeAll": "All official courses",
+      "scopePathways": "{count, plural, one {# pathway} other {# pathways}}: {names}",
+      "unknownPathway": "a pathway that no longer exists",
+      "seats": "{total, number} seats",
+      "seatsUsed": "{used, number} of {total, number} used",
+      "linked": "Linked to a subscription",
+      "empty": {
+        "title": "No licenses yet",
+        "description": "A license opens premium official courses to a school."
+      },
+      "add": "New license",
+      "edit": "Edit",
+      "editLabel": "Edit the license {name}"
+    },
+    "licenseForm": {
+      "createTitle": "New license",
+      "editTitle": "Edit the license {name}",
+      "description": "A license opens premium official courses to a school’s staff and students. Seats are shown, not enforced.",
+      "school": "School",
+      "name": "License name",
+      "nameHint": "For example “School year 2026–2027”.",
+      "seats": "Seats",
+      "seatsHint": "The number of active students the school pays for.",
+      "scopeLegend": "Gives access to",
+      "scopeAll": "All official courses",
+      "scopeAllDescription": "Every premium official course, new ones included.",
+      "scopePathways": "Selected pathways",
+      "scopePathwaysDescription": "Only the premium courses of the pathways you tick.",
+      "pathwaysLegend": "Pathways",
+      "startsOn": "Starts on",
+      "endsOn": "Ends on",
+      "endsOnHint": "The license stops at the start of this day.",
+      "statusLegend": "Status",
+      "statusActive": "Active",
+      "statusSuspended": "Suspended",
+      "statusSuspendedDescription": "Gives no access until it is active again.",
+      "suspendWarning": "While this license is suspended, the school’s staff and students lose the courses it opens. Save only if that is intended.",
+      "subscription": "Linked subscription",
+      "subscriptionNone": "None",
+      "subscriptionOption": "{plan}, {start} – {end}",
+      "submitCreate": "Create license",
+      "submitEdit": "Save license",
+      "created": "License created.",
+      "saved": "License saved.",
+      "errors": {
+        "notFound": "This school or this license no longer exists. Reload the page.",
+        "subscription": "This subscription doesn’t belong to the school. Reload the page.",
+        "pathways": "One of these pathways no longer exists. Reload the page."
+      }
+    }
+  },
+  "certificates": {
+    "description": "Every certificate issued on RoboHolic AI, newest first.",
+    "caption": "Certificates",
+    "columns": {
+      "learner": "Learner",
+      "course": "Course",
+      "school": "School",
+      "issued": "Issued",
+      "issuer": "Issued by",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "code": "Code {code}",
+    "independent": "Independent learner",
+    "revokedOn": "Revoked on {date}",
+    "issueHint": "To issue a certificate, open the learner on the Users page and choose “Certificates”.",
+    "empty": {
+      "title": "No certificates yet",
+      "description": "Certificates appear here when learners complete courses or are given one."
+    },
+    "learner": {
+      "title": "Certificates of {name}",
+      "back": "All certificates",
+      "coursesTitle": "Courses of {name}",
+      "coursesDescription": "Issue a certificate for a course they are enrolled in, completed or not.",
+      "coursesCaption": "Courses of {name}",
+      "columns": {
+        "course": "Course",
+        "progress": "Progress",
+        "status": "Status",
+        "certificate": "Certificate"
+      },
+      "certificatesOff": "This course gives no certificate",
+      "hiddenCourse": "A course that is no longer available",
+      "noCourses": {
+        "title": "Not enrolled in any course",
+        "description": "A certificate is always issued for a course the learner is enrolled in."
+      },
+      "notLearner": "Only students and teachers take courses, so this account has no certificates to issue.",
+      "certificatesTitle": "Their certificates",
+      "noCertificates": {
+        "title": "No certificates yet",
+        "description": "Certificates issued to this person appear here."
+      }
+    },
+    "revoke": {
+      "action": "Revoke",
+      "actionLabel": "Revoke the certificate of {name} for {course}",
+      "title": "Revoke this certificate?",
+      "description": "The certificate of {name} for {course} stops being valid at once: its verification link shows it as revoked. You can issue it again later.",
+      "reason": "Reason",
+      "reasonHint": "The learner sees this reason. Up to {max, number} characters.",
+      "confirm": "Revoke certificate",
+      "success": "Certificate revoked.",
+      "errors": {
+        "notFound": "This certificate no longer exists. Reload the page."
+      }
+    }
+  },
+  "challenges": {
+    "description": "Create challenges, publish them in the Challenge Arena and follow the entries.",
+    "new": "New challenge",
+    "filterLabel": "Challenges by status",
+    "filters": {
+      "all": "All",
+      "draft": "Drafts",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "caption": "Challenges",
+    "columns": {
+      "challenge": "Challenge",
+      "audience": "For",
+      "status": "Status",
+      "dates": "Dates",
+      "entries": "Entries",
+      "actions": "Actions"
+    },
+    "everyone": "Every student",
+    "schoolOnly": "Students of {school}",
+    "entriesLink": "{count, plural, =0 {No entries} one {# entry} other {# entries}}",
+    "entriesLabel": "Entries of {title}",
+    "edit": "Edit",
+    "editLabel": "Edit {title}",
+    "untitled": "Untitled challenge",
+    "empty": {
+      "title": "No challenges yet",
+      "description": "Create a challenge, then publish it to show it in the Challenge Arena."
+    },
+    "emptyFilter": {
+      "title": "No challenges with this status",
+      "description": "Choose another status, or show all challenges."
+    },
+    "transitions": {
+      "publish": "Publish",
+      "publishLabel": "Publish {title}",
+      "unpublish": "Back to draft",
+      "unpublishLabel": "Move {title} back to draft",
+      "archive": "Archive",
+      "archiveLabel": "Archive {title}",
+      "restore": "Restore as draft",
+      "restoreLabel": "Restore {title} as a draft",
+      "publishTitle": "Publish “{title}”?",
+      "publishDescription": "{audience} will see it in the Challenge Arena. Entries open on {start} and close on {end}.",
+      "audienceEveryone": "Every student",
+      "audienceSchool": "The students of {school}",
+      "pastDeadline": "Its deadline has passed: students will see it as closed.",
+      "publishConfirm": "Publish",
+      "unpublishTitle": "Move “{title}” back to draft?",
+      "unpublishDescription": "It disappears from the Challenge Arena. Entries already sent are kept.",
+      "unpublishConfirm": "Back to draft",
+      "archiveTitle": "Archive “{title}”?",
+      "archiveDescription": "It disappears from the Challenge Arena. Entries already sent are kept, and you can restore it as a draft later.",
+      "archiveConfirm": "Archive",
+      "published": "“{title}” is published.",
+      "unpublished": "“{title}” is a draft again.",
+      "archived": "“{title}” is archived.",
+      "restored": "“{title}” is a draft again."
+    },
+    "detail": {
+      "statusTitle": "Status",
+      "phase": "Entries: {phase}",
+      "viewEntries": "See entries ({count, number})",
+      "draftHint": "Students don’t see a draft. Publish it when it is ready.",
+      "archivedHint": "Students don’t see an archived challenge."
+    },
+    "form": {
+      "newTitle": "New challenge",
+      "newDescription": "A new challenge is saved as a draft. Students see it only once you publish it.",
+      "publishedHint": "This challenge is published: students see your changes as soon as you save.",
+      "basicsLegend": "Challenge",
+      "type": "Type",
+      "area": "Learning area",
+      "scopeLegend": "Who can take part",
+      "scopeGlobal": "Every student",
+      "scopeGlobalDescription": "Shown to every student on RoboHolic AI.",
+      "scopeSchool": "The students of one school",
+      "scopeSchoolDescription": "Shown only to the students of the school you choose.",
+      "school": "School",
+      "ageMin": "Youngest age",
+      "ageMax": "Oldest age",
+      "agesHint": "Optional. Ages are a guide only: every student can take part.",
+      "xpReward": "XP reward",
+      "xpRewardHint": "From 0 to {max, number}. Given when an entry is accepted.",
+      "datesLegend": "Dates",
+      "startAt": "Opens on",
+      "deadlineAt": "Deadline",
+      "entriesLegend": "Entries",
+      "types": "Students can send",
+      "typesHint": "Choose at least one.",
+      "rubricLegend": "Scoring criteria",
+      "rubricHint": "Tick the criteria reviewers score and give each a weight. The weights add up to 100.",
+      "rubricWeight": "Weight of “{criterion}”",
+      "rubricTotal": "Total: {total, number} of 100",
+      "hardwareLegend": "Hardware (optional)",
+      "capabilities": "Required capabilities",
+      "capabilitiesHint": "A kit qualifies when it has all of them.",
+      "platforms": "Recommended kits",
+      "capabilityNames": {
+        "drive": "Drives",
+        "camera": "Camera",
+        "distance": "Distance sensor",
+        "line": "Line sensor",
+        "color": "Color sensor",
+        "imu": "Motion sensor",
+        "microphone": "Microphone",
+        "speaker": "Speaker",
+        "gripper": "Gripper",
+        "display": "Display"
+      },
+      "coverLegend": "Cover image (optional)",
+      "coverNone": "No cover image.",
+      "coverNew": "New cover: it is used once you save the challenge.",
+      "coverRemove": "Remove the cover",
+      "textTitle": "Text",
+      "defaultLocale": "Default language",
+      "defaultLocaleHint": "Fill in every required field in this language. The other languages are optional: an empty field shows the default language’s text.",
+      "languageLegend": "{language}",
+      "defaultBadge": "Default language",
+      "translated": "Translated",
+      "notTranslated": "Not translated",
+      "title": "Title",
+      "description": "Description",
+      "submissionRequirements": "What to send",
+      "prizes": "Prizes",
+      "prizesHint": "Optional.",
+      "submitCreate": "Create draft",
+      "submitEdit": "Save changes",
+      "created": "Challenge saved as a draft.",
+      "saved": "Challenge saved.",
+      "errors": {
+        "school": "This school no longer exists. Choose another one.",
+        "cover": "This image can’t be used as a cover. Upload it again.",
+        "notFound": "This challenge no longer exists. Reload the page.",
+        "platforms": "One of these kits no longer exists. Reload the page."
+      }
+    },
+    "entries": {
+      "metaTitle": "Entries: {title}",
+      "title": "Entries",
+      "description": "Entries sent to “{title}”, newest first. Teachers review the entries of their classes; the others get an AI review.",
+      "caption": "Entries of {title}",
+      "columns": {
+        "student": "Student",
+        "entry": "Entry",
+        "type": "Type",
+        "submitted": "Sent",
+        "status": "Status",
+        "score": "Score",
+        "reviewer": "Reviewed by"
+      },
+      "attempt": "Attempt {number, number}",
+      "score": "{score, number} / 100",
+      "teacher": "Their teacher",
+      "ai": "AI review",
+      "empty": {
+        "title": "No entries yet",
+        "description": "Entries appear here as students send them."
+      },
+      "back": "Back to the challenge"
+    }
+  }
+}
