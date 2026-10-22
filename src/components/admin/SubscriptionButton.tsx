@@ -5,11 +5,10 @@ import { Plus } from 'lucide-react';
 import { useTimeZone, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui';
 import type { Subscription } from '@/types/billing';
-import type { OwnerChoice } from './billing-model';
+import type { CourseChoice, OwnerChoice } from './billing-model';
 import { isoToDateInput, safeTimeZone } from './dates';
 import type { SchoolChoice } from './school-model';
 import { SubscriptionDialog } from './SubscriptionDialog';
-import type { CourseChoice } from './SubscriptionsTable';
 
 export interface SubscriptionButtonProps {
   mode: 'create' | 'edit';

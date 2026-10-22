@@ -8,7 +8,9 @@ import type {
   SubscriptionPlan,
   SubscriptionStatus,
 } from '@/types/billing';
-import type { IsoDateString } from '@/types/common';
+import { pickTranslation } from '@/lib/i18n/content';
+import type { Audience, IsoDateString } from '@/types/common';
+import type { Course, Pathway } from '@/types/content';
 import type { LicenseInput, SubscriptionInput } from '@/types/inputs';
 import { addYear, dateInputToIso, isoToDateInput } from './dates';
 import { numberInput } from './field-errors';
@@ -47,6 +49,70 @@ export function isCourseScoped(plan: SubscriptionPlan): boolean {
 
 export function isIndividual(plan: SubscriptionPlan): boolean {
   return plan === 'individual_monthly' || plan === 'individual_yearly';
+}
+
+/** A course the subscription picker offers (official, not archived, or already named). */
+export interface CourseChoice {
+  id: string;
+  title: string;
+  audience: Audience;
+}
+
+/** A subscription of the school a licence may be linked to, labelled by the page. */
+export interface SubscriptionOption {
+  value: string;
+  label: string;
+}
+
+/** A pathway the licence picker offers. */
+export interface PathwayChoice {
+  id: string;
+  title: string;
+}
+
+/**
+ * The official courses a subscription may name: the ones not archived, plus any already named
+ * by `named` (an edited record keeps its courses, never dropped silently). By title.
+ */
+export function courseChoices(
+  courses: readonly Course[],
+  named: readonly string[],
+  locale: string,
+): CourseChoice[] {
+  return courses
+    .filter((course) => course.isOfficial && (course.status !== 'archived' || named.includes(course.id)))
+    .map((course) => ({
+      id: course.id,
+      title: pickTranslation(course.translations, locale, course.defaultLocale).title,
+      audience: course.audience,
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title, locale));
+}
+
+export function courseTitleIndex(courses: readonly Course[], locale: string): Record<string, string> {
+  const index: Record<string, string> = {};
+  for (const course of courses) {
+    index[course.id] = pickTranslation(course.translations, locale, course.defaultLocale).title;
+  }
+  return index;
+}
+
+/** Every pathway (drafts included: a licence may name one before it is published), by order. */
+export function pathwayChoices(pathways: readonly Pathway[], locale: string): PathwayChoice[] {
+  return [...pathways]
+    .sort((a, b) => a.order - b.order)
+    .map((pathway) => ({
+      id: pathway.id,
+      title: pickTranslation(pathway.translations, locale, pathway.defaultLocale).title,
+    }));
+}
+
+export function pathwayTitleIndex(pathways: readonly Pathway[], locale: string): Record<string, string> {
+  const index: Record<string, string> = {};
+  for (const pathway of pathways) {
+    index[pathway.id] = pickTranslation(pathway.translations, locale, pathway.defaultLocale).title;
+  }
+  return index;
 }
 
 export type OwnerChoice =

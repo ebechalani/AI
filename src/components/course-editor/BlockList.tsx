@@ -64,15 +64,20 @@ export function BlockList({
   const [addOpening, setAddOpening] = useState(0);
   const [addOpen, setAddOpen] = useState(false);
   const onDirtyChange = useCallback((dirty: boolean) => setSlotDirty(dirty), []);
-  const blocksById = byId(blocks);
+  const stored = byId(blocks);
   const lookups = { quizzes: byId(quizzes), projects: byId(projects) };
-  const groups = groupBlocksByStage(blocks);
   const atLimit = blocks.length >= CONTENT_LIMITS.blocksPerLesson;
 
   // The open block was deleted elsewhere: a clean form simply closes, a dirty one stays as an
   // orphan (5.4). Decided while rendering, from the refreshed props.
-  const orphan = open?.kind === 'edit' && blocksById[open.blockId] === undefined;
+  const orphan = open?.kind === 'edit' && stored[open.blockId] === undefined;
   if (orphan && !slotDirty) setOpen(null);
+  // The orphan keeps its row (from the snapshot) in its stage, so the open editor stays at the
+  // same place of the tree and keeps its draft: moved elsewhere, React would remount it empty.
+  const orphanBlock = orphan && slotDirty && open?.kind === 'edit' ? open.snapshot : null;
+  const shownBlocks = orphanBlock === null ? blocks : [...blocks, orphanBlock];
+  const blocksById = byId(shownBlocks);
+  const groups = groupBlocksByStage(shownBlocks);
 
   function showEditor(next: Open) {
     setOpen(next);
@@ -141,7 +146,7 @@ export function BlockList({
         onDirtyChange={onDirtyChange}
       />
     );
-  const detached = open !== null && (open.kind === 'new' || orphan);
+  const detached = open !== null && open.kind === 'new';
 
   const addButton = (
     <Button disabled={atLimit} onClick={() => requestEditor('add')}>
@@ -185,18 +190,17 @@ export function BlockList({
           lessonId={lessonId}
           lookups={lookups}
           locked={locked}
-          openBlockId={open?.kind === 'edit' && !orphan ? open.blockId : null}
+          openBlockId={open?.kind === 'edit' ? open.blockId : null}
+          orphanId={orphanBlock?.id ?? null}
           formId={open === null ? '' : formIdOf(open)}
           onEdit={(block) => requestEditor({ kind: 'edit', blockId: block.id, snapshot: block })}
           slot={slot}
         />
       ))}
-      {detached && open !== null && (
+      {detached && open?.kind === 'new' && (
         <Card className="gap-4 p-4 sm:p-5">
           <h3 id={`${formIdOf(open)}-title`} className="text-base font-bold text-ink">
-            {open.kind === 'new'
-              ? t('blocks.newTitle', { type: t(`blocks.types.${open.type}.label`) })
-              : t(`blocks.types.${open.snapshot.type}.label`)}
+            {t('blocks.newTitle', { type: t(`blocks.types.${open.type}.label`) })}
           </h3>
           {slot}
         </Card>

@@ -2,8 +2,7 @@ import { flushSync } from 'react-dom';
 
 // The admin area's copy of WS-E's focus helpers (ARCHITECTURE.md 7.3): each area keeps its own.
 
-/** Every shell's `<main>` (ARCHITECTURE.md 7.5): a stable target when the page itself changes. */
-export const MAIN_CONTENT_ID = 'main-content';
+export { MAIN_CONTENT_ID } from './ids';
 
 /**
  * Renders the error state now, then focuses the first invalid control inside `container`, or

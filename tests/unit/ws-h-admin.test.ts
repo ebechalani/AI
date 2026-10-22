@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  courseChoices,
+  courseTitleIndex,
   emptyLicense,
   emptySubscription,
   endsSubscriptionAccess,
   licensePayload,
   licenseValues,
+  pathwayChoices,
+  pathwayTitleIndex,
   periodEnded,
   plansFor,
   subscriptionCoverage,
@@ -85,7 +89,8 @@ import {
 } from '@/lib/schemas/admin';
 import { parseInput } from '@/lib/schemas/common';
 import type { License, Subscription } from '@/types/billing';
-import { challenge, profile, school } from './services-fixtures';
+import type { Pathway } from '@/types/content';
+import { challenge, course, profile, school } from './services-fixtures';
 
 // The pure models of the platform admin area (SPEC-H section 4).
 
@@ -484,6 +489,55 @@ describe('billing-model', () => {
       endsAt: license.endsAt,
       status: 'active',
     });
+  });
+
+  it('offers official courses that are not archived, plus the ones a record already names, by title', () => {
+    const courses = [
+      course({ id: 'zeta' }),
+      course({ id: 'alpha', audience: 'teacher' }),
+      course({ id: 'gone', status: 'archived' }),
+      course({ id: 'kept', status: 'archived' }),
+      course({ id: 'mine', isOfficial: false }),
+    ];
+    expect(courseChoices(courses, ['kept'], 'en').map((choice) => choice.id)).toEqual([
+      'alpha',
+      'kept',
+      'zeta',
+    ]);
+    expect(courseChoices(courses, [], 'fr')[0]).toEqual({
+      id: 'alpha',
+      title: 'Cours alpha',
+      audience: 'teacher',
+    });
+    expect(courseTitleIndex(courses, 'en')).toMatchObject({ zeta: 'Course zeta', gone: 'Course gone' });
+  });
+
+  it('offers every pathway by order, with its title in the locale', () => {
+    const pathway = (id: string, order: number): Pathway => ({
+      id,
+      order,
+      audience: 'student',
+      kind: 'core',
+      ageMin: null,
+      ageMax: null,
+      icon: 'Bot',
+      accent: 'violet',
+      status: order === 2 ? 'draft' : 'published',
+      publishedCourseCount: 0,
+      defaultLocale: 'en',
+      translations: {
+        en: { title: `Path ${id}`, tagline: '', description: '', topics: [] },
+        fr: { title: `Parcours ${id}`, tagline: '', description: '', topics: [] },
+      },
+      createdAt: START,
+      updatedAt: START,
+    });
+    const pathways = [pathway('b', 2), pathway('a', 1)];
+    expect(pathwayChoices(pathways, 'fr')).toEqual([
+      { id: 'a', title: 'Parcours a' },
+      { id: 'b', title: 'Parcours b' },
+    ]);
+    expect(pathwayTitleIndex(pathways, 'en')).toEqual({ a: 'Path a', b: 'Path b' });
   });
 });
 

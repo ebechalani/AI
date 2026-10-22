@@ -1,7 +1,8 @@
 import { BadgeCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Avatar, StatusChip, useDateFormat } from '@/components/domain';
+import { StatusChip, useDateFormat } from '@/components/domain';
 import {
+  Avatar,
   Chip,
   Table,
   TableBody,

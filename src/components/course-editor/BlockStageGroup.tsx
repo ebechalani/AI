@@ -30,6 +30,8 @@ export interface BlockStageGroupProps {
   locked: boolean;
   /** The block whose editor is open, if it is in this stage. */
   openBlockId: string | null;
+  /** A block deleted elsewhere whose dirty editor is still open: its row stays, frozen. */
+  orphanId: string | null;
   formId: string;
   onEdit(block: LessonBlock): void;
   /** The open editor of `openBlockId`. */
@@ -63,6 +65,7 @@ export function BlockStageGroup({
   lookups,
   locked,
   openBlockId,
+  orphanId,
   formId,
   onEdit,
   slot,
@@ -94,7 +97,9 @@ export function BlockStageGroup({
         : '';
     },
   });
-  const sortable = useSortable({ ids: list.order, onMove: list.moveTo, disabled: list.busy });
+  // While an orphan row sits in this stage, no reorder: the server does not have that id.
+  const frozen = orphanId !== null && list.order.includes(orphanId);
+  const sortable = useSortable({ ids: list.order, onMove: list.moveTo, disabled: list.busy || frozen });
   const titleId = `lesson-stage-${stage}`;
 
   function onDeleted(blockId: string) {
@@ -117,6 +122,7 @@ export function BlockStageGroup({
           const block = blocksById[blockId];
           if (block === undefined) return null;
           const open = blockId === openBlockId;
+          const reorder = rowReorder(list, sortable, blockId, `block-${blockId}-move`);
           return (
             <BlockSummary
               key={blockId}
@@ -128,12 +134,12 @@ export function BlockStageGroup({
               untranslated={untranslatedOf(block)}
               open={open}
               formId={formId}
-              locked={locked}
+              locked={locked || blockId === orphanId}
               courseId={courseId}
               lessonId={lessonId}
               onEdit={() => onEdit(block)}
               onDeleted={onDeleted}
-              reorder={rowReorder(list, sortable, blockId, `block-${blockId}-move`)}
+              reorder={frozen ? { ...reorder, busy: true } : reorder}
               attach={sortable.itemRef(blockId)}
               dropSlot={sortable.indicatorSlot}
             >

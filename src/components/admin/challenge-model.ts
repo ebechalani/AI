@@ -8,7 +8,7 @@ import type { ChallengeInput } from '@/types/inputs';
 import { RUBRIC_KEYS, type RubricKey, type RubricWeight } from '@/types/project';
 import { isoToLocalInput, localInputToIso } from './dates';
 import { numberInput } from './field-errors';
-import { MAIN_CONTENT_ID } from './focus';
+import { MAIN_CONTENT_ID } from './ids';
 
 // The challenge editor, the status transitions and the list filters as pure functions, shared
 // by the components, the pages and the unit tests.

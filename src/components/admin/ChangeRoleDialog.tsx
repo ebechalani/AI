@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import { setUserRoleAction } from '@/actions/admin';
 import { Alert, Button, Dialog, FormField, RadioGroup, Select, useToast } from '@/components/ui';
@@ -65,6 +65,17 @@ export function ChangeRoleDialog({ open, onClose, user, focusAfterRemovalId }: C
   const schoolName = (id: string | null) =>
     id === null ? '' : (schools.find((school) => school.id === id)?.name ?? t('shared.unknownSchool'));
   const currentSchool = user.schoolId === null ? null : schoolName(user.schoolId);
+
+  // The kit Dialog gives the initial focus to `[data-autofocus]`, which a RadioGroup's inputs
+  // cannot carry: once the dialog has opened (its own effect runs showModal after this one), the
+  // focus moves to the chosen role, the first field (ARCHITECTURE.md 7.3).
+  useEffect(() => {
+    if (!open) return;
+    const frame = requestAnimationFrame(() => {
+      formRef.current?.querySelector<HTMLInputElement>('input[name="role"]:checked')?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
 
   function close() {
     onClose();
@@ -205,7 +216,7 @@ export function ChangeRoleDialog({ open, onClose, user, focusAfterRemovalId }: C
               value={choice.schoolId ?? ''}
               onChange={(event) => setChoice({ ...choice, schoolId: event.target.value || null })}
               disabled={pending}
-              placeholder={rule === 'required' ? t('shared.schoolOption', { name: '…' }) : undefined}
+              placeholder={rule === 'required' ? tCommon('actions.select') : undefined}
               options={
                 rule === 'optional'
                   ? [{ value: '', label: t('shared.noSchool') }, ...schoolOptions]

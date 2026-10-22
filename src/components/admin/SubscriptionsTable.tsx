@@ -11,16 +11,17 @@ import {
 } from '@/components/ui';
 import { Link } from '@/lib/i18n/navigation';
 import type { Subscription } from '@/types/billing';
-import type { Audience, IsoDateString } from '@/types/common';
-import { periodEnded, subscriptionCoverage, subscriptionTone } from './billing-model';
+import type { IsoDateString } from '@/types/common';
+import {
+  periodEnded,
+  subscriptionCoverage,
+  subscriptionTone,
+  type CourseChoice,
+} from './billing-model';
 import { adminSchoolPath, userSubscriptionsPath } from './paths';
 import { SubscriptionButton } from './SubscriptionButton';
 
-export interface CourseChoice {
-  id: string;
-  title: string;
-  audience: Audience;
-}
+export type { CourseChoice };
 
 export interface SubscriptionsTableProps {
   subscriptions: Subscription[];
@@ -133,10 +134,10 @@ export function SubscriptionsTable({
                   end: formatDate(subscription.currentPeriodEnd),
                 })}
               </TableCell>
-              <TableCell className="min-w-48">
+              <TableCell className="min-w-40">
                 <span className="block break-words">{coverageText(subscription)}</span>
               </TableCell>
-              <TableCell className="min-w-40">
+              <TableCell className="min-w-32">
                 {subscription.notes === null ? (
                   <span className="text-ink-muted">{t('shared.noValue')}</span>
                 ) : (
