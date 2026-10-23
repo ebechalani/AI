@@ -56,8 +56,8 @@ jobs:
 
           const base = process.env.SITE_URL.replace(/\/+$/, '');
           const browser = await chromium.launch();
-          for (const path of ['/', '/en', '/fr', '/en/login']) {
-            const context = await browser.newContext({ locale: path === '/fr' ? 'fr-FR' : 'en-US' });
+          for (const path of ['/', '/en', '/fr', '/en/login', '/en/pathways', '/fr/pathways']) {
+            const context = await browser.newContext({ locale: path.startsWith('/fr') ? 'fr-FR' : 'en-US' });
             const page = await context.newPage();
             const problems = [];
             page.on('console', (message) => {
@@ -82,7 +82,7 @@ jobs:
             const text = (await page.locator('body').innerText().catch(() => '')).replace(/\s+/g, ' ');
             console.log(`final address: ${page.url()}`);
             console.log(`heading: ${heading}`);
-            console.log(`text: ${text.slice(0, 300)}`);
+            console.log(`text: ${text.slice(0, 700)}`);
             console.log(problems.length === 0 ? 'no errors' : problems.join('\n'));
             console.log('::endgroup::');
             await context.close();
