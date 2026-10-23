@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Copy, Link2, Presentation, RefreshCw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { regenerateJoinCodeAction, updateClassAction } from '@/actions/classes';
@@ -65,8 +65,9 @@ export function JoinCodePanel({
 
   // "Close the code" keeps the focus while it loads (7.3), and the refresh after its success
   // takes it out of the page, which drops the focus to <body>: the toggle takes it once the
-  // refreshed panel shows the code closed. Focus the user moved somewhere else stays there.
-  useEffect(() => {
+  // refreshed panel shows the code closed, before the browser paints (a layout effect, so the
+  // focus is never seen on <body>). Focus the user moved somewhere else stays there.
+  useLayoutEffect(() => {
     if (isOpen || !focusToggleAfterRefresh.current) return;
     focusToggleAfterRefresh.current = false;
     const active = document.activeElement;
