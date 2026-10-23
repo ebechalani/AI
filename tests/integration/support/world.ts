@@ -428,7 +428,8 @@ export async function buildOfficialCourse(
     title,
     accessTier = 'free',
     audience = 'student',
-    pathwayId = 'ai-creator',
+    // A course joins only a pathway of its own audience (assertPathwayServes).
+    pathwayId = audience === 'teacher' ? 'teacher-academy' : 'ai-creator',
     quizMaxAttempts = null,
     certificateEnabled = true,
     xp = { lesson: 50, quiz: 100, project: 300 },
