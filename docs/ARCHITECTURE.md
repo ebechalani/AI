@@ -142,7 +142,19 @@ types. A dynamic import does not say which names it uses, so in `src/actions`, `
    `/{locale}/login?next=<locale-less path>` when the `__session` cookie is absent. This is a
    UX shortcut only; it verifies nothing. `next` is the path alone (`/teacher/classes/abc`):
    the query string of the original request is dropped, so `safeNextPath` only ever has to
-   judge a path. A path without a locale prefix (`/student/learn`) is first redirected to its
+   judge a path. A server-action call (a `POST` that carries Next's `next-action` header,
+   `ACTION_HEADER`; the Next client posts every action to the URL of the page it was called
+   from) is never redirected. Redirected to the login page, the call threw in the Next client,
+   and its caller could only show `internal`; handed on to Next, `runAction` finds no session
+   and answers `unauthenticated` (1.4, step 2), so an editor that keeps drafts shows its
+   session-ended alert (foundation request WS-F-3). A `GET` with the header, a `POST` without
+   it and any other method are redirected as before. The header's value is not judged: Next
+   answers an unknown or empty action id with `404` and `x-nextjs-action-not-found: 1` before
+   anything renders (with an urlencoded body, the root not-found page), and a request that also
+   carries `rsc: 1` is rendered as a page payload, in which the layout's and the page's
+   `requireRole` redirect (steps 2 and 3), so nothing protected is rendered for it either.
+   `tests/unit/proxy.test.ts` checks the redirect and this exception with Next's own
+   `ACTION_HEADER`. A path without a locale prefix (`/student/learn`) is first redirected to its
    prefixed form by next-intl and gated on that second request. The locale is detected from
    the URL prefix, then the `NEXT_LOCALE` cookie (a session cookie next-intl sets when the
    visitor's locale differs from the browser's), then `Accept-Language`, then `en`.
@@ -206,7 +218,10 @@ client component ──▶ someAction(input)
   `lib/actions` that touches the auth layer: it re-exports `getSession` and
   `assertSessionNotRevoked` from `auth/session.ts` (before F4's hand-over, section 11.1, it
   answers "no session", so every non-anonymous action fails closed). Unit tests of
-  `runAction` mock that one module.
+  `runAction` mock that one module. Step 2 also runs when the cookie is gone (the 24 h staff
+  cookie expired, or the user signed out in another tab): `proxy.ts` does not redirect a
+  server-action `POST` (1.3), so the call answers `unauthenticated` instead of throwing in the
+  client.
 - `locale` in step 4 is `await getLocale()` from `next-intl/server` (the locale of the page
   the action was called from). It is never read from the client payload and never from
   `session.locale` (the stored preference can lag behind the URL).
@@ -393,7 +408,7 @@ of `accountCreation: false`).
 
 | Layer | What it does | Trust level |
 |---|---|---|
-| `proxy.ts` | Redirects when no cookie | None (UX only) |
+| `proxy.ts` | Redirects page requests when no cookie; a server-action `POST` (`next-action` header) goes through, so `runAction` answers `unauthenticated` | None (UX only) |
 | Layout + page `requireRole` | Coarse role gate per area | Real |
 | `runAction` `roles` option | Coarse role gate per action (section 10.4 lists the roles of every action) | Real |
 | **Repository / service functions** | Resource-level checks through `src/lib/auth/authz.ts` on every call (ownership, class, school) | **Authoritative** |
