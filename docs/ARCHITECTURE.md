@@ -142,7 +142,25 @@ types. A dynamic import does not say which names it uses, so in `src/actions`, `
    `/{locale}/login?next=<locale-less path>` when the `__session` cookie is absent. This is a
    UX shortcut only; it verifies nothing. `next` is the path alone (`/teacher/classes/abc`):
    the query string of the original request is dropped, so `safeNextPath` only ever has to
-   judge a path. A path without a locale prefix (`/student/learn`) is first redirected to its
+   judge a path. A server-action call (a `POST` that carries Next's `next-action` header,
+   `ACTION_HEADER`; the Next client posts every action to the URL of the page it was called
+   from) is never redirected. Redirected to the login page, the call threw in the Next client,
+   and its caller could only show `internal`; handed on to Next, `runAction` finds no session
+   and answers `unauthenticated` (1.4, step 2), so an editor that keeps drafts shows its
+   session-ended alert (foundation request WS-F-3). A `GET` with the header, a `POST` without
+   it and any other method are redirected as before. The header's value is not judged: Next
+   answers an unknown or empty action id with `404` and `x-nextjs-action-not-found: 1` before
+   anything renders (with an urlencoded body, the root not-found page), and a request that also
+   carries `rsc: 1` is rendered as a page payload, in which the page's `requireRole` (step 3;
+   the layout's too when it is rendered) redirects, so nothing protected is rendered for it
+   either. A recognized action whose call changes a cookie (`signOutAction`,
+   `createSessionAction`, or the `NEXT_LOCALE` cookie the proxy sets, see below) also has the
+   page rendered into its answer, and a request with a crafted `next-router-state-tree` renders
+   only the page segment without its layouts. So the page's own `requireRole` (step 3), not the
+   layout's, is what protects every such render. Before WS-F-3 the proxy could not stop any of
+   this either: any `__session` value, even an invalid one, passes it.
+   `tests/unit/proxy.test.ts` checks the redirect and this exception with Next's own
+   `ACTION_HEADER`. A path without a locale prefix (`/student/learn`) is first redirected to its
    prefixed form by next-intl and gated on that second request. The locale is detected from
    the URL prefix, then the `NEXT_LOCALE` cookie (a session cookie next-intl sets when the
    visitor's locale differs from the browser's), then `Accept-Language`, then `en`.
@@ -206,7 +224,10 @@ client component ──▶ someAction(input)
   `lib/actions` that touches the auth layer: it re-exports `getSession` and
   `assertSessionNotRevoked` from `auth/session.ts` (before F4's hand-over, section 11.1, it
   answers "no session", so every non-anonymous action fails closed). Unit tests of
-  `runAction` mock that one module.
+  `runAction` mock that one module. Step 2 also answers a call made once the cookie is gone
+  (the 24 h staff cookie expired, or the user signed out in another tab): `proxy.ts` does not
+  redirect a server-action `POST` (1.3), so the call answers `unauthenticated` instead of
+  throwing in the client.
 - `locale` in step 4 is `await getLocale()` from `next-intl/server` (the locale of the page
   the action was called from). It is never read from the client payload and never from
   `session.locale` (the stored preference can lag behind the URL).
@@ -393,7 +414,7 @@ of `accountCreation: false`).
 
 | Layer | What it does | Trust level |
 |---|---|---|
-| `proxy.ts` | Redirects when no cookie | None (UX only) |
+| `proxy.ts` | Redirects page requests when no cookie; a server-action `POST` (`next-action` header) goes through, so `runAction` answers `unauthenticated` | None (UX only) |
 | Layout + page `requireRole` | Coarse role gate per area | Real |
 | `runAction` `roles` option | Coarse role gate per action (section 10.4 lists the roles of every action) | Real |
 | **Repository / service functions** | Resource-level checks through `src/lib/auth/authz.ts` on every call (ownership, class, school) | **Authoritative** |
@@ -783,7 +804,9 @@ src/
 │  │  ├─ stages.ts                           shared: LESSON_STAGES order, groupBlocksByStage(), type StageGroup
 │  │  ├─ challenge-phase.ts                  shared pure: getChallengePhase()
 │  │  ├─ embed-allowlist.ts                  shared: EMBED_HOSTS, toEmbedUrl(), toVideoEmbedUrl()
-│  │  └─ lesson-completion.ts                shared pure: getMissingForCompletion(), isReadyForCompletion(), responseLength() (section 9.4)
+│  │  ├─ lesson-completion.ts                shared pure: getMissingForCompletion(), isReadyForCompletion(), responseLength() (section 9.4)
+│  │  └─ publish-readiness.ts                shared pure: getPublishProblems(), type PublishProblem (the publish rule of
+│  │                                         data/courses.setCourseStatus and of the course editor's readiness list; 10.1)
 │  ├─ gamification/
 │  │  ├─ rules.ts                            shared: XP_RULES, MAX_LEVEL (declared here, re-exported by levels.ts)
 │  │  ├─ levels.ts                           shared pure: xpForLevel(), levelForXp(), levelProgress(), MAX_LEVEL
@@ -1169,7 +1192,7 @@ school stay attached to it.
   ownerUid: string;                         // author
   schoolId: string | null;                  // author's school at creation; null for official courses
   isOfficial: boolean;                      // true → "RoboHolic Certified" badge; only platform_admin can set
-  status: 'draft' | 'published' | 'archived';
+  status: 'draft' | 'published' | 'archived';   // 'published' only with content: getPublishProblems (10.1) finds nothing missing
   visibility: 'public' | 'school' | 'private';   // official: 'public'. Teacher-made: 'private' (author + assigned classes) or 'school'
   audience: 'student' | 'teacher';
   area: LearningArea;                       // 'ai' | 'generative_ai' | 'coding' | 'robotics' | 'creativity' | 'innovation' | 'responsible_ai'
@@ -1786,11 +1809,19 @@ composite indexes, so a missing index only fails in production).
 | File download (`GET /api/files/[fileId]`, `project-flow.getFileForDownload`) | `files/{fileId}`; then, unless the caller owns the file or is a platform admin: `submissions/{submissionId}` (submission files), or `courses/{courseId}` plus the reads of the row "Course access" (media of a teacher-made course; none for official media). Direct gets only |
 | Reports | the teacher's classes for the class picker: the Teacher Dashboard query with `includeArchived` (same index); `getAll` of the selected class's assigned courses for the course picker; `classes/{id}`; `members`; `getAll(enrollments/{uid}_{courseId})` for each member (≤ 60). All columns come from the enrollment (`progressPercent`, `quizSummary`, `projectSummary`, `certificateId`); **no attempt or submission query** |
 | Teacher Settings | `users/{uid}` (`getUser`, for the email address); `certificates` where `userUid == uid` order by `issuedAt desc` (the "Certificates (student)" shape) |
-| School Dashboard / Analytics | `schools/{id}` (teachers, students, classes and seats used come from `counts`); `count()` on `enrollments` (`schoolId`, `status`), per course (`schoolId`, `courseId`, `status`) for the union of `assignedCourseIds`; `count()` on `certificates` (`schoolId`); `licenses` where `schoolId` order by `endsAt desc` |
-| School Teachers / Students | `users` where `schoolId == X` and `role == R` order by `displayName` (paginated, 50) |
-| School Classes | `classes` where `schoolId == X` and `archived == false` order by `name` |
-| School Certificates | `certificates` where `schoolId == X` order by `issuedAt desc` |
-| Admin lists | `schools` order by `name`; `users` where `role == R` order by `createdAt desc`; `courses` where `isOfficial == true` order by `updatedAt desc`; `subscriptions` order by `currentPeriodEnd desc`; `licenses` where `schoolId` order by `endsAt desc`; `certificates` order by `issuedAt desc`; `challenges` order by `deadlineAt desc`; `submissions` where `challengeId == X` order by `submittedAt desc`; `pathways` (the whole collection, 7 documents, sorted by `order` in memory; the course editor's pathway select); unfiltered `count()` aggregations for platform analytics |
+| Course editor (`/teacher/create/**`, `/admin/courses/**`) | List: for a teacher, `courses` where `ownerUid == uid` order by `updatedAt desc` (the row "Teacher Courses"); for a platform admin, `courses` where `isOfficial == true` order by `updatedAt desc` and the whole `pathways` collection (the row "Admin lists"). Every editor page: the course outline (row "Course detail") and `enrollments` where `courseId == X` limit 1 (`hasEnrollments`, the delete guard of the row "Internal"; it starts with `loadEditableCourse`, so it is also the page's edit check). Course page: the course's `quizzes` and `projects`, each subcollection read whole with no filter and no order (`listQuizzes` / `listProjects` sort in memory); `hardwarePlatforms` (the whole collection, as on Student Robotics); for a platform admin on an official course, `pathways` (the whole collection). Lesson page: `blocks` order by `order` (as the Lesson player), plus the course's `quizzes` and `projects`. Quiz page: `quizzes/{id}` and `quizzes/{id}/private/key` in one `getAll` (`getQuizWithKey`). Project page: `projects/{id}`. The reserved id `new` (6.5) reads no quiz or project. Writes read what the transactions of 3.6 read; publishing also reads the course's `modules` and `lessons` inside the `setCourseStatus` transaction (WS-F-2). No new composite index |
+| School Dashboard / Analytics | `schools/{id}` (teachers, students, classes and seats used come from `counts`); `count()` on `enrollments` (`schoolId`, `status`), per course (`schoolId`, `courseId`, `status`) for the union of `assignedCourseIds`; `count()` on `certificates` (`schoolId`); `licenses` where `schoolId` order by `endsAt desc`. The per-course counts (`getSchoolCourseUsage`) first read the School Classes query (`archived == false`) and a `getAll` of the courses assigned to those classes. The dashboard also reads the School Certificates query with `limit 5` (recent activity: the latest certificates); the analytics page also reads the School Classes query (`archived == false`, for its classes table) |
+| School Teachers / Students | `users` where `schoolId == X` and `role == R` order by `displayName` (paginated, 50). Teachers also reads the School Classes query (`archived == false`: the classes each teacher teaches now). Students also reads it with `includeArchived` (`archived in [false, true]`, same index) to name each pupil's classes, archived ones marked |
+| School Classes | `classes` where `schoolId == X` and `archived == false` order by `name`. The list page (`/school/classes`) runs it with `includeArchived` (`archived in [false, true]`, same index): active classes as cards, archived ones in a disclosure. It also reads the School Teachers query with `role == 'teacher'`, every page of 100 (teacher names and the owner picker of "New class"), and `schools/{id}` by id (the school's join-code switch, so that no class card says "open" while the switch is off) |
+| School class detail (`/school/classes/[classId]`) | the reads of the row "Class detail", plus the School Teachers query with `role == 'teacher'`, every page of 100 (the teachers' names and the class-teachers picker) |
+| School assign (`/school/classes/[classId]/assign`) | `classes/{id}`; then, only for a class that is not archived: the Public home pathway query (`pathways` where `status == 'published'` order by `order`), the Pathway detail course query (`courses` where `pathwayId == id` and `status == 'published'` order by `order`) for each `audience == 'student'` pathway whose `publishedCourseCount > 0`, and `listSchoolCourses` (`courses` where `schoolId == X` and `isOfficial == false` order by `updatedAt desc`), filtered in memory to `audience == 'student'`, `status == 'published'` and, for the teacher-made courses, `visibility == 'school'` |
+| School Courses (`/school/courses`) | the Public home pathway query; the Pathway detail course query for each pathway whose `publishedCourseCount > 0` (both audiences, `teacher-academy` included); `listSchoolCourses` (row "Teacher Courses"; a school admin gets every non-official course of the school); the reads of `getSchoolCourseUsage` (row "School Dashboard / Analytics"); the School Teachers query with `role == 'teacher'`, every page of 100, only when the school has a teacher-made course (the authors' names) |
+| School course detail (`/school/courses/[courseId]`) | the course outline (row "Course detail"); course access (row "Course access"); for a course with `audience == 'student'` only, the reads of `getSchoolCourseUsage` and the School Classes query (`archived == false`: the classes that follow the course) |
+| School Certificates | `certificates` where `schoolId == X` order by `issuedAt desc` (paginated, 50; the cursor is the last certificate id of the previous page) |
+| School Licenses (`/school/licenses`) | `schools/{id}`; `licenses` where `schoolId == X` order by `endsAt desc`; the Public home pathway query only when a licence has a `pathways` scope (the pathway titles) |
+| School Settings (`/school/settings`) | `schools/{id}` |
+| Admin lists | `schools` order by `name`; `users` where `role == R` order by `createdAt desc`; `courses` where `isOfficial == true` order by `updatedAt desc`; `subscriptions` order by `currentPeriodEnd desc`; `licenses` where `schoolId` order by `endsAt desc`; `licenses` order by `endsAt desc` (`listAllLicenses`, paginated, 50; the cursor is the last licence id; one field, so Firestore's automatic single-field index serves it and 3.8 has no row for it); `certificates` order by `issuedAt desc`; `challenges` order by `deadlineAt desc`; `submissions` where `challengeId == X` order by `submittedAt desc`; `pathways` (the whole collection, 7 documents, sorted by `order` in memory; the course editor's pathway select); unfiltered `count()` aggregations for platform analytics. The admin pages and actions also read: every page of `schools` order by `name` (100 per page; school names and pickers); `users` where `schoolId == X` and `role == R` order by `displayName` (`listSchoolUsers`, the School Teachers / Students shape, `school_admin` included) on `/admin/schools/[schoolId]`; the row "School subscriptions" on that page and on `/admin/subscriptions?school=`; `subscriptions` where `ownerType == 'user'` and `ownerId == uid` order by `currentPeriodEnd desc` (the "Course access" shape) for `?user=`; `users/{uid}` by id for the owners of a subscriptions page (≤ 50) and for a `?user=` filter; on `/admin/certificates?user=`, the Student Home enrollment query (`enrollments` where `userUid == uid` order by `lastActivityAt desc`), `certificates` where `userUid == uid` order by `issuedAt desc` and a `getAll` of the enrolled courses; the official courses (the shape above), `pathways` and `hardwarePlatforms` (each collection read whole) for the subscription course picker, the licence scopes and the challenge editor, and for the checks of the upsert actions (10.4); `challenges/{id}` by id (`getChallenge`) for the challenge editor; the actions' own reads: `schools/{id}` and `users/{uid}` by id (owner and school checks, `setSchoolStatusAction`), the school's subscriptions (row "School subscriptions", `upsertLicenseAction`) and a `getAll` of the named courses (`upsertSubscriptionAction`) |
+| School subscriptions (`/admin/schools/[schoolId]`, `/admin/subscriptions?school=`) | `subscriptions` where `ownerType == 'school'` and `ownerId == X` order by `currentPeriodEnd desc` (`listSubscriptionsForOwner(actor, 'school', X)`). The composite index `ownerType, ownerId, currentPeriodEnd DESC` of 3.8 serves it, as it serves the `ownerType == 'user'` shape of "Course access"; `scripts/smoke-queries.ts` runs it as "subscriptions: of an owner" |
 | Certificate verification | `certificates` where `verificationCode == code` limit 1 |
 | Tutor context (per message) | `courses/{id}`, lesson doc, `pathways/{id}`; `quizAttempts` where `userUid == uid` order by `submittedAt desc` limit 3 (`AI_LIMITS.tutorRecentQuizResults`). No school read (the route's `checkAndCountAiUsage` already applies the school switch and the context carries nothing from the school) and no block or quiz documents (`lessons.tutorExcerpt`, `quizAttempts.quizTitle`) |
 | Course access (`getCourseAccess`, 4.5; every page and service that opens course content) | a free course: none, or `enrollments/{uid}_{courseId}` when only an enrollment can make a teacher-made course visible. A premium course, until the first cover is found: `licenses` where `schoolId == X` order by `endsAt desc` (only when the actor has a school); `subscriptions` where `ownerType == 'user'` and `ownerId == uid` order by `currentPeriodEnd desc`; `classes/{id}` for each of a student's classes |
@@ -2323,7 +2354,7 @@ has `error.tsx` and `not-found.tsx` but no `loading.tsx` (section 1.3).
 | URL | Purpose |
 |---|---|
 | `/certificates/[certificateId]` | Printable certificate (browser print to PDF). Visible to the holder and to staff allowed by `canViewCertificate` |
-| `/preview/[courseId]/lessons/[lessonId]` | Read-only lesson player for school admins and platform admins (`requireRole('school_admin', 'platform_admin')`; `getCourseAccess` must allow). Linked from the school course list and the official course editor |
+| `/preview/[courseId]/lessons/[lessonId]` | Read-only lesson player for school admins and platform admins (`requireRole('school_admin', 'platform_admin')`; `getCourseAccess` must allow). Linked from the school's course detail (`/school/courses/[courseId]`, its lesson outline) and from the platform admin's course editor (official and teacher-made courses). Teachers are refused here: a teacher previews their own course through `/teacher/courses/[courseId]/lessons/[lessonId]` (6.5) |
 
 ### 6.4 Student — `/student`, role `student`
 
@@ -2367,14 +2398,18 @@ User menu: Settings.
 | Create | `/teacher/create` | My authored courses + new course |
 | | `/teacher/create/[courseId]` | Course editor: details, modules, lessons, publish |
 | | `/teacher/create/[courseId]/lessons/[lessonId]` | Lesson block editor |
-| | `/teacher/create/[courseId]/quizzes/[quizId]` | Quiz editor |
-| | `/teacher/create/[courseId]/projects/[projectId]` | Project / assignment editor |
+| | `/teacher/create/[courseId]/quizzes/[quizId]` | Quiz editor. The id `new` is reserved: `…/quizzes/new` opens the editor of a new quiz; with `?lesson={lessonId}` its first save also adds it to that lesson as a block |
+| | `/teacher/create/[courseId]/projects/[projectId]` | Project / assignment editor; `…/projects/new` (reserved id) and `?lesson={lessonId}` as for quizzes |
 | Assessments | `/teacher/assessments` | Quiz results by class and course |
 | | `/teacher/assessments/[attemptId]` | One attempt, question by question |
 | Projects | `/teacher/projects` | Review queue + all submissions |
 | | `/teacher/projects/[submissionId]` | Review screen: work, AI suggestion, approve / modify / return, delete an attachment |
 | Reports | `/teacher/reports` | Class × course progress grid, issue certificates |
 | | `/teacher/settings` | Profile, language, own certificates |
+
+A teacher previews their own course read-only through `/teacher/courses/[courseId]/lessons/[lessonId]`
+(`LessonPlayer` answers `readOnly` for an owner who is not enrolled, 7.6); the course editor
+links there. `/preview` (6.3) is for school and platform admins only.
 
 ### 6.6 School admin — `/school`, role `school_admin`
 
@@ -2388,7 +2423,9 @@ Licenses, Settings**.
 | Students | `/school/students` | List, disable, reset password (username accounts) |
 | Classes | `/school/classes` | All classes; create a class for a teacher of the school |
 | | `/school/classes/[classId]` | Roster, teachers, assigned courses, add students |
-| Courses | `/school/courses` | Official catalog + courses authored in the school, with usage; link to the read-only preview |
+| | `/school/classes/[classId]/assign` | Assign a course to the class: the official student catalog and the published student courses shared in the school, with an optional due date |
+| Courses | `/school/courses` | Official catalog + courses authored in the school, with usage; each course opens its detail page |
+| | `/school/courses/[courseId]` | Course detail: facts, a lesson outline linking to the read-only preview (`/preview/…`, 6.3), use in the school (enrolled, completed, classes) |
 | Analytics | `/school/analytics` | Completion rates, course usage, activity |
 | Certificates | `/school/certificates` | Certificates issued to the school's users |
 | Licenses | `/school/licenses` | Licences, seats used / total, dates (read-only) |
@@ -2407,9 +2444,19 @@ admin pages are future.
 | Schools | `/admin/schools`, `/admin/schools/[schoolId]` | Create/suspend schools, school detail with users, licences |
 | Users | `/admin/users` | List by role, change role, disable, verify educators |
 | Subscriptions | `/admin/subscriptions` | Subscriptions and licences (manual entry) |
-| Courses | `/admin/courses`, `/admin/courses/[courseId]`, `…/lessons/[lessonId]`, `…/quizzes/[quizId]`, `…/projects/[projectId]` | Official course authoring (same editor components as `/teacher/create`); link to the read-only preview |
+| Courses | `/admin/courses`, `/admin/courses/[courseId]`, `…/lessons/[lessonId]`, `…/quizzes/[quizId]`, `…/projects/[projectId]` | Official course authoring (same editor components as `/teacher/create`); link to the read-only preview. `…/quizzes/new` and `…/projects/new` (with `?lesson=`) as in 6.5. The list shows official courses only; the editor opens any course a platform admin may edit (`canEditCourse`), a teacher-made one included |
 | Certificates | `/admin/certificates` | List, issue, revoke |
 | Challenges | `/admin/challenges` | Create and publish challenges, list entries |
+| | `/admin/challenges/new` | Create a challenge (saved as a draft) |
+| | `/admin/challenges/[challengeId]` | Edit a challenge in every language; publish, move back to draft, archive, restore |
+| | `/admin/challenges/[challengeId]/entries` | The entries, newest first, read-only |
+
+Query parameters of the admin pages: `/admin/users?role=` (default `teacher`),
+`/admin/schools/[schoolId]?people=` (`school_admin`, `teacher` or `student`; default
+`school_admin`), `/admin/subscriptions?tab=` (`subscriptions` or `licenses`) with `&user={uid}`
+(subscriptions tab only) or `&school={schoolId}`, `/admin/certificates?user={uid}`,
+`/admin/challenges?status=` (`all`, `draft`, `published` or `archived`); every paged list takes
+`cursor`, `page` and `trail` (the earlier cursors travel in the URL, as on Assessments).
 
 ### 6.8 Navigation config (`src/lib/navigation/nav-config.ts`)
 
@@ -2529,12 +2576,16 @@ changes copy tone and tutor behaviour.
 the built-in inline-SVG avatars; unknown ids fall back to `DEFAULT_AVATAR_ID`), `Logo`
 (inline SVG wordmark), `ProgressBar`, `ProgressRing`, `Tabs`, `Dialog`, `DropdownMenu`,
 `Tooltip`, `Toast` (`ToastProvider`, `useToast()`), `Table`, `Pagination`, `Skeleton`,
-`Spinner`, `EmptyState` (`icon`, `title`, `titleAs`, `description`, `action`), `ErrorState`, `Alert`,
-`Breadcrumbs`. `LinkButton` lives in `Button.tsx`. All are exported from
+`Spinner`, `EmptyState` (`icon`, `title`, `titleAs`, `description`, `action`), `ErrorState`
+(`title`, `titleAs`, `description`, `onRetry`, `action`), `Alert`, `Breadcrumbs`. `LinkButton`
+lives in `Button.tsx`. All are exported from
 `components/ui/index.ts`, together with `CardTitle` (`{ as?: 'h2' | 'h3' | 'h4' }`),
 `buttonClasses({ variant, size, fullWidth, iconOnly })` (for elements that are neither
 `Button` nor `LinkButton`), `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`,
-`TableCell`, `BreadcrumbItem`, the tone types `StatusTone` (`'info' | 'success' | 'warning'
+`TableCell` (`TableHeaderCell` takes `align` and `wrap?: boolean`: `whitespace-normal` instead
+of the default `whitespace-nowrap`, for a long column header or a row header that holds a
+name; `className` cannot do it because `cn` does not resolve two `white-space` utilities),
+`BreadcrumbItem`, the tone types `StatusTone` (`'info' | 'success' | 'warning'
 | 'danger'`) and `ChipTone` (`'neutral' | 'brand' | 'accent' | 'success' | 'warning' |
 'danger'`) and the prop types. Three private helper files sit next to them: `tones.ts` (tone
 class maps), `control.ts` (the shared `Input`/`Textarea`/`Select` classes and
@@ -2545,11 +2596,17 @@ Props and behaviour fixed by the delivered kit:
 - `Button` / `LinkButton` / `IconButton`: `variant` `'primary' | 'secondary' | 'ghost' |
   'danger'`, `size` `'sm' | 'md' | 'lg'` (minimum heights 36 / 44 / 48 px; labels wrap),
   extra `fullWidth`. `Button`'s `type` defaults to `'button'`, not the HTML default: a form's
-  submit button passes `type="submit"`; `loading` disables the button natively and sets
-  `aria-busy`. `LinkButton` `href` is a locale-less internal path rendered with the i18n
-  `Link`; an http(s) URL opens in a new tab with a screen-reader hint; `mailto:`, `tel:`, `#`
-  or `external` render a plain `<a>` (use `external` for `/api/files/…`). `IconButton`
-  requires `aria-label` and defaults to `variant: 'ghost'`.
+  submit button passes `type="submit"`. `loading` (on `Button` and `IconButton`) shows a
+  spinner and keeps the button focusable for the whole request (a natively disabled control
+  drops the keyboard focus to `<body>`): it sets `aria-disabled="true"` and `aria-busy`, fades
+  through `aria-disabled:` variants, and cancels the button's click, which also cancels the
+  implicit submission of its form by Enter in a field (the browser submits by clicking the
+  default button), so a form still cannot be sent twice and the caller's `onClick` does not
+  run. `disabled` stays native (with `loading` too, it wins). `LinkButton` `href` is a
+  locale-less internal path rendered with the i18n `Link`; an http(s) URL opens in a new tab
+  with a screen-reader hint; `mailto:`, `tel:`, `#` or `external` render a plain `<a>` (use
+  `external` for `/api/files/…`). `IconButton` requires `aria-label` and defaults to
+  `variant: 'ghost'`.
 - `FormField { label, hint?, error?, required?, optional?, hideLabel?, id?, className?,
   children }`: `children` is one control element (`Input`, `Textarea`, `Select`), which
   receives `id`, `aria-describedby`, `aria-invalid` and `required` by `cloneElement`, or a
@@ -2570,6 +2627,9 @@ Props and behaviour fixed by the delivered kit:
   'lg', dismissible? }` is controlled: the owner sets `open={false}` in `onClose`. Initial
   focus goes to the element marked `data-autofocus`, else the first focusable; children are
   mounted only while open; a non-dismissible dialog the browser force-closes is shown again.
+  The dialog is `text-start` whatever the alignment where its owner renders it (a centred
+  empty state, an end-aligned table cell), and its title and description break a long word
+  (`break-words`); a body that wants another alignment sets it itself.
   A modal dialog covers the toast region, so failures inside an open dialog are reported with
   an inline `Alert`.
 - `DropdownMenu { trigger, 'aria-label'?, items, align?: 'start' | 'end', triggerClassName?,
@@ -2580,7 +2640,11 @@ Props and behaviour fixed by the delivered kit:
   'bottom', align?: 'center' | 'start' | 'end' }`.
 - `Tabs { tabs: { value, label, content, disabled? }[], 'aria-label', value?, defaultValue?,
   onValueChange? }`: all panels stay mounted (content may be server-rendered); the tab list
-  hides its scrollbar and scrolls a clicked tab into view. `Pagination { previousHref?,
+  hides its scrollbar. The selected tab is brought whole into view on mount (a tab chosen by
+  the URL), after a keyboard or pointer selection and when the owner changes it, by scrolling
+  the tab list only, never the page, and clear of the edge fade; an edge with more tabs past
+  it fades out (`data-overflow-start` / `data-overflow-end` on the list, kept current on
+  scroll and with a `ResizeObserver`; a mask of two gradients). `Pagination { previousHref?,
   nextHref?, onPrevious?, onNext?, page?, totalPages? }` is previous/next only, matching
   `Page<T>.nextCursor`; a null or absent target disables the control. `Breadcrumbs { items:
   { label, href? }[] }`.
@@ -2601,6 +2665,16 @@ Props and behaviour fixed by the delivered kit:
   with the default title. `titleAs` (default `'p'`, same look at every level) makes the title a
   heading on a page that is nothing but the empty state: every `not-found.tsx` under `src/app`
   passes `'h1'` (the global one writes its own `<h1>`), so each not-found page has one h1.
+- `ErrorState { title?; titleAs?: 'p' | 'h1' | 'h2' | 'h3'; description?; onRetry?; action?;
+  className? }`: the full-area failure view of a page or a panel, in a `role="alert"` region
+  (a failed action uses `Alert` or a toast). `title` falls back to `errors.page.title`, and the
+  default description is shown only with the default title; `onRetry` adds the "Try again"
+  button (an `error.tsx` passes its `retry`), and `action` comes after it (a `LinkButton`
+  home). `titleAs` works like `EmptyState`'s (default `'p'`, same look at every level): an
+  `error.tsx` that replaces a whole page passes `'h1'`. Every `error.tsx` under
+  `src/app/[locale]` does, since none renders inside anything that holds a heading (the shells
+  and the area layouts have none, and the page's `PageHeader` goes with the page), so each
+  error page has one h1.
 - Built-in text: `EmptyState` and `ErrorState` read the `errors` namespace
   (`errors.empty.{title, description}`, `errors.page.{title, description, retry}`),
   `Breadcrumbs` reads `nav.shell.breadcrumbs`; everything else comes from `common`
@@ -2631,7 +2705,8 @@ CourseCard        { course: Course; href: string; progressPercent?: number }    
 PathwayCard       { pathway: Pathway; href: string; progress?: { completed: number; total: number } }
 ProgressCard      { title: string; subtitle?: string; percent: number; href?: string; ctaLabel?: string }
 XPBadge           { xp: number; level: number; size?: 'sm' | 'md' | 'lg' }
-StatCard          { label: string; value: string | number; icon?: IconName; hint?: string; tone?: 'default' | 'brand' | 'success' | 'warning' }   // numbers grouped for the locale
+StatCard          { label: string; value: string | number; icon?: IconName; hint?: string; tone?: 'default' | 'brand' | 'success' | 'warning' }   // numbers grouped for the locale;
+                                                 // value: a number or a short text (see below)
 LessonNavigation  { modules: Module[]; lessons: Lesson[]; currentLessonId: string; completedLessonIds: string[]; lessonBasePath: string }
 AIChatPanel       { messages: ChatMessage[]; mode: TutorMode; modes: TutorMode[]; streamingText: string | null; pending: boolean;
                     disabledReason?: string | null; remainingToday?: number | null; draft?: ChatDraft | null; className?: string;
@@ -2668,6 +2743,15 @@ kebab-case names are accepted, and seed or migration data must use names from `I
 `useDateFormat()` (`formatDate` in next-intl's time zone, which is the viewer's (section 12,
 `TimeZoneCookie` in 7.5), so server and client print the same day and time), `useDurationFormat()` ("45 min", "2 h", "1 h 30 min" from `common.units.*`) and
 `useAgeRangeLabel()` (`domain.course.ages` / `agesFrom` / `agesUpTo`, or null).
+
+`StatCard` in a grid: give each card about 180 px or more (a 44 px icon, a 16 px gap and
+20 px of padding on each side leave the text about 80 px). Its label breaks and hyphenates a
+long word in the page's language (`break-words hyphens-auto`); its value is never broken
+inside a word (a number is `whitespace-nowrap`; a text value such as "50 %" keeps its no-break
+space and wraps only between words, "Not passed" or a date). In a card narrower than about
+180 px the text moves under the icon (the row wraps once the text would have less than 5rem)
+instead of overflowing. The stat grids of Student Home, the teacher dashboard and Reports keep
+every card at 180 px or more at 375, 1024 and 1366 px in `en` and `fr`.
 
 `AIChatPanel` is split into `AIChatPanel.tsx` (the mode radio group of chips),
 `AIChatMessages.tsx` (finished messages in a `role="log"` live region; the streaming reply
@@ -3975,7 +4059,8 @@ export function runAction<I, O>(
   options: { allowAnonymous: true },
 ): Promise<ActionResult<O>>;
 // `I` is the schema's output type (after trimming and other transforms). An action without a payload passes
-// `noInputSchema` and `undefined`.
+// `noInputSchema` and `undefined`. With `roles`, a call without a session answers `unauthenticated` (1.4, step 2),
+// also a signed-out one: proxy.ts hands a server-action POST on instead of redirecting it (1.3).
 
 // src/lib/schemas/common.ts (shared)
 export const VALIDATION_KEYS: readonly [...];    // the keys of the `validation` namespace (10.5)
@@ -4008,6 +4093,15 @@ export function getChallengePhase(challenge: Pick<Challenge, 'startAt' | 'deadli
 export function toEmbedUrl(url: string): string | null;              // the normalised href, or null; the same rule as schemas/course.isEmbeddableUrl
                                                                      // without importing it (a unit test keeps the two equal); EmbedBlock renders nothing on null
 export function toVideoEmbedUrl(source: 'youtube' | 'vimeo', videoId: string): string | null;   // for VideoBlock
+export type PublishProblem =                     // publish-readiness.ts
+  | { kind: 'no_modules' } | { kind: 'empty_module'; moduleId: string } | { kind: 'empty_lesson'; lessonId: string };
+export function getPublishProblems(outline: {
+  modules: readonly Pick<Module, 'id' | 'order'>[];
+  lessons: readonly Pick<Lesson, 'id' | 'moduleId' | 'order' | 'blockCount'>[];
+}): PublishProblem[];                            // [] when ready; no module → [no_modules] alone; else module by module (by order):
+                                                 // a module without lessons → empty_module, else each of its lessons (by order) with
+                                                 // blockCount 0 → empty_lesson. Imports only @/types. setCourseStatus enforces it (10.2)
+                                                 // and the course editor lists it, so the two always agree
 
 // src/lib/firebase/storage-paths.ts (shared)
 export const UPLOAD_LIMITS: Record<FileKind, { maxBytes: number; contentTypes: string[]; extensions: string[] }>;
@@ -4113,6 +4207,7 @@ touchLastLogin(actor, uid): Promise<void>                                     //
 getSchool(actor, schoolId): Promise<School>
 listSchools(actor, page?: PageRequest): Promise<Page<School>>
 createSchool(actor, input: SchoolInput): Promise<School>
+deleteNewSchool(actor, schoolId): Promise<void>   // system only; undoes createSchool for createSchoolWithAdmin; succeeds when already gone
 updateSchool(actor, schoolId, patch: Partial<Pick<School, 'name' | 'country' | 'city' | 'defaultLocale' | 'settings'>>): Promise<School>
                                                                                // clamps settings.aiDailyMessageLimit to 1–200 (null = platform default);
                                                                                // `settings` is replaced as a whole; `country` may be changed by a platform
@@ -4176,7 +4271,9 @@ listOfficialCourses(actor): Promise<Course[]>
 createCourse(actor, input: CourseInput): Promise<Course>
 updateCourse(actor, courseId, patch: Partial<CourseInput>): Promise<Course>   // ConflictError on a pathwayId or isOfficial change while published, and on
                                                                                // switching audience to 'teacher' while any lesson has projectIds
-setCourseStatus(actor, courseId, status: CourseStatus): Promise<Course>
+setCourseStatus(actor, courseId, status: CourseStatus): Promise<Course>       // ValidationError { status: [content_required] } when publishing a course
+                                                                               // getPublishProblems rejects (modules and lessons read in the transaction);
+                                                                               // re-publishing a published course is a no-op
 createModule(actor, courseId, input: ModuleInput): Promise<Module>
 updateModule(actor, courseId, moduleId, patch: Partial<ModuleInput>): Promise<Module>
 deleteModule(actor, courseId, moduleId): Promise<void>                        // ConflictError unless the module holds no lessons (3.1); no cascade
@@ -4324,6 +4421,7 @@ setChallengeStatus(actor, challengeId, status: Challenge['status']): Promise<voi
 
 // billing.ts
 listLicensesForSchool(actor, schoolId): Promise<License[]>
+listAllLicenses(actor, page?: PageRequest): Promise<Page<License>>             // platform admin; every school, endsAt desc; cursor = the last licence id
 upsertLicense(actor, licenseId: string | null, input: LicenseInput): Promise<License>
 listSubscriptions(actor, page?: PageRequest): Promise<Page<Subscription>>
 listSubscriptionsForOwner(actor, ownerType: 'user' | 'school', ownerId): Promise<Subscription[]>
@@ -4567,9 +4665,11 @@ Semantics that the signatures do not show:
   `schoolInputSchema` and its field errors keyed `school.<field>` (form-level under
   `school`), the admin fields with `createTeacherInputSchema` keyed `adminDisplayName` /
   `adminEmail`. `getUserByEmail` is checked **before** `createSchool`, so an existing address
-  (`ConflictError`) never leaves a school without an admin (a concurrent creation of that
-  address between the check and `createUser` would; negligible, and recoverable with
-  `changeUserRole`). The admin profile has `locale` = `school.defaultLocale` and
+  (`ConflictError`) never leaves a school without an admin. An admin account that still
+  cannot be created afterwards (a concurrent creation of the address, an Auth or profile-write
+  fault) deletes the school again (`deleteNewSchool` with the system actor) and the original
+  error is rethrown; only a failed delete, which is logged, leaves it behind. Once the admin's
+  profile exists both stand: a failed `syncClaims` is repaired at sign-in. The admin profile has `locale` = `school.defaultLocale` and
   `provisionedByUid` = the actor; school admins are not counted in `schools.counts`. The
   new Auth user has no usable password; the caller's browser then sends the reset email
   (section 1.5).
@@ -4878,6 +4978,19 @@ How the workstream actions call the services (the error codes each form must han
   `changeUserRole(session, uid, role, schoolId)` (`conflict` = the user owns a class that is
   not archived); `setUserStatusAction` → `setUserStatus`; `setVerifiedEducatorAction` →
   `setVerifiedEducator`.
+- `setSchoolStatusAction`, `upsertLicenseAction` and `upsertSubscriptionAction` write the audit
+  entries `school.status_changed` (meta `{ status, previousStatus }`), `license.upserted` (meta
+  `{ seatsTotal, status, scope, subscriptionId, created }`) and `subscription.upserted` (meta
+  `{ ownerType, ownerId, plan, status, created }`) with `data/audit.writeAudit`, because no
+  repository or service writes these three. Best effort: once the change is stored, a failed
+  audit write is logged and does not fail the action. The upsert actions also check what the
+  repositories do not, and answer `validation` with `input.<field>: ['invalid_choice']` unless all
+  of these hold: the owner exists (`input.ownerId`); a **new** user subscription's owner is a
+  `student` or `teacher` (an edit is never refused for the owner's role); the named courses exist
+  and are official (`input.courseIds`); the linked subscription is one of the school's
+  (`input.subscriptionId`); the licence's `scope.pathwayIds` exist (`input.scope.pathwayIds`); the
+  challenge's school (`input.schoolId`) and `hardwarePlatformIds` exist
+  (`input.hardwarePlatformIds`).
 - `issueCertificateAction` → `const certificate = await issueCertificate(session, data);
   return ok({ certificateId: certificate.id })`; `revokeCertificateAction` →
   `revokeCertificate(session, certificateId, reason)`.
@@ -5214,7 +5327,7 @@ stubs from day one):
 | E | `LessonPlayer` on the teacher player route, which brings `enrollInCourseAction`, `startLessonAction`, `saveBlockResponseAction`, `completeLessonAction` and `submitQuizAttemptAction` with it (their roles include `teacher`); `IssueCertificateButton` on Reports | B, C, J |
 | J | `SubmissionForm` (challenge entry), `JoinClassForm` (settings) | D, E |
 | A | `JoinClassForm` (signed-in branch of `/join`) | E |
-| F | `FileUpload` (block media, cover image), which calls `registerUploadAction` (roles include `teacher`, `platform_admin`); link to `/preview/…` | D, B |
+| F | `FileUpload` (block media, cover image), which calls `registerUploadAction` (roles include `teacher`, `platform_admin`); links to `/preview/…` (platform admin) and to `/teacher/courses/{courseId}/lessons/{lessonId}` (the teacher's read-only preview of their own course: E keeps that route read-only for an owner who is not enrolled) | D, B, E |
 | G | Class management on the school pages calls WS-E's actions directly: `createClassAction`, `updateClassAction`, `archiveClassAction`, `regenerateJoinCodeAction`, `addStudentsAction`, `removeStudentAction`, `resetStudentPasswordAction`, `assignCourseAction`, `unassignCourseAction` (their roles include `school_admin`); link to `/preview/…` | E, B |
 | H | `IssueCertificateButton`, `issueCertificateAction`, `revokeCertificateAction` on `/admin/certificates` (roles include `platform_admin`) | J |
 | G, H | `sendPasswordReset()` from `lib/auth/client.ts` after `createTeacherAction` / `createSchoolAction` | Foundation |

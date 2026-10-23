@@ -1,0 +1,116 @@
+name: Live check
+
+# Opens the deployed site the way a visitor does and prints what they get: the HTTP status and
+# Vercel's error headers for a few pages, then, in Chrome, the final address, the page heading,
+# console errors, uncaught exceptions and failed requests. Run it from the Actions tab after a
+# deployment ("Run workflow"), optionally with another address (a preview URL, for example).
+#
+# It sends no credentials and reads nothing private: the repository is public, and so is its log.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Address of the deployed site
+        required: false
+        default: https://roboholicai.vercel.app
+      browser:
+        description: Also open the pages in Chrome (slower)
+        type: boolean
+        default: true
+  push:
+    paths:
+      - .github/workflows/live-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check the deployed site
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SITE_URL: ${{ inputs.url || 'https://roboholicai.vercel.app' }}
+    steps:
+      - name: HTTP responses
+        run: |
+          for path in / /en /fr /en/login /en/pathways; do
+            echo "::group::GET ${SITE_URL}${path}"
+            curl -sS -o page.html -D headers.txt \
+              -w 'status %{http_code}, %{size_download} bytes, %{time_total} s\n' \
+              "${SITE_URL}${path}" || true
+            grep -i -E '^(HTTP|location|x-vercel-id|x-vercel-error|x-matched-path|x-nextjs-[a-z-]+):' headers.txt || true
+            grep -o -E '<title>[^<]*</title>|__next_error__|<h1[^>]*>[^<]{0,80}' page.html | head -5 || true
+            echo "::endgroup::"
+          done
+
+      - name: Server self-check (/api/health)
+        run: |
+          curl -sS -m 60 "${SITE_URL}/api/health" -o health.json -w 'status %{http_code}\n' || true
+          python3 -c "
+          import json
+          try:
+              report = json.load(open('health.json'))
+          except Exception:
+              print('no JSON report (the route is not deployed, or the server failed before it)')
+              raise SystemExit
+          print('ok:', report.get('ok'), '| node', report.get('node'), '| commit', report.get('commit'))
+          for step in report.get('steps', []):
+              print('PASS' if step['ok'] else 'FAIL', step['name'], '-', step.get('detail', ''))
+          "
+
+      - uses: actions/setup-node@v4
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.browser }}
+        with:
+          node-version: 24
+
+      # Drives the Google Chrome that the runner image already has, so nothing is downloaded or
+      # apt-installed (`playwright install --with-deps` stalled the job twice). Bounded anyway, so
+      # a hang cannot hold back the log of the steps above.
+      - name: Open the site in Chrome
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.browser }}
+        timeout-minutes: 6
+        run: |
+          mkdir -p "${RUNNER_TEMP}/live-check" && cd "${RUNNER_TEMP}/live-check"
+          npm init -y > /dev/null
+          npm install --no-audit --no-fund playwright@1.56.1 > /dev/null
+          cat > check.mjs <<'EOF'
+          import { chromium } from 'playwright';
+
+          const base = process.env.SITE_URL.replace(/\/+$/, '');
+          const browser = await chromium.launch({ channel: 'chrome' });
+          for (const path of ['/', '/en', '/fr', '/en/login', '/en/pathways', '/fr/pathways']) {
+            const context = await browser.newContext({ locale: path.startsWith('/fr') ? 'fr-FR' : 'en-US' });
+            const page = await context.newPage();
+            const problems = [];
+            page.on('console', (message) => {
+              if (message.type() === 'error') problems.push(`console: ${message.text()}`);
+            });
+            page.on('pageerror', (error) => problems.push(`exception: ${error.message}`));
+            page.on('response', (response) => {
+              if (response.status() >= 400) problems.push(`HTTP ${response.status()} ${response.url()}`);
+            });
+            page.on('requestfailed', (request) =>
+              problems.push(`failed ${request.url()} (${request.failure()?.errorText})`),
+            );
+            console.log(`::group::${base}${path}`);
+            try {
+              await page.goto(`${base}${path}`, { waitUntil: 'networkidle', timeout: 60_000 });
+            } catch (error) {
+              problems.push(`navigation: ${error.message}`);
+            }
+            // The time-zone cookie triggers one refresh after the first load.
+            await page.waitForTimeout(4_000);
+            const heading = await page.locator('h1').first().textContent({ timeout: 2_000 }).catch(() => null);
+            const text = (await page.locator('body').innerText().catch(() => '')).replace(/\s+/g, ' ');
+            console.log(`final address: ${page.url()}`);
+            console.log(`heading: ${heading}`);
+            console.log(`text: ${text.slice(0, 700)}`);
+            console.log(problems.length === 0 ? 'no errors' : problems.join('\n'));
+            console.log('::endgroup::');
+            await context.close();
+          }
+          await browser.close();
+          EOF
+          node check.mjs

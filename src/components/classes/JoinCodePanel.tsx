@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { Copy, Link2, Presentation, RefreshCw } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { regenerateJoinCodeAction, updateClassAction } from '@/actions/classes';
@@ -60,6 +60,19 @@ export function JoinCodePanel({
   const [regenerating, setRegenerating] = useState(false);
   const [regenerateError, setRegenerateError] = useState<string | null>(null);
   const focusAfterConfirm = useFocusAfterClose(confirmOpen);
+  const focusToggleAfterRefresh = useRef(false);
+  const isOpen = state.kind === 'open';
+
+  // "Close the code" keeps the focus while it loads (7.3), and the refresh after its success
+  // takes it out of the page, which drops the focus to <body>: the toggle takes it once the
+  // refreshed panel shows the code closed, before the browser paints (a layout effect, so the
+  // focus is never seen on <body>). Focus the user moved somewhere else stays there.
+  useLayoutEffect(() => {
+    if (isOpen || !focusToggleAfterRefresh.current) return;
+    focusToggleAfterRefresh.current = false;
+    const active = document.activeElement;
+    if (active === null || active === document.body) toggleRef.current?.focus();
+  }, [isOpen]);
 
   if (schoolJoinCodesOff) {
     return (
@@ -78,7 +91,6 @@ export function JoinCodePanel({
   }
 
   const [first, second] = joinCodeGroups(joinCode);
-  const isOpen = state.kind === 'open';
 
   /** True when the refresh it starts takes this panel away (the class is archived or gone). */
   function reportToggle(error: ActionError): boolean {
@@ -117,17 +129,23 @@ export function JoinCodePanel({
           ? t('joinCode.extended')
           : t('joinCode.opened');
       toast({ tone: 'success', title });
+      focusToggleAfterRefresh.current = !enabled;
       router.refresh();
     } catch {
       panelGone = reportToggle({ code: 'internal' });
     } finally {
-      // The pressed button was disabled while loading, which dropped the focus. The toggle is
-      // the same element after the refresh ("Close the code" is gone then), so it takes the
-      // focus back once it is enabled again (5.4, 7.3); `<main>` when the panel goes away.
+      // The pressed button keeps the focus while it loads (5.4, 7.3), and the toggle is the
+      // same element after the refresh; after "Close the code", the effect above moves the
+      // focus to it. A refresh that takes the panel away would drop the focus on its buttons
+      // to <body>, so `<main>` takes it now. Focus the user moved somewhere else stays there.
       settleAndRestoreFocus(
         () => setBusy(null),
-        () => (panelGone ? document.getElementById(MAIN_CONTENT_ID) : toggleRef.current),
+        () => toggleRef.current,
       );
+      const active = document.activeElement;
+      const buttons = toggleRef.current?.parentElement;
+      if (panelGone && (active === null || active === document.body || buttons?.contains(active)))
+        document.getElementById(MAIN_CONTENT_ID)?.focus();
     }
   }
 

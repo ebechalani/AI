@@ -19,6 +19,7 @@ export default function StudentPlayerError({
   return (
     <main id="main-content" className="flex min-h-dvh items-center justify-center p-6">
       <ErrorState
+        titleAs="h1"
         onRetry={retry}
         action={
           <LinkButton href="/student/learn" variant="secondary">

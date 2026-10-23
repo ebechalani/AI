@@ -1,0 +1,664 @@
+{
+  "list": {
+    "title": "Course creator",
+    "description": "Write your own courses, then assign them to your classes or share them with your school.",
+    "newCourse": "New course",
+    "heading": "Your courses",
+    "count": "{count, plural, one {# course} other {# courses}}",
+    "empty": {
+      "title": "You have not created a course yet",
+      "description": "Start with a title and a short description. Then add modules, lessons, quizzes and projects."
+    },
+    "updated": "Updated {date}",
+    "structure": "{modules, plural, =0 {No modules} one {# module} other {# modules}} · {lessons, plural, =0 {no lessons} one {# lesson} other {# lessons}}",
+    "audience": {
+      "student": "For students",
+      "teacher": "For teachers"
+    },
+    "visibility": {
+      "private": "Private",
+      "school": "Shared with your school"
+    },
+    "edit": "Edit",
+    "editLabel": "Edit “{course}”"
+  },
+  "adminList": {
+    "title": "Official courses",
+    "description": "RoboHolic’s own courses. Learners find them in the catalog once they are published.",
+    "newCourse": "New official course",
+    "heading": "All official courses",
+    "empty": {
+      "title": "No official course yet",
+      "description": "Create the first one, give it a pathway, then publish it."
+    },
+    "pathway": "Pathway: {pathway}",
+    "noPathway": "No pathway",
+    "tier": {
+      "free": "Free",
+      "premium": "Premium"
+    }
+  },
+  "newCourse": {
+    "title": "Create a course",
+    "adminTitle": "Create an official course",
+    "description": "You can change all of this later. The course stays a draft until you publish it.",
+    "languageHint": "Write the title and the descriptions in this language. You can add a translation later.",
+    "submit": "Create course",
+    "created": "Course created."
+  },
+  "tabs": {
+    "label": "Course editor sections",
+    "outline": "Outline",
+    "details": "Details",
+    "content": "Quizzes and projects"
+  },
+  "course": {
+    "preview": "Preview"
+  },
+  "language": {
+    "legend": "Language you are editing",
+    "state": {
+      "required": "Required",
+      "translated": "Translated",
+      "missing": "Not translated yet"
+    }
+  },
+  "limits": {
+    "charCount": "{count, number} / {max, number} characters"
+  },
+  "fields": {
+    "inLanguage": "{field} ({language})",
+    "courseLanguage": "Course language",
+    "defaultLocale": "Default language",
+    "defaultLocaleHint": "Fill in every required field in this language. Other languages are optional: learners see the default language where a translation is missing.",
+    "title": "Title",
+    "summary": "Summary",
+    "summaryHint": "One or two sentences, shown on the course card.",
+    "description": "Description",
+    "outcomes": "What learners will be able to do",
+    "outcomesHint": "One per line, up to {max, number} lines of up to {chars, number} characters.",
+    "audience": "Who is this course for?",
+    "audienceOptions": {
+      "student": "Students",
+      "studentDescription": "Learners aged 8 to 18. It can be assigned to classes.",
+      "teacher": "Teachers",
+      "teacherDescription": "Professional learning for educators. Teachers enrol themselves; it cannot be assigned to a class and has no projects."
+    },
+    "audienceLocked": "This course has project blocks, so it stays a course for students.",
+    "audiencePathway": "The pathway {pathway} is for another audience. Put the course back to draft to change both.",
+    "area": "Topic",
+    "agesLegend": "Recommended ages",
+    "ageMin": "From age",
+    "ageMax": "To age",
+    "agesHint": "Guidance only: ages never stop anyone from opening the course. Between {min, number} and {max, number}; leave empty for no limit.",
+    "minutes": "Estimated time in minutes",
+    "minutesHint": "Up to {max, number} minutes. Shown to learners as {duration}.",
+    "tags": "Tags",
+    "tagsHint": "Separate tags with commas. Up to {max, number} tags.",
+    "tagInvalid": "Use lowercase letters, numbers and dashes only, up to {max, number} characters per tag.",
+    "visibility": "Who can see this course?",
+    "visibilityOptions": {
+      "private": "Private",
+      "privateDescription": "You, the learners of the classes you assign it to, and your school’s administrators.",
+      "school": "Shared with your school",
+      "schoolDescription": "Teachers of your school can also see it and assign it to their classes."
+    },
+    "visibilityNoSchool": "Private: only you and the learners of the classes you assign it to can see it. Courses can be shared with a school once your account belongs to one.",
+    "certificate": "Certificate",
+    "certificateDescription": "Learners who finish the course get a certificate.",
+    "pathway": "Pathway",
+    "noPathway": "No pathway",
+    "pathwayDraft": "{pathway} (draft)",
+    "pathwayLocked": "Unpublish the course to move it to another pathway.",
+    "order": "Position in the pathway",
+    "orderHint": "From 0 to {max, number}. Courses are listed from the lowest number to the highest.",
+    "accessTier": "Access",
+    "accessTierOptions": {
+      "free": "Free",
+      "freeDescription": "Every learner who can see the course can open it.",
+      "premium": "Premium",
+      "premiumDescription": "Only learners covered by a school licence or a subscription can open it."
+    },
+    "capabilities": "Hardware the course needs",
+    "platformRetired": "{platform} (no longer offered)",
+    "moduleDescription": "Description",
+    "lessonSummary": "Summary",
+    "lessonMinutes": "Estimated time in minutes",
+    "lessonMinutesHint": "Between 1 and {max, number} minutes.",
+    "xp": "XP reward",
+    "lessonXpHint": "Learners earn it the first time they complete the lesson. Up to {max, number} XP."
+  },
+  "status": {
+    "title": "Publishing",
+    "explanation": {
+      "draft": "Draft: it cannot be assigned, and nobody new can enrol, until it is published.",
+      "publishedPrivate": "Published: it can be assigned to classes.",
+      "publishedSchool": "Published: teachers of the school can also see it and assign it to their classes.",
+      "publishedForTeachers": "Published: as a course for teachers, it is not assigned to classes. {visibility, select, school {Teachers of the school can open it and enrol.} other {While it is private, other teachers cannot see it.}}",
+      "publishedOfficial": "Published: learners find it in the catalog, in the pathway {pathway}.",
+      "publishedOfficialNoPathway": "Published: learners can open it, but it is in no pathway yet.",
+      "archived": "Archived: it is hidden from the catalog and cannot be assigned."
+    },
+    "unpublish": "Back to draft",
+    "restore": "Restore as a draft",
+    "notReady": "The course is not ready to publish yet. Fix the points below first.",
+    "confirm": {
+      "publish": {
+        "title": "Publish “{course}”?",
+        "description": "{audience, select, teacher {Teachers who can see it can then enrol.} other {It can then be assigned to classes.}}{visibility, select, school { Teachers of the school can also find it.} other {}}",
+        "descriptionOfficial": "Learners will find it in the catalog. Changes you save afterwards are visible to them at once."
+      },
+      "unpublish": {
+        "title": "Put “{course}” back to draft?",
+        "description": "Nobody new can be assigned it or enrol in it. Learners already enrolled keep their access.",
+        "descriptionOfficial": "It disappears from the catalog, and learners already enrolled can no longer open it until you publish it again."
+      },
+      "archive": {
+        "title": "Archive “{course}”?",
+        "description": "Nobody new can be assigned it or enrol in it. Learners already enrolled keep their access. You can restore it later.",
+        "descriptionOfficial": "It disappears from the catalog, and learners already enrolled can no longer open it. You can restore it later."
+      },
+      "restore": {
+        "title": "Restore “{course}”?",
+        "description": "It becomes a draft again. Publish it when it is ready."
+      }
+    },
+    "toast": {
+      "publish": "Course published.",
+      "unpublish": "The course is a draft again.",
+      "archive": "Course archived.",
+      "restore": "Course restored as a draft."
+    }
+  },
+  "readiness": {
+    "title": "Before you publish",
+    "checkTitle": "Things to check",
+    "noModules": "Add at least one module with a lesson.",
+    "emptyModule": "The module “{module}” has no lessons.",
+    "emptyLesson": "The lesson “{lesson}” has no blocks.",
+    "untranslatedCourse": "The course details are not translated into {language} yet.",
+    "untranslatedModules": "{count, plural, one {# module is} other {# modules are}} not translated into {language} yet.",
+    "untranslatedLessons": "{count, plural, one {# lesson is} other {# lessons are}} not translated into {language} yet.",
+    "unusedQuizzes": "{count, plural, one {# quiz is not used in any lesson, so learners will not see it.} other {# quizzes are not used in any lesson, so learners will not see them.}}",
+    "unusedProjects": "{count, plural, one {# project is not used in any lesson, so learners will not see it.} other {# projects are not used in any lesson, so learners will not see them.}}",
+    "noCover": "The course has no cover image.",
+    "ready": "Everything needed is there. You can publish the course.",
+    "open": {
+      "outline": "Show in the outline",
+      "lesson": "Open the lesson",
+      "details": "Open the details",
+      "content": "Open quizzes and projects",
+      "cover": "Add a cover"
+    }
+  },
+  "notices": {
+    "live": "This course is published: changes are visible to learners as soon as you save them.",
+    "locked": "Learners are enrolled in this course, so its modules, lessons, blocks, quizzes and projects can no longer be deleted. You can still edit and add content.",
+    "teacherMade": "This course was made by a teacher. Changes you save are visible to its author.",
+    "quizLive": "Changing the correct answers does not change the results of attempts already made."
+  },
+  "outline": {
+    "title": "Modules and lessons",
+    "moduleCount": "{count, number} of {max, number} modules",
+    "empty": {
+      "title": "This course has no modules yet",
+      "description": "A module groups lessons. Add a first module, then its lessons."
+    },
+    "addModule": "Add a module",
+    "moduleLimit": "A course can have up to {max, number} modules.",
+    "moduleHeading": "Module {position, number}: {title}",
+    "lessonCount": "{count, plural, =0 {No lessons} one {# lesson} other {# lessons}}",
+    "untranslated": "Not in {language}",
+    "noLessons": "No lessons in this module yet.",
+    "addLesson": "Add a lesson",
+    "addLessonTo": "Add a lesson to “{module}”",
+    "lessonLimit": "A module can have up to {max, number} lessons.",
+    "lessonLink": "{position, number}. {title}",
+    "blockCount": "{count, plural, one {# block} other {# blocks}}",
+    "noBlocks": "No blocks yet",
+    "xp": "{xp, number} XP",
+    "lessonContents": "{quizzes, plural, =0 {} one {# quiz · } other {# quizzes · }}{projects, plural, =0 {} one {# project · } other {# projects · }}{reflections, plural, =0 {no reflection} one {# reflection} other {# reflections}}"
+  },
+  "module": {
+    "createTitle": "Add a module",
+    "editTitle": "Edit “{module}”",
+    "editLabel": "Edit the module “{module}”",
+    "deleteLabel": "Delete the module “{module}”",
+    "deleteTitle": "Delete the module “{module}”?",
+    "deleteDescription": "The module has no lessons. This cannot be undone.",
+    "deleteHint": "A module can be deleted once it has no lessons.",
+    "created": "Module added.",
+    "saved": "Module saved.",
+    "deleted": "Module deleted."
+  },
+  "lesson": {
+    "createTitle": "Add a lesson to “{module}”",
+    "deleteLabel": "Delete the lesson “{lesson}”",
+    "deleteTitle": "Delete the lesson “{lesson}”?",
+    "deleteDescription": "{blocks, plural, =0 {The lesson has no blocks.} one {Its block is deleted too.} other {Its # blocks are deleted too.}} Quizzes and projects it uses stay in the course, unused. This cannot be undone.",
+    "created": "Lesson added.",
+    "deleted": "Lesson deleted."
+  },
+  "details": {
+    "heading": "Course details",
+    "textLegend": "Title and descriptions",
+    "aboutLegend": "About the course",
+    "hardwareLegend": "Robotics hardware",
+    "hardwareHint": "Optional. Only for courses that use a robot, a camera or sensors.",
+    "officialLegend": "Catalog",
+    "capabilities": {
+      "drive": "Moves on wheels or tracks",
+      "camera": "Camera",
+      "distance": "Distance sensor",
+      "line": "Line sensor",
+      "color": "Colour sensor",
+      "imu": "Motion sensor (IMU)",
+      "microphone": "Microphone",
+      "speaker": "Speaker",
+      "gripper": "Gripper",
+      "display": "Display"
+    },
+    "save": "Save details",
+    "discard": "Discard changes",
+    "saved": "Course details saved.",
+    "nothingToSave": "There is nothing new to save."
+  },
+  "cover": {
+    "title": "Cover image",
+    "alt": "Current cover image",
+    "none": "No cover image yet.",
+    "hint": "Shown on course cards. A wide image (16:9) works best.",
+    "saved": "Cover image saved.",
+    "remove": "Remove the cover",
+    "removeTitle": "Remove the cover image?",
+    "removeDescription": "The course cards show no image until you upload a new one.",
+    "removed": "Cover image removed."
+  },
+  "content": {
+    "quizzesTitle": "Quizzes",
+    "newQuiz": "New quiz",
+    "questionCount": "{count, plural, one {# question} other {# questions}}",
+    "usedIn": "Used in “{lesson}”",
+    "unused": "Not used in a lesson",
+    "noQuizzes": "No quizzes yet",
+    "noQuizzesDescription": "Create a quiz, then add it to a lesson with a quiz block.",
+    "projectsTitle": "Projects and assignments",
+    "newProject": "New project",
+    "noProjectsForTeachers": "Courses for teachers have no projects: teachers do not submit work. Use reflection blocks instead.",
+    "noProjects": "No projects yet",
+    "noProjectsDescription": "Create a project or an assignment, then add it to a lesson with a project block.",
+    "deleteLabel": "Delete “{title}”",
+    "deleteQuizTitle": "Delete the quiz “{title}”?",
+    "deleteProjectTitle": "Delete “{title}”?",
+    "deleteDescription": "It is not used in any lesson. This cannot be undone.",
+    "deleted": "Deleted."
+  },
+  "lessonEditor": {
+    "preview": "Preview the lesson",
+    "moduleOf": "In the module “{module}”"
+  },
+  "lessonDetails": {
+    "title": "Lesson details",
+    "save": "Save lesson details",
+    "saved": "Lesson details saved."
+  },
+  "requirements": {
+    "title": "To complete this lesson",
+    "quizzes": "{count, plural, one {Pass the quiz, or use all its attempts} other {Pass the # quizzes, or use all their attempts}}",
+    "projects": "{count, plural, one {Submit the project} other {Submit the # projects}}",
+    "reflections": "{count, plural, one {Write the reflection} other {Write the # reflections}}",
+    "none": "Learners complete this lesson by opening it and selecting “Complete lesson”."
+  },
+  "blocks": {
+    "title": "Blocks",
+    "count": "{count, number} of {max, number} blocks",
+    "add": "Add a block",
+    "limit": "A lesson can have up to {max, number} blocks.",
+    "empty": {
+      "title": "This lesson has no blocks yet",
+      "description": "Blocks are the content of a lesson: text, images, videos, quizzes, activities and more."
+    },
+    "stageCount": "{count, plural, one {# block} other {# blocks}}",
+    "newTitle": "New block: {type}",
+    "chooseType": "Block type",
+    "addConfirm": "Add block",
+    "stage": "Stage",
+    "stageHint": "Learners see the blocks grouped by stage, in this order: Discover, Learn, Watch, Try, Ask AI, Build, Check, Reflect.",
+    "save": "Save block",
+    "created": "Block added.",
+    "saved": "Block saved.",
+    "deleted": "Block deleted.",
+    "noText": "No text yet",
+    "linked": "Uses “{title}”",
+    "untranslated": "Not in {language}",
+    "reorderName": "{type} {position, number}",
+    "editLabel": "Edit {type} {position, number}",
+    "deleteLabel": "Delete {type} {position, number}",
+    "deleteTitle": "Delete this block ({type})?",
+    "deleteDescription": "This cannot be undone.",
+    "deleteLinkedDescription": "What it shows stays in the course, unused, and can be added to a lesson again. This cannot be undone.",
+    "discardTitle": "Discard your changes to this block?",
+    "discardDescription": "The changes you have not saved will be lost.",
+    "discard": "Discard changes",
+    "orphan": "This block was deleted in another tab or window.",
+    "saveAsNew": "Save it as a new block",
+    "errors": {
+      "fileRequired": "Upload a file first.",
+      "quizRequired": "Choose a quiz.",
+      "projectRequired": "Choose a project."
+    },
+    "media": {
+      "open": "Open the file",
+      "none": "No file yet."
+    },
+    "types": {
+      "rich_text": {
+        "label": "Text",
+        "description": "Explanations with headings, lists and links (Markdown)."
+      },
+      "image": {
+        "label": "Image",
+        "description": "A picture with a description for learners who cannot see it."
+      },
+      "video": {
+        "label": "Video",
+        "description": "A YouTube or Vimeo video, or a video file, with a transcript."
+      },
+      "file": {
+        "label": "File",
+        "description": "A worksheet or another file to download."
+      },
+      "quiz": {
+        "label": "Quiz",
+        "description": "Questions that learners answer to check what they know."
+      },
+      "code_activity": {
+        "label": "Code activity",
+        "description": "Learners write code from a starting point."
+      },
+      "ai_activity": {
+        "label": "AI activity",
+        "description": "An activity done with Robo AI, the tutor."
+      },
+      "embed": {
+        "label": "Embed",
+        "description": "A YouTube (privacy mode) or Vimeo player."
+      },
+      "reflection": {
+        "label": "Reflection",
+        "description": "A question learners answer in writing."
+      },
+      "project": {
+        "label": "Project",
+        "description": "A project or an assignment that learners submit."
+      }
+    },
+    "richText": {
+      "heading": "Heading",
+      "body": "Text",
+      "bodyHint": "Markdown: **bold**, *italic*, lists and links. Images go in an image block.",
+      "preview": "Show a preview",
+      "hidePreview": "Hide the preview",
+      "previewHeading": "Preview"
+    },
+    "image": {
+      "file": "Image file",
+      "alt": "Description of the image",
+      "altHint": "Describe the image for learners who cannot see it.",
+      "caption": "Caption"
+    },
+    "video": {
+      "source": "Where is the video?",
+      "sources": {
+        "youtube": "YouTube",
+        "vimeo": "Vimeo",
+        "file": "A video file"
+      },
+      "idYoutube": "YouTube link or video ID",
+      "idVimeo": "Vimeo link or video ID",
+      "idFound": "Video ID: {id}",
+      "idHint": "Paste the address of the video, or its ID.",
+      "file": "Video file",
+      "duration": "Duration",
+      "durationHint": "Optional. Minutes and seconds, for example 4:30.",
+      "title": "Video title",
+      "caption": "Caption",
+      "transcript": "Transcript",
+      "transcriptHint": "A transcript helps learners who cannot hear the video."
+    },
+    "file": {
+      "file": "File",
+      "label": "Link text",
+      "description": "Description"
+    },
+    "quiz": {
+      "choose": "Quiz",
+      "placeholder": "Choose a quiz",
+      "option": "{title} ({count, plural, one {# question} other {# questions}})",
+      "edit": "Edit this quiz",
+      "create": "Create a new quiz",
+      "noneFree": "Every quiz of this course is already used in a lesson. Create a new one.",
+      "intro": "Introduction"
+    },
+    "code": {
+      "language": "Language",
+      "languages": {
+        "python": "Python",
+        "javascript": "JavaScript",
+        "blocks": "Blocks"
+      },
+      "starter": "Starting code",
+      "instructions": "Instructions",
+      "hint": "Hint"
+    },
+    "ai": {
+      "mode": "How Robo AI helps",
+      "labTool": "AI Lab tool",
+      "noLabTool": "None",
+      "labToolHint": "Optional. Suggests an AI Lab tool to students next to the activity.",
+      "labTools": {
+        "text": "Text AI",
+        "image": "Image AI",
+        "video": "Video AI",
+        "voice": "Voice AI",
+        "vision": "Vision AI",
+        "chatbot-builder": "Chatbot builder",
+        "ml-lab": "Machine learning lab",
+        "agent-builder": "Agent builder"
+      },
+      "instructions": "Instructions",
+      "starterPrompt": "Suggested question",
+      "starterPromptHint": "Learners can send it to Robo AI with one click, and change it first."
+    },
+    "embed": {
+      "url": "Player address",
+      "urlHint": "An https address on {hosts}.",
+      "ratio": "Shape",
+      "ratios": {
+        "wide": "Wide (16:9)",
+        "standard": "Standard (4:3)",
+        "square": "Square (1:1)"
+      },
+      "title": "Title",
+      "caption": "Caption"
+    },
+    "reflection": {
+      "minLength": "Minimum length",
+      "minLengthHint": "Learners must write at least this many characters to complete the lesson (0 to {max, number}; 0 = no answer needed).",
+      "prompt": "Question"
+    },
+    "project": {
+      "choose": "Project",
+      "placeholder": "Choose a project",
+      "option": "{title}",
+      "edit": "Edit this project",
+      "create": "Create a new project",
+      "noneFree": "Every project of this course is already used in a lesson. Create a new one.",
+      "intro": "Introduction"
+    }
+  },
+  "reorder": {
+    "up": "Move “{name}” up",
+    "down": "Move “{name}” down",
+    "moved": "“{name}” moved to position {position, number} of {count, number}."
+  },
+  "unsaved": {
+    "title": "Leave without saving?",
+    "description": "You have changes that are not saved. If you leave this page, they will be lost.",
+    "leave": "Leave without saving"
+  },
+  "conflict": {
+    "title": "This was changed somewhere else",
+    "description": "Someone saved a new version, in another tab or on another device, while you were editing.",
+    "takeTheirs": "Load the latest version",
+    "keepMine": "Keep my version"
+  },
+  "conflicts": {
+    "pathwayLocked": "Unpublish the course before you move it to another pathway.",
+    "audienceHasProjects": "This course has project blocks. Remove them before you make it a course for teachers: teachers do not submit projects.",
+    "generic": "Something changed in another tab or window. The page has been refreshed; check it and try again.",
+    "tooManyModules": "A course can have up to {max, number} modules.",
+    "moduleHasLessons": "Delete the lessons of this module first.",
+    "locked": "Learners are enrolled in this course, so its modules, lessons, blocks, quizzes and projects can no longer be deleted.",
+    "tooManyLessons": "A module can have up to {max, number} lessons.",
+    "staleOrder": "This list changed in another tab or window: an item was added or deleted. The page has been refreshed; try again.",
+    "tooManyBlocks": "A lesson can have up to {max, number} blocks.",
+    "quizInUse": "This quiz is already used by another block. Choose another quiz or create a new one.",
+    "projectInUse": "This project is already used by another block. Choose another project or create a new one.",
+    "teacherCourseProject": "Courses for teachers cannot contain projects. Use a reflection block instead.",
+    "quizLinked": "This quiz is used in a lesson. Remove its quiz block first.",
+    "projectLinked": "This project is used in a lesson. Remove its project block first."
+  },
+  "errors": {
+    "form": "Some of the information could not be saved. Check the form and try again.",
+    "gone": "This was deleted in another tab or window. The page has been refreshed.",
+    "mediaGone": "This file is not part of this course any more. Upload it again.",
+    "otherLanguage": "{count, plural, one {# problem} other {# problems}} in {language}.",
+    "sessionEnded": "Your changes are still here. Log in again in the new tab, then save again.",
+    "loginAgain": "Log in again"
+  },
+  "sync": {
+    "pending": "Changes were saved in another tab or window. Load them before you save yours: your unsaved changes stay on this page.",
+    "load": "Load the changes"
+  },
+  "quiz": {
+    "newTitle": "New quiz",
+    "save": "Save quiz",
+    "saved": "Quiz saved.",
+    "created": "Quiz created.",
+    "createdAndAdded": "Quiz created and added to “{lesson}”.",
+    "createdNotAdded": "The quiz was saved, but it could not be added to the lesson. Add it with a quiz block.",
+    "previewLesson": "Preview the lesson",
+    "linkedTo": "Used in the lesson “{lesson}”.",
+    "willBeAdded": "When you save it, this quiz is added to the end of the lesson “{lesson}”.",
+    "gone": "This quiz was deleted in another tab or window. Your changes are still here.",
+    "saveAsNew": "Save it as a new quiz",
+    "settingsTitle": "Quiz settings",
+    "instructions": "Instructions",
+    "passingScore": "Pass mark (%)",
+    "passingScoreHint": "The score learners need to pass, from 0 to 100.",
+    "limitAttempts": "Limit the number of attempts",
+    "maxAttempts": "Attempts allowed",
+    "maxAttemptsHint": "From 1 to {max, number}. Learners who use every attempt can still complete the lesson.",
+    "xp": "XP reward",
+    "xpHint": "Learners earn it the first time they pass. Up to {max, number} XP.",
+    "shuffle": "Shuffle the questions",
+    "shuffleDescription": "Each attempt shows the questions in a different order.",
+    "reveal": "Show the correct answers",
+    "revealOptions": {
+      "after_pass": "After a pass",
+      "after_passDescription": "Learners see the correct answers once they pass.",
+      "after_attempt": "After every attempt",
+      "after_attemptDescription": "Learners see the correct answers right after each attempt.",
+      "never": "Never",
+      "neverDescription": "Learners only see their score."
+    },
+    "questionsTitle": "Questions",
+    "questionCount": "{count, number} of {max, number} questions",
+    "newQuestionType": "Type of the new question",
+    "addQuestion": "Add a question",
+    "questionHeading": "Question {position, number}",
+    "questionName": "question {position, number}",
+    "type": "Question type",
+    "types": {
+      "multiple_choice": "One correct answer",
+      "true_false": "True or false",
+      "multiple_answer": "Several correct answers",
+      "short_answer": "Short written answer"
+    },
+    "typeChangeTitle": "Change the question type?",
+    "typeChangeDescription": "The answers you wrote for this question will be removed.",
+    "typeChangeConfirm": "Change the type",
+    "points": "Points",
+    "pointsHint": "From 1 to {max, number}.",
+    "prompt": "Question",
+    "explanation": "Explanation",
+    "explanationHint": "Optional. Shown with the correct answers (see “Show the correct answers”).",
+    "removeQuestion": "Remove this question",
+    "removed": "Question {position, number} removed.",
+    "answers": "Answers",
+    "answersHint": {
+      "multiple_choice": "Mark the one correct answer.",
+      "true_false": "Mark the correct answer.",
+      "multiple_answer": "Mark every correct answer."
+    },
+    "markCorrect": "Answer {position, number} is correct",
+    "option": "Answer {position, number}",
+    "removeOption": "Remove answer {position, number}",
+    "optionRemoved": "Answer {position, number} removed.",
+    "addOption": "Add an answer",
+    "optionCount": "{count, number} of {max, number} answers",
+    "acceptedAnswers": "Accepted answers",
+    "acceptedAnswersHint": "One per line, up to {max, number} answers of up to {chars, number} characters. Capitals, accents and extra spaces do not matter.",
+    "acceptedCount": "{count, number} of {max, number} answers",
+    "errors": {
+      "markCorrect": "Mark the correct answer.",
+      "acceptedRequired": "Add at least one accepted answer in the default language.",
+      "tooLarge": "This quiz is too large to save. Shorten some texts or split it into two quizzes."
+    },
+    "trueFalse": {
+      "true": "True",
+      "false": "False"
+    }
+  },
+  "project": {
+    "newTitle": "New project",
+    "save": "Save project",
+    "saved": "Project saved.",
+    "created": "Project created.",
+    "createdAndAdded": "Project created and added to “{lesson}”.",
+    "createdNotAdded": "The project was saved, but it could not be added to the lesson. Add it with a project block.",
+    "previewLesson": "Preview the lesson",
+    "linkedTo": "Used in the lesson “{lesson}”.",
+    "willBeAdded": "When you save it, this project is added to the end of the lesson “{lesson}”.",
+    "gone": "This project was deleted in another tab or window. Your changes are still here.",
+    "saveAsNew": "Save it as a new project",
+    "teacherCourse": "Courses for teachers cannot use projects in their lessons.",
+    "cardTitle": "Project",
+    "kind": "Kind",
+    "kinds": {
+      "project": "Project",
+      "projectDescription": "Learners create something of their own and submit it.",
+      "assignment": "Assignment",
+      "assignmentDescription": "A set task learners complete and submit."
+    },
+    "brief": "Brief",
+    "requirements": "What to submit",
+    "requirementsHint": "Say what learners must hand in and how it will be judged.",
+    "submissionTypes": "What learners can submit",
+    "submissionTypesHint": "Choose at least one.",
+    "rubric": "Criteria",
+    "rubricHint": "Choose the criteria the work is judged on and give each a weight. The weights must add up to 100.",
+    "weight": "Weight of “{criterion}” (%)",
+    "rubricTotal": "Total: {total, number}%",
+    "xp": "XP reward",
+    "xpHint": "Learners earn it when their work is accepted. Up to {max, number} XP.",
+    "requiredForCertificate": "Needed for the certificate",
+    "requiredForCertificateDescription": "Learners get the course certificate only once this project is accepted."
+  },
+  "languageNames": {
+    "en": "English",
+    "fr": "French",
+    "ar": "Arabic"
+  }
+}

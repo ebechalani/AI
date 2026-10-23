@@ -1,0 +1,127 @@
+'use client';
+
+import { useLocale, useTranslations } from 'next-intl';
+import { TriangleAlert } from 'lucide-react';
+import { FormField, Input, Select } from '@/components/ui';
+import { LOCALES } from '@/lib/i18n/config';
+import { CONTENT_LIMITS } from '@/lib/limits';
+import type { Locale } from '@/types/common';
+import { isUnknownCountry, regionName, type SchoolFormValues } from './school-model';
+
+export type SchoolField = keyof SchoolFormValues;
+
+export interface SchoolFieldsProps {
+  values: SchoolFormValues;
+  onChange: (values: SchoolFormValues) => void;
+  errors: Partial<Record<SchoolField, string>>;
+  disabled?: boolean;
+  /** Ids `${idPrefix}-name` and so on, so two forms on a page never share one. */
+  idPrefix: string;
+}
+
+const COUNTRY_CODE = /^[A-Za-z]{2}$/;
+
+/** Name, country code (with its name as a preview), city and default language of a school. */
+export function SchoolFields({ values, onChange, errors, disabled, idPrefix }: SchoolFieldsProps) {
+  const t = useTranslations('admin');
+  const tCommon = useTranslations('common');
+  const locale = useLocale();
+  const code = values.country.trim().toUpperCase();
+  const wellFormed = COUNTRY_CODE.test(code);
+  // A well-formed code that names no country ('LE' from "Lebanon") is flagged as it is typed;
+  // the dialogs refuse it on submit (isUnknownCountry).
+  const unknown = wellFormed && isUnknownCountry(code);
+  const preview = wellFormed && !unknown ? regionName(code, locale) : null;
+
+  return (
+    <div className="flex flex-col gap-5">
+      <FormField
+        id={`${idPrefix}-name`}
+        label={t('schools.fields.name')}
+        hint={t('schools.fields.nameHint', {
+          min: CONTENT_LIMITS.schoolNameMinChars,
+          max: CONTENT_LIMITS.schoolNameMaxChars,
+        })}
+        error={errors.name}
+        required
+      >
+        <Input
+          name="name"
+          value={values.name}
+          onChange={(event) => onChange({ ...values, name: event.target.value })}
+          autoComplete="off"
+          maxLength={CONTENT_LIMITS.schoolNameMaxChars}
+          disabled={disabled}
+          data-autofocus
+        />
+      </FormField>
+      <div>
+        <FormField
+          id={`${idPrefix}-country`}
+          label={t('schools.fields.country')}
+          hint={t('schools.fields.countryHint')}
+          error={errors.country}
+          required
+        >
+          <Input
+            name="country"
+            value={values.country}
+            onChange={(event) => onChange({ ...values, country: event.target.value })}
+            autoComplete="off"
+            autoCapitalize="characters"
+            maxLength={2}
+            disabled={disabled}
+            className="w-24 uppercase"
+          />
+        </FormField>
+        <p
+          aria-live="polite"
+          className={
+            unknown
+              ? 'mt-1.5 flex items-start gap-1.5 text-sm font-medium text-warning'
+              : 'mt-1.5 text-sm text-ink-muted'
+          }
+        >
+          {unknown ? (
+            <>
+              <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+              <span>{t('schools.fields.countryUnknown', { code })}</span>
+            </>
+          ) : (
+            preview !== null && t('schools.fields.countryPreview', { country: preview })
+          )}
+        </p>
+      </div>
+      <FormField
+        id={`${idPrefix}-city`}
+        label={t('schools.fields.city')}
+        error={errors.city}
+        optional
+      >
+        <Input
+          name="city"
+          value={values.city}
+          onChange={(event) => onChange({ ...values, city: event.target.value })}
+          autoComplete="off"
+          maxLength={CONTENT_LIMITS.cityChars}
+          disabled={disabled}
+        />
+      </FormField>
+      <FormField
+        id={`${idPrefix}-defaultLocale`}
+        label={t('schools.fields.defaultLocale')}
+        hint={t('schools.fields.defaultLocaleHint')}
+        error={errors.defaultLocale}
+        required
+      >
+        <Select
+          name="defaultLocale"
+          value={values.defaultLocale}
+          onChange={(event) => onChange({ ...values, defaultLocale: event.target.value as Locale })}
+          disabled={disabled}
+          options={LOCALES.map((item) => ({ value: item, label: tCommon(`locale.names.${item}`) }))}
+        />
+      </FormField>
+    </div>
+  );
+}

@@ -1,0 +1,664 @@
+{
+  "list": {
+    "title": "Créateur de cours",
+    "description": "Rédigez vos propres cours, puis attribuez-les à vos classes ou partagez-les avec votre établissement.",
+    "newCourse": "Nouveau cours",
+    "heading": "Vos cours",
+    "count": "{count, plural, one {# cours} other {# cours}}",
+    "empty": {
+      "title": "Vous n’avez pas encore créé de cours",
+      "description": "Commencez par un titre et une courte description. Ajoutez ensuite des modules, des leçons, des quiz et des projets."
+    },
+    "updated": "Mis à jour le {date}",
+    "structure": "{modules, plural, =0 {Aucun module} one {# module} other {# modules}} · {lessons, plural, =0 {aucune leçon} one {# leçon} other {# leçons}}",
+    "audience": {
+      "student": "Pour les élèves",
+      "teacher": "Pour les enseignants"
+    },
+    "visibility": {
+      "private": "Privé",
+      "school": "Partagé avec votre établissement"
+    },
+    "edit": "Modifier",
+    "editLabel": "Modifier «\u00a0{course}\u00a0»"
+  },
+  "adminList": {
+    "title": "Cours officiels",
+    "description": "Les cours de RoboHolic. Les apprenants les trouvent dans le catalogue une fois publiés.",
+    "newCourse": "Nouveau cours officiel",
+    "heading": "Tous les cours officiels",
+    "empty": {
+      "title": "Aucun cours officiel pour le moment",
+      "description": "Créez le premier, donnez-lui un parcours, puis publiez-le."
+    },
+    "pathway": "Parcours\u00a0: {pathway}",
+    "noPathway": "Aucun parcours",
+    "tier": {
+      "free": "Gratuit",
+      "premium": "Premium"
+    }
+  },
+  "newCourse": {
+    "title": "Créer un cours",
+    "adminTitle": "Créer un cours officiel",
+    "description": "Vous pourrez modifier tout cela plus tard. Le cours reste un brouillon jusqu’à sa publication.",
+    "languageHint": "Rédigez le titre et les descriptions dans cette langue. Vous pourrez ajouter une traduction plus tard.",
+    "submit": "Créer le cours",
+    "created": "Cours créé."
+  },
+  "tabs": {
+    "label": "Sections de l’éditeur de cours",
+    "outline": "Plan",
+    "details": "Détails",
+    "content": "Quiz et projets"
+  },
+  "course": {
+    "preview": "Aperçu"
+  },
+  "language": {
+    "legend": "Langue en cours de modification",
+    "state": {
+      "required": "Obligatoire",
+      "translated": "Traduit",
+      "missing": "Pas encore traduit"
+    }
+  },
+  "limits": {
+    "charCount": "{count, number} / {max, number} caractères"
+  },
+  "fields": {
+    "inLanguage": "{field} ({language})",
+    "courseLanguage": "Langue du cours",
+    "defaultLocale": "Langue par défaut",
+    "defaultLocaleHint": "Remplissez chaque champ obligatoire dans cette langue. Les autres langues sont facultatives\u00a0: les apprenants voient la langue par défaut là où une traduction manque.",
+    "title": "Titre",
+    "summary": "Résumé",
+    "summaryHint": "Une ou deux phrases, affichées sur la carte du cours.",
+    "description": "Description",
+    "outcomes": "Ce que les apprenants sauront faire",
+    "outcomesHint": "Un par ligne, jusqu’à {max, number} lignes de {chars, number} caractères au plus.",
+    "audience": "À qui s’adresse ce cours\u00a0?",
+    "audienceOptions": {
+      "student": "Élèves",
+      "studentDescription": "Apprenants de 8 à 18 ans. Le cours peut être attribué à des classes.",
+      "teacher": "Enseignants",
+      "teacherDescription": "Formation professionnelle pour les éducateurs. Les enseignants s’inscrivent eux-mêmes\u00a0; le cours ne peut pas être attribué à une classe et n’a pas de projets."
+    },
+    "audienceLocked": "Ce cours contient des blocs projet\u00a0: il reste un cours pour les élèves.",
+    "audiencePathway": "Le parcours {pathway} s’adresse à un autre public. Repassez le cours en brouillon pour changer les deux.",
+    "area": "Thème",
+    "agesLegend": "Âges recommandés",
+    "ageMin": "Âge minimum",
+    "ageMax": "Âge maximum",
+    "agesHint": "À titre indicatif\u00a0: les âges n’empêchent jamais personne d’ouvrir le cours. Entre {min, number} et {max, number}\u00a0; laissez vide pour ne pas limiter.",
+    "minutes": "Durée estimée en minutes",
+    "minutesHint": "Jusqu’à {max, number} minutes. Affichée aux apprenants sous la forme {duration}.",
+    "tags": "Mots-clés",
+    "tagsHint": "Séparez les mots-clés par des virgules. Jusqu’à {max, number} mots-clés.",
+    "tagInvalid": "Utilisez uniquement des minuscules, des chiffres et des tirets, {max, number} caractères au plus par mot-clé.",
+    "visibility": "Qui peut voir ce cours\u00a0?",
+    "visibilityOptions": {
+      "private": "Privé",
+      "privateDescription": "Vous, les apprenants des classes auxquelles vous l’attribuez et les administrateurs de votre établissement.",
+      "school": "Partagé avec votre établissement",
+      "schoolDescription": "Les enseignants de votre établissement peuvent aussi le voir et l’attribuer à leurs classes."
+    },
+    "visibilityNoSchool": "Privé\u00a0: seuls vous et les apprenants des classes auxquelles vous l’attribuez peuvent le voir. Un cours peut être partagé avec un établissement une fois votre compte rattaché à l’un d’eux.",
+    "certificate": "Certificat",
+    "certificateDescription": "Les apprenants qui terminent le cours reçoivent un certificat.",
+    "pathway": "Parcours",
+    "noPathway": "Aucun parcours",
+    "pathwayDraft": "{pathway} (brouillon)",
+    "pathwayLocked": "Repassez le cours en brouillon pour le déplacer vers un autre parcours.",
+    "order": "Position dans le parcours",
+    "orderHint": "De 0 à {max, number}. Les cours sont classés du plus petit numéro au plus grand.",
+    "accessTier": "Accès",
+    "accessTierOptions": {
+      "free": "Gratuit",
+      "freeDescription": "Tout apprenant qui peut voir le cours peut l’ouvrir.",
+      "premium": "Premium",
+      "premiumDescription": "Seuls les apprenants couverts par une licence d’établissement ou un abonnement peuvent l’ouvrir."
+    },
+    "capabilities": "Matériel nécessaire au cours",
+    "platformRetired": "{platform} (plus proposé)",
+    "moduleDescription": "Description",
+    "lessonSummary": "Résumé",
+    "lessonMinutes": "Durée estimée en minutes",
+    "lessonMinutesHint": "Entre 1 et {max, number} minutes.",
+    "xp": "Récompense en XP",
+    "lessonXpHint": "Les apprenants la gagnent la première fois qu’ils terminent la leçon. Jusqu’à {max, number}\u00a0XP."
+  },
+  "status": {
+    "title": "Publication",
+    "explanation": {
+      "draft": "Brouillon\u00a0: il ne peut pas être attribué, et personne de nouveau ne peut s’y inscrire, tant qu’il n’est pas publié.",
+      "publishedPrivate": "Publié\u00a0: il peut être attribué à des classes.",
+      "publishedSchool": "Publié\u00a0: les enseignants de l’établissement peuvent aussi le voir et l’attribuer à leurs classes.",
+      "publishedForTeachers": "Publié\u00a0: en tant que cours pour enseignants, il n’est pas attribué à des classes. {visibility, select, school {Les enseignants de l’établissement peuvent l’ouvrir et s’y inscrire.} other {Tant qu’il est privé, les autres enseignants ne le voient pas.}}",
+      "publishedOfficial": "Publié\u00a0: les apprenants le trouvent dans le catalogue, dans le parcours {pathway}.",
+      "publishedOfficialNoPathway": "Publié\u00a0: les apprenants peuvent l’ouvrir, mais il n’est encore dans aucun parcours.",
+      "archived": "Archivé\u00a0: il est masqué du catalogue et ne peut pas être attribué."
+    },
+    "unpublish": "Repasser en brouillon",
+    "restore": "Restaurer comme brouillon",
+    "notReady": "Le cours n’est pas encore prêt à être publié. Corrigez d’abord les points ci-dessous.",
+    "confirm": {
+      "publish": {
+        "title": "Publier «\u00a0{course}\u00a0»\u00a0?",
+        "description": "{audience, select, teacher {Les enseignants qui peuvent le voir pourront alors s’y inscrire.} other {Il pourra alors être attribué à des classes.}}{visibility, select, school { Les enseignants de l’établissement pourront aussi le trouver.} other {}}",
+        "descriptionOfficial": "Les apprenants le trouveront dans le catalogue. Les modifications que vous enregistrerez ensuite leur seront visibles immédiatement."
+      },
+      "unpublish": {
+        "title": "Repasser «\u00a0{course}\u00a0» en brouillon\u00a0?",
+        "description": "Personne de nouveau ne pourra se le voir attribuer ni s’y inscrire. Les apprenants déjà inscrits gardent leur accès.",
+        "descriptionOfficial": "Il disparaît du catalogue, et les apprenants déjà inscrits ne peuvent plus l’ouvrir tant que vous ne le publiez pas à nouveau."
+      },
+      "archive": {
+        "title": "Archiver «\u00a0{course}\u00a0»\u00a0?",
+        "description": "Personne de nouveau ne pourra se le voir attribuer ni s’y inscrire. Les apprenants déjà inscrits gardent leur accès. Vous pourrez le restaurer plus tard.",
+        "descriptionOfficial": "Il disparaît du catalogue, et les apprenants déjà inscrits ne peuvent plus l’ouvrir. Vous pourrez le restaurer plus tard."
+      },
+      "restore": {
+        "title": "Restaurer «\u00a0{course}\u00a0»\u00a0?",
+        "description": "Il redevient un brouillon. Publiez-le quand il sera prêt."
+      }
+    },
+    "toast": {
+      "publish": "Cours publié.",
+      "unpublish": "Le cours est de nouveau un brouillon.",
+      "archive": "Cours archivé.",
+      "restore": "Cours restauré comme brouillon."
+    }
+  },
+  "readiness": {
+    "title": "Avant de publier",
+    "checkTitle": "Points à vérifier",
+    "noModules": "Ajoutez au moins un module avec une leçon.",
+    "emptyModule": "Le module «\u00a0{module}\u00a0» n’a pas de leçons.",
+    "emptyLesson": "La leçon «\u00a0{lesson}\u00a0» n’a pas de blocs.",
+    "untranslatedCourse": "Les détails du cours ne sont pas encore traduits en {language}.",
+    "untranslatedModules": "{count, plural, one {# module n’est pas encore traduit} other {# modules ne sont pas encore traduits}} en {language}.",
+    "untranslatedLessons": "{count, plural, one {# leçon n’est pas encore traduite} other {# leçons ne sont pas encore traduites}} en {language}.",
+    "unusedQuizzes": "{count, plural, one {# quiz n’est utilisé dans aucune leçon\u00a0: les apprenants ne le verront pas.} other {# quiz ne sont utilisés dans aucune leçon\u00a0: les apprenants ne les verront pas.}}",
+    "unusedProjects": "{count, plural, one {# projet n’est utilisé dans aucune leçon\u00a0: les apprenants ne le verront pas.} other {# projets ne sont utilisés dans aucune leçon\u00a0: les apprenants ne les verront pas.}}",
+    "noCover": "Le cours n’a pas d’image de couverture.",
+    "ready": "Tout ce qu’il faut est là. Vous pouvez publier le cours.",
+    "open": {
+      "outline": "Afficher dans le plan",
+      "lesson": "Ouvrir la leçon",
+      "details": "Ouvrir les détails",
+      "content": "Ouvrir les quiz et projets",
+      "cover": "Ajouter une couverture"
+    }
+  },
+  "notices": {
+    "live": "Ce cours est publié\u00a0: les modifications sont visibles par les apprenants dès que vous les enregistrez.",
+    "locked": "Des apprenants sont inscrits à ce cours\u00a0: ses modules, leçons, blocs, quiz et projets ne peuvent plus être supprimés. Vous pouvez toujours modifier et ajouter du contenu.",
+    "teacherMade": "Ce cours a été créé par un enseignant. Les modifications que vous enregistrez sont visibles par son auteur.",
+    "quizLive": "Modifier les bonnes réponses ne change pas les résultats des tentatives déjà faites."
+  },
+  "outline": {
+    "title": "Modules et leçons",
+    "moduleCount": "{count, number} sur {max, number} modules",
+    "empty": {
+      "title": "Ce cours n’a pas encore de modules",
+      "description": "Un module regroupe des leçons. Ajoutez un premier module, puis ses leçons."
+    },
+    "addModule": "Ajouter un module",
+    "moduleLimit": "Un cours peut avoir jusqu’à {max, number} modules.",
+    "moduleHeading": "Module {position, number}\u00a0: {title}",
+    "lessonCount": "{count, plural, =0 {Aucune leçon} one {# leçon} other {# leçons}}",
+    "untranslated": "Pas en {language}",
+    "noLessons": "Pas encore de leçons dans ce module.",
+    "addLesson": "Ajouter une leçon",
+    "addLessonTo": "Ajouter une leçon à «\u00a0{module}\u00a0»",
+    "lessonLimit": "Un module peut avoir jusqu’à {max, number} leçons.",
+    "lessonLink": "{position, number}. {title}",
+    "blockCount": "{count, plural, one {# bloc} other {# blocs}}",
+    "noBlocks": "Pas encore de blocs",
+    "xp": "{xp, number}\u00a0XP",
+    "lessonContents": "{quizzes, plural, =0 {} one {# quiz · } other {# quiz · }}{projects, plural, =0 {} one {# projet · } other {# projets · }}{reflections, plural, =0 {aucune réflexion} one {# réflexion} other {# réflexions}}"
+  },
+  "module": {
+    "createTitle": "Ajouter un module",
+    "editTitle": "Modifier «\u00a0{module}\u00a0»",
+    "editLabel": "Modifier le module «\u00a0{module}\u00a0»",
+    "deleteLabel": "Supprimer le module «\u00a0{module}\u00a0»",
+    "deleteTitle": "Supprimer le module «\u00a0{module}\u00a0»\u00a0?",
+    "deleteDescription": "Le module n’a pas de leçons. Cette action est irréversible.",
+    "deleteHint": "Un module peut être supprimé une fois qu’il n’a plus de leçons.",
+    "created": "Module ajouté.",
+    "saved": "Module enregistré.",
+    "deleted": "Module supprimé."
+  },
+  "lesson": {
+    "createTitle": "Ajouter une leçon à «\u00a0{module}\u00a0»",
+    "deleteLabel": "Supprimer la leçon «\u00a0{lesson}\u00a0»",
+    "deleteTitle": "Supprimer la leçon «\u00a0{lesson}\u00a0»\u00a0?",
+    "deleteDescription": "{blocks, plural, =0 {La leçon n’a pas de blocs.} one {Son bloc est supprimé aussi.} other {Ses # blocs sont supprimés aussi.}} Les quiz et projets qu’elle utilise restent dans le cours, inutilisés. Cette action est irréversible.",
+    "created": "Leçon ajoutée.",
+    "deleted": "Leçon supprimée."
+  },
+  "details": {
+    "heading": "Détails du cours",
+    "textLegend": "Titre et descriptions",
+    "aboutLegend": "À propos du cours",
+    "hardwareLegend": "Matériel robotique",
+    "hardwareHint": "Facultatif. Seulement pour les cours qui utilisent un robot, une caméra ou des capteurs.",
+    "officialLegend": "Catalogue",
+    "capabilities": {
+      "drive": "Se déplace sur roues ou chenilles",
+      "camera": "Caméra",
+      "distance": "Capteur de distance",
+      "line": "Capteur de ligne",
+      "color": "Capteur de couleur",
+      "imu": "Capteur de mouvement (IMU)",
+      "microphone": "Microphone",
+      "speaker": "Haut-parleur",
+      "gripper": "Pince",
+      "display": "Écran"
+    },
+    "save": "Enregistrer les détails",
+    "discard": "Annuler les modifications",
+    "saved": "Détails du cours enregistrés.",
+    "nothingToSave": "Il n’y a rien de nouveau à enregistrer."
+  },
+  "cover": {
+    "title": "Image de couverture",
+    "alt": "Image de couverture actuelle",
+    "none": "Pas encore d’image de couverture.",
+    "hint": "Affichée sur les cartes du cours. Une image large (16:9) convient le mieux.",
+    "saved": "Image de couverture enregistrée.",
+    "remove": "Retirer la couverture",
+    "removeTitle": "Retirer l’image de couverture\u00a0?",
+    "removeDescription": "Les cartes du cours n’afficheront aucune image jusqu’à ce que vous en téléversiez une nouvelle.",
+    "removed": "Image de couverture retirée."
+  },
+  "content": {
+    "quizzesTitle": "Quiz",
+    "newQuiz": "Nouveau quiz",
+    "questionCount": "{count, plural, one {# question} other {# questions}}",
+    "usedIn": "Utilisé dans «\u00a0{lesson}\u00a0»",
+    "unused": "Utilisé dans aucune leçon",
+    "noQuizzes": "Pas encore de quiz",
+    "noQuizzesDescription": "Créez un quiz, puis ajoutez-le à une leçon avec un bloc quiz.",
+    "projectsTitle": "Projets et devoirs",
+    "newProject": "Nouveau projet",
+    "noProjectsForTeachers": "Les cours pour enseignants n’ont pas de projets\u00a0: les enseignants ne remettent pas de travaux. Utilisez plutôt des blocs réflexion.",
+    "noProjects": "Pas encore de projets",
+    "noProjectsDescription": "Créez un projet ou un devoir, puis ajoutez-le à une leçon avec un bloc projet.",
+    "deleteLabel": "Supprimer «\u00a0{title}\u00a0»",
+    "deleteQuizTitle": "Supprimer le quiz «\u00a0{title}\u00a0»\u00a0?",
+    "deleteProjectTitle": "Supprimer «\u00a0{title}\u00a0»\u00a0?",
+    "deleteDescription": "Il n’est utilisé dans aucune leçon. Cette action est irréversible.",
+    "deleted": "Supprimé."
+  },
+  "lessonEditor": {
+    "preview": "Aperçu de la leçon",
+    "moduleOf": "Dans le module «\u00a0{module}\u00a0»"
+  },
+  "lessonDetails": {
+    "title": "Détails de la leçon",
+    "save": "Enregistrer les détails de la leçon",
+    "saved": "Détails de la leçon enregistrés."
+  },
+  "requirements": {
+    "title": "Pour terminer cette leçon",
+    "quizzes": "{count, plural, one {Réussir le quiz, ou épuiser toutes ses tentatives} other {Réussir les # quiz, ou épuiser toutes leurs tentatives}}",
+    "projects": "{count, plural, one {Remettre le projet} other {Remettre les # projets}}",
+    "reflections": "{count, plural, one {Rédiger la réflexion} other {Rédiger les # réflexions}}",
+    "none": "Les apprenants terminent cette leçon en l’ouvrant et en choisissant «\u00a0Terminer la leçon\u00a0»."
+  },
+  "blocks": {
+    "title": "Blocs",
+    "count": "{count, number} sur {max, number} blocs",
+    "add": "Ajouter un bloc",
+    "limit": "Une leçon peut avoir jusqu’à {max, number} blocs.",
+    "empty": {
+      "title": "Cette leçon n’a pas encore de blocs",
+      "description": "Les blocs sont le contenu d’une leçon\u00a0: texte, images, vidéos, quiz, activités et plus encore."
+    },
+    "stageCount": "{count, plural, one {# bloc} other {# blocs}}",
+    "newTitle": "Nouveau bloc\u00a0: {type}",
+    "chooseType": "Type de bloc",
+    "addConfirm": "Ajouter le bloc",
+    "stage": "Étape",
+    "stageHint": "Les apprenants voient les blocs regroupés par étape, dans cet ordre\u00a0: Découvrir, Apprendre, Regarder, Essayer, Demander à l’IA, Construire, Vérifier, Réfléchir.",
+    "save": "Enregistrer le bloc",
+    "created": "Bloc ajouté.",
+    "saved": "Bloc enregistré.",
+    "deleted": "Bloc supprimé.",
+    "noText": "Pas encore de texte",
+    "linked": "Utilise «\u00a0{title}\u00a0»",
+    "untranslated": "Pas en {language}",
+    "reorderName": "{type} {position, number}",
+    "editLabel": "Modifier {type} {position, number}",
+    "deleteLabel": "Supprimer {type} {position, number}",
+    "deleteTitle": "Supprimer ce bloc ({type})\u00a0?",
+    "deleteDescription": "Cette action est irréversible.",
+    "deleteLinkedDescription": "Ce qu’il affiche reste dans le cours, inutilisé, et peut être ajouté de nouveau à une leçon. Cette action est irréversible.",
+    "discardTitle": "Abandonner vos modifications de ce bloc\u00a0?",
+    "discardDescription": "Les modifications que vous n’avez pas enregistrées seront perdues.",
+    "discard": "Abandonner les modifications",
+    "orphan": "Ce bloc a été supprimé dans un autre onglet ou une autre fenêtre.",
+    "saveAsNew": "L’enregistrer comme nouveau bloc",
+    "errors": {
+      "fileRequired": "Téléversez d’abord un fichier.",
+      "quizRequired": "Choisissez un quiz.",
+      "projectRequired": "Choisissez un projet."
+    },
+    "media": {
+      "open": "Ouvrir le fichier",
+      "none": "Pas encore de fichier."
+    },
+    "types": {
+      "rich_text": {
+        "label": "Texte",
+        "description": "Des explications avec des titres, des listes et des liens (Markdown)."
+      },
+      "image": {
+        "label": "Image",
+        "description": "Une image avec une description pour les apprenants qui ne peuvent pas la voir."
+      },
+      "video": {
+        "label": "Vidéo",
+        "description": "Une vidéo YouTube ou Vimeo, ou un fichier vidéo, avec une transcription."
+      },
+      "file": {
+        "label": "Fichier",
+        "description": "Une fiche de travail ou un autre fichier à télécharger."
+      },
+      "quiz": {
+        "label": "Quiz",
+        "description": "Des questions auxquelles les apprenants répondent pour vérifier ce qu’ils savent."
+      },
+      "code_activity": {
+        "label": "Activité de code",
+        "description": "Les apprenants écrivent du code à partir d’un point de départ."
+      },
+      "ai_activity": {
+        "label": "Activité avec l’IA",
+        "description": "Une activité menée avec Robo AI, le tuteur."
+      },
+      "embed": {
+        "label": "Intégration",
+        "description": "Un lecteur YouTube (mode confidentialité) ou Vimeo."
+      },
+      "reflection": {
+        "label": "Réflexion",
+        "description": "Une question à laquelle les apprenants répondent par écrit."
+      },
+      "project": {
+        "label": "Projet",
+        "description": "Un projet ou un devoir que les apprenants remettent."
+      }
+    },
+    "richText": {
+      "heading": "Titre",
+      "body": "Texte",
+      "bodyHint": "Markdown\u00a0: **gras**, *italique*, listes et liens. Les images vont dans un bloc image.",
+      "preview": "Afficher un aperçu",
+      "hidePreview": "Masquer l’aperçu",
+      "previewHeading": "Aperçu"
+    },
+    "image": {
+      "file": "Fichier image",
+      "alt": "Description de l’image",
+      "altHint": "Décrivez l’image pour les apprenants qui ne peuvent pas la voir.",
+      "caption": "Légende"
+    },
+    "video": {
+      "source": "Où se trouve la vidéo\u00a0?",
+      "sources": {
+        "youtube": "YouTube",
+        "vimeo": "Vimeo",
+        "file": "Un fichier vidéo"
+      },
+      "idYoutube": "Lien YouTube ou identifiant de la vidéo",
+      "idVimeo": "Lien Vimeo ou identifiant de la vidéo",
+      "idFound": "Identifiant de la vidéo\u00a0: {id}",
+      "idHint": "Collez l’adresse de la vidéo, ou son identifiant.",
+      "file": "Fichier vidéo",
+      "duration": "Durée",
+      "durationHint": "Facultatif. Minutes et secondes, par exemple 4:30.",
+      "title": "Titre de la vidéo",
+      "caption": "Légende",
+      "transcript": "Transcription",
+      "transcriptHint": "Une transcription aide les apprenants qui ne peuvent pas entendre la vidéo."
+    },
+    "file": {
+      "file": "Fichier",
+      "label": "Texte du lien",
+      "description": "Description"
+    },
+    "quiz": {
+      "choose": "Quiz",
+      "placeholder": "Choisir un quiz",
+      "option": "{title} ({count, plural, one {# question} other {# questions}})",
+      "edit": "Modifier ce quiz",
+      "create": "Créer un nouveau quiz",
+      "noneFree": "Tous les quiz de ce cours sont déjà utilisés dans une leçon. Créez-en un nouveau.",
+      "intro": "Introduction"
+    },
+    "code": {
+      "language": "Langage",
+      "languages": {
+        "python": "Python",
+        "javascript": "JavaScript",
+        "blocks": "Blocs"
+      },
+      "starter": "Code de départ",
+      "instructions": "Consignes",
+      "hint": "Indice"
+    },
+    "ai": {
+      "mode": "Comment Robo AI aide",
+      "labTool": "Outil du Labo IA",
+      "noLabTool": "Aucun",
+      "labToolHint": "Facultatif. Suggère un outil du Labo IA aux élèves à côté de l’activité.",
+      "labTools": {
+        "text": "IA texte",
+        "image": "IA image",
+        "video": "IA vidéo",
+        "voice": "IA vocale",
+        "vision": "IA de vision",
+        "chatbot-builder": "Créateur de chatbot",
+        "ml-lab": "Labo d’apprentissage automatique",
+        "agent-builder": "Créateur d’agent IA"
+      },
+      "instructions": "Consignes",
+      "starterPrompt": "Question suggérée",
+      "starterPromptHint": "Les apprenants peuvent l’envoyer à Robo AI en un clic, et la modifier d’abord."
+    },
+    "embed": {
+      "url": "Adresse du lecteur",
+      "urlHint": "Une adresse https sur {hosts}.",
+      "ratio": "Format",
+      "ratios": {
+        "wide": "Large (16:9)",
+        "standard": "Standard (4:3)",
+        "square": "Carré (1:1)"
+      },
+      "title": "Titre",
+      "caption": "Légende"
+    },
+    "reflection": {
+      "minLength": "Longueur minimale",
+      "minLengthHint": "Les apprenants doivent écrire au moins ce nombre de caractères pour terminer la leçon (de 0 à {max, number}\u00a0; 0 = aucune réponse requise).",
+      "prompt": "Question"
+    },
+    "project": {
+      "choose": "Projet",
+      "placeholder": "Choisir un projet",
+      "option": "{title}",
+      "edit": "Modifier ce projet",
+      "create": "Créer un nouveau projet",
+      "noneFree": "Tous les projets de ce cours sont déjà utilisés dans une leçon. Créez-en un nouveau.",
+      "intro": "Introduction"
+    }
+  },
+  "reorder": {
+    "up": "Monter «\u00a0{name}\u00a0»",
+    "down": "Descendre «\u00a0{name}\u00a0»",
+    "moved": "«\u00a0{name}\u00a0» déplacé en position {position, number} sur {count, number}."
+  },
+  "unsaved": {
+    "title": "Quitter sans enregistrer\u00a0?",
+    "description": "Vous avez des modifications non enregistrées. Si vous quittez cette page, elles seront perdues.",
+    "leave": "Quitter sans enregistrer"
+  },
+  "conflict": {
+    "title": "Ceci a été modifié ailleurs",
+    "description": "Quelqu’un a enregistré une nouvelle version, dans un autre onglet ou sur un autre appareil, pendant que vous modifiiez.",
+    "takeTheirs": "Charger la dernière version",
+    "keepMine": "Garder ma version"
+  },
+  "conflicts": {
+    "pathwayLocked": "Repassez le cours en brouillon avant de le déplacer vers un autre parcours.",
+    "audienceHasProjects": "Ce cours contient des blocs projet. Retirez-les avant d’en faire un cours pour enseignants\u00a0: les enseignants ne remettent pas de projets.",
+    "generic": "Quelque chose a changé dans un autre onglet ou une autre fenêtre. La page a été actualisée\u00a0; vérifiez-la et réessayez.",
+    "tooManyModules": "Un cours peut avoir jusqu’à {max, number} modules.",
+    "moduleHasLessons": "Supprimez d’abord les leçons de ce module.",
+    "locked": "Des apprenants sont inscrits à ce cours\u00a0: ses modules, leçons, blocs, quiz et projets ne peuvent plus être supprimés.",
+    "tooManyLessons": "Un module peut avoir jusqu’à {max, number} leçons.",
+    "staleOrder": "Cette liste a changé dans un autre onglet ou une autre fenêtre\u00a0: un élément a été ajouté ou supprimé. La page a été actualisée\u00a0; réessayez.",
+    "tooManyBlocks": "Une leçon peut avoir jusqu’à {max, number} blocs.",
+    "quizInUse": "Ce quiz est déjà utilisé par un autre bloc. Choisissez un autre quiz ou créez-en un nouveau.",
+    "projectInUse": "Ce projet est déjà utilisé par un autre bloc. Choisissez un autre projet ou créez-en un nouveau.",
+    "teacherCourseProject": "Les cours pour enseignants ne peuvent pas contenir de projets. Utilisez plutôt un bloc réflexion.",
+    "quizLinked": "Ce quiz est utilisé dans une leçon. Retirez d’abord son bloc quiz.",
+    "projectLinked": "Ce projet est utilisé dans une leçon. Retirez d’abord son bloc projet."
+  },
+  "errors": {
+    "form": "Certaines informations n’ont pas pu être enregistrées. Vérifiez le formulaire et réessayez.",
+    "gone": "Ceci a été supprimé dans un autre onglet ou une autre fenêtre. La page a été actualisée.",
+    "mediaGone": "Ce fichier ne fait plus partie de ce cours. Téléversez-le à nouveau.",
+    "otherLanguage": "{count, plural, one {# problème} other {# problèmes}} en {language}.",
+    "sessionEnded": "Vos modifications sont toujours là. Reconnectez-vous dans le nouvel onglet, puis enregistrez à nouveau.",
+    "loginAgain": "Se reconnecter"
+  },
+  "sync": {
+    "pending": "Des modifications ont été enregistrées dans un autre onglet ou une autre fenêtre. Chargez-les avant d’enregistrer les vôtres\u00a0: vos modifications non enregistrées restent sur cette page.",
+    "load": "Charger les modifications"
+  },
+  "quiz": {
+    "newTitle": "Nouveau quiz",
+    "save": "Enregistrer le quiz",
+    "saved": "Quiz enregistré.",
+    "created": "Quiz créé.",
+    "createdAndAdded": "Quiz créé et ajouté à «\u00a0{lesson}\u00a0».",
+    "createdNotAdded": "Le quiz a été enregistré, mais il n’a pas pu être ajouté à la leçon. Ajoutez-le avec un bloc quiz.",
+    "previewLesson": "Aperçu de la leçon",
+    "linkedTo": "Utilisé dans la leçon «\u00a0{lesson}\u00a0».",
+    "willBeAdded": "À l’enregistrement, ce quiz est ajouté à la fin de la leçon «\u00a0{lesson}\u00a0».",
+    "gone": "Ce quiz a été supprimé dans un autre onglet ou une autre fenêtre. Vos modifications sont toujours là.",
+    "saveAsNew": "L’enregistrer comme nouveau quiz",
+    "settingsTitle": "Réglages du quiz",
+    "instructions": "Consignes",
+    "passingScore": "Note de réussite (%)",
+    "passingScoreHint": "Le score dont les apprenants ont besoin pour réussir, de 0 à 100.",
+    "limitAttempts": "Limiter le nombre de tentatives",
+    "maxAttempts": "Tentatives autorisées",
+    "maxAttemptsHint": "De 1 à {max, number}. Les apprenants qui épuisent toutes leurs tentatives peuvent quand même terminer la leçon.",
+    "xp": "Récompense en XP",
+    "xpHint": "Les apprenants la gagnent la première fois qu’ils réussissent. Jusqu’à {max, number}\u00a0XP.",
+    "shuffle": "Mélanger les questions",
+    "shuffleDescription": "Chaque tentative présente les questions dans un ordre différent.",
+    "reveal": "Afficher les bonnes réponses",
+    "revealOptions": {
+      "after_pass": "Après une réussite",
+      "after_passDescription": "Les apprenants voient les bonnes réponses une fois le quiz réussi.",
+      "after_attempt": "Après chaque tentative",
+      "after_attemptDescription": "Les apprenants voient les bonnes réponses juste après chaque tentative.",
+      "never": "Jamais",
+      "neverDescription": "Les apprenants ne voient que leur score."
+    },
+    "questionsTitle": "Questions",
+    "questionCount": "{count, number} sur {max, number} questions",
+    "newQuestionType": "Type de la nouvelle question",
+    "addQuestion": "Ajouter une question",
+    "questionHeading": "Question {position, number}",
+    "questionName": "question {position, number}",
+    "type": "Type de question",
+    "types": {
+      "multiple_choice": "Une seule bonne réponse",
+      "true_false": "Vrai ou faux",
+      "multiple_answer": "Plusieurs bonnes réponses",
+      "short_answer": "Réponse écrite courte"
+    },
+    "typeChangeTitle": "Changer le type de question\u00a0?",
+    "typeChangeDescription": "Les réponses que vous avez rédigées pour cette question seront retirées.",
+    "typeChangeConfirm": "Changer le type",
+    "points": "Points",
+    "pointsHint": "De 1 à {max, number}.",
+    "prompt": "Question",
+    "explanation": "Explication",
+    "explanationHint": "Facultatif. Affichée avec les bonnes réponses (voir «\u00a0Afficher les bonnes réponses\u00a0»).",
+    "removeQuestion": "Retirer cette question",
+    "removed": "Question {position, number} retirée.",
+    "answers": "Réponses",
+    "answersHint": {
+      "multiple_choice": "Cochez la seule bonne réponse.",
+      "true_false": "Cochez la bonne réponse.",
+      "multiple_answer": "Cochez toutes les bonnes réponses."
+    },
+    "markCorrect": "La réponse {position, number} est correcte",
+    "option": "Réponse {position, number}",
+    "removeOption": "Retirer la réponse {position, number}",
+    "optionRemoved": "Réponse {position, number} retirée.",
+    "addOption": "Ajouter une réponse",
+    "optionCount": "{count, number} sur {max, number} réponses",
+    "acceptedAnswers": "Réponses acceptées",
+    "acceptedAnswersHint": "Une par ligne, jusqu’à {max, number} réponses de {chars, number} caractères au plus. Les majuscules, les accents et les espaces en trop n’ont pas d’importance.",
+    "acceptedCount": "{count, number} sur {max, number} réponses",
+    "errors": {
+      "markCorrect": "Cochez la bonne réponse.",
+      "acceptedRequired": "Ajoutez au moins une réponse acceptée dans la langue par défaut.",
+      "tooLarge": "Ce quiz est trop volumineux pour être enregistré. Raccourcissez certains textes ou divisez-le en deux quiz."
+    },
+    "trueFalse": {
+      "true": "Vrai",
+      "false": "Faux"
+    }
+  },
+  "project": {
+    "newTitle": "Nouveau projet",
+    "save": "Enregistrer le projet",
+    "saved": "Projet enregistré.",
+    "created": "Projet créé.",
+    "createdAndAdded": "Projet créé et ajouté à «\u00a0{lesson}\u00a0».",
+    "createdNotAdded": "Le projet a été enregistré, mais il n’a pas pu être ajouté à la leçon. Ajoutez-le avec un bloc projet.",
+    "previewLesson": "Aperçu de la leçon",
+    "linkedTo": "Utilisé dans la leçon «\u00a0{lesson}\u00a0».",
+    "willBeAdded": "À l’enregistrement, ce projet est ajouté à la fin de la leçon «\u00a0{lesson}\u00a0».",
+    "gone": "Ce projet a été supprimé dans un autre onglet ou une autre fenêtre. Vos modifications sont toujours là.",
+    "saveAsNew": "L’enregistrer comme nouveau projet",
+    "teacherCourse": "Les cours pour enseignants ne peuvent pas utiliser de projets dans leurs leçons.",
+    "cardTitle": "Projet",
+    "kind": "Type",
+    "kinds": {
+      "project": "Projet",
+      "projectDescription": "Les apprenants créent quelque chose d’eux-mêmes et le remettent.",
+      "assignment": "Devoir",
+      "assignmentDescription": "Une tâche définie que les apprenants réalisent et remettent."
+    },
+    "brief": "Énoncé",
+    "requirements": "Ce qu’il faut remettre",
+    "requirementsHint": "Dites ce que les apprenants doivent rendre et comment leur travail sera jugé.",
+    "submissionTypes": "Ce que les apprenants peuvent remettre",
+    "submissionTypesHint": "Choisissez-en au moins un.",
+    "rubric": "Critères",
+    "rubricHint": "Choisissez les critères sur lesquels le travail est jugé et donnez un poids à chacun. Le total des poids doit faire 100.",
+    "weight": "Poids de «\u00a0{criterion}\u00a0» (%)",
+    "rubricTotal": "Total\u00a0: {total, number}\u00a0%",
+    "xp": "Récompense en XP",
+    "xpHint": "Les apprenants la gagnent quand leur travail est accepté. Jusqu’à {max, number}\u00a0XP.",
+    "requiredForCertificate": "Nécessaire pour le certificat",
+    "requiredForCertificateDescription": "Les apprenants obtiennent le certificat du cours seulement une fois ce projet accepté."
+  },
+  "languageNames": {
+    "en": "anglais",
+    "fr": "français",
+    "ar": "arabe"
+  }
+}

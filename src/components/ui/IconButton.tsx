@@ -1,6 +1,12 @@
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
-import { buttonClasses, inactiveClasses, type ButtonSize, type ButtonVariant } from './Button';
+import {
+  buttonClasses,
+  inactiveClasses,
+  loadingProps,
+  type ButtonSize,
+  type ButtonVariant,
+} from './Button';
 import { SpinnerIcon } from './Spinner';
 
 export interface IconButtonProps extends ComponentProps<'button'> {
@@ -8,6 +14,7 @@ export interface IconButtonProps extends ComponentProps<'button'> {
   'aria-label': string;
   variant?: ButtonVariant;
   size?: ButtonSize;
+  /** A spinner instead of the icon; unavailable but still focusable, as `Button`'s `loading`. */
   loading?: boolean;
 }
 
@@ -17,6 +24,7 @@ export function IconButton({
   loading = false,
   type = 'button',
   disabled,
+  onClick,
   className,
   children,
   ...props
@@ -24,14 +32,13 @@ export function IconButton({
   return (
     <button
       type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
       className={cn(
         buttonClasses({ variant, size, iconOnly: true }),
         inactiveClasses(loading),
         className,
       )}
       {...props}
+      {...loadingProps(loading, disabled, onClick)}
     >
       {loading ? <SpinnerIcon size="sm" /> : children}
     </button>

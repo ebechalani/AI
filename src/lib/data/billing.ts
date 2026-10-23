@@ -73,6 +73,18 @@ export async function upsertLicense(
   return fromSnapshot<License>(await ref.get());
 }
 
+/**
+ * Every licence of every school, latest end date first (expired and suspended ones included):
+ * the platform admin's licence list. Paged like `listSubscriptions`; the cursor is the last
+ * licence id of the previous page. One field in one direction, so Firestore's automatic
+ * single-field index serves it (3.8 has no row for it).
+ */
+export async function listAllLicenses(actor: Actor, page?: PageRequest): Promise<Page<License>> {
+  assertCan(isPlatformAdmin(actor), 'licenses.list');
+  const query = collections.licenses().orderBy('endsAt', 'desc');
+  return readPage<License>(query, collections.licenses(), page, () => true);
+}
+
 /** Latest period end first. */
 export async function listSubscriptions(
   actor: Actor,

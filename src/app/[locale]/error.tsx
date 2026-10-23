@@ -19,6 +19,7 @@ export default function LocaleError({
   return (
     <div className="flex min-h-dvh items-center justify-center p-6">
       <ErrorState
+        titleAs="h1"
         onRetry={retry}
         action={
           <LinkButton href="/" variant="secondary">

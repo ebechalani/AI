@@ -15,6 +15,7 @@ import {
 } from '@/lib/data/analytics';
 import { listBadges, listUserBadges } from '@/lib/data/badges';
 import {
+  listAllLicenses,
   listLicensesForSchool,
   listSubscriptions,
   listSubscriptionsForOwner,
@@ -357,6 +358,7 @@ function checks(s: Samples): { name: string; planned: Planned }[] {
       name: 'licenses: of a school',
       planned: needs(s.schoolId, 'school', (id) => listLicensesForSchool(system, id)),
     },
+    { name: 'licenses: all', planned: { run: () => listAllLicenses(system, limit) } },
     { name: 'subscriptions: all', planned: { run: () => listSubscriptions(system, limit) } },
     {
       name: 'subscriptions: of an owner',

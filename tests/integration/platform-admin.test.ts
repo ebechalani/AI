@@ -1,5 +1,10 @@
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { listLicensesForSchool, upsertLicense, upsertSubscription } from '@/lib/data/billing';
+import {
+  listAllLicenses,
+  listLicensesForSchool,
+  upsertLicense,
+  upsertSubscription,
+} from '@/lib/data/billing';
 import {
   getChallenge,
   listChallengesForUser,
@@ -306,6 +311,54 @@ describe('platform admin flow: schools, licences, educators and challenges', () 
       via: 'subscription',
     });
     expect((await enrollSelf(solo, premium.course.id)).source).toBe('self');
+  });
+
+  it('listAllLicenses: the licences of every school, latest end first, paged by licence id', async () => {
+    const base: LicenseInput = {
+      schoolId: beta.school.id,
+      subscriptionId: null,
+      name: 'Beta, renewal',
+      seatsTotal: 5,
+      scope: { type: 'all_official' },
+      startsAt: daysFromNow(3000),
+      endsAt: daysFromNow(4000),
+      status: 'suspended',
+    };
+    // Suspended and far in the future: they cover nothing, and they sort above every other.
+    const betaLater = await upsertLicense(admin, null, base);
+    const demoLatest = await upsertLicense(admin, null, {
+      ...base,
+      schoolId: state.schoolId,
+      name: 'Demo school, renewal',
+      endsAt: daysFromNow(5000),
+    });
+
+    const all = await listAllLicenses(admin, { limit: 100 });
+    expect(all.nextCursor).toBeNull();
+    expect(all.items.slice(0, 2).map((license) => license.id)).toEqual([
+      demoLatest.id,
+      betaLater.id,
+    ]);
+    const ends = all.items.map((license) => Date.parse(license.endsAt));
+    expect(ends).toEqual([...ends].sort((a, b) => b - a));
+    expect(new Set(all.items.map((license) => license.schoolId))).toEqual(
+      new Set([state.schoolId, beta.school.id]),
+    );
+    expect(all.items.map((license) => license.id)).toEqual(
+      expect.arrayContaining([state.licenseId]),
+    );
+
+    const first = await listAllLicenses(admin, { limit: 1 });
+    expect(first.items.map((license) => license.id)).toEqual([demoLatest.id]);
+    expect(first.nextCursor).toBe(demoLatest.id);
+    const second = await listAllLicenses(admin, { limit: 1, cursor: first.nextCursor! });
+    expect(second.items.map((license) => license.id)).toEqual([betaLater.id]);
+
+    for (const cursor of ['no-such-license', beta.school.id]) {
+      const error = await refusal(listAllLicenses(admin, { limit: 1, cursor }), ValidationError);
+      expect(error.fieldErrors).toEqual({ cursor: ['invalid'] });
+    }
+    await refusal(listAllLicenses(betaAdmin), ForbiddenError);
   });
 
   it('setVerifiedEducator: platform admins flag teachers, with an audit entry', async () => {

@@ -1,0 +1,474 @@
+{
+  "shared": {
+    "form": "Some of the information is not valid. Check it and try again.",
+    "classGone": "This class no longer exists in your school.",
+    "schoolGone": "Your school could not be found. Refresh the page."
+  },
+  "alerts": {
+    "suspendedTitle": "Your school’s account is suspended",
+    "suspended": "Teachers and students can still log in, but no new student accounts can be created, not even with a join code. Contact RoboHolic to reactivate your school.",
+    "overLimitTitle": "More students than seats",
+    "overLimit": "{used, plural, one {# active student} other {# active students}} for {total, plural, one {# seat} other {# seats}}. Nobody is blocked: contact RoboHolic to add seats.",
+    "noLicenseTitle": "No active license",
+    "noLicense": "Free courses stay open to your school. Premium courses need a license: contact RoboHolic.",
+    "contact": "Contact RoboHolic"
+  },
+  "dashboard": {
+    "schoolLine": "{name}, {city}",
+    "stats": {
+      "label": "Your school in numbers",
+      "teachers": "Teachers",
+      "teachersHint": "Active accounts",
+      "students": "Students",
+      "studentsHint": "Active accounts, one seat each",
+      "classes": "Classes",
+      "completion": "Completion rate",
+      "completionHint": "{completed, number} of {enrollments, plural, one {# course enrollment} other {# course enrollments}} completed",
+      "completionNone": "No course enrollment yet",
+      "noValue": "—"
+    },
+    "start": {
+      "title": "Get started",
+      "description": "Two steps to set up your school.",
+      "teachers": "Add your teachers. Each one gets an email to choose a password.",
+      "teachersAction": "Add teachers",
+      "classes": "Create a class for a teacher, then add students and assign courses.",
+      "classesAction": "Create a class"
+    },
+    "seats": {
+      "title": "License",
+      "used": "{used, number} of {total, plural, one {# seat} other {# seats}} used",
+      "usedNoLicense": "{used, plural, one {# active student} other {# active students}}",
+      "barLabel": "Seats used",
+      "validUntil": "Valid until {date}",
+      "endsSoon": "{days, plural, one {Ends in # day} other {Ends in # days}}",
+      "view": "View licenses"
+    },
+    "recent": {
+      "title": "Recent activity",
+      "description": "The latest certificates earned in your school.",
+      "item": "{name} earned a certificate for {course}",
+      "viewAll": "All certificates",
+      "empty": {
+        "title": "No certificates yet",
+        "description": "Certificates your students earn appear here."
+      }
+    },
+    "settings": {
+      "title": "School settings",
+      "ai": "AI tools",
+      "joinCodes": "Join codes",
+      "on": "On",
+      "off": "Off",
+      "limit": "Tutor messages per student per day",
+      "limitDefault": "RoboHolic default ({count, number})",
+      "change": "Change settings"
+    }
+  },
+  "teachers": {
+    "description": "Add the teachers of your school. Each new teacher gets an email to choose a password.",
+    "caption": "Teachers of your school",
+    "name": "Teacher",
+    "classes": "Classes",
+    "noClass": "No class",
+    "status": "Status",
+    "lastSignIn": "Last login",
+    "never": "Never",
+    "actions": "Actions",
+    "empty": {
+      "title": "No teachers yet",
+      "description": "Add your first teacher with “Add a teacher”. They get an email to choose their password."
+    },
+    "add": {
+      "action": "Add a teacher",
+      "title": "Add a teacher",
+      "description": "The teacher gets an email from RoboHolic AI to choose a password, then logs in with this address.",
+      "name": "Name",
+      "nameHint": "As students will see it, for example “Ms Haddad”.",
+      "email": "Email address",
+      "emailHint": "An address the teacher can open now.",
+      "submit": "Add teacher",
+      "sending": "Sending the password email…",
+      "success": "{name} was added. A password email was sent to {email}.",
+      "emailFailed": {
+        "title": "The account was created, but the email was not sent",
+        "description": "{name} can’t log in until they choose a password. {reason}"
+      },
+      "retry": "Send the email again",
+      "close": "Close",
+      "errors": {
+        "conflict": "An account with this email address already exists. Use another address."
+      }
+    },
+    "email": {
+      "action": "Send password email",
+      "actionLabel": "Send a password email to {name}",
+      "sent": "Password email sent to {email}."
+    }
+  },
+  "status": {
+    "disable": "Disable",
+    "disableLabel": "Disable the account of {name}",
+    "title": "Disable the account of {name}?",
+    "teacherDescription": "{name} is logged out everywhere and can’t log in until you enable the account again. Their classes stay as they are.",
+    "studentDescription": "{name} is logged out everywhere and can’t log in until you enable the account again. They stay in their classes, keep their progress and no longer use a seat.",
+    "confirm": "Disable account",
+    "disabled": "The account of {name} is disabled.",
+    "enable": "Enable",
+    "enableLabel": "Enable the account of {name}",
+    "enabled": "The account of {name} is enabled again.",
+    "errors": {
+      "forbidden": "You can’t change this account. A student who signed up with their own email is removed from their classes instead.",
+      "notFound": "This account is no longer in your school."
+    }
+  },
+  "students": {
+    "description": "Everyone who learns in your school. Students are added in their classes.",
+    "addHint": "To add students, open one of your classes.",
+    "openClasses": "Open classes",
+    "caption": "Students of your school",
+    "name": "Student",
+    "username": "Username:",
+    "ownAccount": "Own account (email)",
+    "ageBand": "Age group",
+    "classes": "Classes",
+    "noClass": "No class",
+    "status": "Status",
+    "lastSignIn": "Last login",
+    "never": "Never",
+    "actions": "Actions",
+    "ownAccountNote": "Students who signed up with their own email can’t be disabled by the school: remove them from their classes instead. They change their password with “Forgot password” on the login page.",
+    "empty": {
+      "title": "No students yet",
+      "description": "Students appear here once they are added to a class or join one with its code."
+    }
+  },
+  "resetPassword": {
+    "action": "Reset password",
+    "actionLabel": "Reset the password of {name}",
+    "title": "Reset the password of {name}?",
+    "description": "A new password is created and shown only once. {name} is logged out everywhere and logs in again with the new password.",
+    "confirm": "Reset password",
+    "credentialsTitle": "New password for {name}",
+    "errors": {
+      "forbidden": "You can’t reset this password. Students with their own email use “Forgot password” on the login page.",
+      "notFound": "This student is no longer in your school."
+    }
+  },
+  "classes": {
+    "description": "Every class of your school. Create a class for one of your teachers, then add students and assign courses.",
+    "activeTitle": "Active classes",
+    "teachers": "{count, plural, =0 {No teacher} one {Teacher: {names}} other {Teachers: {names}}}",
+    "students": "{count, plural, =0 {No students} one {# student} other {# students}}",
+    "courses": "{count, plural, =0 {No courses assigned} one {# course assigned} other {# courses assigned}}",
+    "codeOpen": "Join code open",
+    "codeClosed": "Join code closed",
+    "archivedName": "{name} (archived)",
+    "archivedSummary": "{count, plural, one {# archived class} other {# archived classes}}",
+    "archivedHint": "Archived classes keep their students, progress and work. Their join codes no longer work.",
+    "empty": {
+      "title": "No classes yet",
+      "description": "Create a class for one of your teachers with “New class”.",
+      "descriptionNoTeacher": "Add a teacher first: every class belongs to a teacher of your school.",
+      "addTeachers": "Add teachers"
+    },
+    "noActive": {
+      "title": "No active classes",
+      "description": "Every class is archived. Create a class for a new group with “New class”."
+    },
+    "create": {
+      "action": "New class",
+      "title": "Create a class",
+      "description": "The class belongs to the teacher you choose. You can change its details later.",
+      "owner": "Teacher",
+      "ownerHint": "The teacher who owns the class. You can add co-teachers on the class page.",
+      "ownerPlaceholder": "Choose a teacher",
+      "submit": "Create class",
+      "success": "Class “{name}” created.",
+      "errors": {
+        "conflict": "This teacher already teaches 30 classes, the most allowed. Archive a class they no longer use, or choose another teacher.",
+        "ownerGone": "This teacher is no longer an active teacher of your school. Choose another one."
+      }
+    }
+  },
+  "class": {
+    "studentsCount": "{count, plural, =0 {No students} one {# student} other {# students}}",
+    "archived": {
+      "title": "This class is archived",
+      "description": "You can still see its students and courses. Nothing in it can be changed, and its join code does not work."
+    },
+    "teachers": {
+      "title": "Teachers",
+      "owner": "Owner",
+      "unknown": "Former teacher",
+      "ownerDisabled": "The owner’s account is disabled. Enable it on the Teachers page before you change the teachers of this class.",
+      "change": "Change teachers",
+      "dialogTitle": "Teachers of {className}",
+      "dialogDescription": "Choose up to {max, plural, one {# teacher} other {# teachers}}. The owner always teaches the class.",
+      "legend": "Teachers of the class",
+      "ownerLocked": "{name} (owner)",
+      "count": "{count, number} of {max, number} chosen",
+      "dropped": "These teachers leave the class when you save, because their account is disabled or they left your school: {names}.",
+      "noOthers": "Your school has no other active teacher to add.",
+      "submit": "Save teachers",
+      "saved": "Teachers of {className} saved.",
+      "errors": {
+        "invalid": "One of these teachers can no longer teach this class: their account is disabled or they left your school. Refresh the page and try again.",
+        "tooMany": "A class has at most {max, plural, one {# teacher} other {# teachers}}.",
+        "conflict": "These teachers could not be saved: the owner must stay, and a teacher can teach at most 30 classes."
+      }
+    },
+    "joinCodesOff": {
+      "cardTitle": "Join code",
+      "title": "Join codes are turned off",
+      "description": "Students can’t join any class of your school with a code. Add them with “Add students”, or turn join codes on in the settings.",
+      "action": "Open settings"
+    },
+    "addStudents": {
+      "title": "Add students",
+      "description": "Create accounts for students who don’t have one. You get their usernames and passwords to print or copy.",
+      "capacity": "{count, plural, one {Room for # more student.} other {Room for # more students.}}",
+      "seats": "Each new student uses a seat of your license.",
+      "full": {
+        "title": "This class is full",
+        "description": "A class holds at most {max, number} students."
+      },
+      "inactive": {
+        "title": "New accounts can’t be created",
+        "description": "Your school’s account is suspended. Contact RoboHolic to reactivate it."
+      }
+    },
+    "roster": {
+      "title": "Students",
+      "count": "{count, plural, one {# student} other {# students}}",
+      "caption": "Students of {className}",
+      "student": "Student",
+      "username": "Username:",
+      "ownAccount": "Own account",
+      "ageBand": "Age group",
+      "joined": "Joined",
+      "actions": "Actions",
+      "method": {
+        "code": "With the join code",
+        "you": "Added by you",
+        "staff": "Added by school staff"
+      },
+      "empty": {
+        "title": "No students yet",
+        "both": "Add students, or open the join code and share it with the class.",
+        "addOnly": "Add students with “Add students”. Join codes are turned off for your school.",
+        "codeOnly": "Share the join code with students who already have their own account.",
+        "none": "Students can’t be added to this class right now.",
+        "archived": "This class is archived: no students can be added to it."
+      }
+    },
+    "remove": {
+      "action": "Remove",
+      "actionLabel": "Remove {name} from the class",
+      "title": "Remove {name} from {className}?",
+      "description": "{name} keeps their account and their progress, but this class no longer follows their courses. A student who signed up with their own email and has no other class in your school also leaves your school.",
+      "confirm": "Remove student",
+      "success": "{name} is no longer in {className}.",
+      "errors": {
+        "notFound": "This student had already left the class.",
+        "forbidden": "You can’t remove students from this class."
+      }
+    },
+    "courses": {
+      "title": "Assigned courses",
+      "assign": "Assign a course",
+      "due": "Due {date}",
+      "noDue": "No due date",
+      "overdue": "Past the due date",
+      "assignedOn": "Assigned {date}",
+      "unavailable": "Course no longer available",
+      "unavailableHint": "This course can no longer be opened. You can still unassign it.",
+      "dueDateAction": "Due date",
+      "dueDateActionLabel": "Change the due date of {course}",
+      "empty": {
+        "title": "No courses assigned",
+        "description": "Assign a course: every student of the class is enrolled in it.",
+        "descriptionArchived": "This class is archived: no course can be assigned to it."
+      }
+    },
+    "settings": {
+      "title": "Class settings",
+      "description": "Rename the class or change its age group with “Edit details”. Archive the class when the group no longer meets."
+    }
+  },
+  "assign": {
+    "title": "Assign a course",
+    "description": "Students of {className} are enrolled in every course you assign.",
+    "back": "Back to {className}",
+    "schoolTitle": "Made in your school",
+    "schoolDescription": "Published courses that teachers of your school shared with the school.",
+    "assigned": "Assigned",
+    "action": "Assign",
+    "actionLabel": "Assign {course} to {className}",
+    "archived": "This class is archived: courses can no longer be assigned to it.",
+    "empty": {
+      "title": "No course to assign",
+      "description": "Published courses for students appear here."
+    }
+  },
+  "courses": {
+    "description": "The RoboHolic catalog and the courses your teachers create, with how much your classes use them.",
+    "officialTitle": "RoboHolic courses",
+    "officialDescription": "Official courses your classes can follow, by pathway.",
+    "academyTitle": "Teacher Academy",
+    "academyDescription": "Training for your teachers. Teachers enroll themselves.",
+    "schoolTitle": "Made in your school",
+    "schoolDescription": "Courses your teachers created, drafts and private ones included.",
+    "schoolEmpty": {
+      "title": "No courses yet",
+      "description": "Courses your teachers create appear here."
+    },
+    "by": "By {name}",
+    "visibility": {
+      "private": "Private to its author",
+      "school": "Shared with the school"
+    },
+    "usage": "{enrolled, plural, one {# student enrolled} other {# students enrolled}} · {completed, number} completed ({rate})",
+    "usageNone": "Not assigned to a class"
+  },
+  "course": {
+    "previewFirst": "Preview the first lesson",
+    "outlineTitle": "Lessons",
+    "outlineDescription": "Open a lesson to see it as students do. Nothing you do in the preview is saved.",
+    "otherLessons": "Other lessons",
+    "previewLabel": "Preview the lesson {lesson}",
+    "noLessons": {
+      "title": "No lessons yet",
+      "description": "This course has no lesson to preview yet."
+    },
+    "license": {
+      "title": "Not covered by your license",
+      "description": "This premium course needs a license that covers it before it can be previewed or assigned. Contact RoboHolic."
+    },
+    "draft": {
+      "title": "Not published yet",
+      "description": "Its author is still working on it: you can preview it, but it can’t be assigned to a class."
+    },
+    "archived": "This course is archived: it can no longer be assigned.",
+    "usage": {
+      "title": "Use in your school",
+      "enrolled": "Students enrolled",
+      "completed": "Completed",
+      "rate": "Completion rate",
+      "none": "No class of your school follows this course yet."
+    },
+    "classes": {
+      "title": "Classes following it",
+      "empty": "No active class follows this course."
+    }
+  },
+  "analytics": {
+    "description": "How your classes progress through their courses.",
+    "stats": {
+      "label": "Course enrollments in your school",
+      "rate": "Completion rate",
+      "rateHint": "{completed, number} of {enrollments, plural, one {# enrollment} other {# enrollments}} completed",
+      "rateNone": "No course enrollment yet",
+      "enrollments": "Enrollments",
+      "inProgress": "{count, plural, one {# in progress} other {# in progress}}",
+      "completed": "Completed",
+      "certificates": "Certificates issued"
+    },
+    "usage": {
+      "title": "Course usage",
+      "description": "Courses assigned to your active classes, busiest first.",
+      "caption": "Course usage in your school",
+      "course": "Course",
+      "enrolled": "Enrolled",
+      "completed": "Completed",
+      "rate": "Completion",
+      "rateLabel": "Completion rate of {course}",
+      "empty": {
+        "title": "No course in use yet",
+        "description": "Assign courses to your classes to follow how they are used.",
+        "action": "Open classes"
+      }
+    },
+    "classes": {
+      "title": "Classes",
+      "description": "Students and assigned courses in each active class.",
+      "caption": "Active classes of your school",
+      "class": "Class",
+      "grade": "Grade",
+      "students": "Students",
+      "courses": "Courses assigned",
+      "empty": {
+        "title": "No classes yet",
+        "description": "Classes you create appear here."
+      }
+    }
+  },
+  "certificates": {
+    "description": "Certificates earned by the students and teachers of your school.",
+    "caption": "Certificates of your school",
+    "learner": "Learner",
+    "course": "Course",
+    "issued": "Issued",
+    "issuedBy": "Issued by",
+    "status": "Status",
+    "code": "Verification code",
+    "view": "View",
+    "viewLabel": "View the certificate of {name} for {course}",
+    "empty": {
+      "title": "No certificates yet",
+      "description": "Certificates appear here when your students complete courses or their teachers issue them."
+    }
+  },
+  "licenses": {
+    "description": "Your school’s licenses and seats. RoboHolic manages them for you.",
+    "seats": {
+      "title": "Seats",
+      "explain": "Every active student uses one seat. Seats are counted, not enforced: nobody is blocked when you go over."
+    },
+    "listTitle": "Licenses",
+    "scopeAll": "All RoboHolic courses",
+    "scopePathways": "Pathways: {names}",
+    "seatsCount": "{count, plural, one {# seat} other {# seats}}",
+    "endsSoon": "{days, plural, one {Ends in # day} other {Ends in # days}}",
+    "countsNote": "This license does not count toward your seats.",
+    "labels": {
+      "scope": "Courses",
+      "seats": "Seats",
+      "period": "Valid"
+    },
+    "contactText": "Need more seats or a change to a license? RoboHolic updates licenses for you.",
+    "empty": {
+      "title": "No licenses",
+      "description": "Free courses are open to your school without a license. Contact RoboHolic for premium courses."
+    }
+  },
+  "settings": {
+    "description": "Your school’s profile, the language of new accounts, and the AI and join code switches.",
+    "profile": {
+      "title": "School profile",
+      "name": "School name",
+      "nameHint": "Shown to teachers and students, and printed on new certificates.",
+      "city": "City",
+      "country": "Country",
+      "countryHint": "Contact RoboHolic to change the country.",
+      "language": "Default language",
+      "languageHint": "New teacher and student accounts start in this language. Everyone can change their own language.",
+      "submit": "Save profile",
+      "saved": "School profile saved."
+    },
+    "features": {
+      "title": "AI and join codes",
+      "ai": "AI tools",
+      "aiDescription": "The AI tutor, the AI Lab and AI review suggestions for projects, for everyone in your school.",
+      "limit": "Tutor messages per student per day",
+      "limitHint": "From {min, number} to {max, number}. Leave it empty for the RoboHolic default of {fallback, number}. It applies while AI tools are on.",
+      "joinCodes": "Join codes",
+      "joinCodesDescription": "Students can join classes with a code. When this is off, codes stop working in every class and teachers add students themselves.",
+      "submit": "Save settings",
+      "saved": "Settings saved."
+    },
+    "errors": {
+      "forbidden": "You can’t change these settings."
+    }
+  }
+}

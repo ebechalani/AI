@@ -18,6 +18,7 @@ export default function StudentShellError({
 
   return (
     <ErrorState
+      titleAs="h1"
       onRetry={retry}
       action={
         <LinkButton href="/student" variant="secondary">

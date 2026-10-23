@@ -6,7 +6,7 @@ import { STUDENT_EMAIL_DOMAIN } from '@/lib/auth/username';
 import { writeAudit } from '@/lib/data/audit';
 import { getClass, removeUserFromAllClasses } from '@/lib/data/classes';
 import { consumeRateLimit } from '@/lib/data/rate-limit';
-import { adjustSchoolCounts, createSchool, getSchool } from '@/lib/data/schools';
+import { adjustSchoolCounts, createSchool, deleteNewSchool, getSchool } from '@/lib/data/schools';
 import {
   createUserProfile,
   getUser,
@@ -63,6 +63,7 @@ vi.mock('@/lib/data/rate-limit', () => ({ consumeRateLimit: vi.fn() }));
 vi.mock('@/lib/data/schools', () => ({
   adjustSchoolCounts: vi.fn(),
   createSchool: vi.fn(),
+  deleteNewSchool: vi.fn(),
   getSchool: vi.fn(),
 }));
 vi.mock('@/lib/data/users', () => ({
@@ -258,6 +259,7 @@ beforeEach(() => {
   vi.mocked(createSchool).mockImplementation(async (_actor, input) =>
     school({ id: 'school-new', ...input }),
   );
+  vi.mocked(deleteNewSchool).mockResolvedValue(undefined);
   vi.mocked(getClass).mockImplementation(async () => schoolClass({ id: 'class-a' }));
   vi.mocked(studentAccountContext).mockResolvedValue({
     schoolActive: true,
@@ -780,6 +782,49 @@ describe('createSchoolWithAdmin', () => {
     });
     expect(result.admin.role).toBe('school_admin');
     expect(adjustSchoolCounts).not.toHaveBeenCalled();
+    expect(syncClaims).toHaveBeenCalledWith('uid-1');
+    expect(deleteNewSchool).not.toHaveBeenCalled();
+  });
+
+  it('deletes the school when the address is taken between the check and createUser', async () => {
+    auth.getUserByEmail.mockRejectedValueOnce(
+      Object.assign(new Error('none'), { code: 'auth/user-not-found' }),
+    );
+    takenEmails.add('head@school.test');
+    await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBeInstanceOf(ConflictError);
+    expect(deleteNewSchool).toHaveBeenCalledWith(SYSTEM_ACTOR, 'school-new');
+    expect(createUserProfile).not.toHaveBeenCalled();
+  });
+
+  it('deletes the school, and the Auth user, when the admin account fails', async () => {
+    const authFault = new Error('auth unavailable');
+    auth.createUser.mockRejectedValueOnce(authFault);
+    await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBe(authFault);
+    expect(deleteNewSchool).toHaveBeenCalledWith(SYSTEM_ACTOR, 'school-new');
+
+    const profileFault = new Error('firestore unavailable');
+    vi.mocked(createUserProfile).mockRejectedValueOnce(profileFault);
+    await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBe(profileFault);
+    expect(auth.deleteUser).toHaveBeenCalledWith('uid-1');
+    expect(deleteNewSchool).toHaveBeenCalledTimes(2);
+  });
+
+  it('still throws the account’s error when the school cannot be deleted', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const authFault = new Error('auth unavailable');
+    auth.createUser.mockRejectedValueOnce(authFault);
+    vi.mocked(deleteNewSchool).mockRejectedValueOnce(new Error('delete failed'));
+    await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBe(authFault);
+    expect(consoleError).toHaveBeenCalledOnce();
+    consoleError.mockRestore();
+  });
+
+  it('keeps the school once the admin’s profile exists, even when its claims fail', async () => {
+    const claimsFault = new Error('claims unavailable');
+    vi.mocked(syncClaims).mockRejectedValueOnce(claimsFault);
+    await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBe(claimsFault);
+    expect(users.get('uid-1')?.schoolId).toBe('school-new');
+    expect(deleteNewSchool).not.toHaveBeenCalled();
   });
 });
 

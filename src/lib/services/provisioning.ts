@@ -19,7 +19,7 @@ import { isUsernameAccountEmail, usernameToEmail } from '@/lib/auth/username';
 import { writeAudit } from '@/lib/data/audit';
 import { getClass, removeUserFromAllClasses } from '@/lib/data/classes';
 import { consumeRateLimit } from '@/lib/data/rate-limit';
-import { adjustSchoolCounts, createSchool, getSchool } from '@/lib/data/schools';
+import { adjustSchoolCounts, createSchool, deleteNewSchool, getSchool } from '@/lib/data/schools';
 import {
   createUserProfile,
   getUser,
@@ -175,7 +175,10 @@ export async function issueClientAuthToken(actor: Actor): Promise<{ customToken:
 
 // --- Account creation ---------------------------------------------------------------------------
 
-/** Counts a new profile in its school and writes its claims. */
+/**
+ * Counts a new profile in its school and writes its claims. Once the profile exists the
+ * account stands: a counter or claim that fails here is repaired later, not undone.
+ */
 async function countAndClaim(profile: UserProfile): Promise<UserProfile> {
   const counted = countedIn(profile);
   if (counted !== null) {
@@ -203,35 +206,43 @@ async function createAuthUser(request: CreateRequest): Promise<string | null> {
 /**
  * The profile of an Auth user this service has just created. A profile that cannot be written
  * takes that Auth user down with it, so no account is left that could sign in without one.
- * Once the profile exists the account stands: a counter or claim that fails afterwards is
- * repaired later, not undone. (completeSignup never comes here: its Auth user belongs to the
- * person who signed up.)
+ * (completeSignup never comes here: its Auth user belongs to the person who signed up.)
  */
-async function writeProfileOrDeleteAuthUser(
+async function createProfileOrDeleteAuthUser(
   uid: string,
   input: NewUserProfile,
 ): Promise<UserProfile> {
-  let profile: UserProfile;
   try {
-    profile = await createUserProfile(SYSTEM_ACTOR, uid, input);
+    return await createUserProfile(SYSTEM_ACTOR, uid, input);
   } catch (error) {
     await getAdminAuth()
       .deleteUser(uid)
       .catch(() => undefined);
     throw error;
   }
-  return countAndClaim(profile);
 }
 
-/** Auth user plus profile; `emailTaken` is thrown when the address already has an account. */
-async function createAccount(
+/**
+ * Auth user plus profile, not yet counted or claimed; `emailTaken` is thrown when the address
+ * already has an account.
+ */
+async function createAuthUserAndProfile(
   request: CreateRequest,
   input: NewUserProfile,
   emailTaken: () => AppError,
 ): Promise<UserProfile> {
   const uid = await createAuthUser(request);
   if (uid === null) throw emailTaken();
-  return writeProfileOrDeleteAuthUser(uid, input);
+  return createProfileOrDeleteAuthUser(uid, input);
+}
+
+/** Auth user plus profile, counted in its school, with its claims written. */
+async function createAccount(
+  request: CreateRequest,
+  input: NewUserProfile,
+  emailTaken: () => AppError,
+): Promise<UserProfile> {
+  return countAndClaim(await createAuthUserAndProfile(request, input, emailTaken));
 }
 
 async function authUserExists(email: string): Promise<boolean> {
@@ -281,7 +292,9 @@ async function createGeneratedUsernameAccount(
       displayName: student.displayName,
     });
     if (uid === null) continue;
-    const profile = await writeProfileOrDeleteAuthUser(uid, studentProfile(student, username));
+    const profile = await countAndClaim(
+      await createProfileOrDeleteAuthUser(uid, studentProfile(student, username)),
+    );
     return { profile, username };
   }
   throw new ConflictError(`No free username was found for "${base}".`);
@@ -519,28 +532,40 @@ export async function createSchoolWithAdmin(
       ),
     );
   }
-  // Refused before the school is written: a school is never left without its admin.
+  // Refused before the school is written. An admin account that still cannot be created (a
+  // concurrent request for the address, an Auth fault) takes the school down with it. A school
+  // is left without its admin only when that delete fails too (logged), or when createSchool
+  // itself fails after storing the document.
   if (await authUserExists(adminResult.data.email)) {
     throw new ConflictError('An account with this email already exists.');
   }
 
   const school = await createSchool(actor, schoolResult.data);
-  const admin = await createAccount(
-    { email: adminResult.data.email, displayName: adminResult.data.displayName },
-    {
-      role: 'school_admin',
-      schoolId: school.id,
-      displayName: adminResult.data.displayName,
-      username: null,
-      email: adminResult.data.email,
-      ageBand: 'adult',
-      locale: school.defaultLocale,
-      consentBasis: 'adult',
-      provisionedByUid: session.uid,
-    },
-    () => new ConflictError('An account with this email already exists.'),
-  );
-  return { school, admin };
+  let admin: UserProfile;
+  try {
+    admin = await createAuthUserAndProfile(
+      { email: adminResult.data.email, displayName: adminResult.data.displayName },
+      {
+        role: 'school_admin',
+        schoolId: school.id,
+        displayName: adminResult.data.displayName,
+        username: null,
+        email: adminResult.data.email,
+        ageBand: 'adult',
+        locale: school.defaultLocale,
+        consentBasis: 'adult',
+        provisionedByUid: session.uid,
+      },
+      () => new ConflictError('An account with this email already exists.'),
+    );
+  } catch (error) {
+    await deleteNewSchool(SYSTEM_ACTOR, school.id).catch((deleteError: unknown) => {
+      console.error(`[services/provisioning] schools/${school.id} has no admin`, deleteError);
+    });
+    throw error;
+  }
+  // From here the admin's profile names the school, so both stand (countAndClaim).
+  return { school, admin: await countAndClaim(admin) };
 }
 
 // --- Identity changes ---------------------------------------------------------------------------

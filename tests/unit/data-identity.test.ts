@@ -115,6 +115,7 @@ describe('system-only functions', () => {
     'users.touchLastLogin': (actor) => users.touchLastLogin(actor, 'student-1'),
     'schools.adjustSchoolCounts': (actor) =>
       schools.adjustSchoolCounts(actor, 'school-a', { students: 1 }),
+    'schools.deleteNewSchool': (actor) => schools.deleteNewSchool(actor, 'school-a'),
     'classes.findClassByJoinCode': (actor) => classes.findClassByJoinCode(actor, 'ABCDEFGH'),
     'classes.createClass': (actor) =>
       classes.createClass(actor, {
@@ -245,6 +246,7 @@ describe('platform-admin functions', () => {
     'challenges.setChallengeStatus': (actor) =>
       challenges.setChallengeStatus(actor, 'challenge-1', 'published'),
     'billing.upsertLicense': (actor) => billing.upsertLicense(actor, null, licenseInput),
+    'billing.listAllLicenses': (actor) => billing.listAllLicenses(actor),
     'billing.listSubscriptions': (actor) => billing.listSubscriptions(actor),
     'billing.upsertSubscription': (actor) =>
       billing.upsertSubscription(actor, null, subscriptionInput),

@@ -405,3 +405,8 @@ fails the build step with "Failed to fetch `Inter` from Google Fonts"; on such a
 allow `fonts.googleapis.com` and `fonts.gstatic.com`, or switch `src/app/[locale]/layout.tsx`
 from `next/font/google` to `next/font/local` with a vendored font file (see
 `node_modules/next/dist/docs/01-app/03-api-reference/02-components/font.md`).
+
+## Licence
+
+Copyright (c) 2026 Eddy Bachaalany. All rights reserved. See [LICENSE](LICENSE): no part of
+this project may be used, copied or distributed without written permission.

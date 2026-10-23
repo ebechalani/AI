@@ -1,7 +1,7 @@
 # WS-E-3: `Dialog` inherits the text alignment of its trigger, and clips a long title
 
 - **From:** WS-E (Teacher workspace; review fix round), 2026-10-16
-- **Status:** open
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-16.
 - **Frozen files concerned:** `src/components/ui/Dialog.tsx`
 
 ## Problem
@@ -34,3 +34,16 @@ inside its body still sets it there.
 `className` to every WS-E dialog (`ClassFormDialog`, `ConfirmDialog`, `AddStudentsForm`,
 `CredentialsDialog`, `AssignCourseDialog`, `PresentCodeDialog`). It can stay once this lands.
 Other workstreams' dialogs still inherit their trigger's alignment.
+
+## Change (landed)
+
+- `src/components/ui/Dialog.tsx`: `text-start` on the `<dialog>`, `break-words` on the title
+  `<h2>` and on the description `<p>`. Nothing else changes; a body that wants another alignment
+  sets it itself.
+- `docs/ARCHITECTURE.md` 7.3: the `Dialog` paragraph says so.
+- `tests/unit/foundation-kit.test.ts`: the three classes in the rendered dialog.
+
+Checked in Chromium on a harness page (real `Dialog`, app CSS, 375 px): a dialog opened from a
+`text-center` container computes `text-align: start` (its body too), and a French title with
+"Robotique’ExtraordinaireSupercalifragilistique2026" and a description of one long word wrap
+inside the dialog (no overflow). WS-E's `DIALOG_TEXT` workaround stays and is now redundant.
