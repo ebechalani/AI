@@ -64,9 +64,12 @@ describe('proxy sign-in redirect', () => {
     expectRedirectToLogin(proxy(request('POST')));
   });
 
-  it.each(['HEAD', 'PUT', 'DELETE'])('still redirects a signed-out %s with the action header', (method) => {
-    expectRedirectToLogin(proxy(request(method, { action: true })));
-  });
+  it.each(['HEAD', 'PUT', 'DELETE'])(
+    'still redirects a signed-out %s with the action header',
+    (method) => {
+      expectRedirectToLogin(proxy(request(method, { action: true })));
+    },
+  );
 
   it.each([
     ['GET', false],
