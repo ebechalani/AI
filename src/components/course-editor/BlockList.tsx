@@ -110,6 +110,18 @@ export function BlockList({
     }
   }
 
+  /** Cancel or Close: the focus goes back to where the form was opened from (7.3). */
+  function closeEditor() {
+    const closing = open;
+    setOpen(null);
+    if (closing === null) return;
+    if (closing.kind === 'edit' && stored[closing.blockId] !== undefined) {
+      focusLater(anchors.blockEdit(closing.blockId));
+    } else {
+      focusLater(atLimit ? anchors.blocks : anchors.addBlock);
+    }
+  }
+
   function onSaved(blockId: string) {
     setOpen(null);
     focusLater(anchors.block(blockId));
@@ -141,7 +153,7 @@ export function BlockList({
         defaultLocale={defaultLocale}
         formId={formIdOf(open)}
         labelledBy={open.kind === 'edit' ? anchors.block(open.blockId) : `${formIdOf(open)}-title`}
-        onClose={() => setOpen(null)}
+        onClose={closeEditor}
         onSaved={onSaved}
         onDirtyChange={onDirtyChange}
       />
@@ -149,7 +161,7 @@ export function BlockList({
   const detached = open !== null && open.kind === 'new';
 
   const addButton = (
-    <Button disabled={atLimit} onClick={() => requestEditor('add')}>
+    <Button id={anchors.addBlock} disabled={atLimit} onClick={() => requestEditor('add')}>
       <Plus aria-hidden="true" />
       {t('blocks.add')}
     </Button>

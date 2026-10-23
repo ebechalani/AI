@@ -115,7 +115,7 @@ export function BlockSummary({
             <div className="flex flex-wrap gap-1.5">
               {linkedTitle !== null && <Chip tone="brand">{t('blocks.linked', { title: linkedTitle })}</Chip>}
               {untranslated !== null && (
-                <Chip>{t('blocks.untranslated', { language: tCommon(`locale.names.${untranslated}`) })}</Chip>
+                <Chip>{t('blocks.untranslated', { language: t(`languageNames.${untranslated}`) })}</Chip>
               )}
             </div>
           )}
@@ -130,6 +130,7 @@ export function BlockSummary({
             idPrefix={`block-${block.id}-move`}
           />
           <Button
+            id={anchors.blockEdit(block.id)}
             size="sm"
             variant="secondary"
             aria-expanded={open}

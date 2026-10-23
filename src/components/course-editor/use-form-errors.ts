@@ -43,7 +43,6 @@ export interface FormErrors {
 
 export function useFormErrors(options: FormErrorsOptions): FormErrors {
   const t = useTranslations('courseEditor');
-  const tCommon = useTranslations('common');
   const validationMessage = useValidationMessage();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [failure, setFailure] = useState<FormFailure | null>(null);
@@ -88,7 +87,7 @@ export function useFormErrors(options: FormErrorsOptions): FormErrors {
   const notes = Object.entries(counts)
     .filter(([locale, count]) => locale !== language && (count ?? 0) > 0)
     .map(([locale, count]) =>
-      t('errors.otherLanguage', { count: count ?? 0, language: tCommon(`locale.names.${locale}`) }),
+      t('errors.otherLanguage', { count: count ?? 0, language: t(`languageNames.${locale}`) }),
     );
 
   return {

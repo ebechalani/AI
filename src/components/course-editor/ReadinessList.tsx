@@ -46,7 +46,6 @@ export function ReadinessList({
   status: CourseStatus;
 }) {
   const t = useTranslations('courseEditor');
-  const tCommon = useTranslations('common');
   const { show } = useCourseTab();
   const paths = editorPaths(mode);
 
@@ -88,7 +87,7 @@ export function ReadinessList({
   function warningItems(warning: ReadinessWarning): Item[] {
     switch (warning.kind) {
       case 'untranslated': {
-        const language = tCommon(`locale.names.${warning.locale}`);
+        const language = t(`languageNames.${warning.locale}`);
         const items: Item[] = [];
         if (warning.course) {
           items.push({

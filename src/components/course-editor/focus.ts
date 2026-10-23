@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
 
+const FOCUSABLE =
+  'input:not([type="hidden"]):not(:disabled), select:not(:disabled), textarea:not(:disabled), button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])';
+
+/** Focuses `element`; true when it now holds the focus (a `<fieldset>` without tabIndex cannot). */
+function tryFocus(element: HTMLElement | null | undefined): boolean {
+  if (!element) return false;
+  element.focus();
+  return document.activeElement === element;
+}
+
 /**
  * Renders the error state now, then focuses the first invalid control inside `container`, or
  * `fallback` (the wrapper of a form-level `Alert`) when no field is marked invalid
- * (ARCHITECTURE.md 7.3).
+ * (ARCHITECTURE.md 7.3). An invalid group that cannot take the focus hands it to its first
+ * control, and a group without one to `fallback`, so the focus never stays behind.
  */
 export function showErrorsAndFocus(
   update: () => void,
@@ -13,7 +24,28 @@ export function showErrorsAndFocus(
 ): void {
   flushSync(update);
   const invalid = container?.querySelector<HTMLElement>('[aria-invalid="true"]');
-  (invalid ?? fallback?.())?.focus();
+  if (tryFocus(invalid)) return;
+  if (tryFocus(invalid?.querySelector<HTMLElement>(FOCUSABLE))) return;
+  fallback?.()?.focus();
+}
+
+/**
+ * The first form control inside `container` that can take the focus; for a radio group, its
+ * checked radio. Where the focus goes when the control that held it disappears (the conflict
+ * alert's choices).
+ */
+export function firstField(container: ParentNode | null | undefined): HTMLElement | null {
+  const field = container?.querySelector<HTMLInputElement>(
+    'input:not([type="hidden"]):not(:disabled), select:not(:disabled), textarea:not(:disabled)',
+  );
+  if (!field) return null;
+  if (field.type === 'radio' && !field.checked && field.name !== '') {
+    const checked = Array.from(
+      container?.querySelectorAll<HTMLInputElement>('input[type="radio"]:checked') ?? [],
+    ).find((radio) => radio.name === field.name);
+    if (checked) return checked;
+  }
+  return field;
 }
 
 /**

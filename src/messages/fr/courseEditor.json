@@ -605,6 +605,7 @@
     "markCorrect": "La réponse {position, number} est correcte",
     "option": "Réponse {position, number}",
     "removeOption": "Retirer la réponse {position, number}",
+    "optionRemoved": "Réponse {position, number} retirée.",
     "addOption": "Ajouter une réponse",
     "optionCount": "{count, number} sur {max, number} réponses",
     "acceptedAnswers": "Réponses acceptées",
@@ -654,5 +655,10 @@
     "xpHint": "Les apprenants la gagnent quand leur travail est accepté. Jusqu’à {max, number}\u00a0XP.",
     "requiredForCertificate": "Nécessaire pour le certificat",
     "requiredForCertificateDescription": "Les apprenants obtiennent le certificat du cours seulement une fois ce projet accepté."
+  },
+  "languageNames": {
+    "en": "anglais",
+    "fr": "français",
+    "ar": "arabe"
   }
 }

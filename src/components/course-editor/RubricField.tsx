@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 import { Checkbox } from '@/components/ui';
 import { cn } from '@/lib/utils';
@@ -18,11 +19,23 @@ export interface RubricFieldProps {
 export function RubricField({ rubric, onChange, error, disabled }: RubricFieldProps) {
   const t = useTranslations('courseEditor');
   const tDomain = useTranslations('domain');
+  const errorId = useId();
   const total = rubricTotal(rubric);
+  // Focusable, and the error under the legend, so a failed save shows and reads it (7.3).
   return (
-    <fieldset className="min-w-0" aria-invalid={error ? true : undefined}>
+    <fieldset
+      tabIndex={-1}
+      className="min-w-0 rounded-control"
+      aria-invalid={error ? true : undefined}
+      aria-describedby={error ? errorId : undefined}
+    >
       <legend className="mb-1 text-sm font-semibold text-ink">{t('project.rubric')}</legend>
       <p className="mb-3 text-sm text-ink-muted">{t('project.rubricHint')}</p>
+      {error && (
+        <p id={errorId} className="mb-3 text-sm font-medium text-danger">
+          {error}
+        </p>
+      )}
       <div className="flex flex-col gap-3">
         {RUBRIC_KEYS.map((key) => {
           const entry = rubric[key];
@@ -57,7 +70,6 @@ export function RubricField({ rubric, onChange, error, disabled }: RubricFieldPr
       >
         {t('project.rubricTotal', { total })}
       </p>
-      {error && <p className="mt-1.5 text-sm font-medium text-danger">{error}</p>}
     </fieldset>
   );
 }

@@ -70,10 +70,14 @@ export const anchors = {
   lesson: (id: string) => `lesson-${id}`,
   /** The block summary's heading (tabIndex -1). */
   block: (id: string) => `block-${id}`,
+  /** The block summary's Edit button: where the focus goes when its form closes. */
+  blockEdit: (id: string) => `block-${id}-edit`,
   question: (key: string) => `question-${key}`,
   readiness: 'course-readiness',
   outline: 'course-outline',
   blocks: 'lesson-blocks',
+  /** The lesson's "Add a block" button (one is shown at a time). */
+  addBlock: 'lesson-blocks-add',
   questions: 'quiz-questions',
 } as const;
 

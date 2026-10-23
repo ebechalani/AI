@@ -605,6 +605,7 @@
     "markCorrect": "Answer {position, number} is correct",
     "option": "Answer {position, number}",
     "removeOption": "Remove answer {position, number}",
+    "optionRemoved": "Answer {position, number} removed.",
     "addOption": "Add an answer",
     "optionCount": "{count, number} of {max, number} answers",
     "acceptedAnswers": "Accepted answers",
@@ -654,5 +655,10 @@
     "xpHint": "Learners earn it when their work is accepted. Up to {max, number} XP.",
     "requiredForCertificate": "Needed for the certificate",
     "requiredForCertificateDescription": "Learners get the course certificate only once this project is accepted."
+  },
+  "languageNames": {
+    "en": "English",
+    "fr": "French",
+    "ar": "Arabic"
   }
 }

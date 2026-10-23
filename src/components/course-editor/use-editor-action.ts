@@ -5,6 +5,7 @@ import { useRouter } from '@/lib/i18n/navigation';
 import type { ActionError, ActionResult } from '@/types/actions';
 import { useEditorEvents } from './editor-events';
 import { conflictMessageKey, type ConflictContext } from './errors-model';
+import { sessionLost } from './session-probe';
 import { stripInputPrefix } from './translations';
 import { useActionErrorMessage } from './use-action-error';
 
@@ -61,7 +62,8 @@ export function useEditorAction(): EditorAction {
     try {
       result = await call();
     } catch {
-      result = { ok: false, error: { code: 'internal' } };
+      // A signed-out call is redirected by the proxy and throws (session-probe.ts).
+      result = { ok: false, error: { code: (await sessionLost()) ? 'unauthenticated' : 'internal' } };
     }
     if (result.ok) return result;
 

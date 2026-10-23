@@ -94,7 +94,7 @@ export function LessonRowItem({
           {hasContents && <span>{t('outline.lessonContents', contents)}</span>}
           {untranslated.map((candidate) => (
             <Chip key={candidate}>
-              {t('outline.untranslated', { language: tCommon(`locale.names.${candidate}`) })}
+              {t('outline.untranslated', { language: t(`languageNames.${candidate}`) })}
             </Chip>
           ))}
         </div>

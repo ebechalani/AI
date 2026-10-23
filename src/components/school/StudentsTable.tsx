@@ -79,7 +79,10 @@ export function StudentsTable({ students, classesByStudent }: StudentsTableProps
                     : formatDate(student.lastLoginAt)}
                 </TableCell>
                 <TableCell align="end">
-                  <div className="flex flex-wrap justify-end gap-2">
+                  {/* Each button stays on one line (only the buttons: the row's dialogs render
+                      here too). Below lg they keep their natural width and the region scrolls;
+                      from lg two of them may stack rather than overflow the region. */}
+                  <div className="flex justify-end gap-2 lg:flex-wrap [&>button]:whitespace-nowrap">
                     {actions.resetPassword && (
                       <ResetPasswordRowButton
                         studentUid={student.id}

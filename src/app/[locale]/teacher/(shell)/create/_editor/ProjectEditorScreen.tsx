@@ -54,7 +54,13 @@ export async function ProjectEditorScreen({
   const addToTitle =
     creating && !teacherCourse && lessonParam !== undefined ? lessonTitle(lessonParam) : null;
   const addTo =
-    addToTitle !== null && lessonParam !== undefined ? { lessonId: lessonParam, title: addToTitle } : null;
+    addToTitle !== null && lessonParam !== undefined
+      ? {
+          lessonId: lessonParam,
+          title: addToTitle,
+          blockCount: outline.lessons.find((candidate) => candidate.id === lessonParam)?.blockCount ?? 0,
+        }
+      : null;
 
   return (
     <EditorFrame courseId={courseId}>

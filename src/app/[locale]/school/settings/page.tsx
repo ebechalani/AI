@@ -35,7 +35,11 @@ export default async function SchoolSettingsPage() {
         className="mb-6"
       />
       <div className="flex max-w-3xl flex-col gap-8">
-        <SchoolProfileForm school={school} countryName={regionName(school.country, locale)} />
+        {/* Only the fields the form reads cross into the client payload. */}
+        <SchoolProfileForm
+          school={{ name: school.name, city: school.city, defaultLocale: school.defaultLocale }}
+          countryName={regionName(school.country, locale)}
+        />
         <SchoolFeaturesForm settings={school.settings} />
       </div>
     </>

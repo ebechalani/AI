@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import { useTranslations } from 'next-intl';
 import { Checkbox } from '@/components/ui';
 import { SUBMISSION_TYPES, type SubmissionType } from '@/types/common';
@@ -15,10 +16,22 @@ export interface SubmissionTypesFieldProps {
 export function SubmissionTypesField({ value, onChange, error, disabled }: SubmissionTypesFieldProps) {
   const t = useTranslations('courseEditor');
   const tDomain = useTranslations('domain');
+  const errorId = useId();
+  // Focusable, and the error under the legend, so a failed save shows and reads it (7.3).
   return (
-    <fieldset className="min-w-0" aria-invalid={error ? true : undefined}>
+    <fieldset
+      tabIndex={-1}
+      className="min-w-0 rounded-control"
+      aria-invalid={error ? true : undefined}
+      aria-describedby={error ? errorId : undefined}
+    >
       <legend className="mb-1 text-sm font-semibold text-ink">{t('project.submissionTypes')}</legend>
       <p className="mb-3 text-sm text-ink-muted">{t('project.submissionTypesHint')}</p>
+      {error && (
+        <p id={errorId} className="mb-3 text-sm font-medium text-danger">
+          {error}
+        </p>
+      )}
       <div className="grid gap-2 sm:grid-cols-2">
         {SUBMISSION_TYPES.map((type) => (
           <Checkbox
@@ -36,7 +49,6 @@ export function SubmissionTypesField({ value, onChange, error, disabled }: Submi
           />
         ))}
       </div>
-      {error && <p className="mt-1.5 text-sm font-medium text-danger">{error}</p>}
     </fieldset>
   );
 }

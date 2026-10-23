@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button, Checkbox, IconButton } from '@/components/ui';
@@ -7,6 +8,7 @@ import { CONTENT_LIMITS } from '@/lib/limits';
 import { cn } from '@/lib/utils';
 import type { Locale } from '@/types/common';
 import type { QuestionType } from '@/types/quiz';
+import { usePendingFocus } from './focus';
 import type { OptionDraft } from './quiz-model';
 import { TextField } from './TextField';
 
@@ -43,6 +45,8 @@ export function OptionsField({
   disabled,
 }: OptionsFieldProps) {
   const t = useTranslations('courseEditor');
+  const focusLater = usePendingFocus();
+  const [announcement, setAnnouncement] = useState('');
   const editable = type !== 'true_false';
   const multiple = type === 'multiple_answer';
   const groupError = errorFor('correctOptionIndexes') ?? errorFor('options');
@@ -62,7 +66,14 @@ export function OptionsField({
     );
   }
 
+  const inputIdOf = (key: string) => `q-${questionKey}-o-${key}`;
+
   function remove(key: string) {
+    // The focus goes to the answer before (the next one for the first), never to the page.
+    const index = options.findIndex((option) => option.key === key);
+    const neighbour = options[index - 1] ?? options[index + 1];
+    if (neighbour) focusLater(inputIdOf(neighbour.key));
+    setAnnouncement(t('quiz.optionRemoved', { position: index + 1 }));
     onChange(
       options.filter((option) => option.key !== key),
       correct.filter((k) => k !== key),
@@ -78,18 +89,25 @@ export function OptionsField({
   }
 
   return (
+    // Focusable, and the error under the legend, so a failed save shows and reads it (7.3).
     <fieldset
-      className="flex min-w-0 flex-col gap-3"
+      tabIndex={-1}
+      className="flex min-w-0 flex-col gap-3 rounded-control"
       aria-invalid={groupError ? true : undefined}
       aria-describedby={groupError ? `q-${questionKey}-answers-error` : undefined}
     >
       <legend className="mb-1 text-sm font-semibold text-ink">{t('quiz.answers')}</legend>
       <p className="-mt-2 text-sm text-ink-muted">{t(`quiz.answersHint.${type}`)}</p>
+      {groupError && (
+        <p id={`q-${questionKey}-answers-error`} className="text-sm font-medium text-danger">
+          {groupError}
+        </p>
+      )}
       <ol className="flex flex-col gap-3">
         {options.map((option, index) => {
           const position = index + 1;
           const checked = correct.includes(option.key);
-          const inputId = `q-${questionKey}-o-${option.key}`;
+          const inputId = inputIdOf(option.key);
           return (
             <li key={option.key} className="flex items-start gap-3">
               <span className="flex h-11 items-center">
@@ -149,11 +167,9 @@ export function OptionsField({
           </span>
         </div>
       )}
-      {groupError && (
-        <p id={`q-${questionKey}-answers-error`} className="text-sm font-medium text-danger">
-          {groupError}
-        </p>
-      )}
+      <div role="status" aria-live="polite" className="sr-only">
+        {announcement}
+      </div>
     </fieldset>
   );
 }

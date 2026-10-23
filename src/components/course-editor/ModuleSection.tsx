@@ -117,7 +117,7 @@ export function ModuleSection({
               <Chip>{t('outline.lessonCount', { count: lessons.length })}</Chip>
               {untranslated.map((candidate) => (
                 <Chip key={candidate}>
-                  {t('outline.untranslated', { language: tCommon(`locale.names.${candidate}`) })}
+                  {t('outline.untranslated', { language: t(`languageNames.${candidate}`) })}
                 </Chip>
               ))}
             </div>
@@ -206,7 +206,7 @@ export function ModuleSection({
       </Card>
       {editOpening > 0 && (
         <ModuleDialog
-          key={editOpening}
+          key={`edit-${editOpening}`}
           open={editOpen}
           onClose={() => setEditOpen(false)}
           courseId={courseId}
@@ -220,7 +220,7 @@ export function ModuleSection({
       )}
       {lessonOpening > 0 && (
         <LessonDialog
-          key={lessonOpening}
+          key={`lesson-${lessonOpening}`}
           open={lessonOpen}
           onClose={() => setLessonOpen(false)}
           courseId={courseId}

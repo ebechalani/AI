@@ -43,10 +43,16 @@ export function UserStatusButton({ uid, name, status, kind }: UserStatusButtonPr
       case 'forbidden':
         return t('status.errors.forbidden');
       case 'not_found':
-        // The refresh drops the row: close first, then the message and the focus on <main>.
+        // The refresh drops the row, and the button with it, so the focus goes to <main>. From
+        // the dialog (disable) it moves once the dialog has closed; without one (enable) nothing
+        // closes, so it moves now, before the refresh.
         toast({ tone: 'warning', title: t('status.errors.notFound') });
-        focusLater(MAIN_CONTENT_ID);
-        setOpen(false);
+        if (open) {
+          focusLater(MAIN_CONTENT_ID);
+          setOpen(false);
+        } else {
+          document.getElementById(MAIN_CONTENT_ID)?.focus();
+        }
         router.refresh();
         return null;
       case 'unauthenticated':

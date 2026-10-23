@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { CONFLICT_KEYS } from '@/components/course-editor/errors-model';
 import { STATUS_ACTIONS, STATUS_EXPLANATIONS } from '@/components/course-editor/outline-model';
 import { TRANSLATION_STATES } from '@/components/course-editor/translations';
+import { LOCALES } from '@/lib/i18n/config';
 import { LAB_TOOL_IDS } from '@/types/ai';
 import { AUDIENCES } from '@/types/common';
 import { BLOCK_TYPES, CODE_LANGUAGES, VIDEO_SOURCES } from '@/types/content';
@@ -62,7 +63,7 @@ describe.each(['en', 'fr'])('%s/courseEditor catalog', (locale) => {
   it('has no dot in a key name and the same keys as the English source', () => {
     const source = leaves(catalog('en')).map(([key]) => key);
     expect(messages.map(([key]) => key).sort()).toEqual(source.sort());
-    expect(source).toHaveLength(492);
+    expect(source).toHaveLength(496);
   });
 
   it('formats every message as ICU without an error', () => {
@@ -108,6 +109,7 @@ describe.each(['en', 'fr'])('%s/courseEditor catalog', (locale) => {
       'status.explanation.publishedOfficialNoPathway',
       ...CONFLICT_KEYS.map((k) => `conflicts.${k}`),
       ...TRANSLATION_STATES.map((s) => `language.state.${s}`),
+      ...LOCALES.map((l) => `languageNames.${l}`),
       ...AUDIENCES.flatMap((a) => [`list.audience.${a}`, `fields.audienceOptions.${a}`, `fields.audienceOptions.${a}Description`]),
       ...PROJECT_KINDS.flatMap((k) => [`project.kinds.${k}`, `project.kinds.${k}Description`]),
       ...['free', 'premium'].flatMap((t) => [`fields.accessTierOptions.${t}`, `fields.accessTierOptions.${t}Description`, `adminList.tier.${t}`]),

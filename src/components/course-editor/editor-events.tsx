@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useRouter } from '@/lib/i18n/navigation';
+import { CONFLICT_ALERT_SELECTOR } from './ConflictAlert';
 import { useUnsavedChanges } from './unsaved-changes';
 
 // Saves made in another tab of the same browser (5.4). Every save posts on a BroadcastChannel
@@ -38,6 +39,14 @@ export function useEditorEvents(): EditorEvents {
 
 export const SYNC_NOTICE_ID = 'editor-sync-notice';
 
+/** The shells' `<main>` (tabIndex -1, the skip link's target). */
+const MAIN_CONTENT_ID = 'main-content';
+
+function focusIsLost(): boolean {
+  const active = document.activeElement;
+  return active === null || active === document.body || active.id === MAIN_CONTENT_ID;
+}
+
 export function EditorEventsProvider({
   courseId,
   children,
@@ -49,6 +58,8 @@ export function EditorEventsProvider({
   const unsaved = useUnsavedChanges();
   const [pending, setPending] = useState(false);
   const [, startTransition] = useTransition();
+  const [loading, startLoading] = useTransition();
+  const focusAfterLoad = useRef(false);
   const routerRef = useRef(router);
   const channelRef = useRef<BroadcastChannel | null>(null);
   const pendingRef = useRef(false);
@@ -56,6 +67,17 @@ export function EditorEventsProvider({
   useEffect(() => {
     routerRef.current = router;
   });
+
+  // "Load the changes" removes the notice and its button with the focus. The focus waits on the
+  // main content while the page refreshes, then goes to the first conflict alert the new version
+  // raised (it asks what to keep), unless the author has moved it meanwhile (7.3).
+  useEffect(() => {
+    if (!focusAfterLoad.current || pending) return;
+    if (focusIsLost()) document.getElementById(MAIN_CONTENT_ID)?.focus();
+    if (loading) return;
+    focusAfterLoad.current = false;
+    if (focusIsLost()) document.querySelector<HTMLElement>(CONFLICT_ALERT_SELECTOR)?.focus();
+  }, [loading, pending]);
 
   useEffect(() => {
     const refresh = () => startTransition(() => routerRef.current.refresh());
@@ -103,8 +125,9 @@ export function EditorEventsProvider({
       pending,
       loadChanges() {
         pendingRef.current = false;
+        focusAfterLoad.current = true;
         setPending(false);
-        startTransition(() => routerRef.current.refresh());
+        startLoading(() => routerRef.current.refresh());
       },
     }),
     [pending],

@@ -55,7 +55,7 @@ export interface ProjectEditorProps {
   project: Project | null;
   defaultLocale: Locale;
   /** The lesson the new project is added to on its first save (6.5). */
-  addTo: { lessonId: string; title: string } | null;
+  addTo: { lessonId: string; title: string; blockCount: number } | null;
   teacherCourse: boolean;
 }
 
@@ -123,7 +123,13 @@ export function ProjectEditor({
           },
         }),
       {
-        context: { action: 'saveBlock', creating: true, blockCount: 0, link: 'project', teacherCourse },
+        context: {
+          action: 'saveBlock',
+          creating: true,
+          blockCount: addTo.blockCount,
+          link: 'project',
+          teacherCourse,
+        },
         report: 'toast',
       },
     );

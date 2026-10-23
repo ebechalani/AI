@@ -13,7 +13,7 @@ export function SyncNotice() {
     <div
       id={SYNC_NOTICE_ID}
       tabIndex={-1}
-      className="mb-6 rounded-control outline-none focus-visible:outline-2"
+      className="mb-6 rounded-control"
     >
       <Alert
         tone="warning"

@@ -63,7 +63,7 @@ export interface QuizEditorProps {
   /** The default true/false option texts in every editable language. */
   tf: TrueFalseTexts;
   /** The lesson the new quiz is added to on its first save (6.4). */
-  addTo: { lessonId: string; title: string } | null;
+  addTo: { lessonId: string; title: string; blockCount: number } | null;
 }
 
 /** The quiz editor (6.4): settings and questions, saved together. */
@@ -126,7 +126,13 @@ export function QuizEditor({ courseId, mode, quizId, input, defaultLocale, tf, a
           },
         }),
       {
-        context: { action: 'saveBlock', creating: true, blockCount: 0, link: 'quiz', teacherCourse: false },
+        context: {
+          action: 'saveBlock',
+          creating: true,
+          blockCount: addTo.blockCount,
+          link: 'quiz',
+          teacherCourse: false,
+        },
         report: 'toast',
       },
     );

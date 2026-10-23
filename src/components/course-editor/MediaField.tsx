@@ -49,7 +49,8 @@ export function MediaField({
 
   return (
     <fieldset
-      className="flex min-w-0 flex-col gap-3"
+      tabIndex={-1}
+      className="flex min-w-0 flex-col gap-3 rounded-control"
       aria-invalid={error ? true : undefined}
       aria-describedby={error ? errorId : undefined}
     >

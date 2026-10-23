@@ -53,11 +53,10 @@ export function TextField({
   autoFocus,
 }: TextFieldProps) {
   const t = useTranslations('courseEditor');
-  const tCommon = useTranslations('common');
   const fieldLabel =
     locale === undefined
       ? label
-      : t('fields.inLanguage', { field: label, language: tCommon(`locale.names.${locale}`) });
+      : t('fields.inLanguage', { field: label, language: t(`languageNames.${locale}`) });
   const shared = {
     value,
     lang: locale ?? lang,
