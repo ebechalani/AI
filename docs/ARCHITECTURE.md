@@ -218,10 +218,10 @@ client component ──▶ someAction(input)
   `lib/actions` that touches the auth layer: it re-exports `getSession` and
   `assertSessionNotRevoked` from `auth/session.ts` (before F4's hand-over, section 11.1, it
   answers "no session", so every non-anonymous action fails closed). Unit tests of
-  `runAction` mock that one module. Step 2 also runs when the cookie is gone (the 24 h staff
-  cookie expired, or the user signed out in another tab): `proxy.ts` does not redirect a
-  server-action `POST` (1.3), so the call answers `unauthenticated` instead of throwing in the
-  client.
+  `runAction` mock that one module. Step 2 also answers a call made once the cookie is gone
+  (the 24 h staff cookie expired, or the user signed out in another tab): `proxy.ts` does not
+  redirect a server-action `POST` (1.3), so the call answers `unauthenticated` instead of
+  throwing in the client.
 - `locale` in step 4 is `await getLocale()` from `next-intl/server` (the locale of the page
   the action was called from). It is never read from the client payload and never from
   `session.locale` (the stored preference can lag behind the URL).
