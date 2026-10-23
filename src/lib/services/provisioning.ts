@@ -533,8 +533,9 @@ export async function createSchoolWithAdmin(
     );
   }
   // Refused before the school is written. An admin account that still cannot be created (a
-  // concurrent request for the address, an Auth fault) takes the school down with it, so a
-  // school is never left without its admin unless that delete fails too, which is logged.
+  // concurrent request for the address, an Auth fault) takes the school down with it. A school
+  // is left without its admin only when that delete fails too (logged), or when createSchool
+  // itself fails after storing the document.
   if (await authUserExists(adminResult.data.email)) {
     throw new ConflictError('An account with this email already exists.');
   }
@@ -558,7 +559,7 @@ export async function createSchoolWithAdmin(
       () => new ConflictError('An account with this email already exists.'),
     );
   } catch (error) {
-    await deleteNewSchool(actor, school.id).catch((deleteError: unknown) => {
+    await deleteNewSchool(SYSTEM_ACTOR, school.id).catch((deleteError: unknown) => {
       console.error(`[services/provisioning] schools/${school.id} has no admin`, deleteError);
     });
     throw error;

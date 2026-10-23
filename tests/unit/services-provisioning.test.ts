@@ -792,7 +792,7 @@ describe('createSchoolWithAdmin', () => {
     );
     takenEmails.add('head@school.test');
     await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBeInstanceOf(ConflictError);
-    expect(deleteNewSchool).toHaveBeenCalledWith(platformAdmin, 'school-new');
+    expect(deleteNewSchool).toHaveBeenCalledWith(SYSTEM_ACTOR, 'school-new');
     expect(createUserProfile).not.toHaveBeenCalled();
   });
 
@@ -800,7 +800,7 @@ describe('createSchoolWithAdmin', () => {
     const authFault = new Error('auth unavailable');
     auth.createUser.mockRejectedValueOnce(authFault);
     await expect(createSchoolWithAdmin(platformAdmin, input)).rejects.toBe(authFault);
-    expect(deleteNewSchool).toHaveBeenCalledWith(platformAdmin, 'school-new');
+    expect(deleteNewSchool).toHaveBeenCalledWith(SYSTEM_ACTOR, 'school-new');
 
     const profileFault = new Error('firestore unavailable');
     vi.mocked(createUserProfile).mockRejectedValueOnce(profileFault);

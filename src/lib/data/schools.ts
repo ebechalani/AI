@@ -76,11 +76,12 @@ export async function createSchool(actor: Actor, input: SchoolInput): Promise<Sc
 }
 
 /**
- * Undoes createSchool when the school's first admin cannot be created (services/provisioning
- * only): nothing refers to a school that young. Succeeds when already gone.
+ * Undoes createSchool when the school's first admin cannot be created: nothing refers to a
+ * school that young. System only, so no session can reach it, and services/provisioning is its
+ * one caller. Succeeds when already gone.
  */
 export async function deleteNewSchool(actor: Actor, schoolId: string): Promise<void> {
-  assertCan(isPlatformAdmin(actor), 'school.create');
+  assertSystem(actor);
   await schoolDoc(schoolId).delete();
 }
 

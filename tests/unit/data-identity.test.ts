@@ -115,6 +115,7 @@ describe('system-only functions', () => {
     'users.touchLastLogin': (actor) => users.touchLastLogin(actor, 'student-1'),
     'schools.adjustSchoolCounts': (actor) =>
       schools.adjustSchoolCounts(actor, 'school-a', { students: 1 }),
+    'schools.deleteNewSchool': (actor) => schools.deleteNewSchool(actor, 'school-a'),
     'classes.findClassByJoinCode': (actor) => classes.findClassByJoinCode(actor, 'ABCDEFGH'),
     'classes.createClass': (actor) =>
       classes.createClass(actor, {
@@ -234,7 +235,6 @@ describe('platform-admin functions', () => {
         city: null,
         defaultLocale: 'en',
       }),
-    'schools.deleteNewSchool': (actor) => schools.deleteNewSchool(actor, 'school-a'),
     'schools.setSchoolStatus': (actor) => schools.setSchoolStatus(actor, 'school-a', 'suspended'),
     'schools.updateSchool (country)': (actor) =>
       schools.updateSchool(actor, 'school-a', { country: 'FR' }),

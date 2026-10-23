@@ -4207,6 +4207,7 @@ touchLastLogin(actor, uid): Promise<void>                                     //
 getSchool(actor, schoolId): Promise<School>
 listSchools(actor, page?: PageRequest): Promise<Page<School>>
 createSchool(actor, input: SchoolInput): Promise<School>
+deleteNewSchool(actor, schoolId): Promise<void>   // system only; undoes createSchool for createSchoolWithAdmin; succeeds when already gone
 updateSchool(actor, schoolId, patch: Partial<Pick<School, 'name' | 'country' | 'city' | 'defaultLocale' | 'settings'>>): Promise<School>
                                                                                // clamps settings.aiDailyMessageLimit to 1–200 (null = platform default);
                                                                                // `settings` is replaced as a whole; `country` may be changed by a platform
@@ -4664,9 +4665,11 @@ Semantics that the signatures do not show:
   `schoolInputSchema` and its field errors keyed `school.<field>` (form-level under
   `school`), the admin fields with `createTeacherInputSchema` keyed `adminDisplayName` /
   `adminEmail`. `getUserByEmail` is checked **before** `createSchool`, so an existing address
-  (`ConflictError`) never leaves a school without an admin (a concurrent creation of that
-  address between the check and `createUser` would; negligible, and recoverable with
-  `changeUserRole`). The admin profile has `locale` = `school.defaultLocale` and
+  (`ConflictError`) never leaves a school without an admin. An admin account that still
+  cannot be created afterwards (a concurrent creation of the address, an Auth or profile-write
+  fault) deletes the school again (`deleteNewSchool` with the system actor) and the original
+  error is rethrown; only a failed delete, which is logged, leaves it behind. Once the admin's
+  profile exists both stand: a failed `syncClaims` is repaired at sign-in. The admin profile has `locale` = `school.defaultLocale` and
   `provisionedByUid` = the actor; school admins are not counted in `schools.counts`. The
   new Auth user has no usable password; the caller's browser then sends the reset email
   (section 1.5).
