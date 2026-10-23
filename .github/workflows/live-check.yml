@@ -41,6 +41,21 @@ jobs:
             echo "::endgroup::"
           done
 
+      - name: Server self-check (/api/health)
+        run: |
+          curl -sS -m 60 "${SITE_URL}/api/health" -o health.json -w 'status %{http_code}\n' || true
+          python3 -c "
+          import json
+          try:
+              report = json.load(open('health.json'))
+          except Exception:
+              print('no JSON report (the route is not deployed, or the server failed before it)')
+              raise SystemExit
+          print('ok:', report.get('ok'), '| node', report.get('node'), '| commit', report.get('commit'))
+          for step in report.get('steps', []):
+              print('PASS' if step['ok'] else 'FAIL', step['name'], '-', step.get('detail', ''))
+          "
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
