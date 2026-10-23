@@ -93,7 +93,7 @@ function put(path: string, document: { id: string }): void {
 }
 
 function pathway(id: string, audience: Audience): void {
-  put(`pathways/${id}`, { id, audience, status: 'published', publishedCourseCount: 0 });
+  fake.store.set(`pathways/${id}`, { audience, status: 'published', publishedCourseCount: 0 });
 }
 
 const admin = session('platform_admin', 'admin-0');

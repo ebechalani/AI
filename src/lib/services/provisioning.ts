@@ -563,7 +563,7 @@ export async function createSchoolWithAdmin(
     });
     throw error;
   }
-  // The admin's profile names the school from here on, so the school stays with it.
+  // From here the admin's profile names the school, so both stand (countAndClaim).
   return { school, admin: await countAndClaim(admin) };
 }
 

@@ -234,6 +234,7 @@ describe('platform-admin functions', () => {
         city: null,
         defaultLocale: 'en',
       }),
+    'schools.deleteNewSchool': (actor) => schools.deleteNewSchool(actor, 'school-a'),
     'schools.setSchoolStatus': (actor) => schools.setSchoolStatus(actor, 'school-a', 'suspended'),
     'schools.updateSchool (country)': (actor) =>
       schools.updateSchool(actor, 'school-a', { country: 'FR' }),
