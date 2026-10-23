@@ -75,6 +75,15 @@ export async function createSchool(actor: Actor, input: SchoolInput): Promise<Sc
   return fromSnapshot<School>(await ref.get());
 }
 
+/**
+ * Undoes createSchool when the school's first admin cannot be created (services/provisioning
+ * only): nothing refers to a school that young. Succeeds when already gone.
+ */
+export async function deleteNewSchool(actor: Actor, schoolId: string): Promise<void> {
+  assertCan(isPlatformAdmin(actor), 'school.create');
+  await schoolDoc(schoolId).delete();
+}
+
 /** `settings` is replaced as a whole. Only a platform admin may move a school to another country. */
 export async function updateSchool(
   actor: Actor,
