@@ -201,37 +201,57 @@ async function createAuthUser(request: CreateRequest): Promise<string | null> {
 }
 
 /**
- * The profile of an Auth user this service has just created. A profile that cannot be written
- * takes that Auth user down with it, so no account is left that could sign in without one.
- * Once the profile exists the account stands: a counter or claim that fails afterwards is
- * repaired later, not undone. (completeSignup never comes here: its Auth user belongs to the
+ * The profile of an Auth user this service has just created, not yet counted or claimed. A
+ * profile that cannot be written takes that Auth user down with it, so no account is left that
+ * could sign in without one. (completeSignup never comes here: its Auth user belongs to the
  * person who signed up.)
  */
-async function writeProfileOrDeleteAuthUser(
+async function createProfileOrDeleteAuthUser(
   uid: string,
   input: NewUserProfile,
 ): Promise<UserProfile> {
-  let profile: UserProfile;
   try {
-    profile = await createUserProfile(SYSTEM_ACTOR, uid, input);
+    return await createUserProfile(SYSTEM_ACTOR, uid, input);
   } catch (error) {
     await getAdminAuth()
       .deleteUser(uid)
       .catch(() => undefined);
     throw error;
   }
-  return countAndClaim(profile);
 }
 
-/** Auth user plus profile; `emailTaken` is thrown when the address already has an account. */
-async function createAccount(
+/**
+ * Once the profile exists the account stands: a counter or claim that fails afterwards is
+ * repaired later, not undone.
+ */
+async function writeProfileOrDeleteAuthUser(
+  uid: string,
+  input: NewUserProfile,
+): Promise<UserProfile> {
+  return countAndClaim(await createProfileOrDeleteAuthUser(uid, input));
+}
+
+/**
+ * Auth user plus profile, not yet counted or claimed; `emailTaken` is thrown when the address
+ * already has an account.
+ */
+async function createUncountedAccount(
   request: CreateRequest,
   input: NewUserProfile,
   emailTaken: () => AppError,
 ): Promise<UserProfile> {
   const uid = await createAuthUser(request);
   if (uid === null) throw emailTaken();
-  return writeProfileOrDeleteAuthUser(uid, input);
+  return createProfileOrDeleteAuthUser(uid, input);
+}
+
+/** Auth user plus profile, counted and claimed as writeProfileOrDeleteAuthUser does. */
+async function createAccount(
+  request: CreateRequest,
+  input: NewUserProfile,
+  emailTaken: () => AppError,
+): Promise<UserProfile> {
+  return countAndClaim(await createUncountedAccount(request, input, emailTaken));
 }
 
 async function authUserExists(email: string): Promise<boolean> {
