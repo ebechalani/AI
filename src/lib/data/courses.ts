@@ -35,7 +35,7 @@ import {
   updateLessonInputSchema,
   updateModuleInputSchema,
 } from '@/lib/schemas/course';
-import { LEARNING_AREAS, type LearningArea, type MediaRef } from '@/types/common';
+import { LEARNING_AREAS, type Audience, type LearningArea, type MediaRef } from '@/types/common';
 import {
   COURSE_STATUSES,
   type Course,
@@ -45,6 +45,7 @@ import {
   type Lesson,
   type LessonBlock,
   type Module,
+  type Pathway,
 } from '@/types/content';
 import type { BlockInput, CourseInput, LessonInput, ModuleInput } from '@/types/inputs';
 import {
@@ -234,15 +235,23 @@ function assertAgeRange(ageMin: number | null, ageMax: number | null, field: str
   }
 }
 
-async function assertPathwayExists(
+// A pathway lists its courses without filtering them by audience, so a course joins only a
+// pathway of its own audience: the editor's rule (pathwayFitsAudience, Q13).
+async function assertPathwayServes(
   pathwayId: string,
+  audience: Audience,
   field: string,
   tx?: Transaction,
 ): Promise<void> {
   const ref = collections.pathways().doc(pathwayId);
-  const snapshot = await (tx ? tx.get(ref) : ref.get());
-  if (!snapshot.exists) {
+  const pathway = fromSnapshotOrNull<Pathway>(await (tx ? tx.get(ref) : ref.get()));
+  if (pathway === null) {
     throw new ValidationError(`pathways/${pathwayId} does not exist.`, { [field]: ['invalid'] });
+  }
+  if (pathway.audience !== audience) {
+    throw new ValidationError(`pathways/${pathwayId} is not for ${audience} courses.`, {
+      [field]: ['invalid'],
+    });
   }
 }
 
@@ -264,7 +273,7 @@ export async function createCourse(actor: Actor, input: CourseInput): Promise<Co
   const admin = author.role === 'platform_admin';
   const isOfficial = admin && data.isOfficial === true;
   const pathwayId = isOfficial ? (data.pathwayId ?? null) : null;
-  if (pathwayId !== null) await assertPathwayExists(pathwayId, 'pathwayId');
+  if (pathwayId !== null) await assertPathwayServes(pathwayId, data.audience, 'pathwayId');
   const schoolId = isOfficial ? null : author.schoolId;
 
   const ref = collections.courses().doc();
@@ -342,8 +351,9 @@ export async function updateCourse(
     ) {
       throw new ConflictError(`courses/${courseId} is published; its pathway cannot change.`);
     }
-    if (pathwayId !== null && pathwayId !== course.pathwayId) {
-      await assertPathwayExists(pathwayId, 'patch.pathwayId', tx);
+    const audience = data.audience ?? course.audience;
+    if (pathwayId !== null && (pathwayId !== course.pathwayId || audience !== course.audience)) {
+      await assertPathwayServes(pathwayId, audience, 'patch.pathwayId', tx);
     }
     assertAgeRange(
       data.ageMin === undefined ? course.ageMin : data.ageMin,
