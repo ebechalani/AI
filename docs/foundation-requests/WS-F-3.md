@@ -83,6 +83,16 @@ that also carries `rsc: 1` is handled as a page-payload request before the actio
 Next first redirects it (`307`) to the same URL with its `_rsc` parameter, then renders the
 payload, in which `requireRole` throws the redirect to the login page.
 
+The run's security review found two more render paths, recorded in 1.3. A recognized action
+whose call changes a cookie (`signOutAction`, `createSessionAction`, or next-intl's
+`NEXT_LOCALE` when the proxy sets it) has the page rendered into its answer
+(`x-action-revalidated: 1`: signed out, `getClientAuthTokenAction` posted to `/en/admin/users`
+answers `unauthenticated` plus the page tree with `NEXT_REDIRECT;replace;/en/login`, 189 KB;
+with `Cookie: NEXT_LOCALE=en`, 113 bytes, the result alone). A crafted
+`next-router-state-tree` renders only the page segment, without its layouts. Both end in the
+page's own `requireRole` (1.3, step 3), and no answer holds seeded data. Neither is new: any
+`__session` value, even junk, already passed the proxy.
+
 Checked against the running dev server, signed out, with a bogus action id:
 
 - `/en/teacher`, `/en/admin` and `/en/teacher/create/<id>`. Text, multipart or empty body, with

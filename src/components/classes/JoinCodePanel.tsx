@@ -136,13 +136,16 @@ export function JoinCodePanel({
     } finally {
       // The pressed button keeps the focus while it loads (5.4, 7.3), and the toggle is the
       // same element after the refresh; after "Close the code", the effect above moves the
-      // focus to it. A refresh that takes the panel away would drop the focus to <body>, so
-      // `<main>` takes it now.
+      // focus to it. A refresh that takes the panel away would drop the focus on its buttons
+      // to <body>, so `<main>` takes it now. Focus the user moved somewhere else stays there.
       settleAndRestoreFocus(
         () => setBusy(null),
         () => toggleRef.current,
       );
-      if (panelGone) document.getElementById(MAIN_CONTENT_ID)?.focus();
+      const active = document.activeElement;
+      const buttons = toggleRef.current?.parentElement;
+      if (panelGone && (active === null || active === document.body || buttons?.contains(active)))
+        document.getElementById(MAIN_CONTENT_ID)?.focus();
     }
   }
 

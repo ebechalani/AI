@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   createElement,
@@ -20,8 +20,8 @@ import { TableHeaderCell } from '@/components/ui/Table';
 import { Tabs } from '@/components/ui/Tabs';
 
 // The kit changes asked for by WS-E (WS-E-2 to WS-E-6) and WS-G (WS-G-2). What needs a browser
-// (focus, scrolling, the edge fade) was checked in Chromium; these cases pin the markup and the
-// click guard.
+// (focus, scrolling, the edge fade) was checked in Chromium; these cases pin the markup, the
+// click guard and the h1 of every error page.
 
 // Button.tsx also holds LinkButton, whose i18n Link needs Next's router; no case renders it.
 vi.mock('@/lib/i18n/navigation', () => ({ Link: 'a' }));
@@ -238,5 +238,28 @@ describe('ErrorState title element (WS-G-2)', () => {
     const html = render(createElement(ErrorState, { titleAs: 'h1' }), 'fr');
     expect(html).toContain(`<h1 class="${TITLE_CLASS}">Une erreur s’est produite</h1>`);
     expect(html).not.toContain(`<p class="${TITLE_CLASS}">`);
+  });
+});
+
+function errorPages(dir: string): string[] {
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) return errorPages(full);
+    return entry.name === 'error.tsx' ? [full] : [];
+  });
+}
+
+describe('error pages (WS-G-2)', () => {
+  const pages = errorPages(path.join(ROOT, 'src', 'app'));
+
+  it('covers the locale, group and area pages', () => {
+    expect(pages.length).toBeGreaterThanOrEqual(10);
+  });
+
+  it.each(pages.map((page) => [path.relative(ROOT, page), page]))('%s has an h1', (_, page) => {
+    const source = readFileSync(page, 'utf8');
+    const errorStates = source.match(/<ErrorState\b/g)?.length ?? 0;
+    if (errorStates === 0) expect(source).toMatch(/<h1[\s>]/);
+    else expect(source.match(/\btitleAs="h1"/g)?.length).toBe(errorStates);
   });
 });

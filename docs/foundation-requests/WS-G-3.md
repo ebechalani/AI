@@ -51,7 +51,11 @@ None: the panel is WS-E's and is used as is.
     aside). `settleAndRestoreFocus` found the focus still on the pressed button (WS-E-2), so it
     never handed it to `<main>`, and the browser dropped it to `<body>`. `<main>`
     (`#main-content`) now takes the focus as soon as the request settles, before the refreshed
-    page renders, as `reportRegenerate` already does for "New code";
+    page renders, as `reportRegenerate` already does for "New code". It does so only when the
+    focus would be lost: on `<body>` (or nowhere), or still on one of the panel's buttons (the
+    toggle, "Close the code", "Copy code", "Copy invite link", "Show to the class", "New
+    code"). Focus the user moved outside them during the request stays where it is, as on the
+    success path;
   - "Open for 24 hours" and "Extend to 24 hours from now" are unchanged: the loading toggle keeps
     the focus and is the same element after the refresh. `settleAndRestoreFocus` stays: it
     renders the end of the pending state with `flushSync` and finds the focus where it was.

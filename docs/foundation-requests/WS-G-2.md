@@ -62,7 +62,10 @@ twice (the `role="alert"` region announces it too), so WS-G waits for the prop.
   its behaviour and the rule "an `error.tsx` that replaces a whole page passes `'h1'`".
 - `tests/unit/foundation-kit.test.ts`: the title is a `<p>` by default (and the state has no
   heading), and an `<h1>` with `titleAs="h1"`, with the same classes (English and French default
-  copy). The file's render helper now also loads the `errors` catalog.
+  copy). The file's render helper now also loads the `errors` catalog. A source scan (`error
+  pages`, like `not-found pages` in `foundation-ui.test.ts`) walks `src/app` for `error.tsx`,
+  expects at least ten, and in each one as many `titleAs="h1"` as `<ErrorState` (or an `<h1`
+  when there is no `ErrorState`), so a file that drops the prop, or a new one without it, fails.
 
 Checked in Chromium (dev server on the emulators, seed data untouched), in English at 1366 px
 and in French at 375 px, before and after the change:

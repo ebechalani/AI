@@ -151,8 +151,14 @@ types. A dynamic import does not say which names it uses, so in `src/actions`, `
    it and any other method are redirected as before. The header's value is not judged: Next
    answers an unknown or empty action id with `404` and `x-nextjs-action-not-found: 1` before
    anything renders (with an urlencoded body, the root not-found page), and a request that also
-   carries `rsc: 1` is rendered as a page payload, in which the layout's and the page's
-   `requireRole` redirect (steps 2 and 3), so nothing protected is rendered for it either.
+   carries `rsc: 1` is rendered as a page payload, in which the page's `requireRole` (step 3;
+   the layout's too when it is rendered) redirects, so nothing protected is rendered for it
+   either. A recognized action whose call changes a cookie (`signOutAction`,
+   `createSessionAction`, or the `NEXT_LOCALE` cookie the proxy sets, see below) also has the
+   page rendered into its answer, and a request with a crafted `next-router-state-tree` renders
+   only the page segment without its layouts. So the page's own `requireRole` (step 3), not the
+   layout's, is what protects every such render. Before WS-F-3 the proxy could not stop any of
+   this either: any `__session` value, even an invalid one, passes it.
    `tests/unit/proxy.test.ts` checks the redirect and this exception with Next's own
    `ACTION_HEADER`. A path without a locale prefix (`/student/learn`) is first redirected to its
    prefixed form by next-intl and gated on that second request. The locale is detected from
