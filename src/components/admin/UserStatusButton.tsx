@@ -35,16 +35,24 @@ export function UserStatusButton({ uid, name, status }: UserStatusButtonProps) {
   const focusLater = useFocusAfterClose(open);
   const active = status === 'active';
 
-  /** The text of a failure, or null when the failure was handled another way. */
-  function failureText(failure: ActionError): string | null {
+  /**
+   * The text of a failure, or null when the failure was handled another way. `fromDialog` says
+   * whether the confirmation dialog is open (Disable) or not (Enable, which has none).
+   */
+  function failureText(failure: ActionError, fromDialog: boolean): string | null {
     switch (failure.code) {
       case 'forbidden':
         return t('users.status.errors.forbidden');
       case 'not_found':
-        // The refresh drops the row: close first, then the message and the focus on <main>.
+        // The refresh drops the row and this button with it, so the focus goes to <main>: after
+        // the dialog has closed when there is one, at once otherwise (no close to wait for).
         toast({ tone: 'warning', title: t('users.status.errors.notFound') });
-        focusLater(MAIN_CONTENT_ID);
-        setOpen(false);
+        if (fromDialog) {
+          focusLater(MAIN_CONTENT_ID);
+          setOpen(false);
+        } else {
+          document.getElementById(MAIN_CONTENT_ID)?.focus();
+        }
         router.refresh();
         return null;
       case 'unauthenticated':
@@ -70,7 +78,7 @@ export function UserStatusButton({ uid, name, status }: UserStatusButtonProps) {
     const result = await run('disabled');
     setPending(false);
     if (!result.ok) {
-      const text = failureText(result.error);
+      const text = failureText(result.error, true);
       if (text !== null) setError(text);
       return;
     }
@@ -88,7 +96,7 @@ export function UserStatusButton({ uid, name, status }: UserStatusButtonProps) {
       () => buttonRef.current,
     );
     if (!result.ok) {
-      const text = failureText(result.error);
+      const text = failureText(result.error, false);
       if (text !== null) toast({ tone: 'danger', title: text });
       return;
     }

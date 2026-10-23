@@ -29,7 +29,7 @@
       "officialCourses": "Cours officiels",
       "enrollments": "Inscriptions aux cours",
       "completion": "Taux d’achèvement",
-      "completionHint": "{completed, number} inscriptions terminées sur {total, number}",
+      "completionHint": "{completed, plural, one {# inscription terminée} other {# inscriptions terminées}} sur {total, number}",
       "completionNone": "Aucune inscription pour le moment",
       "submissions": "Projets et participations aux défis",
       "certificates": "Certificats"
@@ -91,6 +91,7 @@
       "country": "Code du pays",
       "countryHint": "Deux lettres, par exemple LB, FR ou US.",
       "countryPreview": "Pays\u00a0: {country}",
+      "countryUnknown": "{code} n’est pas un code de pays. Vérifiez les deux lettres.",
       "city": "Ville",
       "defaultLocale": "Langue par défaut",
       "defaultLocaleHint": "Les nouveaux comptes de l’école démarrent dans cette langue."
@@ -155,8 +156,10 @@
         "aiLimit": "Messages quotidiens au tuteur par élève",
         "aiLimitDefault": "Valeur par défaut de RoboHolic ({count, number})",
         "joinCodes": "Codes de classe",
-        "on": "Activées",
-        "off": "Désactivées"
+        "aiOn": "Activées",
+        "aiOff": "Désactivées",
+        "joinCodesOn": "Activés",
+        "joinCodesOff": "Désactivés"
       },
       "stats": {
         "label": "Chiffres de l’école",
@@ -166,7 +169,7 @@
         "seats": "Places utilisées",
         "seatsValue": "{used, number} / {total, number}",
         "seatsNoLicense": "Aucune licence",
-        "overLimit": "{used, number} élèves actifs pour {total, number} places. Les places sont indiquées, pas imposées."
+        "overLimit": "{used, plural, one {# élève actif} other {# élèves actifs}} pour {total, plural, one {#\u00a0place} other {#\u00a0places}}. Les places sont indiquées, pas imposées."
       },
       "licenses": {
         "title": "Licences",
@@ -236,7 +239,7 @@
       "roleLegend": "Nouveau rôle",
       "school": "École",
       "schoolRequired": "Un administrateur d’école appartient toujours à une école.",
-      "schoolOptional": "Facultatif. Choisissez «\u00a0Aucune école\u00a0» pour un compte individuel.",
+      "schoolOptional": "Choisissez «\u00a0Aucune école\u00a0» pour un compte individuel.",
       "adultsOnly": "Les rôles du personnel ne sont proposés qu’aux comptes adultes qui se connectent avec une adresse e-mail.",
       "effectsTitle": "Ce qui se passe",
       "effects": {
@@ -278,7 +281,7 @@
       "unverify": "Retirer la vérification",
       "unverifyLabel": "Retirer la vérification du compte enseignant de {name}",
       "verifyTitle": "Vérifier le compte enseignant de {name}\u00a0?",
-      "verifyDescription": "Un enseignant vérifié sans école peut créer des comptes pour les élèves de 13 ans et plus de ses classes. Ne vérifiez qu’un enseignant dont vous avez contrôlé l’identité.",
+      "verifyDescription": "Un enseignant vérifié sans école peut créer des comptes pour les élèves de 13\u00a0ans et plus de ses classes. Ne vérifiez qu’un enseignant dont vous avez contrôlé l’identité.",
       "verifyConfirm": "Vérifier le compte",
       "unverifyTitle": "Retirer la vérification de {name}\u00a0?",
       "unverifyDescription": "{name} ne peut plus créer de comptes élèves pour des classes hors d’une école. Les élèves qui ont déjà un compte le conservent.",
@@ -390,7 +393,7 @@
       "scopeAll": "Tous les cours officiels",
       "scopePathways": "{count, plural, one {# parcours} other {# parcours}}\u00a0: {names}",
       "unknownPathway": "un parcours qui n’existe plus",
-      "seats": "{total, number} places",
+      "seats": "{total, plural, one {#\u00a0place} other {#\u00a0places}}",
       "seatsUsed": "{used, number} sur {total, number} utilisées",
       "linked": "Liée à un abonnement",
       "empty": {
@@ -579,7 +582,7 @@
       "school": "École",
       "ageMin": "Âge minimum",
       "ageMax": "Âge maximum",
-      "agesHint": "Facultatif. Les âges sont indicatifs\u00a0: tous les élèves peuvent participer.",
+      "agesHint": "Les âges sont indicatifs\u00a0: tous les élèves peuvent participer.",
       "xpReward": "Récompense en XP",
       "xpRewardHint": "De 0 à {max, number}. Attribuée quand une participation est acceptée.",
       "datesLegend": "Dates",
@@ -623,7 +626,6 @@
       "description": "Description",
       "submissionRequirements": "Ce qu’il faut envoyer",
       "prizes": "Récompenses",
-      "prizesHint": "Facultatif.",
       "submitCreate": "Créer le brouillon",
       "submitEdit": "Enregistrer les modifications",
       "created": "Défi enregistré comme brouillon.",

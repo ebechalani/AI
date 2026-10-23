@@ -17,7 +17,6 @@ export function SchoolOverview({ school, seats }: SchoolOverviewProps) {
   const tCommon = useTranslations('common');
   const locale = useLocale();
   const formatDate = useDateFormat();
-  const onOff = (value: boolean) => t(value ? 'schools.detail.overview.on' : 'schools.detail.overview.off');
   const facts: { key: string; label: string; value: ReactNode }[] = [
     {
       key: 'country',
@@ -42,7 +41,12 @@ export function SchoolOverview({ school, seats }: SchoolOverviewProps) {
       label: t('schools.detail.overview.created'),
       value: formatDate(school.createdAt, 'dateLong'),
     },
-    { key: 'ai', label: t('schools.detail.overview.ai'), value: onOff(school.settings.aiEnabled) },
+    {
+      key: 'ai',
+      label: t('schools.detail.overview.ai'),
+      // Each fact has its own pair: French agrees "Activées" with "fonctions", "Activés" with "codes".
+      value: t(school.settings.aiEnabled ? 'schools.detail.overview.aiOn' : 'schools.detail.overview.aiOff'),
+    },
     {
       key: 'aiLimit',
       label: t('schools.detail.overview.aiLimit'),
@@ -54,7 +58,11 @@ export function SchoolOverview({ school, seats }: SchoolOverviewProps) {
     {
       key: 'joinCodes',
       label: t('schools.detail.overview.joinCodes'),
-      value: onOff(school.settings.joinCodesEnabled),
+      value: t(
+        school.settings.joinCodesEnabled
+          ? 'schools.detail.overview.joinCodesOn'
+          : 'schools.detail.overview.joinCodesOff',
+      ),
     },
   ];
 

@@ -1,11 +1,12 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { TriangleAlert } from 'lucide-react';
 import { FormField, Input, Select } from '@/components/ui';
 import { LOCALES } from '@/lib/i18n/config';
 import { CONTENT_LIMITS } from '@/lib/limits';
 import type { Locale } from '@/types/common';
-import { regionName, type SchoolFormValues } from './school-model';
+import { isUnknownCountry, regionName, type SchoolFormValues } from './school-model';
 
 export type SchoolField = keyof SchoolFormValues;
 
@@ -25,8 +26,12 @@ export function SchoolFields({ values, onChange, errors, disabled, idPrefix }: S
   const t = useTranslations('admin');
   const tCommon = useTranslations('common');
   const locale = useLocale();
-  const code = values.country.trim();
-  const preview = COUNTRY_CODE.test(code) ? regionName(code.toUpperCase(), locale) : null;
+  const code = values.country.trim().toUpperCase();
+  const wellFormed = COUNTRY_CODE.test(code);
+  // A well-formed code that names no country ('LE' from "Lebanon") is flagged as it is typed;
+  // the dialogs refuse it on submit (isUnknownCountry).
+  const unknown = wellFormed && isUnknownCountry(code);
+  const preview = wellFormed && !unknown ? regionName(code, locale) : null;
 
   return (
     <div className="flex flex-col gap-5">
@@ -69,8 +74,22 @@ export function SchoolFields({ values, onChange, errors, disabled, idPrefix }: S
             className="w-24 uppercase"
           />
         </FormField>
-        <p aria-live="polite" className="mt-1.5 text-sm text-ink-muted">
-          {preview !== null && t('schools.fields.countryPreview', { country: preview })}
+        <p
+          aria-live="polite"
+          className={
+            unknown
+              ? 'mt-1.5 flex items-start gap-1.5 text-sm font-medium text-warning'
+              : 'mt-1.5 text-sm text-ink-muted'
+          }
+        >
+          {unknown ? (
+            <>
+              <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+              <span>{t('schools.fields.countryUnknown', { code })}</span>
+            </>
+          ) : (
+            preview !== null && t('schools.fields.countryPreview', { country: preview })
+          )}
         </p>
       </div>
       <FormField

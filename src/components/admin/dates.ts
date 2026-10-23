@@ -138,3 +138,12 @@ export function addYear(dateInput: string): string {
   if (Number.isNaN(next.getTime())) return '';
   return `${pad(next.getUTCFullYear(), 4)}-${pad(next.getUTCMonth() + 1)}-${pad(next.getUTCDate())}`;
 }
+
+/**
+ * `text` with its ordinary spaces made no-break, so a formatted date ("30 sept. 2027") never
+ * breaks inside itself; a date range then wraps only around its dash, which lets a table's
+ * date column narrow to two lines instead of pushing the table past its region.
+ */
+export function unbreakable(text: string): string {
+  return text.replaceAll(' ', '\u00a0');
+}

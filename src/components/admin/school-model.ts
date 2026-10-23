@@ -67,6 +67,27 @@ export function schoolPatch(values: SchoolFormValues, settings: SettingsFormValu
   return { ...schoolPayload(values), settings: settingsPayload(settings) };
 }
 
+const WELL_FORMED_COUNTRY = /^[A-Z]{2}$/;
+
+/**
+ * True for a well-formed code (two letters) that names no country: an unassigned code such as
+ * `LE` (what "Lebanon" becomes in a two-letter field) or `ZZ` (unknown region). The schema checks
+ * only the shape (src/lib/schemas/school.ts), so the school forms refuse these themselves. A
+ * malformed value is false here: the schema reports it. An engine without `Intl.DisplayNames`
+ * accepts every code rather than blocking the form.
+ */
+export function isUnknownCountry(code: string): boolean {
+  const upper = code.trim().toUpperCase();
+  if (!WELL_FORMED_COUNTRY.test(upper)) return false;
+  if (upper === 'ZZ') return true;
+  if (typeof Intl.DisplayNames !== 'function') return false;
+  try {
+    return new Intl.DisplayNames(['en'], { type: 'region', fallback: 'none' }).of(upper) === undefined;
+  } catch {
+    return false;
+  }
+}
+
 /** The country's name in `locale`; the code itself when Intl refuses it or knows no name. */
 export function regionName(code: string, locale: string): string {
   try {

@@ -147,6 +147,15 @@ describe('plurals agree with their numbers', () => {
     expect(t('billing.licenses.scopePathways', { count: 2, names: 'A, B' })).toBe('2 pathways: A, B');
     expect(t('billing.filter.school', { tab: 'licenses', name: 'X' })).toBe('Licenses of X.');
     expect(t('billing.filter.school', { tab: 'subscriptions', name: 'X' })).toBe('Subscriptions of X.');
+    expect(t('dashboard.stats.completionHint', { completed: 1, total: 1 })).toBe('1 of 1 enrollment completed');
+    expect(t('dashboard.stats.completionHint', { completed: 1, total: 10 })).toBe('1 of 10 enrollments completed');
+    expect([1, 20].map((total) => t('billing.licenses.seats', { total }))).toEqual(['1 seat', '20 seats']);
+    expect(t('schools.detail.stats.overLimit', { used: 1, total: 1 })).toBe(
+      '1 active student for 1 seat. Seats are shown, not enforced.',
+    );
+    expect(t('schools.detail.stats.overLimit', { used: 3, total: 2 })).toBe(
+      '3 active students for 2 seats. Seats are shown, not enforced.',
+    );
   });
 
   it('in French (one covers 0 and 1, so the =0 branch stays explicit)', () => {
@@ -161,6 +170,23 @@ describe('plurals agree with their numbers', () => {
       'Lea quitte ses 2 classes.',
     ]);
     expect(t('billing.filter.school', { tab: 'licenses', name: 'X' })).toBe('Licences de X.');
+    const nb = String.fromCharCode(0xa0);
+    expect([0, 1, 2].map((completed) => t('dashboard.stats.completionHint', { completed, total: 10 }))).toEqual([
+      '0 inscription terminée sur 10',
+      '1 inscription terminée sur 10',
+      '2 inscriptions terminées sur 10',
+    ]);
+    expect([1, 20, 100].map((total) => t('billing.licenses.seats', { total }))).toEqual([
+      `1${nb}place`,
+      `20${nb}places`,
+      `100${nb}places`,
+    ]);
+    expect(t('schools.detail.stats.overLimit', { used: 1, total: 1 })).toBe(
+      `1 élève actif pour 1${nb}place. Les places sont indiquées, pas imposées.`,
+    );
+    expect(t('schools.detail.stats.overLimit', { used: 3, total: 2 })).toBe(
+      `3 élèves actifs pour 2${nb}places. Les places sont indiquées, pas imposées.`,
+    );
   });
 });
 

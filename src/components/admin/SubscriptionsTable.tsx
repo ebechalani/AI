@@ -18,6 +18,7 @@ import {
   subscriptionTone,
   type CourseChoice,
 } from './billing-model';
+import { unbreakable } from './dates';
 import { adminSchoolPath, userSubscriptionsPath } from './paths';
 import { SubscriptionButton } from './SubscriptionButton';
 
@@ -128,10 +129,10 @@ export function SubscriptionsTable({
                   )}
                 </div>
               </TableCell>
-              <TableCell className="whitespace-nowrap">
+              <TableCell className="min-w-40 whitespace-normal">
                 {t('shared.dateRange', {
-                  start: formatDate(subscription.currentPeriodStart),
-                  end: formatDate(subscription.currentPeriodEnd),
+                  start: unbreakable(formatDate(subscription.currentPeriodStart)),
+                  end: unbreakable(formatDate(subscription.currentPeriodEnd)),
                 })}
               </TableCell>
               <TableCell className="min-w-40">

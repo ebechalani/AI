@@ -120,7 +120,6 @@ export function ChallengeTextFields({ values, onChange, errors, disabled }: Chal
             <FormField
               id={`challenge-${locale}-prizes`}
               label={t('challenges.form.prizes')}
-              hint={t('challenges.form.prizesHint')}
               error={errorOf('prizes')}
               optional
             >

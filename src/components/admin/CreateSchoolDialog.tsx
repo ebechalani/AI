@@ -14,7 +14,7 @@ import { DIALOG_TEXT } from './dialog';
 import { showErrorsAndFocus } from './focus';
 import { sendPasswordEmail } from './password-email';
 import { adminSchoolPath } from './paths';
-import { EMPTY_SCHOOL, schoolPayload, type SchoolFormValues } from './school-model';
+import { EMPTY_SCHOOL, isUnknownCountry, schoolPayload, type SchoolFormValues } from './school-model';
 import { SchoolFields, type SchoolField } from './SchoolFields';
 import { useActionErrorMessage, useValidationMessage } from './use-action-error';
 
@@ -146,8 +146,14 @@ export function CreateSchoolDialog({ open, onClose }: CreateSchoolDialogProps) {
       adminDisplayName: admin.adminDisplayName,
       adminEmail: admin.adminEmail,
     });
-    if (!parsed.success) {
-      showFieldErrors(parsed.fieldErrors);
+    // The schema checks the code's shape only: an unassigned code is refused here, with the
+    // other errors, so "Lebanon" (cut to "LE") never creates a school in country LE.
+    const unknownCountry = isUnknownCountry(school.country);
+    if (!parsed.success || unknownCountry) {
+      showFieldErrors({
+        ...(parsed.success ? {} : parsed.fieldErrors),
+        ...(unknownCountry ? { 'school.country': ['invalid'] } : {}),
+      });
       return;
     }
     setErrors({});

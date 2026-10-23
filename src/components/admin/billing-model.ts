@@ -1,4 +1,4 @@
-import type { ChipTone } from '@/components/ui/tones';
+import type { ChipTone } from '@/components/ui';
 import type {
   License,
   LicenseScope,

@@ -12,6 +12,7 @@ import { Link } from '@/lib/i18n/navigation';
 import type { License } from '@/types/billing';
 import type { IsoDateString } from '@/types/common';
 import type { PathwayChoice, SubscriptionOption } from './billing-model';
+import { unbreakable } from './dates';
 import { LicenseButton } from './LicenseButton';
 import { adminSchoolPath } from './paths';
 import { licenseState } from './school-model';
@@ -87,13 +88,13 @@ export function LicensesTable({
             <TableCell className="min-w-48">
               <span className="block break-words">{scopeText(license)}</span>
             </TableCell>
-            <TableCell align="end" className="tabular-nums">
+            <TableCell align="end" className="whitespace-nowrap tabular-nums">
               {t('billing.licenses.seats', { total: license.seatsTotal })}
             </TableCell>
-            <TableCell className="whitespace-nowrap">
+            <TableCell className="min-w-40 whitespace-normal">
               {t('shared.dateRange', {
-                start: formatDate(license.startsAt),
-                end: formatDate(license.endsAt),
+                start: unbreakable(formatDate(license.startsAt)),
+                end: unbreakable(formatDate(license.endsAt)),
               })}
             </TableCell>
             <TableCell>

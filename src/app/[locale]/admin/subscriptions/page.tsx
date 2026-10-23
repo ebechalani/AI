@@ -198,16 +198,19 @@ async function subscriptionsTab(shared: Shared, userId: string | undefined): Pro
     body: (
       <>
         {banner}
-        {note !== null && <p className="mb-6 text-sm text-ink-muted">{note}</p>}
-        {subscriptions.length === 0 && paging.cursor === null ? (
+        {/* The filtered views do not page, so a stray cursor never hides their empty state. A
+            staff account cannot hold a subscription: its empty state says so instead of
+            inviting the admin to add one (the page offers no create button for it). */}
+        {subscriptions.length === 0 && (filtered || paging.cursor === null) ? (
           <EmptyState
             icon={<CreditCard />}
             titleAs="h2"
             title={t('billing.subscriptions.empty.title')}
-            description={t('billing.subscriptions.empty.description')}
+            description={note ?? t('billing.subscriptions.empty.description')}
           />
         ) : (
           <>
+            {note !== null && <p className="mb-6 text-sm text-ink-muted">{note}</p>}
             <SubscriptionsTable
               subscriptions={subscriptions}
               ownerNames={ownerNames}
@@ -279,7 +282,7 @@ async function licensesTab(shared: Shared): Promise<TabOutput> {
     body: (
       <>
         {banner}
-        {licenses.length === 0 && paging.cursor === null ? (
+        {licenses.length === 0 && (schoolId !== undefined || paging.cursor === null) ? (
           <EmptyState
             icon={<KeyRound />}
             titleAs="h2"

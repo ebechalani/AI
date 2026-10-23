@@ -13,7 +13,7 @@ import type { School } from '@/types/school';
 import { DIALOG_TEXT } from './dialog';
 import { unprefixFieldErrors } from './field-errors';
 import { showErrorsAndFocus } from './focus';
-import { schoolPatch, schoolValues, settingsValues } from './school-model';
+import { isUnknownCountry, schoolPatch, schoolValues, settingsValues } from './school-model';
 import { SchoolFields, type SchoolField } from './SchoolFields';
 import { useActionErrorMessage, useValidationMessage } from './use-action-error';
 
@@ -92,8 +92,15 @@ export function EditSchoolDialog({ open, onClose, school }: EditSchoolDialogProp
       schoolId: school.id,
       patch: schoolPatch(values, settings),
     });
-    if (!parsed.success) {
-      showFieldErrors(parsed.fieldErrors);
+    // An unassigned code is refused when the admin changes it (the schema checks the shape
+    // only); a school saved earlier with one can still be edited until the code is touched.
+    const unknownCountry =
+      isUnknownCountry(values.country) && values.country.trim().toUpperCase() !== school.country;
+    if (!parsed.success || unknownCountry) {
+      showFieldErrors({
+        ...(parsed.success ? {} : parsed.fieldErrors),
+        ...(unknownCountry ? { 'patch.country': ['invalid'] } : {}),
+      });
       return;
     }
     setErrors({});

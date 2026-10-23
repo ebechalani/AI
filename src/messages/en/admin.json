@@ -29,7 +29,7 @@
       "officialCourses": "Official courses",
       "enrollments": "Course enrollments",
       "completion": "Completion rate",
-      "completionHint": "{completed, number} of {total, number} enrollments completed",
+      "completionHint": "{completed, number} of {total, plural, one {# enrollment} other {# enrollments}} completed",
       "completionNone": "No enrollment yet",
       "submissions": "Projects and challenge entries",
       "certificates": "Certificates"
@@ -91,6 +91,7 @@
       "country": "Country code",
       "countryHint": "Two letters, such as LB, FR or US.",
       "countryPreview": "Country: {country}",
+      "countryUnknown": "{code} is not a country code. Check the two letters.",
       "city": "City",
       "defaultLocale": "Default language",
       "defaultLocaleHint": "New accounts of the school start in this language."
@@ -155,8 +156,10 @@
         "aiLimit": "Daily tutor messages per student",
         "aiLimitDefault": "RoboHolic default ({count, number})",
         "joinCodes": "Class codes",
-        "on": "On",
-        "off": "Off"
+        "aiOn": "On",
+        "aiOff": "Off",
+        "joinCodesOn": "On",
+        "joinCodesOff": "Off"
       },
       "stats": {
         "label": "School numbers",
@@ -166,7 +169,7 @@
         "seats": "Seats used",
         "seatsValue": "{used, number} / {total, number}",
         "seatsNoLicense": "No license",
-        "overLimit": "{used, number} active students for {total, number} seats. Seats are shown, not enforced."
+        "overLimit": "{used, plural, one {# active student} other {# active students}} for {total, plural, one {# seat} other {# seats}}. Seats are shown, not enforced."
       },
       "licenses": {
         "title": "Licenses",
@@ -236,7 +239,7 @@
       "roleLegend": "New role",
       "school": "School",
       "schoolRequired": "A school administrator always belongs to a school.",
-      "schoolOptional": "Optional. Choose “No school” for an individual account.",
+      "schoolOptional": "Choose “No school” for an individual account.",
       "adultsOnly": "Staff roles are offered only for adult accounts that sign in with an email.",
       "effectsTitle": "What happens",
       "effects": {
@@ -390,7 +393,7 @@
       "scopeAll": "All official courses",
       "scopePathways": "{count, plural, one {# pathway} other {# pathways}}: {names}",
       "unknownPathway": "a pathway that no longer exists",
-      "seats": "{total, number} seats",
+      "seats": "{total, plural, one {# seat} other {# seats}}",
       "seatsUsed": "{used, number} of {total, number} used",
       "linked": "Linked to a subscription",
       "empty": {
@@ -579,7 +582,7 @@
       "school": "School",
       "ageMin": "Youngest age",
       "ageMax": "Oldest age",
-      "agesHint": "Optional. Ages are a guide only: every student can take part.",
+      "agesHint": "Ages are a guide only: every student can take part.",
       "xpReward": "XP reward",
       "xpRewardHint": "From 0 to {max, number}. Given when an entry is accepted.",
       "datesLegend": "Dates",
@@ -623,7 +626,6 @@
       "description": "Description",
       "submissionRequirements": "What to send",
       "prizes": "Prizes",
-      "prizesHint": "Optional.",
       "submitCreate": "Create draft",
       "submitEdit": "Save changes",
       "created": "Challenge saved as a draft.",
