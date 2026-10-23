@@ -1,7 +1,7 @@
 # WS-G-2: `ErrorState` has no `titleAs`, so an `error.tsx` page has no heading
 
 - **From:** WS-G (School admin; review fix round), 2026-10-23
-- **Status:** open.
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-23.
 - **Frozen files concerned:** `src/components/ui/ErrorState.tsx`, `docs/ARCHITECTURE.md` (7.3),
   `tests/unit/foundation-kit.test.ts`
 
