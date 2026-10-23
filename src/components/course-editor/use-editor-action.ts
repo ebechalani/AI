@@ -33,7 +33,10 @@ export interface EditorActionOptions {
 }
 
 export interface EditorAction {
-  run<T>(call: () => Promise<ActionResult<T>>, options: EditorActionOptions): Promise<ActionResult<T>>;
+  run<T>(
+    call: () => Promise<ActionResult<T>>,
+    options: EditorActionOptions,
+  ): Promise<ActionResult<T>>;
   /** Tells the other tabs, then refreshes this page. */
   refresh(): void;
   /** The refresh transition is running. */
@@ -62,8 +65,11 @@ export function useEditorAction(): EditorAction {
     try {
       result = await call();
     } catch {
-      // A signed-out call is redirected by the proxy and throws (session-probe.ts).
-      result = { ok: false, error: { code: (await sessionLost()) ? 'unauthenticated' : 'internal' } };
+      // A call that throws may still mean the session ended (session-probe.ts).
+      result = {
+        ok: false,
+        error: { code: (await sessionLost()) ? 'unauthenticated' : 'internal' },
+      };
     }
     if (result.ok) return result;
 

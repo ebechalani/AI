@@ -121,6 +121,5 @@ WS-F's workaround stays as a safety net: `src/components/course-editor/session-p
 call in `use-editor-action.ts` are now reached only when an action call throws for another
 reason (no network, a fault outside `runAction`). The probe then finds a page or no network, and
 the failure stays `internal`; a redirect would still read as a lost session. Their comments
-(the header of `session-probe.ts`, and "A signed-out call is redirected by the proxy and throws"
-in `use-editor-action.ts`) still say the proxy redirects such a call; they are WS-F's to
-update, or WS-F may remove the probe.
+(the header of `session-probe.ts`, and the `catch` in `use-editor-action.ts`) were updated by
+the foundation maintainer when this request closed; WS-F may still remove the probe.
