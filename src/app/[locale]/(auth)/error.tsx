@@ -18,6 +18,7 @@ export default function AuthError({
 
   return (
     <ErrorState
+      titleAs="h1"
       onRetry={retry}
       action={
         <LinkButton href="/" variant="secondary">

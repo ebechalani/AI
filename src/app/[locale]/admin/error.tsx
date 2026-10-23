@@ -18,6 +18,7 @@ export default function AdminError({
 
   return (
     <ErrorState
+      titleAs="h1"
       onRetry={retry}
       action={
         <LinkButton href="/admin" variant="secondary">

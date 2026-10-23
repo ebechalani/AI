@@ -138,7 +138,10 @@ export function JoinCodePanel({
       // same element after the refresh; after "Close the code", the effect above moves the
       // focus to it. A refresh that takes the panel away would drop the focus to <body>, so
       // `<main>` takes it now.
-      settleAndRestoreFocus(() => setBusy(null), () => toggleRef.current);
+      settleAndRestoreFocus(
+        () => setBusy(null),
+        () => toggleRef.current,
+      );
       if (panelGone) document.getElementById(MAIN_CONTENT_ID)?.focus();
     }
   }

@@ -19,10 +19,10 @@ const SIGNED_IN_PATH = new RegExp(
 
 // The cookie's presence is all this checks: it saves a signed-out visitor a round trip through
 // a page that would redirect anyway. Authorization happens in requireRole() and below.
-// A server-action call (POST with ACTION_HEADER) is posted to the page's path but renders no
-// page, so it goes through: runAction then answers `unauthenticated`, which the caller can
-// show, where the Next client could not read the login page and the call threw (foundation
-// request WS-F-3).
+// A server-action call (POST with ACTION_HEADER, to the page's own path) goes through:
+// redirected, it threw in the Next client; handed on, runAction answers `unauthenticated`, which
+// the caller shows (foundation request WS-F-3). Whatever Next renders for such a request is
+// still guarded by requireRole().
 export default function proxy(request: NextRequest) {
   const signedInPath = SIGNED_IN_PATH.exec(request.nextUrl.pathname);
   const serverAction = request.method === 'POST' && request.headers.has(ACTION_HEADER);

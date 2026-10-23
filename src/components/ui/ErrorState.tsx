@@ -7,8 +7,13 @@ import { Button } from './Button';
 export interface ErrorStateProps {
   /** Default: the generic "Something went wrong" copy of the `errors` namespace. */
   title?: string;
+  /**
+   * The element of the title. Default `p`: inside a page the `PageHeader` holds the heading. An
+   * `error.tsx` replaces the whole page, `PageHeader` included, so it passes `h1`.
+   */
+  titleAs?: 'p' | 'h1' | 'h2' | 'h3';
   description?: string;
-  /** Adds a "Try again" button (the `reset` of an `error.tsx`). Needs a client component. */
+  /** Adds a "Try again" button (the `retry` of an `error.tsx`). Needs a client component. */
   onRetry?: () => void;
   /** Anything else to offer (a link home); rendered after the retry button. */
   action?: ReactNode;
@@ -16,7 +21,14 @@ export interface ErrorStateProps {
 }
 
 /** The full-area failure view of a page or a panel. A failed action uses `Alert` or a toast. */
-export function ErrorState({ title, description, onRetry, action, className }: ErrorStateProps) {
+export function ErrorState({
+  title,
+  titleAs: Title = 'p',
+  description,
+  onRetry,
+  action,
+  className,
+}: ErrorStateProps) {
   const t = useTranslations('errors');
   const body = description ?? (title === undefined ? t('page.description') : null);
   return (
@@ -30,7 +42,7 @@ export function ErrorState({ title, description, onRetry, action, className }: E
       >
         <TriangleAlert className="size-7" />
       </span>
-      <p className="mt-4 text-base font-semibold text-ink">{title ?? t('page.title')}</p>
+      <Title className="mt-4 text-base font-semibold text-ink">{title ?? t('page.title')}</Title>
       {body && <p className="mt-1 max-w-sm text-sm text-ink-muted">{body}</p>}
       {(onRetry || action) && (
         <div className="mt-5 flex flex-wrap items-center justify-center gap-3">

@@ -18,6 +18,7 @@ export default function TeacherShellError({
 
   return (
     <ErrorState
+      titleAs="h1"
       onRetry={retry}
       action={
         <LinkButton href="/teacher" variant="secondary">

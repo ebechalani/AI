@@ -18,6 +18,7 @@ export default function SchoolError({
 
   return (
     <ErrorState
+      titleAs="h1"
       onRetry={retry}
       action={
         <LinkButton href="/school" variant="secondary">

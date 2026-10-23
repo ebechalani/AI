@@ -14,12 +14,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { StatCard } from '@/components/domain/StatCard';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
+import { ErrorState } from '@/components/ui/ErrorState';
 import { IconButton } from '@/components/ui/IconButton';
 import { TableHeaderCell } from '@/components/ui/Table';
 import { Tabs } from '@/components/ui/Tabs';
 
-// The kit changes asked for by WS-E (WS-E-2 to WS-E-6). What needs a browser (focus, scrolling,
-// the edge fade) was checked in Chromium; these cases pin the markup and the click guard.
+// The kit changes asked for by WS-E (WS-E-2 to WS-E-6) and WS-G (WS-G-2). What needs a browser
+// (focus, scrolling, the edge fade) was checked in Chromium; these cases pin the markup and the
+// click guard.
 
 // Button.tsx also holds LinkButton, whose i18n Link needs Next's router; no case renders it.
 vi.mock('@/lib/i18n/navigation', () => ({ Link: 'a' }));
@@ -37,7 +39,7 @@ type ProviderProps = ComponentProps<typeof NextIntlClientProvider>;
 function render(node: ReactNode, locale: 'en' | 'fr' = 'en'): string {
   const config: Omit<ProviderProps, 'children'> = {
     locale,
-    messages: { common: catalog(locale, 'common') },
+    messages: { common: catalog(locale, 'common'), errors: catalog(locale, 'errors') },
     timeZone: 'UTC',
   };
   return renderToStaticMarkup(createElement(NextIntlClientProvider, config as ProviderProps, node));
@@ -220,5 +222,21 @@ describe('StatCard in a narrow column (WS-E-6)', () => {
     const html = card(3);
     expect(html).toContain('flex flex-wrap items-start gap-x-4 gap-y-3');
     expect(html).toContain('min-w-0 flex-1 basis-20');
+  });
+});
+
+describe('ErrorState title element (WS-G-2)', () => {
+  const TITLE_CLASS = 'mt-4 text-base font-semibold text-ink';
+
+  it('renders the title as a <p> by default: inside a page the PageHeader holds the h1', () => {
+    const html = render(createElement(ErrorState, null));
+    expect(html).toContain(`<p class="${TITLE_CLASS}">Something went wrong</p>`);
+    expect(html).not.toMatch(/<h[1-6]/);
+  });
+
+  it('renders it as the h1 of an error.tsx with titleAs="h1", with the same look', () => {
+    const html = render(createElement(ErrorState, { titleAs: 'h1' }), 'fr');
+    expect(html).toContain(`<h1 class="${TITLE_CLASS}">Une erreur s’est produite</h1>`);
+    expect(html).not.toContain(`<p class="${TITLE_CLASS}">`);
   });
 });
