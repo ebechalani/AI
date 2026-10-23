@@ -9,15 +9,24 @@ const handleI18nRouting = createMiddleware(routing);
 // be imported here.
 const SESSION_COOKIE = '__session';
 
+// Next's ACTION_HEADER (next/dist/client/components/app-router-headers), sent with every
+// server-action call; tests/unit/proxy.test.ts sends Next's own constant.
+const ACTION_HEADER = 'next-action';
+
 const SIGNED_IN_PATH = new RegExp(
   `^/(${LOCALES.join('|')})(/(?:student|teacher|school|admin|certificates|preview)(?:/.*)?)$`,
 );
 
 // The cookie's presence is all this checks: it saves a signed-out visitor a round trip through
 // a page that would redirect anyway. Authorization happens in requireRole() and below.
+// A server-action call (POST with ACTION_HEADER) is posted to the page's path but renders no
+// page, so it goes through: runAction then answers `unauthenticated`, which the caller can
+// show, where the Next client could not read the login page and the call threw (foundation
+// request WS-F-3).
 export default function proxy(request: NextRequest) {
   const signedInPath = SIGNED_IN_PATH.exec(request.nextUrl.pathname);
-  if (signedInPath && !request.cookies.has(SESSION_COOKIE)) {
+  const serverAction = request.method === 'POST' && request.headers.has(ACTION_HEADER);
+  if (signedInPath && !serverAction && !request.cookies.has(SESSION_COOKIE)) {
     const [, locale, path] = signedInPath;
     const login = request.nextUrl.clone();
     login.pathname = `/${locale}/login`;
