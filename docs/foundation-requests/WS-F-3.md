@@ -1,7 +1,7 @@
 # WS-F-3: the proxy redirects a signed-out server-action POST, so `unauthenticated` never arrives
 
 - **From:** WS-F (Course creator; review fix round), 2026-10-23
-- **Status:** open.
+- **Status:** closed. Landed by the foundation maintainer on 2026-10-23.
 - **Frozen files concerned:** `src/proxy.ts`, `tests/unit/proxy-matcher.test.ts` (or a new
   `tests/unit/proxy.test.ts`), `docs/ARCHITECTURE.md` (1.3, 1.6, 10.1)
 

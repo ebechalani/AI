@@ -2570,8 +2570,9 @@ changes copy tone and tutor behaviour.
 the built-in inline-SVG avatars; unknown ids fall back to `DEFAULT_AVATAR_ID`), `Logo`
 (inline SVG wordmark), `ProgressBar`, `ProgressRing`, `Tabs`, `Dialog`, `DropdownMenu`,
 `Tooltip`, `Toast` (`ToastProvider`, `useToast()`), `Table`, `Pagination`, `Skeleton`,
-`Spinner`, `EmptyState` (`icon`, `title`, `titleAs`, `description`, `action`), `ErrorState`, `Alert`,
-`Breadcrumbs`. `LinkButton` lives in `Button.tsx`. All are exported from
+`Spinner`, `EmptyState` (`icon`, `title`, `titleAs`, `description`, `action`), `ErrorState`
+(`title`, `titleAs`, `description`, `onRetry`, `action`), `Alert`, `Breadcrumbs`. `LinkButton`
+lives in `Button.tsx`. All are exported from
 `components/ui/index.ts`, together with `CardTitle` (`{ as?: 'h2' | 'h3' | 'h4' }`),
 `buttonClasses({ variant, size, fullWidth, iconOnly })` (for elements that are neither
 `Button` nor `LinkButton`), `TableHead`, `TableBody`, `TableRow`, `TableHeaderCell`,
@@ -2658,6 +2659,16 @@ Props and behaviour fixed by the delivered kit:
   with the default title. `titleAs` (default `'p'`, same look at every level) makes the title a
   heading on a page that is nothing but the empty state: every `not-found.tsx` under `src/app`
   passes `'h1'` (the global one writes its own `<h1>`), so each not-found page has one h1.
+- `ErrorState { title?; titleAs?: 'p' | 'h1' | 'h2' | 'h3'; description?; onRetry?; action?;
+  className? }`: the full-area failure view of a page or a panel, in a `role="alert"` region
+  (a failed action uses `Alert` or a toast). `title` falls back to `errors.page.title`, and the
+  default description is shown only with the default title; `onRetry` adds the "Try again"
+  button (an `error.tsx` passes its `retry`), and `action` comes after it (a `LinkButton`
+  home). `titleAs` works like `EmptyState`'s (default `'p'`, same look at every level): an
+  `error.tsx` that replaces a whole page passes `'h1'`. Every `error.tsx` under
+  `src/app/[locale]` does, since none renders inside anything that holds a heading (the shells
+  and the area layouts have none, and the page's `PageHeader` goes with the page), so each
+  error page has one h1.
 - Built-in text: `EmptyState` and `ErrorState` read the `errors` namespace
   (`errors.empty.{title, description}`, `errors.page.{title, description, retry}`),
   `Breadcrumbs` reads `nav.shell.breadcrumbs`; everything else comes from `common`
@@ -4042,7 +4053,8 @@ export function runAction<I, O>(
   options: { allowAnonymous: true },
 ): Promise<ActionResult<O>>;
 // `I` is the schema's output type (after trimming and other transforms). An action without a payload passes
-// `noInputSchema` and `undefined`.
+// `noInputSchema` and `undefined`. With `roles`, a call without a session answers `unauthenticated` (1.4, step 2),
+// also a signed-out one: proxy.ts hands a server-action POST on instead of redirecting it (1.3).
 
 // src/lib/schemas/common.ts (shared)
 export const VALIDATION_KEYS: readonly [...];    // the keys of the `validation` namespace (10.5)
