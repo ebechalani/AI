@@ -61,14 +61,14 @@ jobs:
           "
 
       - uses: actions/setup-node@v4
-        if: ${{ inputs.browser != false }}
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.browser }}
         with:
           node-version: 24
 
       # Bounded: an apt mirror stalling in `playwright install --with-deps` once held the job
       # (and with it the log of the steps above) for minutes.
       - name: Open the site in Chromium
-        if: ${{ inputs.browser != false }}
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.browser }}
         timeout-minutes: 6
         run: |
           mkdir -p "${RUNNER_TEMP}/live-check" && cd "${RUNNER_TEMP}/live-check"
