@@ -1,9 +1,10 @@
 name: Live check
 
-# Opens the deployed site the way a visitor does and prints what they get: the HTTP status and
-# Vercel's error headers for a few pages, then, in Chrome, the final address, the page heading,
-# console errors, uncaught exceptions and failed requests. Run it from the Actions tab after a
-# deployment ("Run workflow"), optionally with another address (a preview URL, for example).
+# Opens the deployed site the way a visitor does and prints what they get: the HTTP status,
+# Vercel's error headers and the framing headers for a few pages, then, in Chrome, the final
+# address, the page heading, console errors, uncaught exceptions and failed requests. Run it from
+# the Actions tab after a deployment ("Run workflow"), optionally with another address (a preview
+# URL, for example).
 #
 # It sends no credentials and reads nothing private: the repository is public, and so is its log.
 
@@ -41,7 +42,7 @@ jobs:
             curl -sS -o page.html -D headers.txt \
               -w 'status %{http_code}, %{size_download} bytes, %{time_total} s\n' \
               "${SITE_URL}${path}" || true
-            grep -i -E '^(HTTP|location|x-vercel-id|x-vercel-error|x-matched-path|x-nextjs-[a-z-]+):' headers.txt || true
+            grep -i -E '^(HTTP|location|x-vercel-id|x-vercel-error|x-matched-path|x-nextjs-[a-z-]+|x-frame-options|content-security-policy):' headers.txt || true
             grep -o -E '<title>[^<]*</title>|__next_error__|<h1[^>]*>[^<]{0,80}|©[^<]{0,90}' page.html | head -6 || true
             echo "::endgroup::"
           done
