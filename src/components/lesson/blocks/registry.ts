@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react';
+import type { Audience } from '@/types/common';
 import type { BlockType, LessonBlockOf } from '@/types/content';
 import type { Project, Submission } from '@/types/project';
 import type { Quiz, QuizAttempt } from '@/types/quiz';
@@ -7,6 +8,7 @@ import { CodeActivityBlock } from './CodeActivityBlock';
 import { EmbedBlock } from './EmbedBlock';
 import { FileBlock } from './FileBlock';
 import { ImageBlock } from './ImageBlock';
+import { MlActivityBlock } from './MlActivityBlock';
 import { ProjectBlock } from './ProjectBlock';
 import { QuizBlock } from './QuizBlock';
 import { ReflectionBlock } from './ReflectionBlock';
@@ -19,6 +21,8 @@ export interface LessonRuntime {
   lessonId: string;
   readOnly: boolean;
   tutorEnabled: boolean;
+  /** The course's: fixed texts that send a learner to their teacher speak to teachers instead. */
+  audience: Audience;
   /** By block id. */
   responses: Record<string, string>;
   quizzes: Record<string, Quiz>;
@@ -45,4 +49,5 @@ export const BLOCK_RENDERERS: { [T in BlockType]: ComponentType<BlockRendererPro
   embed: EmbedBlock,
   reflection: ReflectionBlock,
   project: ProjectBlock,
+  ml_activity: MlActivityBlock,
 };

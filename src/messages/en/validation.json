@@ -34,5 +34,5 @@
   "embed_not_allowed": "Only YouTube and Vimeo links can be embedded.",
   "video_id_invalid": "Enter the video ID from the YouTube or Vimeo link.",
   "ml_link_not_allowed": "Use a link to machinelearningforkids.co.uk.",
-  "ml_worksheet_not_allowed": "Use the PDF link of an official worksheet on github.com/IBM/taxinomitis-docs."
+  "ml_worksheet_not_allowed": "Use the download link of an official worksheet: its address starts with https://github.com/IBM/taxinomitis-docs/raw/master/ and ends in .pdf."
 }

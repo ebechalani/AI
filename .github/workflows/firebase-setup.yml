@@ -4,7 +4,11 @@ name: Firebase setup
 # Firestore and Storage rules and the indexes, writes the reference data, optionally seeds the
 # demo content, creates or promotes the first platform admin, and checks every query against the
 # indexes. Run it from the Actions tab ("Run workflow") after creating the project in the
-# Firebase console. Safe to run again: every step is idempotent.
+# Firebase console. Safe to run again: every step is idempotent, and the seed refuses a project
+# whose official courses it has written before (meta/seed.coursesSeededAt), because seeding again
+# would overwrite them and every edit made to them in the app. A run that failed before the
+# courses were all written is finished by running this again. New courses and modules reach a
+# live project through the Content release workflow (content-release.yml) instead.
 #
 # Needs the repository secret FIREBASE_SERVICE_ACCOUNT (the JSON key from Project settings >
 # Service accounts > Generate new private key) and, for the demo accounts, SEED_DEMO_PASSWORD
@@ -26,10 +30,10 @@ on:
         required: false
         type: string
       seed_demo_content:
-        description: Add the five demo courses and the sample challenges
+        description: Add the five demo courses and the sample challenges (first setup only; seeding again overwrites the official courses, so add new content with the Content release workflow)
         required: true
         type: boolean
-        default: true
+        default: false
       seed_demo_users:
         description: Also add the demo school, class and accounts (needs SEED_DEMO_PASSWORD)
         required: true

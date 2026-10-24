@@ -3,6 +3,7 @@ import {
   CONTENT_LIMITS,
   EMBED_HOSTS,
   ML_ACTIVITY_HOSTS,
+  ML_WORKSHEET_FILE_PATTERN,
   ML_WORKSHEET_PREFIXES,
 } from '@/lib/limits';
 import { LAB_TOOL_IDS, TUTOR_MODES } from '@/types/ai';
@@ -285,23 +286,14 @@ export function isMlActivityUrl(url: string): boolean {
 }
 
 /**
- * True for an official worksheet: a URL that starts with one of ML_WORKSHEET_PREFIXES, has no
- * query or fragment, and names a `.pdf` file. The prefixes include the scheme and the host, so
- * a look-alike host cannot pass.
+ * True for an official worksheet: one of ML_WORKSHEET_PREFIXES followed by a PDF file name that
+ * matches ML_WORKSHEET_FILE_PATTERN. The prefixes include the scheme, the host, the branch and
+ * the folder, so neither a look-alike host nor another ref of the repository can pass.
  */
 export function isMlWorksheetUrl(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    return (
-      parsed.href === url &&
-      parsed.search === '' &&
-      parsed.hash === '' &&
-      ML_WORKSHEET_PREFIXES.some((prefix) => url.startsWith(prefix)) &&
-      parsed.pathname.toLowerCase().endsWith('.pdf')
-    );
-  } catch {
-    return false;
-  }
+  return ML_WORKSHEET_PREFIXES.some(
+    (prefix) => url.startsWith(prefix) && ML_WORKSHEET_FILE_PATTERN.test(url.slice(prefix.length)),
+  );
 }
 
 const videoDataSchema = obj({

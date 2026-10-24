@@ -804,6 +804,8 @@ src/
 │  │  ├─ stages.ts                           shared: LESSON_STAGES order, groupBlocksByStage(), type StageGroup
 │  │  ├─ challenge-phase.ts                  shared pure: getChallengePhase()
 │  │  ├─ embed-allowlist.ts                  shared: EMBED_HOSTS, toEmbedUrl(), toVideoEmbedUrl()
+│  │  ├─ ml-activity.ts                      shared pure: ML_ACTIVITY_HOSTS, ML_WORKSHEET_PREFIXES, toMlActivityHref(),
+│  │  │                                      toMlWorksheetHref(), isFrenchWorksheet() (the outbound links of 7.6)
 │  │  ├─ lesson-completion.ts                shared pure: getMissingForCompletion(), isReadyForCompletion(), responseLength() (section 9.4)
 │  │  └─ publish-readiness.ts                shared pure: getPublishProblems(), type PublishProblem (the publish rule of
 │  │                                         data/courses.setCourseStatus and of the course editor's readiness list; 10.1)
@@ -869,7 +871,7 @@ src/
    │  ├─ LessonFooter.tsx · LessonCompletePanel.tsx · BlockRenderer.tsx
    │  └─ blocks/registry.ts · blocks/RichTextBlock.tsx · ImageBlock.tsx · VideoBlock.tsx
    │     FileBlock.tsx · QuizBlock.tsx · CodeActivityBlock.tsx · AiActivityBlock.tsx
-   │     EmbedBlock.tsx · ReflectionBlock.tsx · ProjectBlock.tsx
+   │     EmbedBlock.tsx · ReflectionBlock.tsx · ProjectBlock.tsx · MlActivityBlock.tsx
    ├─ quiz/ · projects/ · ai/ · course-editor/ · classes/ · school/ · admin/
    ├─ marketing/ · auth/ · student/ · teacher/ · robotics/ · challenges/ · certificates/ · achievements/
    └─ (each of the feature folders above is owned by one workstream; section 11)
@@ -1232,7 +1234,7 @@ school stay attached to it.
 // courses/{courseId}/lessons/{lessonId}/blocks/{blockId}     auto-id; brief: lesson_blocks
 {
   type: BlockType;        // 'rich_text' | 'image' | 'video' | 'file' | 'quiz' | 'code_activity'
-                          // | 'ai_activity' | 'embed' | 'reflection' | 'project'
+                          // | 'ai_activity' | 'embed' | 'reflection' | 'project' | 'ml_activity'
   stage: LessonStage;     // 'discover' | 'learn' | 'watch' | 'try' | 'ask_ai' | 'build' | 'check' | 'reflect'
   order: number;          // position inside the lesson
   defaultLocale: Locale;
@@ -1255,6 +1257,17 @@ Block payloads (`BlockText` is the translatable part, `BlockData` the language-n
 | `embed` | `{ title: string; caption: string \| null }` | `{ url: string; aspectRatio: '16:9' \| '4:3' \| '1:1' }` (host must be in `EMBED_HOSTS`) |
 | `reflection` | `{ prompt: string }` | `{ minLength: number }` |
 | `project` | `{ intro: string \| null }` | `{ projectId: string }` |
+| `ml_activity` | `{ title: string; instructions: string; bringBack: string \| null; hint: string \| null }` (`instructions` is Markdown) | `{ url: string; worksheetUrl: string \| null; projectType: MlProjectType; codeTool: MlCodeTool; access: MlAccessMode }` (host of `url` in `ML_ACTIVITY_HOSTS`; `worksheetUrl` a PDF under `ML_WORKSHEET_PREFIXES`) |
+
+`ml_activity` is an activity on Machine Learning for Kids (machinelearningforkids.co.uk), which
+is opened in a new tab and never framed (7.6). The three lists are in `types/content.ts`:
+`ML_PROJECT_TYPES` = `text`, `images`, `numbers`, `sounds`, `regression`, `language` (the
+site's language-model page), `pretrained` (its ready-trained models); `ML_CODE_TOOLS` =
+`scratch`, `python`, `app_inventor`, `none`; `ML_ACCESS_MODES` = `try_it_now` (no account, one
+project kept for a few hours) and `class_account` (a class login the school set up on the
+site); a `pretrained` activity needs neither, so its `access` is stored but never shown (7.6).
+The block takes no learner response and does not count towards completion; a lesson
+that wants something back pairs it with a `project` or `reflection` block.
 
 The brief's lesson flow DISCOVER → LEARN → WATCH → TRY → ASK AI → BUILD → CHECK → REFLECT →
 EARN maps to `stage` on each block; EARN is not a block but the completion panel the player
@@ -2903,6 +2916,7 @@ Block renderer registry (`src/components/lesson/blocks/registry.ts`):
 ```ts
 export interface LessonRuntime {
   courseId: string; lessonId: string; readOnly: boolean; tutorEnabled: boolean;
+  audience: Audience;                              // the course's (ml_activity speaks to teachers in a teacher course)
   responses: Record<string /* blockId */, string>;
   quizzes: Record<string, Quiz>; latestAttempts: Record<string, QuizAttempt | null>;   // student projection (3.4)
   attemptsRemaining: Record<string, number | null>;
@@ -2927,10 +2941,52 @@ export const BLOCK_RENDERERS: { [T in BlockType]: React.ComponentType<BlockRende
 | `embed` | `EmbedBlock` | Sandboxed iframe; URL must pass `toEmbedUrl()` |
 | `reflection` | `ReflectionBlock` | Textarea with `minLength`, saves with `saveBlockResponseAction` |
 | `project` | `ProjectBlock` → `SubmissionForm` | Brief, requirements, latest submission status, submit / resubmit (only when there is no submission or the latest is `returned`) |
+| `ml_activity` | `MlActivityBlock` | Title; chips for the site, project type, code tool and access mode; the fixed leaving notice (plus the Try-it-now note when `access` is `try_it_now`); instructions (`RichText`); "What to bring back"; hint disclosure; "Open Machine Learning for Kids" (`toMlActivityHref()`) and the optional worksheet link (`toMlWorksheetHref()`, labelled with the worksheet's language when it is not the reader's: "in English" for a French reader unless `isFrenchWorksheet()`, "in French" for an English reader when it is); the credit line. A `pretrained` activity shows no access chip and no Try-it-now note: `/#!/pretrained` opens Scratch with no login and no project, and the editor hides the access choice for it (the stored value is kept). In a teacher course (`runtime.audience`), the class-account chip, the leaving notice and the "unavailable" note are the `blocks.ml.forTeachers` versions, which do not send the reader to a teacher. A link that fails its check keeps the texts and shows an "unavailable" note instead of the buttons. Shown when the tutor is off; saves nothing and does not gate completion |
 
 `BlockRenderer` looks the component up by `block.type`; an unknown type renders nothing and
 logs once. Adding a block type = extend `BlockType`, `BlockTextMap`, `BlockDataMap`, add one
 renderer file, one registry line and one editor form.
+
+**Third-party learning sites (MUST).** A learning website that is not ours is reached by an
+outbound link, never a frame. Machine Learning for Kids answers `X-Frame-Options: SAMEORIGIN`
+on every page, and a frame would also need camera and microphone in our Permissions-Policy and
+a wider sandbox, so the `ml_activity` block links out:
+
+- Its hosts are a list of their own, `ML_ACTIVITY_HOSTS` (`machinelearningforkids.co.uk`), and
+  never part of `EMBED_HOSTS`, so they never reach `frame-src`. The CSP and the
+  Permissions-Policy of `next.config.ts` do not change for it.
+- Both links are `LinkButton`s with absolute URLs: a new tab, `rel="noopener noreferrer"` (the
+  site gets no handle on our window and no referrer, so it does not learn which lesson or
+  school sent the visit) and the screen-reader hint "opens in a new tab".
+- A stored URL is only data, so the player checks it again: `toMlActivityHref()` and
+  `toMlWorksheetHref()` apply the rules of `isMlActivityUrl` and `isMlWorksheetUrl` without
+  importing them (a unit test keeps each pair equal). The activity link must be https on
+  exactly one listed host, with no port and no credentials; the worksheet link one of
+  `ML_WORKSHEET_PREFIXES` followed by a single `.pdf` file name (`ML_WORKSHEET_FILE_PATTERN`:
+  letters, digits, `.`, `_`, `-`; no folder, `%` escape, query or fragment). The prefixes name
+  the master branch and the two published folders of IBM/taxinomitis-docs on GitHub, because
+  GitHub serves every ref under the repository's path, pull-request heads and commits of forks
+  included: a prefix ending at the repository would accept a PDF anyone can push.
+- The site is an AngularJS app with hash routes (`/#!/login`, `/#!/worksheets`,
+  `/#!/pretrained`) and reads its interface language from `lang` in the query, before the
+  hash. `toMlActivityHref()` adds `lang=<locale>` there unless the author already set one, and
+  keeps the hash route. "Try it now" has no address of its own: it is a button on `/#!/login`,
+  the editor's default link.
+- The notice, the Try-it-now note and the credit line are fixed `lesson` messages, not author
+  text, so every activity carries them: the site is not part of RoboHolic AI; no name, school
+  or other personal detail; made-up examples, never photos or recordings of people; ask the
+  teacher before a webcam or microphone; a Try-it-now project is deleted after a few hours.
+  In a teacher course the notice says to check the school's rules instead of asking a teacher
+  (`blocks.ml.forTeachers`). The `lesson` namespace is read by learners and teachers alike, so
+  its French copy says `vous` (10.5), and it names the site's buttons as the French site shows
+  them, since a French reader opens it with `lang=fr`: « Essayer maintenant », with "(Try it
+  now)" after it for the English worksheets. Lesson text follows the same naming.
+  The credit names the site's author (Dale Lane) and the CC BY-NC-SA 4.0 licence of its
+  worksheets. That licence is non-commercial, so lessons link to the worksheets and never
+  copy, adapt or translate them; the instructions are written by RoboHolic AI.
+- RoboHolic AI sends the site nothing: no API call, no stored project key, no learner
+  identifier in a URL. What the learner brings back goes in the lesson's `project` or
+  `reflection` block.
 
 ### 7.7 Cross-workstream components (fixed props)
 
@@ -3692,7 +3748,7 @@ to the repository that owns them.
 | `common.ts` | `Locale`, `Localized<T>`, `IsoDateString`, `Role`, `AgeBand`, `LearningArea`, `SubmissionType`, `FileKind`, `MediaRef`, `FileRef`, `FileRecord`, `Page<T>`, `PageRequest` |
 | `user.ts` | `UserProfile`, `UserStats`, `UserStatus`, `ConsentBasis`, `StudentSummary` |
 | `school.ts` | `School`, `SchoolSettings`, `SchoolClass`, `ClassMember`, `ClassAssignment` |
-| `content.ts` | `Pathway`, `Course`, `CourseStatus`, `Module`, `Lesson`, `BlockType`, `LessonStage`, `BlockTextMap`, `BlockDataMap`, `LessonBlock`, `LessonBlockOf<T>`, `CourseOutline` |
+| `content.ts` | `Pathway`, `Course`, `CourseStatus`, `Module`, `Lesson`, `BlockType`, `LessonStage`, `BlockTextMap`, `BlockDataMap`, `LessonBlock`, `LessonBlockOf<T>`, `CourseOutline`; the `ml_activity` lists `ML_PROJECT_TYPES`, `ML_CODE_TOOLS`, `ML_ACCESS_MODES` and their types `MlProjectType`, `MlCodeTool`, `MlAccessMode` (3.4) |
 | `quiz.ts` | `Quiz`, `QuizQuestion`, `QuizOption`, `QuestionType`, `QuizAnswerKey`, `QuizAnswer`, `QuizAttempt`, `QuizAttemptResult` |
 | `learning.ts` | `Enrollment`, `QuizSummaryEntry`, `ProjectSummaryEntry`, `LessonProgress`, `LessonPlayerData`, `LessonCompletionResult` |
 | `project.ts` | `Project`, `RubricKey`, `RubricWeight`, `CriteriaScores`, `Submission`, `SubmissionStatus`, `SubmissionTarget`, `ReviewDecision`, `TeacherReview`, `AiReview`, `AiReviewFlag` |
@@ -3751,6 +3807,7 @@ never declares it again**:
 | `USERNAME_PATTERN` (`^[a-z0-9._-]{3,30}$`) | `lib/limits.ts` | used by `isValidUsername()` in `auth/username.ts` |
 | `FILE_ID_PATTERN`, `FILE_NAME_PATTERN` | `lib/limits.ts` | `firebase/storage-paths.ts` |
 | `EMBED_HOSTS` | `lib/limits.ts` | `learning/embed-allowlist.ts` |
+| `ML_ACTIVITY_HOSTS` (`['machinelearningforkids.co.uk']`), `ML_WORKSHEET_PREFIXES` (`project-worksheets/pdf/` and `teachers-notes/pdf/` under `https://github.com/IBM/taxinomitis-docs/raw/master/` and under `https://raw.githubusercontent.com/IBM/taxinomitis-docs/master/`), `ML_WORKSHEET_FILE_PATTERN` (`/^[A-Za-z0-9._-]+\.pdf$/i`, what follows a prefix) | `lib/limits.ts` | `learning/ml-activity.ts` |
 | `JOIN_CODE` (`{ length: 8, alphabet, ttlHours: 24 }`) | `lib/limits.ts` | used by `data/classes` to generate and expire codes |
 | `RateLimitScope` (`keyof typeof RATE_LIMITS`) | `lib/limits.ts` | used by `data/rate-limit.ts` |
 
@@ -4003,7 +4060,14 @@ has to repeat them:
 - **Blocks**: `video` uses `videoId` (11-character YouTube id or numeric Vimeo id) for
   `youtube`/`vimeo` and `fileId` for `file`, never both; `embed.url` is an https URL on
   `EMBED_HOSTS` with no port and no credentials (`isEmbeddableUrl`, exported by
-  `schemas/course.ts`); `quiz` and `project` blocks need no text.
+  `schemas/course.ts`); `quiz` and `project` blocks need no text. `ml_activity` needs `title`
+  and `instructions`; its `url` is an https URL on exactly one of `ML_ACTIVITY_HOSTS`, with no
+  port and no credentials and any hash route (`isMlActivityUrl`, message
+  `ml_link_not_allowed`), and its `worksheetUrl` is null or one of `ML_WORKSHEET_PREFIXES` (the
+  master branch's published folders) followed by a PDF file name that matches
+  `ML_WORKSHEET_FILE_PATTERN`, so no other ref, folder, `%` escape, query or fragment
+  (`isMlWorksheetUrl`, message `ml_worksheet_not_allowed`); both are exported by
+  `schemas/course.ts`.
 - **Quizzes**: 1–50 questions; `multiple_choice` and `true_false` have exactly one correct
   option, `multiple_answer` at least one; other types need at least two options;
   `short_answer` has no options and at least one accepted answer in the default locale.
@@ -4093,6 +4157,11 @@ export function getChallengePhase(challenge: Pick<Challenge, 'startAt' | 'deadli
 export function toEmbedUrl(url: string): string | null;              // the normalised href, or null; the same rule as schemas/course.isEmbeddableUrl
                                                                      // without importing it (a unit test keeps the two equal); EmbedBlock renders nothing on null
 export function toVideoEmbedUrl(source: 'youtube' | 'vimeo', videoId: string): string | null;   // for VideoBlock
+export function toMlActivityHref(url: string, locale: string): string | null;   // ml-activity.ts: the href with lang=<locale> added to the query
+                                                                     // (never replacing one) and the hash route kept, or null; the rule of
+                                                                     // schemas/course.isMlActivityUrl without importing it (a unit test keeps the two equal)
+export function toMlWorksheetHref(url: string): string | null;       // the URL, or null; the rule of schemas/course.isMlWorksheetUrl (same test)
+export function isFrenchWorksheet(url: string): boolean;             // the file name ends in -fr.pdf (every other official worksheet is in English)
 export type PublishProblem =                     // publish-readiness.ts
   | { kind: 'no_modules' } | { kind: 'empty_module'; moduleId: string } | { kind: 'empty_lesson'; lessonId: string };
 export function getPublishProblems(outline: {
@@ -5073,7 +5142,7 @@ Foundation namespaces as delivered by F2 (`…` = one key per value of the named
 | `common` | `appName`, `tagline`, `description`; `actions.{save, saveChanges, cancel, close, confirm, delete, remove, edit, create, add, back, next, previous, continue, start, finish, done, submit, send, retry, refresh, search, filter, clear, reset, select, apply, view, viewAll, open, preview, download, upload, print, copy, publish, unpublish, archive, enable, disable, showMore, showLess, learnMore}`; `labels.{loading, saving, yes, no, or, all, none, other, new, optional, required, name, email, title, description, status, role, date, details, actions, total, notAvailable}`; `feedback.{saved, created, deleted, sent, copied}`; `confirm.{title, irreversible}`; `pagination.{label, previous, next, page{page}, pageOf{page,total}, loadMore, results{count}}`; `locale.{label, switch, names.{en, fr, ar}}` (language names in the current language; a switcher lists `LOCALE_LABELS`); `dates.{today, yesterday, tomorrow, justNow, never, range{start,end}}`; `units.{minutes{count}, minutesShort{count}, hours{count}, hoursShort{count}, hoursMinutesShort{hours,minutes}, percent{value}, kilobytes{value}, megabytes{value}}`; `a11y.{skipToContent, closeDialog, dismiss, notifications, requiredField, opensInNewTab, progress{percent}}`; `login.{title, description, identifier, password, submit, forgotPassword}` (temporary: F8's login form; WS-A's `auth` namespace supersedes it and removes these keys) |
 | `nav` | `student.…`, `teacher.…`, `school_admin.…`, `platform_admin.…` (the nav and profile keys of section 6.8, per `Role`); `public.{home, pathways, login, getStarted, mySpace, privacy, terms, footerNavigation, copyright{year}}`; `shell.{mainNavigation, homeLink, openMenu, closeMenu, more, userMenu, signedInAs{name}, signOut, breadcrumbs}`; `lesson.{openOutline, closeOutline, askTutor, closeTutor, exit}` (`LessonShell` chrome); `pages.{verifyCertificate, verifyEmail, joinClass, forgotPassword, certificate, lesson}` (titles of pages that are not nav items; `pages.lesson` also titles the `LessonPlayer` stub) |
 | `errors` | One key per `ActionErrorCode` (`validation` … `internal`); `retry.{seconds{seconds}, minutes{minutes}, tomorrow}` (appended to `rate_limited` when `retryAfterSeconds` is known); `page.{title, description, retry, home}` (`error.tsx`); `notFound.{title, description, home}`; `empty.{title, description}` (default `EmptyState` copy); `offline` |
-| `validation` | `required`, `invalid`, `too_short`, `too_long`, `too_small`, `too_big`, `too_few`, `too_many`, `duplicate`, `invalid_choice`, `invalid_email`, `invalid_url`, `invalid_number`, `invalid_integer`, `invalid_date`, `date_order`, `age_range`, `password_too_short`, `passwords_mismatch`, `username_invalid`, `display_name_length`, `join_code_invalid`, `terms_required`, `age_band_not_allowed`, `weights_sum`, `correct_option_required`, `default_locale_required`, `content_required`, `file_too_large`, `file_type_not_allowed`, `file_name_invalid`, `too_many_files`, `embed_not_allowed`, `video_id_invalid`. These are the only values a zod schema may use as a message (section 10.1); the same list is `VALIDATION_KEYS` in `src/lib/schemas/common.ts` |
+| `validation` | `required`, `invalid`, `too_short`, `too_long`, `too_small`, `too_big`, `too_few`, `too_many`, `duplicate`, `invalid_choice`, `invalid_email`, `invalid_url`, `invalid_number`, `invalid_integer`, `invalid_date`, `date_order`, `age_range`, `password_too_short`, `passwords_mismatch`, `username_invalid`, `display_name_length`, `join_code_invalid`, `terms_required`, `age_band_not_allowed`, `weights_sum`, `correct_option_required`, `default_locale_required`, `content_required`, `file_too_large`, `file_type_not_allowed`, `file_name_invalid`, `too_many_files`, `embed_not_allowed`, `video_id_invalid`, `ml_link_not_allowed`, `ml_worksheet_not_allowed`. These are the only values a zod schema may use as a message (section 10.1); the same list is `VALIDATION_KEYS` in `src/lib/schemas/common.ts` |
 | `domain` | Shared vocabulary, one key per value: `roles.…` (`Role`), `ageBands.…` (`AgeBand`), `areas.…` (`LearningArea`), `submissionTypes.…` (`SubmissionType`), `rubric.…` (`RubricKey`), `stages.…` (`LessonStage` + `earn`), `tutorModes.…` (`TutorMode`), `status.…` (every `StatusChip` value, plus `active, disabled, suspended, issued, revoked, expired`). Component text: `certified.{label, description}`; `xp.{unit, amount{xp}, summary{level,xp}}`; `level.{label{level}, progress, toNext{xp,level}, max}`; `course.{lessons{count}, modules{count}, ages{min,max}, agesFrom{min}, agesUpTo{max}, forTeachers, premium, progress{percent}}`; `pathway.{courses{count}, progress{completed,total}}`; `lessonNav.{label, current, completed, notCompleted, moduleProgress{completed,total}}`; `chat.{assistantName, userName, conversation, empty, modeLabel, inputLabel, placeholder, send, thinking, remainingToday{count}, disclaimer}`; `project.{kinds.{project, challenge}, attempt{number}, submittedOn{date}, by{name}, score{score}}`; `certificate.{issuedOn{date}, issuedBy{name}, code{code}, view}`; `challenge.{types.…, opensOn{date}, dueOn{date}, closedOn{date}, entered, reward{xp}}`; `badge.{tiers.{bronze, silver, gold}, earnedOn{date}, locked}`; `richText.externalLink` |
 
 Workstreams read these keys freely (for example `useTranslations('domain')` for a stage or a
@@ -5268,7 +5337,12 @@ from the barrel `scripts/seed/content/index.ts`: `SEED_COURSES: SeedCourse[]` an
 WS-K may rewrite both and adds the other four course files. Pathways, badges and hardware
 platforms are **not** in this folder; they come from `scripts/migrations/0001_initial.ts`
 only. The runner validates the whole folder with `scripts/seed/validate.ts` before writing
-anything, and `tests/unit/seed-content.test.ts` runs the same checks under `npm test`.
+anything, and `tests/unit/seed-content.test.ts` runs the same checks under `npm test`. The
+runner upserts every course document whole, so running it again brings the courses back to
+the content files and erases what admins edited in the app: a real project seeded before is
+refused unless `--overwrite-official-courses` is given (11.6), and content added to the
+folder after a database was seeded reaches that database through a content release
+(`scripts/seed/content/releases.ts`, 11.7).
 
 ```ts
 // scripts/seed/types.ts — ids are stable and unique within the course; array order = `order`
@@ -5286,6 +5360,13 @@ export type SeedBlock = { id: string } & BlockInput;
 export interface SeedQuiz { id: string; input: QuizInput }          // includes the answer key
 export interface SeedProject { id: string; input: ProjectInput }
 export interface SeedChallenge { id: string; input: ChallengeInput }
+export interface ContentRelease {               // CONTENT_RELEASES, oldest first (11.7)
+  id: string;                                   // key of its record in meta/contentReleases
+  summary: string;
+  newCourses: string[];                         // written whole where the database lacks them
+  newModules: { courseId: string; moduleId: string }[];
+  courseDetails: { courseId: string; before: string }[];  // fingerprint of the details replaced
+}
 ```
 
 Content rules for WS-K, as `scripts/seed/validate.ts` enforces them: ids match `ID_PATTERN`
@@ -5302,6 +5383,7 @@ document has `en` and `fr` text (quiz questions, options and short-answer accept
 included; `CONTENT_LOCALES = ['en', 'fr']` in `validate.ts`, regardless of `LOCALES`); quiz
 documents stay under `CONTENT_LIMITS.quizDocumentBytes`. `SeedBlock` objects go straight to
 `blockInputSchema` and `toBlockFields` (the id is stripped). The runner writes the documents
+(`courseWrites` in `scripts/seed/course-writes.ts`, shared with the release tool of 11.7)
 with these ids and derives the denormalized fields (`quizIds`, `tutorExcerpt`, `lessonId`
 links, counts, `private/key`) with the same pure helpers the repositories use
 (`src/lib/data/course-derive.ts`): quiz and project documents carry `lessonId` explicitly
@@ -5408,7 +5490,10 @@ because parallel UI work and the integration suite need data.
 ### 11.6 Demo data created by the seed
 
 Emulator by default; on a real project only with `--allow-project <id>`, and demo users
-only with `--with-demo-users`.
+only with `--with-demo-users`. A real project whose official courses were seeded before
+(`meta/seed.coursesSeededAt` is set, see "The seed guard" in 11.7) is refused unless
+`--overwrite-official-courses` is given: new content reaches it through a content release
+(11.7). A first run that failed before the courses were all written can simply be run again.
 
 - Reference data (from the migration, not the seed): the seven pathways of brief section 8;
   the seven badges of section 9.3; hardware `simulator`, `generic-camera-rover`,
@@ -5423,8 +5508,10 @@ only with `--with-demo-users`.
 - School "Demo Academy" with one licence (`all_official`, 100 seats, active for a year);
   class "Grade 6 A" with the first two student-audience courses of `SEED_COURSES` assigned
   (one until WS-K adds the others). `meta/seed` remembers the auto-ids the repositories gave
-  the school, licence, class and challenges, so a re-run updates instead of duplicating
-  (second run: 0 created, no duplicate attempts or submissions).
+  the school, licence, class and challenges, so a re-run (any run on the emulators; on a real
+  project, one after a run that failed before the courses were written, or one with
+  `--overwrite-official-courses`) updates instead of duplicating (second run: 0 created, no
+  duplicate attempts or submissions).
 - Accounts: `admin@demo.roboholic.test`, `schooladmin@demo.roboholic.test`,
   `teacher@demo.roboholic.test`, `student@demo.roboholic.test` (individual), and class
   students `lea.demo`, `omar.demo`, `maya.demo` (username accounts, written through the
@@ -5461,6 +5548,99 @@ only with `--with-demo-users`.
 | Demo platform admin | created | **never created** (use `admin:bootstrap`) |
 | Password of demo accounts | `SEED_DEMO_PASSWORD`, or the default `demo-password` (`DEFAULT_DEMO_PASSWORD` in `scripts/seed/demo-users.ts`); the seed summary names the source | `SEED_DEMO_PASSWORD` is required with `--with-demo-users` and must be ≥ 16 characters; the seed refuses otherwise |
 | Demo class join code | fixed `RBHDEM23`, enabled | random, `joinCodeEnabled: false` |
+| Run again | upserts everything again | refused once the official courses were written (`meta/seed.coursesSeededAt`), unless `--overwrite-official-courses`; new content goes through `npm run content:release` (11.7). A run that failed before that point is not refused |
+
+### 11.7 Content releases
+
+A live database holds the official courses its learners and teachers use, perhaps with edits a
+platform admin made in the app, and running the seed again would replace them: it upserts
+every course document whole. A **content release** is how official content written after a
+database was seeded reaches that database: new courses, new modules of courses it holds, and
+new course details, created where the database lacks them and never written over what it has.
+
+- **Where.** `scripts/seed/content/releases.ts` exports `CONTENT_RELEASES: ContentRelease[]`
+  (11.2), oldest first. The content itself is in the course files like the rest of the seed,
+  so `npm run seed` writes it on the emulators and on a fresh project; a release only names
+  it: `newCourses` (course ids), `newModules` (`{ courseId, moduleId }`) and `courseDetails`
+  (`{ courseId, before }`, `before` being `fingerprintCourseDetails` of the details it
+  replaces: the first 16 hex digits of a SHA-256 of `translations`, `estimatedMinutes` and
+  `tags` with sorted keys, `scripts/seed/course-details.ts`). A new module is written as a
+  `SeedModulePart` in `scripts/seed/content/<courseId>/<moduleId>.ts` and can be checked on its
+  own with `scripts/seed/check-module.ts`.
+- **Tool.** `npm run content:release -- [<releaseId>...] [--apply]` with the common target
+  options (emulators unless `--allow-project <id>`; `--env-file`, `--yes`). Without `--apply` it
+  is a dry run: the same reads, a report of every document it would create (`+`) or change
+  (`~`) and of every item it leaves alone, and no write. It first validates the whole seed
+  content (`validateSeedContent`, then `releaseProblems`: every id a release names is in
+  `SEED_COURSES`; no course, module or starting point is named twice; the quizzes and projects
+  of a new module are referenced from that module only; fingerprints are 16 hex digits) and
+  checks that every new course's pathway is published. The core is `scripts/seed/release.ts`
+  (`runReleases` and the pure decisions it takes). It builds every document with `courseWrites`
+  (`scripts/seed/course-writes.ts`), the function the seed writes with, and never imports
+  `scripts/seed/index.ts`, which runs the seed as soon as it is imported.
+- **Record.** `meta/contentReleases` holds `releases.<releaseId>`: `appliedAt` (set once, by the
+  first run that finishes the release), `created` (the path of every document it created) and
+  `updated` (the courses whose details it replaced). A path is added by the transaction that
+  writes its document, so a run that stopped resumes where it stopped, and what a release
+  created and an admin deleted afterwards is never created again. The seed writes the content
+  of every release with the rest, so once its courses are written it records every release of
+  `CONTENT_RELEASES` the same way (`recordSeededReleases` in `scripts/seed/release.ts`, one
+  transaction; nothing when the list is empty): `created` gets the paths of its new courses
+  and modules, `updated` its `courseDetails` courses, and `appliedAt` is set if it is not. A
+  database seeded after a release therefore behaves like one the release ran on: a module an
+  admin deletes is not brought back, and details an admin edits are left without a warning.
+- **New course.** When `courses/<id>` does not exist and the release has not recorded it, every
+  document `courseWrites` gives the course is created (`create`, never `set`), in transactions
+  of at most 400 documents with the course document last, so that the course appears only
+  once it is complete. The pathway's `publishedCourseCount` is then counted again as the seed
+  counts it (`listPublishedCoursesByPathway`) and written when it differs. A course that exists
+  is left alone; one the release recorded and the database no longer holds was deleted by an
+  admin and is not created again; documents with its ids that exist without being recorded
+  stop it, with a warning.
+- **New module.** In a course the database holds (else a warning), when the module neither
+  exists nor was recorded, one transaction creates the module, its lessons, their blocks, and
+  the quizzes (with `private/key`) and projects those blocks reference, exactly as
+  `courseWrites` writes them (seed ids, derived lesson fields, `lessonId` links,
+  `module.lessonCount`). The module goes after the nearest module that precedes it in the
+  course file and is in the database, or first when there is none; the modules are numbered
+  0..n-1 again, as `reorderModules` numbers them, and only those whose `order` changes are
+  written (`order` and `updatedAt`). The same transaction sets the course's `moduleCount` and
+  `lessonCount`, counted from the database. No other field of an existing document changes.
+- **Course details.** Read in a transaction. When the stored details have the fingerprint
+  `before`, `translations`, `estimatedMinutes` and `tags` get the seed's values (parsed with
+  `courseInputSchema`, as the seed stores them) and the course is recorded under `updated`.
+  When they have the seed's fingerprint, they are already up to date. When they have the
+  `before` of a later release for the same course, they are left to that release. Otherwise
+  they were edited in the app: they stay as they are, and a warning says to make the change by
+  hand in the course editor.
+- **Idempotent.** A second run changes nothing (every item is skipped and `appliedAt` is
+  already set), and a dry run writes nothing. `tests/unit/content-release.test.ts` checks
+  `CONTENT_RELEASES` (whatever it holds) and the decisions;
+  `tests/integration/content-release.test.ts` builds a release over the seeded emulators (a
+  course and two modules taken out, older details), applies it and compares every document
+  with what the seed writes, then checks the second run, the admin's edits, a module and a
+  course deleted after the release, the dry run, and a module deleted from a database the seed
+  recorded a release in.
+- **Production.** Deploy the code first: the content must be in the deployed course files and
+  its block types known to the deployed player. Then run the **Content release** workflow
+  (`.github/workflows/content-release.yml`) from the Actions tab. Its inputs are `release`
+  (ids separated by spaces; empty means every release) and `apply` (unticked: a dry run). It
+  uses the `FIREBASE_SERVICE_ACCOUNT` secret and the environment file of the Firebase setup
+  workflow, prints no key, and a second run waits for the first (concurrency group
+  `content-release`). Read the dry run's report, then run it again with `apply`. By hand:
+  `npm run content:release -- --allow-project <id> --env-file .env.production.local`, then
+  the same with `--apply`.
+- **The seed guard.** On a real project whose official courses were written before, `npm run
+  seed` refuses before writing anything and names `npm run content:release`;
+  `--overwrite-official-courses` writes every official course whole again, and with it loses
+  every edit made to them in the app. The Firebase setup workflow's `seed_demo_content` input
+  defaults to false for the same reason. The seed sets `meta/seed.coursesSeededAt` once the
+  courses are all written (and the releases recorded); a database seeded before that field
+  existed is recognised by the challenges `meta/seed` records, which the seed has always
+  written after the courses (`coursesSeededIn` in `scripts/seed/course-writes.ts`). That
+  `meta/seed` exists proves nothing: the demo school is recorded in it before any course is
+  written, so a first setup that failed half-way (Authentication not enabled yet, a failed
+  batch) is finished by running it again. The emulators are never guarded.
 
 ---
 
@@ -5496,6 +5676,7 @@ answer would materially change the product or its cost, per the working agreemen
 | Notifications | No in-app, email or push notifications are specified | None; dashboards show queues and statuses | Later phase |
 | Accessibility | Required for school procurement in many places | WCAG 2.1 AA as the build baseline (section 7.1); transcript field on video blocks; not externally audited | Audit before selling to public schools |
 | Analytics and tracking | Third-party trackers on a children's service create consent obligations | No third-party analytics, ads or tracking cookies; lesson text cannot embed third-party images; product metrics come from Firestore counts; the session cookie is strictly necessary | Keep unless a cookieless tool is chosen |
+| Third-party learning sites | Lessons send learners, under-13s included, to Machine Learning for Kids, a free site run by one person in the UK and not by RoboHolic AI. It has its own privacy terms, keeps a "Try it now" project for a few hours, stores class projects on IBM Cloud in the US, and licenses its worksheets for non-commercial use only | Link out only: a new tab with no referrer, never a frame, nothing sent from RoboHolic AI (7.6). A fixed notice on every activity: no personal details, made-up examples, never people, ask the teacher before a webcam or microphone. "Try it now" (no account) is preferred; class accounts on the site are the school's decision and the school sets them up. Worksheets are linked, never copied or translated | **Decide**: approve sending learners to the site on these terms; whether schools need a switch to hide such activities; whether they may sit in premium courses |
 | Abuse and rate limiting | Join-code guessing, sign-up spam, scraping, upload and AI abuse | Server-side rate limits (hashed client IP, per hour) on join-code lookup, join sign-up and sign-up; join codes are 8 characters, off by default and expire 24 hours after being enabled; upload quotas; AI limits and budgets; Firebase Auth throttles sign-in. A student who joins by code is in the class immediately; the roster shows how each student joined and the teacher can remove them | **Decide** whether code joins should wait for teacher approval. Add App Check and a WAF rule before public launch |
 | Sessions on shared devices | School computers are shared | Students: 12-hour session in a browser-session cookie, no Firebase client state kept on the device, visible one-click sign-out that ends the session everywhere. Staff: 24 hours | Accept |
 | Content versioning | Editing a published course changes it for enrolled learners | Edits are live; structure cannot be deleted once learners are enrolled; progress percent recalculates on next completion | Draft-of-published is future |

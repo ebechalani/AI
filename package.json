@@ -19,6 +19,7 @@
     "emulators": "node -e \"require('node:fs').mkdirSync('.emulator-data', { recursive: true })\" && firebase emulators:start --project demo-roboholic --import .emulator-data --export-on-exit",
     "migrate": "tsx --conditions=react-server scripts/migrate.ts",
     "seed": "tsx --conditions=react-server scripts/seed/index.ts",
+    "content:release": "tsx --conditions=react-server scripts/content-release.ts",
     "admin:bootstrap": "tsx --conditions=react-server scripts/bootstrap-admin.ts",
     "user:delete": "tsx --conditions=react-server scripts/delete-user-data.ts",
     "cleanup:uploads": "tsx --conditions=react-server scripts/cleanup-uploads.ts",
