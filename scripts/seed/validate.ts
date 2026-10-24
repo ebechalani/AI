@@ -75,6 +75,7 @@ const BLOCK_TEXT_FIELDS: Record<BlockType, readonly string[]> = {
   embed: ['title'],
   reflection: ['prompt'],
   project: [],
+  ml_activity: ['title', 'instructions'],
 };
 
 function isBlank(value: unknown): boolean {

@@ -207,3 +207,28 @@ export const JOIN_CODE = {
 
 /** Must equal the frame-src list of next.config.ts, or the browser blocks the frame. */
 export const EMBED_HOSTS: readonly string[] = ['www.youtube-nocookie.com', 'player.vimeo.com'];
+
+/**
+ * Hosts an ml_activity block may link to. They are only ever opened in a new tab, never
+ * framed, so they are not EMBED_HOSTS and not in frame-src.
+ */
+export const ML_ACTIVITY_HOSTS: readonly string[] = ['machinelearningforkids.co.uk'];
+
+/**
+ * The folders of the master branch where the official Machine Learning for Kids worksheets and
+ * teacher's notes are published (PDF files). The branch is part of each prefix because GitHub
+ * serves every ref under the repository's path, pull-request heads and commits of forks
+ * included, so a prefix that stopped at the repository would take a PDF anyone could push.
+ */
+export const ML_WORKSHEET_PREFIXES: readonly string[] = [
+  'https://github.com/IBM/taxinomitis-docs/raw/master/project-worksheets/pdf/',
+  'https://github.com/IBM/taxinomitis-docs/raw/master/teachers-notes/pdf/',
+  'https://raw.githubusercontent.com/IBM/taxinomitis-docs/master/project-worksheets/pdf/',
+  'https://raw.githubusercontent.com/IBM/taxinomitis-docs/master/teachers-notes/pdf/',
+];
+
+/**
+ * What follows one of ML_WORKSHEET_PREFIXES: a single PDF file name, so no further folder, no
+ * `..` segment, no `%` escape, no query and no fragment.
+ */
+export const ML_WORKSHEET_FILE_PATTERN = /^[A-Za-z0-9._-]+\.pdf$/i;

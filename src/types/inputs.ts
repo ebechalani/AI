@@ -334,6 +334,7 @@ export interface BlockInputDataMap {
   embed: BlockDataMap['embed'];
   reflection: BlockDataMap['reflection'];
   project: BlockDataMap['project'];
+  ml_activity: BlockDataMap['ml_activity'];
 }
 
 export type BlockInputOf<T extends BlockType> = {

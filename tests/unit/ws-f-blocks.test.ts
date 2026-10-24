@@ -89,6 +89,7 @@ describe('new drafts', () => {
     embed: ['data.url', 'translations.en.title'],
     reflection: ['translations.en.prompt'],
     project: ['data.projectId'],
+    ml_activity: ['translations.en.instructions', 'translations.en.title'],
   };
 
   it.each(BLOCK_TYPES)('%s starts in its stage and fails only on what is required', (type) => {
@@ -106,6 +107,33 @@ describe('new drafts', () => {
     expect(newBlockDraft('embed', 'en').data).toEqual({ url: '', aspectRatio: '16:9' });
     expect(newBlockDraft('reflection', 'en').data).toEqual({ minLength: '0' });
     expect(newBlockDraft('video', 'en').data).toEqual({ source: 'youtube', videoId: '', fileId: '', media: null, duration: '' });
+    expect(newBlockDraft('ml_activity', 'en').data).toEqual({
+      url: 'https://machinelearningforkids.co.uk/#!/login',
+      worksheetUrl: '',
+      projectType: 'text',
+      codeTool: 'scratch',
+      access: 'try_it_now',
+    });
+  });
+
+  it('stores an ml_activity without a worksheet as null and reads it back as ""', () => {
+    const draft = newBlockDraft('ml_activity', 'en');
+    if (draft.type !== 'ml_activity') throw new Error('type');
+    draft.text.en.title = 'Teach a computer';
+    draft.text.en.instructions = '1. Open the website.';
+    const input = blockDraftToInput(draft);
+    expect(input.data).toMatchObject({ worksheetUrl: null });
+    expect(input.translations.en).toEqual({
+      title: 'Teach a computer',
+      instructions: '1. Open the website.',
+      bringBack: null,
+      hint: null,
+    });
+    expect(parseInput(blockInputSchema, input).success).toBe(true);
+    const worksheet = 'https://github.com/IBM/taxinomitis-docs/raw/master/project-worksheets/pdf/worksheet-smartclassroom-tryitnow.pdf';
+    const withWorksheet = { ...input, data: { ...input.data, worksheetUrl: worksheet } } as BlockInput;
+    expect(blockToDraft(stored(input)).data).toMatchObject({ worksheetUrl: '' });
+    expect(blockDraftToInput(blockToDraft(stored(withWorksheet)))).toEqual(withWorksheet);
   });
 });
 
@@ -204,5 +232,14 @@ describe('order and choices', () => {
     expect(blockSummary(quizBlock, 'en', lookups)).toBe('Robot check');
     const empty = stored({ type: 'quiz', stage: 'check', defaultLocale: 'en', translations: {}, data: { quizId: 'zz' } });
     expect(blockSummary(empty, 'en', lookups)).toBe('');
+    const ml = stored({
+      type: 'ml_activity', stage: 'try', defaultLocale: 'en',
+      translations: {
+        en: { title: 'Teach a computer', instructions: 'Steps', bringBack: null, hint: null },
+        fr: { title: 'Apprends à un ordinateur', instructions: 'Étapes', bringBack: null, hint: null },
+      },
+      data: { url: 'https://machinelearningforkids.co.uk/#!/login', worksheetUrl: null, projectType: 'text', codeTool: 'scratch', access: 'try_it_now' },
+    });
+    expect(blockSummary(ml, 'fr', lookups)).toBe('Apprends à un ordinateur');
   });
 });

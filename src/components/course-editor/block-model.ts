@@ -11,6 +11,9 @@ import {
   type EmbedAspectRatio,
   type LessonBlock,
   type LessonStage,
+  type MlAccessMode,
+  type MlCodeTool,
+  type MlProjectType,
   type VideoSource,
 } from '@/types/content';
 import type { BlockInput, BlockInputOf } from '@/types/inputs';
@@ -45,6 +48,14 @@ export interface DataDraftMap {
   embed: { url: string; aspectRatio: EmbedAspectRatio };
   reflection: { minLength: string };
   project: { projectId: string };
+  /** worksheetUrl: '' = no worksheet. */
+  ml_activity: {
+    url: string;
+    worksheetUrl: string;
+    projectType: MlProjectType;
+    codeTool: MlCodeTool;
+    access: MlAccessMode;
+  };
 }
 
 export type BlockDraftOf<T extends BlockType> = {
@@ -69,6 +80,7 @@ export const TEXT_FIELDS: { [T in BlockType]: readonly TextFieldOf<T>[] } = {
   embed: ['title', 'caption'],
   reflection: ['prompt'],
   project: ['intro'],
+  ml_activity: ['title', 'instructions', 'bringBack', 'hint'],
 };
 
 export const NULLABLE_TEXT: { [T in BlockType]: readonly TextFieldOf<T>[] } = {
@@ -82,6 +94,7 @@ export const NULLABLE_TEXT: { [T in BlockType]: readonly TextFieldOf<T>[] } = {
   embed: ['caption'],
   reflection: [],
   project: ['intro'],
+  ml_activity: ['bringBack', 'hint'],
 };
 
 /** The fields the schema requires in the block's default language. */
@@ -96,6 +109,7 @@ export const REQUIRED_TEXT: { [T in BlockType]: readonly TextFieldOf<T>[] } = {
   embed: ['title'],
   reflection: ['prompt'],
   project: [],
+  ml_activity: ['title', 'instructions'],
 };
 
 export const DEFAULT_STAGE: Record<BlockType, LessonStage> = {
@@ -109,6 +123,7 @@ export const DEFAULT_STAGE: Record<BlockType, LessonStage> = {
   embed: 'try',
   reflection: 'reflect',
   project: 'build',
+  ml_activity: 'try',
 };
 
 function textOf<T extends BlockType>(
@@ -170,6 +185,16 @@ export function blockToDraft(block: LessonBlock): BlockDraft {
       return draftOf(block, { minLength: String(block.data.minLength) });
     case 'project':
       return draftOf(block, { projectId: block.data.projectId });
+    case 'ml_activity': {
+      const { url, worksheetUrl, projectType, codeTool, access } = block.data;
+      return draftOf(block, {
+        url,
+        worksheetUrl: worksheetUrl ?? '',
+        projectType,
+        codeTool,
+        access,
+      });
+    }
   }
 }
 
@@ -184,6 +209,14 @@ const NEW_DATA: { [T in BlockType]: DataDraftMap[T] } = {
   embed: { url: '', aspectRatio: '16:9' },
   reflection: { minLength: '0' },
   project: { projectId: '' },
+  // "Try it now" has no address of its own: it is a button on the site's login page.
+  ml_activity: {
+    url: 'https://machinelearningforkids.co.uk/#!/login',
+    worksheetUrl: '',
+    projectType: 'text',
+    codeTool: 'scratch',
+    access: 'try_it_now',
+  },
 };
 
 function newDraftOf<T extends BlockType>(type: T, defaultLocale: Locale): BlockDraftOf<T> {
@@ -261,6 +294,16 @@ export function blockDraftToInput(draft: BlockDraft): BlockInput {
       return inputOf(draft, { minLength: Number(draft.data.minLength.trim() || '0') });
     case 'project':
       return inputOf(draft, { projectId: draft.data.projectId });
+    case 'ml_activity': {
+      const { url, worksheetUrl, projectType, codeTool, access } = draft.data;
+      return inputOf(draft, {
+        url,
+        worksheetUrl: worksheetUrl.trim() || null,
+        projectType,
+        codeTool,
+        access,
+      });
+    }
   }
 }
 
@@ -336,6 +379,7 @@ export function blockSummary(
       return cut(value('alt'));
     case 'video':
     case 'embed':
+    case 'ml_activity':
       return cut(value('title'));
     case 'file':
       return cut(value('label'));

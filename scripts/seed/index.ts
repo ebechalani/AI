@@ -6,43 +6,30 @@
 //
 //   npm run seed                                            emulators, demo users included
 //   npm run seed -- --allow-project <id> [--with-demo-users] [--yes]
+//   npm run seed -- --allow-project <id> --overwrite-official-courses [--yes]
 //
 // A real project gets demo users only with --with-demo-users and SEED_DEMO_PASSWORD (at least
 // 16 characters); it never gets the demo platform admin, and its demo class keeps a random,
-// disabled join code.
+// disabled join code. A real project whose official courses were seeded before is refused unless
+// --overwrite-official-courses is given: they may hold edits made in the app, and new content
+// reaches it through scripts/content-release.ts instead (11.7). A first run that failed before
+// the courses were all written is not refused, so it can be run again.
 
-import type { z } from 'zod';
 import { SYSTEM_ACTOR, type Actor } from '@/lib/auth/actor';
 import { syncClaims } from '@/lib/auth/claims';
 import { listBadges } from '@/lib/data/badges';
 import { listLicensesForSchool, upsertLicense } from '@/lib/data/billing';
 import { getChallenge, setChallengeStatus, upsertChallenge } from '@/lib/data/challenges';
 import { getClass, updateClass } from '@/lib/data/classes';
-import {
-  deriveLessonFields,
-  splitQuizInput,
-  toBlockFields,
-  type DerivableBlock,
-} from '@/lib/data/course-derive';
 import { listPublishedCoursesByPathway } from '@/lib/data/courses';
 import { getPublishedPathway } from '@/lib/data/pathways';
 import { adjustSchoolCounts, createSchool, getSchool } from '@/lib/data/schools';
 import { createUserProfile, getUser, setVerifiedEducator } from '@/lib/data/users';
 import { getAdminAuth, getAdminDb } from '@/lib/firebase/admin';
-import { collections, quizKeyDoc } from '@/lib/firebase/collections';
+import { collections } from '@/lib/firebase/collections';
 import { createdNow, serverTimestamp, updatedNow } from '@/lib/firebase/converters';
-import { parseInput } from '@/lib/schemas/common';
-import {
-  blockInputSchema,
-  courseInputSchema,
-  lessonInputSchema,
-  moduleInputSchema,
-} from '@/lib/schemas/course';
-import { projectInputSchema } from '@/lib/schemas/project';
-import { quizInputSchema } from '@/lib/schemas/quiz';
 import { addStudentToClass, assignCourseToClass, createClass } from '@/lib/services/classroom';
 import { countedIn } from '@/lib/services/identity';
-import type { MediaRef } from '@/types/common';
 import type { Challenge } from '@/types/challenge';
 import type { SchoolClass } from '@/types/school';
 import type { UserProfile } from '@/types/user';
@@ -57,8 +44,10 @@ import {
   targetOptions,
   type ScriptTarget,
 } from '../lib/admin';
-import { ifFound, upsertDocuments, type DocumentWrite } from '../lib/firestore';
+import { ifFound, upsertDocuments } from '../lib/firestore';
 import { SEED_CHALLENGES, SEED_COURSES } from './content';
+import { CONTENT_RELEASES } from './content/releases';
+import { courseOverwriteRefusal, courseWrites, coursesSeededIn } from './course-writes';
 import { seedDemoProgress, type DemoProgressSummary } from './demo-progress';
 import {
   DEMO_ACCOUNTS,
@@ -72,36 +61,32 @@ import {
   type DemoAccount,
   type DemoAccountKey,
 } from './demo-users';
+import { recordSeededReleases, releaseProblems } from './release';
 import type { SeedCourse } from './types';
-import { contentLinks, courseInputOf, validateSeedContent } from './validate';
+import { validateSeedContent } from './validate';
 
 const USAGE = `Usage: npm run seed -- [options]
 
 Writes the demo content of scripts/seed/content and, with demo users, the demo school, class,
-accounts and their progress (ARCHITECTURE.md 11.6). Run "npm run migrate" first.
+accounts and their progress (ARCHITECTURE.md 11.6). Run "npm run migrate" first. A real
+project whose official courses were seeded before is refused: add new content to it with
+"npm run content:release" (11.7).
 
   --with-demo-users      create the demo accounts on a real project too (needs
                          SEED_DEMO_PASSWORD of at least 16 characters); always on for the emulators
+  --overwrite-official-courses
+                         on a real project seeded before, write the official courses again,
+                         replacing every edit made to them in the app
 ${COMMON_USAGE}`;
-
-/** The seed owns no official media, so no block names a file. */
-const NO_MEDIA: ReadonlyMap<string, MediaRef> = new Map();
 
 /** How many student courses the demo class gets (11.6). */
 const CLASS_COURSE_COUNT = 2;
 
-function parsed<T>(schema: z.ZodType<T>, input: unknown, what: string): T {
-  const result = parseInput(schema, input);
-  if (!result.success) {
-    throw new ScriptError(`${what}: ${JSON.stringify(result.fieldErrors)}`);
-  }
-  return result.data;
-}
-
 // --- Bookkeeping -------------------------------------------------------------------------------
 
 // meta/seed remembers the auto-ids the repositories gave the demo school, licence, class and
-// challenges, so that a second run finds them instead of creating them again.
+// challenges, so that a second run finds them instead of creating them again, and, in
+// coursesSeededAt, that the official courses were written (the guard of coursesSeededIn).
 interface SeedState {
   schoolId: string | null;
   licenseId: string | null;
@@ -289,111 +274,6 @@ async function ensureDemoWorld(
 }
 
 // --- Courses -----------------------------------------------------------------------------------
-
-/**
- * Every document of a course with the ids of the content file, the input fields as the
- * schemas parse them, and the derived fields the repositories would have written (11.2).
- */
-function courseWrites(seed: SeedCourse, ownerUid: string): DocumentWrite[] {
-  const courseId = seed.id;
-  const links = contentLinks(seed);
-  const writes: DocumentWrite[] = [];
-  let lessonCount = 0;
-
-  seed.modules.forEach((module, moduleOrder) => {
-    const moduleInput = parsed(moduleInputSchema, module.input, `module ${module.id}`);
-    writes.push({
-      ref: collections.modules(courseId).doc(module.id),
-      fields: { order: moduleOrder, lessonCount: module.lessons.length, ...moduleInput },
-    });
-
-    module.lessons.forEach((lesson, lessonOrder) => {
-      lessonCount += 1;
-      const lessonInput = parsed(lessonInputSchema, lesson.input, `lesson ${lesson.id}`);
-      const derivable: DerivableBlock[] = [];
-      lesson.blocks.forEach((block, order) => {
-        const input = parsed(blockInputSchema, block, `block ${block.id}`);
-        const fields = toBlockFields(input, NO_MEDIA);
-        writes.push({
-          ref: collections.blocks(courseId, lesson.id).doc(block.id),
-          fields: { ...fields, order },
-        });
-        derivable.push({ ...fields, id: block.id, order });
-      });
-      writes.push({
-        ref: collections.lessons(courseId).doc(lesson.id),
-        fields: {
-          moduleId: module.id,
-          order: lessonOrder,
-          estimatedMinutes: lessonInput.estimatedMinutes,
-          xpReward: lessonInput.xpReward,
-          ...deriveLessonFields(derivable),
-          defaultLocale: lessonInput.defaultLocale,
-          translations: lessonInput.translations,
-        },
-      });
-    });
-  });
-
-  for (const seedQuiz of seed.quizzes) {
-    const input = parsed(quizInputSchema, seedQuiz.input, `quiz ${seedQuiz.id}`);
-    let counter = 0;
-    const { quiz, key } = splitQuizInput(input, () => `gen-${(counter += 1)}`);
-    writes.push({
-      ref: collections.quizzes(courseId).doc(seedQuiz.id),
-      fields: { lessonId: links.quizzes.get(seedQuiz.id) ?? null, ...quiz },
-    });
-    writes.push({ ref: quizKeyDoc(courseId, seedQuiz.id), fields: key });
-  }
-
-  for (const seedProject of seed.projects) {
-    const input = parsed(projectInputSchema, seedProject.input, `project ${seedProject.id}`);
-    writes.push({
-      ref: collections.projects(courseId).doc(seedProject.id),
-      fields: {
-        lessonId: links.projects.get(seedProject.id) ?? null,
-        kind: input.kind,
-        allowedSubmissionTypes: input.allowedSubmissionTypes,
-        rubric: input.rubric,
-        xpReward: input.xpReward,
-        requiredForCertificate: input.requiredForCertificate,
-        defaultLocale: input.defaultLocale,
-        translations: input.translations,
-      },
-    });
-  }
-
-  const course = parsed(courseInputSchema, courseInputOf(seed), `course ${courseId}`);
-  writes.push({
-    ref: collections.courses().doc(courseId),
-    fields: (existing) => ({
-      pathwayId: seed.course.pathwayId,
-      order: seed.course.order,
-      ownerUid,
-      schoolId: null,
-      isOfficial: true,
-      status: 'published',
-      visibility: 'public',
-      audience: course.audience,
-      area: course.area,
-      tags: course.tags,
-      ageMin: course.ageMin,
-      ageMax: course.ageMax,
-      estimatedMinutes: course.estimatedMinutes,
-      accessTier: 'free',
-      certificateEnabled: course.certificateEnabled,
-      coverImage: null,
-      hardwarePlatformIds: course.hardwarePlatformIds,
-      requiredCapabilities: course.requiredCapabilities,
-      moduleCount: seed.modules.length,
-      lessonCount,
-      defaultLocale: course.defaultLocale,
-      translations: course.translations,
-      publishedAt: (existing?.get('publishedAt') as unknown) ?? serverTimestamp(),
-    }),
-  });
-  return writes;
-}
 
 /** Documents of the course that the content file no longer names are reported, never deleted. */
 async function warnAboutStaleDocuments(seed: SeedCourse): Promise<void> {
@@ -587,19 +467,33 @@ function printSummary(
 
 async function main(): Promise<void> {
   const { values } = parseScriptArgs(
-    { 'with-demo-users': { type: 'boolean', default: false } },
+    {
+      'with-demo-users': { type: 'boolean', default: false },
+      'overwrite-official-courses': { type: 'boolean', default: false },
+    },
     USAGE,
   );
   const target = await connect(targetOptions(values));
   const withDemoUsers = target.mode === 'emulator' || values['with-demo-users'] === true;
 
   step('Content');
-  const problems = validateSeedContent(SEED_COURSES, SEED_CHALLENGES);
+  // The releases too: the seed records them once the courses are written (recordSeededReleases).
+  const problems = [
+    ...validateSeedContent(SEED_COURSES, SEED_CHALLENGES),
+    ...releaseProblems(CONTENT_RELEASES, SEED_COURSES),
+  ];
   if (problems.length > 0) {
     throw new ScriptError(`The seed content is not valid:\n  ${problems.join('\n  ')}`);
   }
   console.log(`   ${SEED_COURSES.length} course(s), ${SEED_CHALLENGES.length} challenge(s) valid`);
   await assertReferenceData(SEED_COURSES);
+  // Before anything is written: a refused run leaves the project exactly as it was.
+  const refusal = courseOverwriteRefusal(
+    target.mode,
+    coursesSeededIn((await seedStateDoc().get()).data()),
+    values['overwrite-official-courses'] === true,
+  );
+  if (refusal !== null) throw new ScriptError(refusal);
 
   let password: { password: string; source: string } | null = null;
   if (withDemoUsers) {
@@ -619,6 +513,12 @@ async function main(): Promise<void> {
 
   step('Courses');
   await writeCourses(SEED_COURSES, profiles?.admin?.id ?? 'system');
+  await recordSeededReleases(CONTENT_RELEASES, SEED_COURSES);
+  // Only now: a run that failed before this line can be run again (coursesSeededIn).
+  await seedStateDoc().set(
+    { coursesSeededAt: serverTimestamp(), updatedAt: serverTimestamp() },
+    { merge: true },
+  );
 
   let cls: SchoolClass | null = null;
   if (profiles !== null) {

@@ -391,6 +391,10 @@
       "project": {
         "label": "Projet",
         "description": "Un projet ou un devoir que les apprenants remettent."
+      },
+      "ml_activity": {
+        "label": "Machine Learning for Kids",
+        "description": "Une activité sur machinelearningforkids.co.uk, ouverte dans un nouvel onglet, avec un avertissement de sécurité et ce qu’il faut rapporter."
       }
     },
     "richText": {
@@ -495,6 +499,42 @@
       "create": "Créer un nouveau projet",
       "noneFree": "Tous les projets de ce cours sont déjà utilisés dans une leçon. Créez-en un nouveau.",
       "intro": "Introduction"
+    },
+    "ml": {
+      "url": "Adresse de l’activité",
+      "urlHint": "Une adresse https sur {hosts}. Les apprenants l’ouvrent dans un nouvel onglet\u00a0: le site ne peut pas s’afficher dans la leçon.",
+      "worksheetUrl": "Fiche officielle (PDF)",
+      "worksheetUrlHint": "Facultatif. Sur machinelearningforkids.co.uk/#!/worksheets, choisissez «\u00a0Télécharger\u00a0» sous une fiche, puis copiez le lien de «\u00a0Télécharger la fiche de travail du projet\u00a0» (ou du guide pour les enseignants)\u00a0: son adresse commence par https://github.com/IBM/taxinomitis-docs/raw/master/. Faites un lien vers la fiche\u00a0; n’en copiez pas le texte dans la leçon.",
+      "projectType": "Type de projet",
+      "projectTypes": {
+        "text": "Reconnaître du texte",
+        "images": "Reconnaître des images",
+        "numbers": "Reconnaître des nombres",
+        "sounds": "Reconnaître des sons",
+        "regression": "Prédire des nombres",
+        "language": "Générer du texte",
+        "pretrained": "Modèle déjà entraîné"
+      },
+      "codeTool": "Outil de programmation",
+      "codeTools": {
+        "scratch": "Scratch",
+        "python": "Python",
+        "app_inventor": "App Inventor",
+        "none": "Sans programmation"
+      },
+      "access": "Comment les apprenants utilisent le site",
+      "accessModes": {
+        "try_it_now": "Sans compte («\u00a0Essayer maintenant\u00a0»)",
+        "try_it_nowDescription": "Rien à préparer. Le projet est effacé au bout de quelques heures\u00a0: les apprenants le terminent en une séance.",
+        "class_account": "Identifiant de classe donné par l’enseignant",
+        "class_accountDescription": "L’école crée une classe sur le site et donne un identifiant à chaque apprenant."
+      },
+      "title": "Titre",
+      "instructions": "Consignes",
+      "instructionsHint": "Markdown\u00a0: les étapes numérotées conviennent bien. Rédigez-les avec vos propres mots.",
+      "bringBack": "Ce qu’il faut rapporter",
+      "bringBackHint": "Facultatif. Par exemple une capture d’écran, ou trois essais et la réponse du modèle.",
+      "hint": "Indice"
     }
   },
   "reorder": {

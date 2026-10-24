@@ -15,7 +15,13 @@ import { CONTENT_LIMITS } from '@/lib/limits';
 import { parseInput } from '@/lib/schemas/common';
 import { blockInputSchema } from '@/lib/schemas/course';
 import { quizInputSchema } from '@/lib/schemas/quiz';
-import type { BlockInput, MediaRef, QuizInput, QuizQuestionInput } from '@/types';
+import {
+  BLOCK_TYPES,
+  type BlockInput,
+  type MediaRef,
+  type QuizInput,
+  type QuizQuestionInput,
+} from '@/types';
 
 const FILE_A = '11111111-1111-4111-8111-111111111111';
 const FILE_B = '22222222-2222-4222-8222-222222222222';
@@ -123,6 +129,21 @@ const OTHER_INPUTS: BlockInput[] = [
     translations: { en: { title: 'A clip', caption: null } },
     data: { url: 'https://player.vimeo.com/video/123', aspectRatio: '16:9' },
   },
+  {
+    type: 'ml_activity',
+    stage: 'try',
+    defaultLocale: 'en',
+    translations: {
+      en: { title: 'Teach a computer', instructions: '1. Log in.', bringBack: null, hint: null },
+    },
+    data: {
+      url: 'https://machinelearningforkids.co.uk/#!/login',
+      worksheetUrl: null,
+      projectType: 'text',
+      codeTool: 'scratch',
+      access: 'try_it_now',
+    },
+  },
 ];
 
 const ALL_INPUTS: BlockInput[] = [
@@ -166,7 +187,7 @@ describe('the fixtures', () => {
     for (const input of ALL_INPUTS) {
       expect(parseInput(blockInputSchema, input)).toEqual({ success: true, data: input });
     }
-    expect(new Set(ALL_INPUTS.map((input) => input.type)).size).toBe(10);
+    expect(new Set(ALL_INPUTS.map((input) => input.type)).size).toBe(BLOCK_TYPES.length);
   });
 });
 
