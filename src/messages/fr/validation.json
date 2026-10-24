@@ -32,5 +32,7 @@
   "file_name_invalid": "Le nom du fichier ne peut contenir que des lettres, des chiffres, des points, des tirets et des tirets bas.",
   "too_many_files": "Il y a trop de fichiers.",
   "embed_not_allowed": "Seuls les liens YouTube et Vimeo peuvent être intégrés.",
-  "video_id_invalid": "Saisissez l’identifiant de la vidéo qui figure dans le lien YouTube ou Vimeo."
+  "video_id_invalid": "Saisissez l’identifiant de la vidéo qui figure dans le lien YouTube ou Vimeo.",
+  "ml_link_not_allowed": "Utilisez un lien vers machinelearningforkids.co.uk.",
+  "ml_worksheet_not_allowed": "Utilisez le lien PDF d’une fiche officielle sur github.com/IBM/taxinomitis-docs."
 }

@@ -207,3 +207,15 @@ export const JOIN_CODE = {
 
 /** Must equal the frame-src list of next.config.ts, or the browser blocks the frame. */
 export const EMBED_HOSTS: readonly string[] = ['www.youtube-nocookie.com', 'player.vimeo.com'];
+
+/**
+ * Hosts an ml_activity block may link to. They are only ever opened in a new tab, never
+ * framed, so they are not EMBED_HOSTS and not in frame-src.
+ */
+export const ML_ACTIVITY_HOSTS: readonly string[] = ['machinelearningforkids.co.uk'];
+
+/** Where the official Machine Learning for Kids worksheets are published (PDF files). */
+export const ML_WORKSHEET_PREFIXES: readonly string[] = [
+  'https://github.com/IBM/taxinomitis-docs/raw/',
+  'https://raw.githubusercontent.com/IBM/taxinomitis-docs/',
+];

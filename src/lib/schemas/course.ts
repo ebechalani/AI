@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { CONTENT_LIMITS, EMBED_HOSTS } from '@/lib/limits';
+import {
+  CONTENT_LIMITS,
+  EMBED_HOSTS,
+  ML_ACTIVITY_HOSTS,
+  ML_WORKSHEET_PREFIXES,
+} from '@/lib/limits';
 import { LAB_TOOL_IDS, TUTOR_MODES } from '@/types/ai';
 import { AUDIENCES, LEARNING_AREAS } from '@/types/common';
 import {
@@ -9,6 +14,9 @@ import {
   COURSE_STATUSES,
   EMBED_ASPECT_RATIOS,
   LESSON_STAGES,
+  ML_ACCESS_MODES,
+  ML_CODE_TOOLS,
+  ML_PROJECT_TYPES,
   VIDEO_SOURCES,
   type BlockType,
 } from '@/types/content';
@@ -257,6 +265,45 @@ export function isEmbeddableUrl(url: string): boolean {
   }
 }
 
+/**
+ * True for an https URL whose host is exactly one of ML_ACTIVITY_HOSTS, with no port and no
+ * credentials. The page is opened in a new tab, so its hash route (`/#!/login`) may be kept.
+ */
+export function isMlActivityUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return (
+      parsed.protocol === 'https:' &&
+      ML_ACTIVITY_HOSTS.includes(parsed.hostname) &&
+      parsed.port === '' &&
+      parsed.username === '' &&
+      parsed.password === ''
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * True for an official worksheet: a URL that starts with one of ML_WORKSHEET_PREFIXES, has no
+ * query or fragment, and names a `.pdf` file. The prefixes include the scheme and the host, so
+ * a look-alike host cannot pass.
+ */
+export function isMlWorksheetUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return (
+      parsed.href === url &&
+      parsed.search === '' &&
+      parsed.hash === '' &&
+      ML_WORKSHEET_PREFIXES.some((prefix) => url.startsWith(prefix)) &&
+      parsed.pathname.toLowerCase().endsWith('.pdf')
+    );
+  } catch {
+    return false;
+  }
+}
+
 const videoDataSchema = obj({
   source: oneOf(VIDEO_SOURCES),
   videoId: text(CONTENT_LIMITS.videoIdChars).nullable(),
@@ -369,6 +416,28 @@ export const blockInputSchema = z.discriminatedUnion(
       obj({ minLength: int(0, CONTENT_LIMITS.reflectionMinLengthMax) }),
     ),
     block('project', obj({ intro }), [], obj({ projectId: idSchema })),
+    block(
+      'ml_activity',
+      obj({
+        title,
+        instructions: text(CONTENT_LIMITS.activityInstructionsChars),
+        bringBack: text(CONTENT_LIMITS.hintChars).nullable(),
+        hint: text(CONTENT_LIMITS.hintChars).nullable(),
+      }),
+      ['title', 'instructions'],
+      obj({
+        url: httpsUrlSchema(CONTENT_LIMITS.embedUrlChars).refine(
+          isMlActivityUrl,
+          'ml_link_not_allowed',
+        ),
+        worksheetUrl: httpsUrlSchema(CONTENT_LIMITS.embedUrlChars)
+          .refine(isMlWorksheetUrl, 'ml_worksheet_not_allowed')
+          .nullable(),
+        projectType: oneOf(ML_PROJECT_TYPES),
+        codeTool: oneOf(ML_CODE_TOOLS),
+        access: oneOf(ML_ACCESS_MODES),
+      }),
+    ),
   ],
   { error: whenPresent('invalid_choice') },
 ) satisfies z.ZodType<BlockInput>;

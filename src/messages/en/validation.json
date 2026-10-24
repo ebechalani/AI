@@ -32,5 +32,7 @@
   "file_name_invalid": "The file name can only contain letters, numbers, dots, dashes and underscores.",
   "too_many_files": "There are too many files.",
   "embed_not_allowed": "Only YouTube and Vimeo links can be embedded.",
-  "video_id_invalid": "Enter the video ID from the YouTube or Vimeo link."
+  "video_id_invalid": "Enter the video ID from the YouTube or Vimeo link.",
+  "ml_link_not_allowed": "Use a link to machinelearningforkids.co.uk.",
+  "ml_worksheet_not_allowed": "Use the PDF link of an official worksheet on github.com/IBM/taxinomitis-docs."
 }
