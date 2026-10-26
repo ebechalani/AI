@@ -16,9 +16,16 @@
 // keys only for text projects; at sign-up the teacher accepts responsibility for any IBM Cloud
 // charges; pupils cannot sign up themselves; a pupil account holds a username only); a "managed"
 // class account that the site's author sets up on request by email, offered only to schools and
-// not-for-profit coding clubs (described neutrally, never promised). Storage (IBM Cloud in the
-// United States; text projects trained with IBM Watson) is attributed to the site's help pages.
-// Privacy: the site calls the school the data controller; usernames, not names; no personal data
+// not-for-profit coding clubs (described neutrally, never promised); free 'Lite' API keys, charges
+// only if the teacher pays IBM for higher limits (sign-up page and API-keys guide). Storage, as the
+// site's data-protection help describes it: each project is stored where the pupil chooses when
+// creating it, "In your web browser" (IndexedDB, nothing on the site's servers) or "In the cloud"
+// (IBM Cloud, Dallas, United States); text projects also send a copy of their training examples to
+// IBM Watson. m5-l1-b6 step 2 has teachers pick the browser option (French UI: Stockage, Dans votre
+// navigateur web, from fr.json). Minimum examples to train a text model: five per label
+// (models.controller.js), used in the 45-minute variant of m5-l1-b4.
+// Privacy: the site calls the school the data controller, with its own hedge (for transparency,
+// not a legal determination, which may vary by jurisdiction); usernames, not names; no personal data
 // or photos of pupils; webcam and microphone rules; parents informed (some teacher's notes suggest
 // parental permission before webcam or photo activities); rules for language. A 45 to 60-minute
 // plan and a fallback (class screen, or a paper version), with the Smart Classroom teacher's
@@ -26,7 +33,10 @@
 // "What is machine learning?", curated in my-first-ai-adventure m1-l2) as a hook teachers can
 // show. The ML4K activity, done by the teacher as a learner: Smart Classroom, quick "Try it now"
 // version (worksheet-smartclassroom-tryitnow.pdf; text; Scratch 3; try_it_now). The worksheet's
-// four label names are kept so that its Scratch template works; the example sentences are our
+// four label names (fan on, fan off, lamp on, lamp off) are kept so that the teacher's screen
+// matches the worksheet's steps (the Smart Classroom (easy) template itself works with any label
+// names, since the learner swaps its rules for the project's label blocks); French text therefore
+// cites these English label names too (m5-l2-b4, m5-l2-b6). The example sentences are our
 // own. French UI labels (Essayer maintenant, Entraîner, Apprendre & Tester, Faire, Langue) come
 // from the site's fr.json. Reflections: the account, consent and data plan (build), then what
 // doing the activity changed (reflect).
@@ -91,7 +101,7 @@ export const m5: SeedModulePart = {
             translations: {
               en: {
                 heading: 'From a drawing classifier to your own lesson',
-                body: 'In module 4 you met a class that trained a classifier on their own drawings, saw it fail on another class’s drawings and worked out why. Free tools such as Machine Learning for Kids put that lesson within reach of any teacher, with no programming background.\n\nBefore the first pupil types anything, answer three questions: **how will pupils get in**, **what will the site keep about them**, and **what if it is blocked** on the school network? Then do a short activity exactly as your pupils would: the best way to find out where they will get stuck.',
+                body: 'In module 4 you met a class that trained a classifier on their own drawings, saw it fail on another class’s drawings and worked out why. Free tools such as Machine Learning for Kids put that lesson within reach of any teacher, even one with no programming background.\n\nBefore the first pupil types anything, answer three questions: **how will pupils get in**, **what will the site keep about them**, and **what if it is blocked** on the school network? Then do a short activity exactly as your pupils would: the best way to find out where they will get stuck.',
               },
               fr: {
                 heading: 'Du classificateur de dessins à votre propre séance',

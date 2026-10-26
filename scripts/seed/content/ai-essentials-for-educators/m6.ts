@@ -11,20 +11,21 @@
 // three principles, linked to udlguidelines.cast.org) with co-design with pupils and families;
 // three risks under the lesson's principle "remove the barrier, keep the learning" (errors the
 // pupil cannot see, over-reliance and exam access arrangements, sensitive data about needs never
-// in a prompt). The one study cited is Koenecke et al. (PNAS, 2020): five commercial
-// speech-recognition systems, average word error rate about 0.35 for Black American speakers
-// against 0.19 for white American speakers ("almost twice as many errors"). No watch block: the
-// module's watch stage is in m6-l2. A paper decision task (keep, change or stop), an ai_activity
-// (give_example) and two reflections.
+// in a prompt). The one study cited is Koenecke et al. (PNAS, 2020; tests run in 2019): five
+// commercial speech-recognition systems, average word error rate about 0.35 for Black American
+// speakers against 0.19 for white American speakers ("almost twice as many errors"). No watch
+// block: the module's watch stage is in m6-l2. A paper decision task (keep, change or stop), an
+// ai_activity (give_example) and two reflections.
 // m6-l2: generation that makes pupils think, by medium; four rules (terms of tools and outputs,
 // with the US Copyright Office position on human authorship as the only legal example; no real
-// people, even with consent; age rules; disclosure, with C2PA and the EU AI Act's transparency
-// rules kept general); deepfakes and media literacy (the "liar's dividend" of Chesney and Citron,
-// four verification habits, by age). The video reuses X994dDnmRmY (Code.org How AI Works, "Does
-// AI have creativity and imagination?", curated in build-with-generative-ai m1-l2), summarised
-// from that block. A go / change / stop task, an ai_activity (challenge_me), the build
-// reflection, the module quiz quiz-m6 (seven questions: q1 to q3 and q7 on m6-l1, q4 to q6 on
-// m6-l2) and a reflection.
+// people, even with consent; age rules; disclosure, with competition and exam rules on AI, and
+// C2PA and the EU AI Act's transparency rules kept general); deepfakes and media literacy (the
+// "liar's dividend" of Chesney and Citron, four verification habits, by age, with documented
+// cases for pupils from about 15 but never cases involving sexual images or pupils). The video
+// reuses X994dDnmRmY (Code.org How AI Works, "Does AI have creativity and imagination?", curated
+// in build-with-generative-ai m1-l2), summarised from that block. A go / change / stop task, an
+// ai_activity (challenge_me), the build reflection, the module quiz quiz-m6 (seven questions: q1
+// to q3 and q7 on m6-l1, q4 to q6 on m6-l2) and a reflection.
 // No Machine Learning for Kids activity: the outline gives this module none, and no worksheet is
 // linked. Every example and situation is invented.
 
@@ -64,7 +65,7 @@ export const m6: SeedModulePart = {
             fr: {
               title: 'L’IA au service d’une école inclusive',
               summary:
-                'Lecture à voix haute, sous-titres, textes de différents niveaux et traduction peuvent ouvrir une séance à davantage d’élèves. Prévoyez-les pour tous, sachez où ils échouent et gardez les données sur les besoins hors de tout prompt.',
+                'Lecture à voix haute, sous-titres, textes de différents niveaux et traduction peuvent ouvrir une séance à davantage d’élèves. Prévoyez-les pour tous grâce à la conception universelle de l’apprentissage, connaissez leurs limites et ne mettez aucune donnée sur les besoins des élèves dans un prompt.',
             },
           },
           estimatedMinutes: 40,
@@ -83,7 +84,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 heading: 'Quatre murs dans une même séance',
-                body: 'Imaginez une séance avec des élèves de 13 ans : un long texte, une vidéo sans sous-titres, un compte rendu écrit, et un mot sur la sortie de vendredi rédigé dans la langue de l’établissement.\n\nPour un élève qui a du mal à déchiffrer, le texte est un mur. Pour une élève malentendante, la vidéo devient muette au moment où tout se joue. Pour un élève arrivé il y a trois mois, le compte rendu est hors de portée, et ses parents ne peuvent pas lire le mot.\n\nLes outils d’IA peuvent abaisser chacun de ces murs en quelques minutes. Ils peuvent aussi en dresser de nouveaux : un sous-titre qui transforme *l’érosion des champs* en *l’érosion des chants*, une lettre traduite qui change le sens, une aide qui fait le travail d’apprentissage à la place de l’élève, un prompt qui révèle à une entreprise le diagnostic d’un enfant.\n\nCette leçon va au-delà du texte adapté du module 2 : une séance entière, accessible au plus grand nombre dès le départ, conçue avec les élèves et leurs familles.',
+                body: 'Imaginez une séance avec des élèves de 13\u00a0ans\u00a0: un long texte, une vidéo sans sous-titres, un compte rendu écrit, et un mot sur la sortie de vendredi rédigé dans la langue de l’établissement.\n\nPour un élève qui a du mal à déchiffrer, le texte est un mur. Pour une élève malentendante, la vidéo devient muette au moment où tout se joue. Pour un élève arrivé il y a trois mois, le compte rendu est hors de portée, et ses parents ne peuvent pas lire le mot.\n\nLes outils d’IA peuvent abaisser chacun de ces murs en quelques minutes. Ils peuvent aussi en dresser de nouveaux\u00a0: un sous-titre qui transforme *l’érosion des champs* en *l’érosion des chants*, une lettre traduite qui change le sens, une aide qui fait le travail d’apprentissage à la place de l’élève, un prompt qui révèle à une entreprise le diagnostic d’un enfant.\n\nCette leçon va au-delà du texte adapté du module 2\u00a0: une séance entière, accessible au plus grand nombre dès le départ, conçue avec les élèves et leurs familles.',
               },
             },
             data: {},
@@ -96,11 +97,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Four supports, and where they go wrong',
-                body: 'Many of these tools are already on your school’s devices, often without an AI label.\n\n| Support | Who it can help | What can go wrong |\n|---|---|---|\n| **Text-to-speech** (read-aloud) | Pupils who find decoding hard or have a visual impairment, pupils learning the language | Names, subject terms, numbers and formulas misread; a voice in the wrong language |\n| **Speech-to-text** (dictation, live captions) | Pupils who are deaf or hard of hearing, pupils for whom handwriting or typing is a barrier | Subject vocabulary, names, accents, overlapping voices |\n| **Simplified and levelled texts** (module 2) | Pupils reading below the level of the text | Meaning changed, expectations lowered |\n| **Translation** | Pupils new to the language, families who read another language | Shifts in meaning and tone, weaker results in less widely used languages |\n\n- **Recognition is not equal for everyone.** Speech recognition learns from examples, like the models of module 5. A 2020 study led by Stanford researchers (Koenecke and colleagues) found that the systems of five large technology companies made almost twice as many errors for Black American speakers as for white American speakers, and speech affected by a disability is often poorly recognised. Test a tool with the voices it will serve. Captions add to support such as sign language or a teaching assistant; they do not replace it.\n- **Machine translation is for routine messages.** For consent, health, safeguarding or a meeting about a child’s needs, use a qualified interpreter or a colleague who speaks the language. For routine messages, write a short, plain original with dates and amounts in figures, and have the translation checked by someone who reads the language where you can.',
+                body: 'Many of these tools are already on your school’s devices, often without an AI label.\n\n| Support | Who it can help | What can go wrong |\n|---|---|---|\n| **Text-to-speech** (read-aloud) | Pupils who find decoding hard or have a visual impairment, pupils learning the language | Names, subject terms, numbers and formulas misread; a voice in the wrong language |\n| **Speech-to-text** (dictation, live captions) | Pupils who are deaf or hard of hearing, pupils for whom handwriting or typing is a barrier | Subject vocabulary, names, accents, overlapping voices |\n| **Simplified and levelled texts** (module 2) | Pupils reading below the level of the text | Meaning changed, expectations lowered |\n| **Translation** | Pupils new to the language, families who read another language | Shifts in meaning and tone, weaker results in less widely used languages |\n\n- **Recognition is not equal for everyone.** Speech recognition learns from examples, like the models of module 5. A 2020 study led by Stanford researchers (Koenecke and colleagues) found that, in tests run in 2019, the systems of five large technology companies made almost twice as many errors for Black American speakers as for white American speakers, and speech affected by a disability is often poorly recognised. Test a tool with the voices it will serve. Captions add to support such as sign language or a teaching assistant; they do not replace it.\n- **Machine translation is for routine messages.** For consent, health, safeguarding or a meeting about a child’s needs, use a qualified interpreter, never the pupil or a brother or sister. For less sensitive conversations, a colleague who speaks the language can help. For routine messages, write a short, plain original with dates and amounts in figures, and have the translation checked by someone who reads the language where you can.',
               },
               fr: {
                 heading: 'Quatre aides, et là où elles se trompent',
-                body: 'Beaucoup de ces outils sont déjà présents sur les appareils de votre établissement, souvent sans l’étiquette « IA ».\n\n| Aide | À qui elle peut servir | Ce qui peut mal tourner |\n|---|---|---|\n| **Synthèse vocale** (lecture à voix haute) | Élèves qui ont du mal à déchiffrer ou qui ont une déficience visuelle, élèves qui apprennent la langue | Noms propres, termes disciplinaires, nombres et formules mal lus ; une voix dans la mauvaise langue |\n| **Reconnaissance vocale** (dictée, sous-titrage en direct) | Élèves sourds ou malentendants, élèves pour qui l’écriture manuscrite ou la frappe est un obstacle | Vocabulaire disciplinaire, noms propres, accents, voix qui se chevauchent |\n| **Textes simplifiés et de différents niveaux** (module 2) | Élèves dont le niveau de lecture est inférieur à celui du texte | Sens modifié, attentes revues à la baisse |\n| **Traduction** | Élèves nouvellement arrivés, familles qui lisent une autre langue | Glissements de sens et de ton, résultats moins bons dans les langues moins répandues |\n\n- **La reconnaissance n’est pas la même pour tous.** La reconnaissance vocale apprend à partir d’exemples, comme les modèles du module 5. Une étude de 2020 menée par des chercheurs de Stanford (Koenecke et ses collègues) a montré que les systèmes de cinq grandes entreprises technologiques commettaient presque deux fois plus d’erreurs avec des locuteurs afro-américains qu’avec des locuteurs blancs américains, et une parole affectée par un handicap est souvent mal reconnue. Testez un outil avec les voix qu’il devra comprendre. Les sous-titres s’ajoutent à l’accompagnement, comme la langue des signes ou une aide humaine ; ils ne le remplacent pas.\n- **La traduction automatique, c’est pour les messages courants.** Pour tout ce qui touche au consentement, à la santé, à la protection de l’enfance ou aux besoins d’un enfant, faites appel à un interprète qualifié ou à un collègue qui parle la langue. Pour les messages courants, rédigez un original court et simple, avec les dates et les montants en chiffres, et faites vérifier la traduction par une personne qui lit la langue quand c’est possible.',
+                body: 'Beaucoup de ces outils sont déjà présents sur les appareils de votre établissement, souvent sans l’étiquette «\u00a0IA\u00a0».\n\n| Aide | À qui elle peut servir | Ce qui peut mal tourner |\n|---|---|---|\n| **Synthèse vocale** (lecture à voix haute) | Élèves qui ont du mal à déchiffrer ou qui ont une déficience visuelle, élèves qui apprennent la langue | Noms propres, termes disciplinaires, nombres et formules mal lus\u00a0; une voix dans la mauvaise langue |\n| **Reconnaissance vocale** (dictée vocale, sous-titrage en direct) | Élèves sourds ou malentendants, élèves pour qui l’écriture manuscrite ou la frappe est un obstacle | Vocabulaire disciplinaire, noms propres, accents, voix qui se chevauchent |\n| **Textes simplifiés et de différents niveaux** (module 2) | Élèves dont le niveau de lecture est inférieur à celui du texte | Sens modifié, attentes revues à la baisse |\n| **Traduction** | Élèves nouvellement arrivés, familles qui lisent une autre langue | Glissements de sens et de ton, résultats moins bons dans les langues moins répandues |\n\n- **La reconnaissance ne fonctionne pas aussi bien pour tout le monde.** La reconnaissance vocale apprend à partir d’exemples, comme les modèles du module 5. Une étude de 2020 menée par des chercheurs de Stanford (Koenecke et ses collègues) a montré que, lors de tests menés en 2019, les systèmes de cinq grandes entreprises technologiques commettaient presque deux fois plus d’erreurs avec des locuteurs afro-américains qu’avec des locuteurs américains blancs, et une parole affectée par un handicap est souvent mal reconnue. Testez un outil avec les voix qu’il devra comprendre. Les sous-titres s’ajoutent à l’accompagnement, comme la langue des signes ou une aide humaine\u00a0; ils ne le remplacent pas.\n- **La traduction automatique, c’est pour les messages courants.** Pour tout ce qui touche au consentement, à la santé, à la protection de l’enfance ou aux besoins d’un enfant, faites appel à un interprète qualifié, jamais à l’élève ni à un frère ou une sœur. Pour des échanges moins sensibles, un collègue qui parle la langue peut aider. Pour les messages courants, rédigez un original court et simple, avec les dates et les montants en chiffres, et faites vérifier la traduction par une personne qui lit la langue quand c’est possible.',
               },
             },
             data: {},
@@ -113,11 +114,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Design for everyone, with the people concerned',
-                body: '**Universal Design for Learning** (UDL), a framework from the US non-profit organisation CAST ([the UDL Guidelines](https://udlguidelines.cast.org), in English), starts from one idea: barriers often lie in the design of a lesson rather than in the pupil. So plan flexible options for everyone from the start, instead of adapting for a few pupils afterwards, which also avoids singling anyone out.\n\n| Principle | Options AI can help you prepare | Your check |\n|---|---|---|\n| **Engagement** (the why) | The same problem in three contexts to choose from | Stereotypes (module 1) |\n| **Representation** (the what) | Read-aloud for every text, captions on every video, a glossary | Key terms read and captioned correctly |\n| **Action and expression** (the how) | A written answer, a labelled diagram or a short recording | The same success criteria; recordings kept as your school requires |\n\nAI makes options cheap; choosing those that serve your objective is your job.\n\n**Co-design.** "Nothing about us without us", the motto of the disability-rights movement, applies to classrooms too. Show the whole class how to use the supports, let pupils choose, and ask what helped in an anonymous exit ticket. Pupils who use assistive technology every day often know it best, but nobody should have to speak for a group or reveal a need in front of others. Ask families which language and format they prefer, and explain which tools you use and what data they process. Decisions about one pupil’s support are taken with the family and specialist colleagues, never in an AI tool.',
+                body: '**Universal Design for Learning** (UDL), a framework from the US non-profit organisation CAST ([the UDL Guidelines](https://udlguidelines.cast.org)), starts from one idea: barriers often lie in the design of a lesson rather than in the pupil. So plan flexible options for everyone from the start, instead of adapting for a few pupils afterwards, which also avoids singling anyone out.\n\n| Principle | Options AI can help you prepare | Your check |\n|---|---|---|\n| **Engagement** (the why) | The same problem in three contexts to choose from | Stereotypes (module 1) |\n| **Representation** (the what) | Read-aloud for every text, captions on every video, a glossary | Key terms read and captioned correctly |\n| **Action and expression** (the how) | A written answer, a labelled diagram or a short recording | The same success criteria; recordings kept as your school requires |\n\nAI makes options cheap; choosing those that serve your objective is your job.\n\n**Co-design.** "Nothing about us without us", the motto of the disability-rights movement, applies to classrooms too. Show the whole class how to use the supports, let pupils choose, and ask what helped in an anonymous exit ticket. Pupils who use assistive technology every day often know it best, but nobody should have to speak for a group or reveal a need in front of others. Ask families which language and format they prefer, and explain which tools you use and what data they process. Decisions about one pupil’s support are taken with the family and specialist colleagues, never in an AI tool.',
               },
               fr: {
                 heading: 'Concevoir pour tous, avec les personnes concernées',
-                body: 'La **conception universelle de l’apprentissage** (CUA, en anglais *Universal Design for Learning*), un cadre élaboré par l’organisation américaine à but non lucratif CAST ([ses lignes directrices](https://udlguidelines.cast.org), en anglais), part d’une idée : les obstacles se trouvent souvent dans la conception d’une séance plutôt que chez l’élève. Mieux vaut donc prévoir dès le départ des options souples pour tous que d’adapter après coup pour quelques-uns, ce qui évite aussi de mettre un élève à part.\n\n| Principe | Options que l’IA peut vous aider à préparer | Votre vérification |\n|---|---|---|\n| **L’engagement** (le pourquoi) | Le même problème dans trois contextes au choix | Les stéréotypes (module 1) |\n| **La représentation** (le quoi) | Lecture à voix haute pour chaque texte, sous-titres pour chaque vidéo, un glossaire | Termes clés bien lus et bien sous-titrés |\n| **L’action et l’expression** (le comment) | Une réponse écrite, un schéma légendé ou un court enregistrement | Les mêmes critères de réussite ; des enregistrements conservés selon les règles de l’établissement |\n\nL’IA rend ces options peu coûteuses ; choisir celles qui servent votre objectif reste votre travail.\n\n**Concevoir avec les personnes concernées.** « Rien sur nous sans nous », la devise du mouvement pour les droits des personnes handicapées, vaut aussi pour la classe. Montrez à toute la classe comment utiliser les aides, laissez les élèves choisir et demandez-leur ce qui les a aidés dans un billet de sortie anonyme. Les élèves qui utilisent chaque jour une aide technique la connaissent souvent le mieux, mais personne ne doit avoir à parler au nom d’un groupe ni à révéler un besoin devant les autres. Demandez aux familles dans quelle langue et sous quelle forme elles préfèrent recevoir les messages, et expliquez quels outils vous utilisez et quelles données ils traitent. Les décisions sur l’accompagnement d’un élève se prennent avec sa famille et les collègues spécialisés, jamais dans un outil d’IA.',
+                body: 'La **conception universelle de l’apprentissage** (CUA, en anglais *Universal Design for Learning*), un cadre élaboré par l’organisation américaine à but non lucratif CAST ([ses lignes directrices](https://udlguidelines.cast.org), en anglais), part d’une idée\u00a0: les obstacles se trouvent souvent dans la conception d’une séance plutôt que chez l’élève. Mieux vaut donc prévoir dès le départ des options souples pour tous que d’adapter après coup pour quelques-uns, ce qui évite aussi de mettre un élève à part.\n\n| Principe | Options que l’IA peut vous aider à préparer | Votre vérification |\n|---|---|---|\n| **L’engagement** (le pourquoi) | Le même problème dans trois contextes au choix | Les stéréotypes (module 1) |\n| **La représentation** (le quoi) | Lecture à voix haute pour chaque texte, sous-titres pour chaque vidéo, un glossaire | Termes clés bien lus et bien sous-titrés |\n| **L’action et l’expression** (le comment) | Une réponse écrite, un schéma légendé ou un court enregistrement | Les mêmes critères de réussite\u00a0; des enregistrements conservés selon les règles de l’établissement |\n\nL’IA rend ces options peu coûteuses\u00a0; choisir celles qui servent votre objectif reste votre travail.\n\n**Concevoir avec les personnes concernées.** «\u00a0Rien sur nous sans nous\u00a0», la devise du mouvement pour les droits des personnes handicapées, vaut aussi pour la classe. Montrez à toute la classe comment utiliser les aides, laissez les élèves choisir et demandez-leur ce qui les a aidés dans un ticket de sortie anonyme. Les élèves qui utilisent chaque jour une aide technique la connaissent souvent le mieux, mais personne ne doit avoir à parler au nom d’un groupe ni à révéler un besoin devant les autres. Demandez aux familles dans quelle langue et sous quelle forme elles préfèrent recevoir les messages, et expliquez quels outils vous utilisez et quelles données ils traitent. Les décisions sur l’accompagnement d’un élève se prennent avec sa famille et les collègues spécialisés, jamais dans un outil d’IA.',
               },
             },
             data: {},
@@ -130,11 +131,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Remove the barrier, keep the learning',
-                body: '**Errors the pupil cannot see.** The pupil who relies on a support is often the least able to spot its mistakes: a pupil who cannot hear the video cannot tell that a caption is wrong. Check what carries the learning (key terms, numbers, instructions) and teach pupils to flag anything odd.\n\n**Over-reliance.** A support is right when it removes a barrier on the way to the objective, and wrong when it removes the objective itself. Dictation is a fair way to show an understanding of photosynthesis, not to show spelling. Where the skill itself is the goal, plan how the support will fade, and check exam rules before a pupil comes to depend on a tool: access arrangements are set by the exam authorities, not by the class teacher.\n\n**Sensitive data.** Information about special educational needs, disability or health is among the most sensitive data a school holds, and laws such as the GDPR give health data extra protection. It never goes into a prompt: no names, no diagnoses, no extracts from a support plan, not even "a pupil with autism in my class of 12-year-olds", which can identify a child in a small school. Describe the barrier in the task instead, as in module 2. Many dictation and caption tools also process voices on the provider’s servers: use only approved tools (module 4), including for AI note-takers in meetings with families.',
+                body: '**Errors the pupil cannot see.** The pupil who relies on a support is often the least able to spot its mistakes: a pupil who cannot hear the video cannot tell that a caption is wrong. Check what carries the learning (key terms, numbers, instructions) and teach pupils to flag anything odd.\n\n**Over-reliance.** A support is right when it removes a barrier on the way to the objective, and wrong when it removes the objective itself. Dictation is a fair way to show an understanding of photosynthesis, not to show spelling. Where the skill itself is the goal, plan how the support will fade, and check exam rules before a pupil comes to depend on a tool: access arrangements follow the exam authorities’ rules and are arranged through your school’s exams or special-needs coordinator, not decided by the class teacher.\n\n**Sensitive data.** Information about special educational needs, disability or health is among the most sensitive data a school holds, and laws such as the GDPR give health data extra protection. It never goes into a prompt: no names, no diagnoses, no extracts from a support plan, not even "a pupil with autism in my class of 12-year-olds", which can identify a child in a small school. Describe the barrier in the task instead, as in module 2. Many dictation and caption tools also process voices on the provider’s servers: use only approved tools (module 4), including for AI note-takers in meetings with families, and tell the family before anything is recorded; if they object, take notes by hand.',
               },
               fr: {
                 heading: 'Lever l’obstacle, garder l’apprentissage',
-                body: '**Des erreurs que l’élève ne voit pas.** L’élève qui s’appuie sur une aide est souvent le moins à même d’en repérer les erreurs : un élève qui n’entend pas la vidéo ne peut pas savoir qu’un sous-titre est faux. Vérifiez ce qui porte l’apprentissage (termes clés, nombres, consignes) et apprenez aux élèves à signaler ce qui leur semble étrange.\n\n**La dépendance.** Une aide est pertinente quand elle lève un obstacle sur le chemin de l’objectif, et inadaptée quand elle supprime l’objectif lui-même. La dictée est un moyen équitable de montrer qu’on a compris la photosynthèse, pas de montrer qu’on maîtrise l’orthographe. Quand la compétence elle-même est visée, prévoyez comment l’aide s’effacera, et vérifiez les règles des examens avant qu’un élève ne dépende d’un outil : les aménagements sont décidés par les autorités qui organisent l’examen, pas par l’enseignant de la classe.\n\n**Les données sensibles.** Les informations sur les besoins éducatifs particuliers, le handicap ou la santé comptent parmi les données les plus sensibles que détient un établissement, et des lois comme le RGPD protègent davantage les données de santé. Elles ne vont jamais dans un prompt : ni nom, ni diagnostic, ni extrait d’un plan d’accompagnement, pas même « un élève autiste dans ma classe d’élèves de 12 ans », qui peut suffire à identifier un enfant dans un petit établissement. Décrivez plutôt l’obstacle présent dans la tâche, comme au module 2. Beaucoup d’outils de dictée et de sous-titrage traitent aussi les voix sur les serveurs du fournisseur : n’utilisez que des outils autorisés (module 4), y compris pour la prise de notes par l’IA lors des réunions avec les familles.',
+                body: '**Des erreurs que l’élève ne voit pas.** L’élève qui s’appuie sur une aide est souvent le moins à même d’en repérer les erreurs\u00a0: un élève qui n’entend pas la vidéo ne peut pas savoir qu’un sous-titre est faux. Vérifiez ce qui porte l’apprentissage (termes clés, nombres, consignes) et apprenez aux élèves à signaler ce qui leur semble étrange.\n\n**La dépendance.** Une aide est pertinente quand elle lève un obstacle sur le chemin de l’objectif, et inadaptée quand elle supprime l’objectif lui-même. La dictée vocale est un moyen équitable de montrer qu’on a compris la photosynthèse, pas de montrer qu’on maîtrise l’orthographe. Quand la compétence elle-même est visée, prévoyez comment l’aide s’effacera, et vérifiez les règles des examens avant qu’un élève ne dépende d’un outil\u00a0: les aménagements d’examen obéissent aux règles des autorités qui organisent l’examen et passent par le responsable des examens ou le coordinateur de l’accompagnement de l’établissement, pas par l’enseignant de la classe.\n\n**Les données sensibles.** Les informations sur les besoins éducatifs particuliers, le handicap ou la santé comptent parmi les données les plus sensibles que détient un établissement, et des lois comme le RGPD protègent davantage les données de santé. Elles ne vont jamais dans un prompt\u00a0: ni nom, ni diagnostic, ni extrait d’un plan d’accompagnement, pas même «\u00a0un élève autiste dans ma classe d’élèves de 12\u00a0ans\u00a0», qui peut suffire à identifier un enfant dans un petit établissement. Décrivez plutôt l’obstacle présent dans la tâche, comme au module 2. Beaucoup d’outils de dictée vocale et de sous-titrage traitent aussi les voix sur les serveurs du fournisseur\u00a0: n’utilisez que des outils autorisés (module 4), y compris pour la prise de notes par l’IA lors des réunions avec les familles, en prévenant la famille avant tout enregistrement\u00a0; si elle s’y oppose, prenez des notes à la main.',
               },
             },
             data: {},
@@ -147,11 +148,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Try it: keep, change or stop?',
-                body: 'For each situation, decide: keep it (it removes a barrier), change it (it removes part of the learning) or stop (it puts data at risk). Then compare with the comments.\n\n1. Pupils aged 14 analyse the viewpoint of a written source. Anyone may have it read aloud.\n2. Pupils aged 8 practise reading a text aloud with expression. A tool reads it for those who find it hard.\n3. A pupil learning the language receives an AI translation of a science worksheet instead of the original.\n4. A teacher pastes a pupil’s support plan, without the name, into a free chatbot to get ideas.\n5. Live captions are on for every video shown to a class of 11-year-olds.\n\n**Comments.** 1: keep. The objective is the viewpoint, not decoding. 2: change. Use the tool to model the reading, then let pupils read. 3: change. Give the translation *alongside* the original, with its key terms checked, so that she also learns them in the language of instruction. 4: stop. A plan can identify a child even without a name: describe the barriers of the task and talk to the colleagues who coordinate support. 5: keep. It is UDL in practice, once you have checked the key terms in the captions.',
+                body: 'For each situation, decide: keep it (it removes a barrier), change it (it removes part of the learning) or stop (it puts data at risk). Then compare with the comments.\n\n1. Pupils aged 14 analyse the viewpoint of a written source. Anyone may have it read aloud.\n2. Pupils aged 8 practise reading a text aloud with expression. A tool reads it for those who find it hard.\n3. A pupil learning the language receives an AI translation of a science worksheet instead of the original.\n4. A teacher pastes a pupil’s support plan, without the name, into a free chatbot to get ideas.\n5. Live captions are on for every video shown to a class of 11-year-olds.\n\n**Comments.** 1: keep. The objective is the viewpoint, not decoding. 2: change. Use the tool to model the reading, then let pupils read. 3: change. Give the translation *alongside* the original, with its key terms checked, so that the pupil also learns them in the language of instruction. 4: stop. A plan can identify a child even without a name: describe the barriers of the task and talk to the colleagues who coordinate support. 5: keep. It is UDL in practice, once you have checked the key terms in the captions.',
               },
               fr: {
-                heading: 'À vous : garder, modifier ou arrêter ?',
-                body: 'Pour chaque situation, décidez : à garder (l’aide lève un obstacle), à modifier (elle supprime une partie de l’apprentissage) ou à arrêter (elle met des données en danger). Comparez ensuite avec les commentaires.\n\n1. Des élèves de 14 ans analysent le point de vue d’une source écrite. Chacun peut se la faire lire à voix haute.\n2. Des élèves de 8 ans s’entraînent à lire un texte à voix haute de façon expressive. Un outil le lit pour ceux qui ont des difficultés.\n3. Une élève qui apprend la langue reçoit une traduction par l’IA d’une fiche de sciences, à la place de l’original.\n4. Un enseignant colle dans un chatbot gratuit le plan d’accompagnement d’un élève, sans son nom, pour trouver des idées.\n5. Les sous-titres en direct sont activés pour chaque vidéo montrée à une classe d’élèves de 11 ans.\n\n**Commentaires.** 1 : à garder. L’objectif est le point de vue, pas le déchiffrage. 2 : à modifier. Utilisez l’outil pour donner un modèle de lecture, puis laissez les élèves lire. 3 : à modifier. Donnez la traduction *à côté de* l’original, avec ses termes clés vérifiés, pour que l’élève les apprenne aussi dans la langue de scolarisation. 4 : à arrêter. Un plan peut identifier un enfant même sans son nom : décrivez les obstacles de la tâche et parlez-en avec les collègues qui coordonnent l’accompagnement. 5 : à garder. C’est la CUA en pratique, une fois les termes clés vérifiés dans les sous-titres.',
+                heading: 'À vous\u00a0: garder, modifier ou arrêter\u00a0?',
+                body: 'Pour chaque situation, décidez\u00a0: à garder (l’aide lève un obstacle), à modifier (elle supprime une partie de l’apprentissage) ou à arrêter (elle met des données en danger). Comparez ensuite avec les commentaires.\n\n1. Des élèves de 14\u00a0ans analysent le point de vue d’une source écrite. Chacun peut se la faire lire à voix haute.\n2. Des élèves de 8\u00a0ans s’entraînent à lire un texte à voix haute de façon expressive. Un outil le lit pour ceux qui ont des difficultés.\n3. Une élève qui apprend la langue reçoit une traduction par l’IA d’une fiche de sciences, à la place de l’original.\n4. Un enseignant colle dans un chatbot gratuit le plan d’accompagnement d’un élève, sans son nom, pour trouver des idées.\n5. Les sous-titres en direct sont activés pour chaque vidéo montrée à une classe d’élèves de 11\u00a0ans.\n\n**Commentaires.** 1\u00a0: à garder. L’objectif est le point de vue, pas le déchiffrage. 2\u00a0: à modifier. Utilisez l’outil pour donner un modèle de lecture, puis laissez les élèves lire. 3\u00a0: à modifier. Donnez la traduction *à côté de* l’original, avec ses termes clés vérifiés, pour que l’élève les apprenne aussi dans la langue de scolarisation. 4\u00a0: à arrêter. Un plan peut identifier un enfant même sans son nom\u00a0: décrivez les obstacles de la tâche et parlez-en avec les collègues qui coordonnent l’accompagnement. 5\u00a0: à garder. C’est la CUA en pratique, une fois les termes clés vérifiés dans les sous-titres.',
               },
             },
             data: {},
@@ -170,7 +171,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 instructions:
-                  'Demandez au tuteur IA des options de CUA pour l’un de vos propres objectifs (décrivez la tâche, jamais un élève), puis triez-les vous-même : lesquelles lèvent un obstacle, et lesquelles supprimeraient une partie de l’apprentissage ?',
+                  'Demandez au tuteur IA des options de CUA pour l’un de vos propres objectifs (décrivez la tâche, jamais un élève), puis triez-les vous-même\u00a0: lesquelles lèvent un obstacle, et lesquelles supprimeraient une partie de l’apprentissage\u00a0?',
                 starterPrompt:
                   'Mon objectif est [objectif, discipline, âge des élèves] et la tâche principale est [tâche]. Donnez-moi une option de conception universelle de l’apprentissage pour l’engagement, une pour la représentation et une pour l’action et l’expression, et indiquez pour chacune ce qu’un enseignant devrait vérifier.',
               },
@@ -189,7 +190,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Choisissez une séance que vous donnerez prochainement. Notez son objectif et les principaux obstacles de sa tâche, puis prévoyez deux ou trois options que vous proposerez à toute la classe avec des outils d’IA (lecture à voix haute, sous-titres, texte d’un autre niveau, glossaire traduit, choix du format). Pour chacune, indiquez ce que vous vérifierez, pourquoi elle lève un obstacle plutôt que l’apprentissage, et comment vous demanderez aux élèves ce qui les a aidés. N’indiquez aucun nom ni aucune information sur les besoins d’un élève.',
+                  'Choisissez une séance que vous donnerez prochainement. Notez son objectif et les principaux obstacles de sa tâche, puis prévoyez deux ou trois options que vous proposerez à toute la classe avec des outils d’IA (lecture à voix haute, sous-titres, texte d’un autre niveau, glossaire traduit, choix du format). Pour chacune, indiquez ce que vous vérifierez, pourquoi elle lève un obstacle sans supprimer l’apprentissage, et comment vous demanderez aux élèves ce qui les a aidés. N’indiquez aucun nom ni aucune information sur les besoins d’un élève.',
               },
             },
             data: { minLength: 300 },
@@ -206,7 +207,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Quelle aide fondée sur l’IA proposeriez-vous en premier à toute votre classe, et que devriez-vous savoir à son sujet (ses erreurs, ses données, ses règles) avant de le faire ?',
+                  'Quelle aide fondée sur l’IA proposeriez-vous en premier à toute votre classe, et que devriez-vous savoir à son sujet (ses erreurs, ses données, ses règles) avant de le faire\u00a0?',
               },
             },
             data: { minLength: 100 },
@@ -245,7 +246,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 heading: 'Quatre demandes en une semaine',
-                body: 'En une semaine, une enseignante entend quatre demandes.\n\n- **Une élève de 12 ans :** « Je peux mettre le visage de ma copine sur un astronaute, pour mon affiche ? »\n- **Un collègue :** « Et si on faisait une vidéo du chef d’établissement qui annonce que l’école est fermée demain ? »\n- **Un élève de 15 ans :** « Elle est vraie, cette vidéo du ministre ? Tout le monde la partage. »\n- **L’équipe d’arts plastiques :** « Peut-on présenter des images générées par l’IA au concours régional ? »\n\nChacune soulève une question différente : le consentement et le droit à l’image, la protection de l’enfance, l’éducation aux médias, les licences et la déclaration de l’usage de l’IA. Les générateurs d’images, de sons et de vidéos peuvent rendre les projets créatifs plus ambitieux et apprendre aux élèves comment les médias sont fabriqués. Cette leçon présente les usages qui méritent du temps de classe, et les règles à fixer avant que quiconque ne clique sur *Générer*.',
+                body: 'En une semaine, une enseignante entend quatre demandes.\n\n- **Une élève de 12\u00a0ans\u00a0:** «\u00a0Je peux mettre le visage de ma copine sur un astronaute, pour mon affiche\u00a0?\u00a0»\n- **Un collègue\u00a0:** «\u00a0Et si on faisait une vidéo du chef d’établissement qui annonce que l’école est fermée demain\u00a0?\u00a0»\n- **Un élève de 15\u00a0ans\u00a0:** «\u00a0Elle est vraie, cette vidéo du ministre\u00a0? Tout le monde la partage.\u00a0»\n- **L’équipe d’arts plastiques\u00a0:** «\u00a0Peut-on présenter des images générées par l’IA au concours régional\u00a0?\u00a0»\n\nChacune soulève une question différente\u00a0: le consentement et le droit à l’image, la protection de l’enfance, l’éducation aux médias, les licences et la déclaration de l’usage de l’IA. Les générateurs d’images, de sons et de vidéos peuvent rendre les projets créatifs plus ambitieux et apprendre aux élèves comment les médias sont fabriqués. Cette leçon présente les usages qui méritent du temps de classe, et les règles à fixer avant que quiconque ne clique sur *Générer*.',
               },
             },
             data: {},
@@ -262,7 +263,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 heading: 'Générer pour apprendre, pas seulement pour décorer',
-                body: 'Au module 4, les élèves comparaient trois prompts pour une même image d’affiche. Le principe vaut pour tous les médias : les activités qui en valent la peine demandent aux élèves de diriger, comparer, critiquer et améliorer ce que génère un outil.\n\n| Média | Des usages qui font réfléchir les élèves | À garder en tête |\n|---|---|---|\n| **Images** | Compter qui apparaît pour « un scientifique » ou « une famille » et chercher pourquoi ; illustrer une histoire écrite par les élèves, puis lister ce que l’image a raté | Les stéréotypes (module 1), les ressemblances avec des personnages et des œuvres existants |\n| **Sons** | Des bruitages pour un podcast de classe ; une voix de synthèse qui lit le script des élèves, comparée à leur propre lecture | Les voix qui imitent des personnes réelles |\n| **Vidéos** | Réaliser à la main le storyboard d’une courte vidéo explicative, puis le comparer à un extrait généré | Des règles d’âge plus strictes dans beaucoup d’outils |\n\nUne « photo » du passé générée par l’IA n’est jamais une source historique : elle montre ce qu’un modèle prédit de l’aspect d’une scène. Si vous en utilisez une, que ce soit pour montrer comment une image peut tromper, à côté de véritables documents d’archives.',
+                body: 'Au module 4, les élèves comparaient trois prompts pour une même image d’affiche. Le principe vaut pour tous les médias\u00a0: les activités qui en valent la peine demandent aux élèves de diriger, comparer, critiquer et améliorer ce que génère un outil.\n\n| Média | Des usages qui font réfléchir les élèves | À garder en tête |\n|---|---|---|\n| **Images** | Compter qui apparaît pour «\u00a0un scientifique\u00a0» ou «\u00a0une famille\u00a0» et chercher pourquoi\u00a0; illustrer une histoire écrite par les élèves, puis lister ce que l’image a raté | Les stéréotypes (module 1), les ressemblances avec des personnages et des œuvres existants |\n| **Sons** | Des bruitages pour un podcast de classe\u00a0; une voix de synthèse qui lit le script des élèves, comparée à leur propre lecture | Les voix qui imitent des personnes réelles |\n| **Vidéos** | Réaliser à la main le storyboard d’une courte vidéo explicative, puis le comparer à un extrait généré | Des règles d’âge plus strictes dans beaucoup d’outils |\n\nUne «\u00a0photo\u00a0» du passé générée par l’IA n’est jamais une source historique\u00a0: elle montre ce qu’un modèle prédit de l’aspect d’une scène. Si vous en utilisez une, que ce soit pour montrer comment une image peut tromper, à côté de véritables documents d’archives.',
               },
             },
             data: {},
@@ -275,11 +276,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Four rules before you press Generate',
-                body: '**1. Read the terms of the tool and of its outputs.** Check who may use the tool, whether prompts and uploads train its models, and what you may do with its outputs. Terms vary, and many make the user responsible for not infringing other people’s rights. Copyright in generated content differs by country and is still evolving: in the United States, for example, the Copyright Office has said that material generated by AI without enough human creative input cannot be protected by copyright. For work you will publish, avoid imitating a named living artist or a protected character, and do not upload other people’s images or pupils’ work unless the rights and your school’s rules allow it.\n\n**2. No real people.** Never generate images, voices or videos of real pupils or staff, even as a joke or with their agreement, and never upload their photos or recordings. Faces and voices are personal data, a voice can be cloned from a short recording, and a fake can be copied and reused out of context. Use invented characters or the tool’s stock voices. A fake of a pupil is a safeguarding matter (module 4).\n\n**3. Check the age rule.** Image, voice and video tools often have stricter age rules than chatbots, and a generator built into an app follows that app’s rules. For younger pupils, generate on the class screen yourself.\n\n**4. Say it is AI.** Label generated media wherever it is shown ("Image generated with [tool] from the class’s prompt, then edited"), and ask pupils for an AI acknowledgement, as in module 3. Some tools add invisible watermarks or provenance data (such as the C2PA "Content Credentials" standard), and laws such as the EU AI Act set transparency rules for AI-generated content and deepfakes. But metadata can be stripped: a visible label is the clearest disclosure.',
+                body: '**1. Read the terms of the tool and of its outputs.** Check who may use the tool, whether prompts and uploads train its models, and what you may do with its outputs. Terms vary, and many make the user responsible for not infringing other people’s rights. Copyright in generated content differs by country and is still evolving: in the United States, for example, the Copyright Office has said that material generated by AI without enough human creative input cannot be protected by copyright. For work you will publish, avoid imitating a named living artist or a protected character, and do not upload other people’s images or pupils’ work unless the rights and your school’s rules allow it.\n\n**2. No real people.** Never generate images, voices or videos of real pupils or staff, even as a joke or with their agreement, and never upload their photos or recordings. Faces and voices are personal data, a voice can be cloned from a short recording, and a fake can be copied and reused out of context. Use invented characters or the tool’s stock voices. A fake of a pupil is a safeguarding matter (module 4).\n\n**3. Check the age rule.** Image, voice and video tools often have stricter age rules than chatbots, and a generator built into an app follows that app’s rules. For younger pupils, generate on the class screen yourself.\n\n**4. Say it is AI.** Label generated media wherever it is shown ("Image generated with [tool] from the class’s prompt, then edited"), and ask pupils for an AI acknowledgement, as in module 3. Before entering work in a competition or an exam, check its own rules on AI: many restrict or ban it, and where it is allowed, the entry should say how AI was used. Some tools add invisible watermarks or provenance data (such as the C2PA "Content Credentials" standard), and laws such as the EU AI Act set transparency rules for AI-generated content and deepfakes. But metadata can be stripped: a visible label is the clearest disclosure.',
               },
               fr: {
                 heading: 'Quatre règles avant de cliquer sur Générer',
-                body: '**1. Lire les conditions de l’outil et celles de ses résultats.** Vérifiez qui a le droit d’utiliser l’outil, si les prompts et les fichiers déposés servent à entraîner ses modèles, et ce que vous pouvez faire de ses résultats. Les conditions varient, et beaucoup rendent l’utilisateur responsable de ne pas porter atteinte aux droits d’autrui. Le droit d’auteur sur les contenus générés varie d’un pays à l’autre et évolue encore : aux États-Unis, par exemple, le Copyright Office (l’office fédéral du droit d’auteur) a indiqué qu’un contenu généré par l’IA sans apport créatif humain suffisant ne peut pas être protégé. Pour un travail destiné à être publié, évitez d’imiter un artiste vivant cité par son nom ou un personnage protégé, et ne déposez ni les images d’autrui ni les travaux des élèves, sauf si les droits et les règles de votre établissement le permettent.\n\n**2. Aucune personne réelle.** Ne générez jamais d’images, de voix ou de vidéos d’élèves ou de membres du personnel réels, même pour rire ou avec leur accord, et ne déposez jamais leurs photos ou leurs enregistrements. Les visages et les voix sont des données personnelles, une voix peut être clonée à partir d’un court enregistrement, et un faux peut être copié et réutilisé hors de son contexte. Utilisez des personnages inventés ou les voix fournies par l’outil. Un faux visant un élève relève de la protection de l’enfance (module 4).\n\n**3. Vérifier la règle d’âge.** Les outils d’images, de voix et de vidéos ont souvent des règles d’âge plus strictes que les chatbots, et un générateur intégré à une application suit les règles de cette application. Avec les plus jeunes, générez vous-même sur l’écran de la classe.\n\n**4. Dire que c’est de l’IA.** Signalez les médias générés partout où ils sont montrés (« Image générée avec [outil] à partir du prompt de la classe, puis retouchée »), et demandez aux élèves une déclaration d’usage de l’IA, comme au module 3. Certains outils ajoutent des filigranes invisibles ou des données de provenance (comme la norme C2PA, dite *Content Credentials*), et des lois comme le règlement européen sur l’IA (AI Act) fixent des règles de transparence pour les contenus générés par l’IA et les deepfakes. Mais les métadonnées peuvent être supprimées : une mention visible reste la déclaration la plus claire.',
+                body: '**1. Lire les conditions d’utilisation de l’outil et de ses résultats.** Vérifiez qui a le droit d’utiliser l’outil, si les prompts et les fichiers déposés servent à entraîner ses modèles, et ce que vous pouvez faire de ses résultats. Les conditions varient, et beaucoup rendent l’utilisateur responsable de ne pas porter atteinte aux droits d’autrui. Le droit d’auteur sur les contenus générés varie d’un pays à l’autre et évolue encore\u00a0: aux États-Unis, par exemple, le Copyright Office (l’office fédéral du droit d’auteur) a indiqué qu’un contenu généré par l’IA sans apport créatif humain suffisant ne peut pas être protégé. Pour un travail destiné à être publié, évitez d’imiter un artiste vivant cité par son nom ou un personnage protégé, et ne déposez ni les images d’autrui ni les travaux des élèves, sauf si les droits et les règles de votre établissement le permettent.\n\n**2. Aucune personne réelle.** Ne générez jamais d’images, de voix ou de vidéos d’élèves ou de membres du personnel réels, même pour rire ou avec leur accord, et ne déposez jamais leurs photos ou leurs enregistrements. Les visages et les voix sont des données personnelles, une voix peut être clonée à partir d’un court enregistrement, et un faux peut être copié et réutilisé hors de son contexte. Utilisez des personnages inventés ou les voix fournies par l’outil. Un faux visant un élève relève de la protection de l’enfance (module 4).\n\n**3. Vérifier la règle d’âge.** Les outils d’images, de voix et de vidéos ont souvent des règles d’âge plus strictes que les chatbots, et un générateur intégré à une application suit les règles de cette application. Avec les plus jeunes, générez vous-même sur l’écran de la classe.\n\n**4. Dire que c’est de l’IA.** Signalez les médias générés partout où ils sont montrés («\u00a0Image générée avec [outil] à partir du prompt de la classe, puis retouchée\u00a0»), et demandez aux élèves une déclaration d’usage de l’IA, comme au module 3. Avant de présenter un travail à un concours ou à un examen, vérifiez son propre règlement sur l’IA\u00a0: beaucoup la limitent ou l’interdisent, et quand elle est permise, le travail présenté doit indiquer comment l’IA a été utilisée. Certains outils ajoutent des filigranes invisibles ou des données de provenance (comme la norme C2PA, dite *Content Credentials*), et des lois comme le règlement européen sur l’IA (AI Act) fixent des règles de transparence pour les contenus générés par l’IA et les deepfakes. Mais les métadonnées peuvent être supprimées\u00a0: une mention visible reste la déclaration la plus claire.',
               },
             },
             data: {},
@@ -292,11 +293,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Deepfakes and media literacy',
-                body: 'A **deepfake** is a realistic image, audio clip or video, generated or manipulated with AI, that shows a real person saying or doing something they never said or did. Spotting glitches is no longer enough: extra fingers are disappearing as tools improve, and detectors, like the AI-writing detectors of module 3, give probabilities, not proof. And real content can now be dismissed as fake, which the legal scholars Robert Chesney and Danielle Citron call the "liar’s dividend".\n\nSo teach verification habits:\n\n1. **Pause.** A strong emotional reaction is a reason to check before sharing.\n2. **Read laterally.** Leave the content and ask who published it first, and whether reliable news outlets or fact-checkers report it.\n3. **Find the original context,** for example with a reverse image search.\n4. **Look for labels, without over-trusting them.** Their absence proves nothing.\n\nWith pupils aged 8 to 10, compare real and generated pictures of objects and landscapes that you choose. From about 11, verify a viral claim together; from about 15, analyse a deepfake case documented by reputable media. Never make a deepfake of a real person as a demonstration.',
+                body: 'A **deepfake** is a realistic image, audio clip or video, generated or manipulated with AI, that shows a real person saying or doing something they never said or did. Spotting glitches is no longer enough: extra fingers are disappearing as tools improve, and detectors, like the AI-writing detectors of module 3, give probabilities, not proof. And real content can now be dismissed as fake, which the legal scholars Robert Chesney and Danielle Citron call the "liar’s dividend".\n\nSo teach verification habits:\n\n1. **Pause.** A strong emotional reaction is a reason to check before sharing.\n2. **Read laterally.** Leave the content and ask who published it first, and whether reliable news outlets or fact-checkers report it.\n3. **Find the original context,** for example with a reverse image search.\n4. **Look for labels, without over-trusting them.** Their absence proves nothing.\n\nWith pupils aged 8 to 10, compare real and generated pictures of objects and landscapes that you choose. From about 11, verify a viral claim together. From about 15, analyse a deepfake case documented by reputable media, such as a voice-cloning scam or a political deepfake. Never use a case involving sexual images or pupils: that is a safeguarding matter (module 4), not class material. Never make a deepfake of a real person as a demonstration.',
               },
               fr: {
                 heading: 'Deepfakes et éducation aux médias',
-                body: 'Un **deepfake** (en français, *hypertrucage*) est une image, un extrait sonore ou une vidéo réalistes, générés ou modifiés avec l’IA, qui montrent une personne réelle en train de dire ou de faire quelque chose qu’elle n’a jamais dit ni fait. Repérer les défauts ne suffit plus : les doigts en trop disparaissent à mesure que les outils progressent, et les détecteurs, comme les détecteurs de texte généré du module 3, donnent des probabilités, pas des preuves. Et un contenu authentique peut désormais être rejeté comme faux, ce que les juristes Robert Chesney et Danielle Citron appellent le « dividende du menteur ».\n\nEnseignez donc des habitudes de vérification :\n\n1. **Faire une pause.** Une forte réaction émotionnelle est une raison de vérifier avant de partager.\n2. **Pratiquer la lecture latérale.** Quitter le contenu pour chercher qui l’a publié en premier, et si des médias fiables ou des sites de vérification des faits en parlent.\n3. **Retrouver le contexte d’origine,** par exemple grâce à une recherche d’image inversée.\n4. **Chercher des mentions, sans trop s’y fier.** Leur absence ne prouve rien.\n\nAvec des élèves de 8 à 10 ans, comparez des images réelles et générées d’objets et de paysages que vous choisissez. À partir de 11 ans environ, vérifiez ensemble une information virale ; à partir de 15 ans environ, analysez un cas de deepfake documenté par des médias reconnus. Ne fabriquez jamais le deepfake d’une personne réelle pour faire une démonstration.',
+                body: 'Un **deepfake** (en français, *hypertrucage*) est une image, un extrait sonore ou une vidéo réalistes, générés ou modifiés avec l’IA, qui montrent une personne réelle en train de dire ou de faire quelque chose qu’elle n’a jamais dit ni fait. Repérer les défauts ne suffit plus\u00a0: les doigts en trop disparaissent à mesure que les outils progressent, et les détecteurs, comme les détecteurs de texte généré du module 3, donnent des probabilités, pas des preuves. Et un contenu authentique peut désormais être rejeté comme faux, ce que les juristes Robert Chesney et Danielle Citron appellent le «\u00a0dividende du menteur\u00a0».\n\nEnseignez donc des habitudes de vérification\u00a0:\n\n1. **Faire une pause.** Une forte réaction émotionnelle est une raison de vérifier avant de partager.\n2. **Pratiquer la lecture latérale.** Quitter le contenu pour chercher qui l’a publié en premier, et si des médias fiables ou des sites de vérification des faits en parlent.\n3. **Retrouver le contexte d’origine,** par exemple grâce à une recherche d’image inversée.\n4. **Chercher des mentions, sans trop s’y fier.** Leur absence ne prouve rien.\n\nAvec des élèves de 8 à 10\u00a0ans, comparez des images réelles et générées d’objets et de paysages que vous choisissez. À partir de 11\u00a0ans environ, vérifiez ensemble une information virale. À partir de 15\u00a0ans environ, analysez un cas de deepfake documenté par des médias reconnus, comme une arnaque au clonage de voix ou un deepfake politique. N’utilisez jamais un cas impliquant des images sexuelles ou des élèves\u00a0: cela relève de la protection de l’enfance (module 4), pas du travail en classe. Ne fabriquez jamais le deepfake d’une personne réelle pour faire une démonstration.',
               },
             },
             data: {},
@@ -315,11 +316,11 @@ export const m6: SeedModulePart = {
                   'In short: the video asks whether AI that generates images and short videos is creative. It explains two methods. In a generative adversarial network (GAN), one model generates images and a second judges whether they look real, and both improve by competing. In diffusion, a model learns to remove noise from images, then creates new ones from random noise, cleaned up step by step under the guidance of a text prompt; the same ideas power tools that turn text into video. The pictures are new, but they are built from patterns in training data made by people. Link it to this lesson: those patterns explain the stereotypes in generated images, and the people behind the training data are one reason why licences and credit matter.',
               },
               fr: {
-                title: 'Regardez : comment l’IA génère des images et des vidéos',
+                title: 'Regardez\u00a0: comment l’IA génère des images et des vidéos',
                 caption:
                   'Une vidéo de la série How AI Works de Code.org, comme la première vidéo de cette formation, avec des invités des entreprises d’IA Runway et OpenAI (vidéo en anglais).',
                 transcript:
-                  'En bref : la vidéo se demande si une IA qui génère des images et de courtes vidéos est créative. Elle présente deux méthodes. Dans un réseau antagoniste génératif (GAN), un modèle génère des images et un second juge si elles ont l’air réelles : les deux progressent en s’affrontant. Avec la diffusion, un modèle apprend à retirer le bruit d’images, puis en crée de nouvelles à partir d’un bruit aléatoire qu’il « nettoie » étape par étape, guidé par un prompt ; les mêmes idées font fonctionner les outils qui transforment un texte en vidéo. Les images sont nouvelles, mais elles sont construites à partir de régularités tirées de données d’entraînement créées par des humains. Faites le lien avec cette leçon : ces régularités expliquent les stéréotypes des images générées, et les personnes qui sont derrière les données d’entraînement sont l’une des raisons pour lesquelles les licences et la mention des sources comptent.',
+                  'En bref\u00a0: la vidéo se demande si une IA qui génère des images et de courtes vidéos est créative. Elle présente deux méthodes. Dans un réseau antagoniste génératif (GAN), un modèle génère des images et un second juge si elles ont l’air réelles\u00a0: les deux progressent en s’affrontant. Avec la diffusion, un modèle apprend à retirer le bruit d’images, puis en crée de nouvelles à partir d’un bruit aléatoire qu’il «\u00a0nettoie\u00a0» étape par étape, guidé par un prompt\u00a0; les mêmes idées font fonctionner les outils qui transforment un texte en vidéo. Les images sont nouvelles, mais elles sont construites à partir de régularités tirées de données d’entraînement créées par des humains. Faites le lien avec cette leçon\u00a0: ces régularités expliquent les stéréotypes des images générées, et les personnes qui sont derrière les données d’entraînement sont l’une des raisons pour lesquelles les licences et la mention des sources comptent.',
               },
             },
             data: {
@@ -337,11 +338,11 @@ export const m6: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Try it: go, change or stop?',
-                body: 'For each request, decide: go (fine as it is), change (possible with changes) or stop. Then compare with the comments.\n\n1. Pupils aged 11 illustrate their poems with a free image app on their own phones.\n2. For the end-of-year assembly, a colleague wants to animate photos of the staff singing. Everyone has agreed.\n3. Pupils aged 15 generate twenty images of "a scientist in a laboratory" with an approved tool that allows their age, and count who appears.\n4. A pupil wants to clone his own voice to narrate his podcast.\n5. For a display on the First World War, a class generates a "photo" of a trench.\n\n**Comments.** 1: change. Check the app’s age rule and your approved tools; at this age, generate on the class screen yourself. 2: stop. No images or voices of real staff, even with consent: invented cartoon characters do the job. 3: go: a strong lesson on bias, with no personal data. 4: stop. His voice is personal data and a clone can be reused by others: he records his own voice or uses a stock voice. 5: change. Label it as AI-generated, hunt for anachronisms with the class, and display it next to real archive photographs, which are the evidence.',
+                body: 'For each request, decide: go (fine as it is), change (possible with changes) or stop. Then compare with the comments.\n\n1. Pupils aged 11 illustrate their poems with a free image app on their own phones.\n2. For the end-of-year assembly, a colleague wants to animate photos of the staff so that they appear to sing. Everyone has agreed.\n3. Pupils aged 15 generate twenty images of "a scientist in a laboratory" with an approved tool whose terms allow pupils of their age, and count who appears.\n4. A pupil wants to clone his own voice to narrate his podcast.\n5. For a display on the First World War, a class generates a "photo" of a trench.\n\n**Comments.** 1: change. Check the app’s age rule and your approved tools; at this age, generate on the class screen yourself. 2: stop. No images or voices of real staff, even with consent: invented cartoon characters do the job. 3: go. A strong lesson on bias, with no personal data. 4: stop. His voice is personal data and a clone can be reused by others: he records his own voice or uses a stock voice. 5: change. Label it as AI-generated, hunt for anachronisms with the class, and display it next to real archive photographs, which are the evidence.',
               },
               fr: {
-                heading: 'À vous : oui, à modifier ou non ?',
-                body: 'Pour chaque demande, décidez : oui (tel quel), à modifier (possible avec des changements) ou non. Comparez ensuite avec les commentaires.\n\n1. Des élèves de 11 ans illustrent leurs poèmes avec une application gratuite de génération d’images, sur leur propre téléphone.\n2. Pour la fête de fin d’année, un collègue veut animer des photos du personnel en train de chanter. Tout le monde est d’accord.\n3. Des élèves de 15 ans génèrent vingt images d’« un scientifique dans un laboratoire » avec un outil autorisé et permis à leur âge, et comptent qui apparaît.\n4. Un élève veut cloner sa propre voix pour narrer son podcast.\n5. Pour une exposition sur la Première Guerre mondiale, une classe génère une « photo » de tranchée.\n\n**Commentaires.** 1 : à modifier. Vérifiez la règle d’âge de l’application et les outils autorisés ; à cet âge, générez vous-même les images sur l’écran de la classe. 2 : non. Aucune image ni aucune voix de membres du personnel réels, même avec leur accord : des personnages de dessin animé inventés font tout aussi bien l’affaire. 3 : oui. C’est une excellente leçon sur les biais, sans aucune donnée personnelle. 4 : non. Sa voix est une donnée personnelle et un clone peut être réutilisé par d’autres : il enregistre sa propre voix ou utilise une voix fournie par l’outil. 5 : à modifier. Indiquez qu’elle a été générée par l’IA, cherchez les anachronismes avec la classe, et exposez-la à côté de véritables photographies d’archives : ce sont elles, les documents.',
+                heading: 'À vous\u00a0: oui, à modifier ou non\u00a0?',
+                body: 'Pour chaque demande, décidez\u00a0: oui (tel quel), à modifier (possible avec des changements) ou non. Comparez ensuite avec les commentaires.\n\n1. Des élèves de 11\u00a0ans illustrent leurs poèmes avec une application gratuite de génération d’images, sur leur propre téléphone.\n2. Pour la fête de fin d’année, un collègue veut animer des photos du personnel pour les faire chanter. Tout le monde est d’accord.\n3. Des élèves de 15\u00a0ans génèrent vingt images d’«\u00a0un scientifique dans un laboratoire\u00a0» avec un outil autorisé par l’établissement et dont les conditions acceptent leur âge, et comptent qui apparaît.\n4. Un élève veut cloner sa propre voix pour narrer son podcast.\n5. Pour une exposition sur la Première Guerre mondiale, une classe génère une «\u00a0photo\u00a0» de tranchée.\n\n**Commentaires.** 1\u00a0: à modifier. Vérifiez la règle d’âge de l’application et les outils autorisés\u00a0; à cet âge, générez vous-même les images sur l’écran de la classe. 2\u00a0: non. Aucune image ni aucune voix de membres du personnel réels, même avec leur accord\u00a0: des personnages de dessin animé inventés font tout aussi bien l’affaire. 3\u00a0: oui. C’est une excellente séance sur les biais, sans aucune donnée personnelle. 4\u00a0: non. Sa voix est une donnée personnelle et un clone peut être réutilisé par d’autres\u00a0: il enregistre sa propre voix ou utilise une voix fournie par l’outil. 5\u00a0: à modifier. Indiquez qu’elle a été générée par l’IA, cherchez les anachronismes avec la classe, et exposez-la à côté de véritables photographies d’archives\u00a0: ce sont elles, les documents.',
               },
             },
             data: {},
@@ -356,13 +357,13 @@ export const m6: SeedModulePart = {
                 instructions:
                   'Ask the AI tutor for a media-literacy situation, then explain how you would lead your class through checking it. Compare your answer with the four habits of this lesson before you read its feedback.',
                 starterPrompt:
-                  'Challenge me: describe a short situation in which a pupil aged 14 shows the class a striking video or image that may be AI-generated. Ask me how I would lead the class to check it, then tell me what I missed.',
+                  'Challenge me: describe a short situation in which a pupil aged 14 shows the class a striking video or image that may be AI-generated. Ask me how I would lead the class to check it, then tell me what I missed. Use invented people, places and events only.',
               },
               fr: {
                 instructions:
                   'Demandez au tuteur IA une situation d’éducation aux médias, puis expliquez comment vous amèneriez votre classe à la vérifier. Comparez votre réponse avec les quatre habitudes de cette leçon avant de lire son retour.',
                 starterPrompt:
-                  'Lancez-moi un défi : décrivez une courte situation dans laquelle un élève de 14 ans montre à la classe une vidéo ou une image frappante, peut-être générée par l’IA. Demandez-moi comment j’amènerais la classe à la vérifier, puis dites-moi ce que j’ai oublié.',
+                  'Lancez-moi un défi\u00a0: décrivez une courte situation dans laquelle un élève de 14\u00a0ans montre à la classe une vidéo ou une image frappante, peut-être générée par l’IA. Demandez-moi comment j’amènerais la classe à la vérifier, puis dites-moi ce que j’ai oublié. Utilisez uniquement des personnes, des lieux et des événements inventés.',
               },
             },
             data: { tutorMode: 'challenge_me', labToolId: null },
@@ -379,7 +380,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Concevez une activité de génération d’images, de sons ou de vidéos pour l’une de vos classes : l’âge des élèves et l’objectif, l’outil et sa règle d’âge (ou la façon dont vous mènerez l’activité sur l’écran de la classe), ce que disent ses conditions sur les prompts, les fichiers déposés et les résultats, votre règle sur les personnes réelles, la façon dont les élèves critiqueront le résultat au lieu de simplement le collectionner, et la façon dont le travail sera signalé. Demandez ensuite un retour (au tuteur IA en mode « Vérifie mon travail », sans aucune donnée personnelle, ou à un collègue) et notez une modification que vous y avez apportée en conséquence.',
+                  'Concevez une activité de génération d’images, de sons ou de vidéos pour l’une de vos classes\u00a0: l’âge des élèves et l’objectif, l’outil et sa règle d’âge (ou la façon dont vous mènerez l’activité sur l’écran de la classe), ce que disent ses conditions sur les prompts, les fichiers déposés et les résultats, votre règle sur les personnes réelles, la façon dont les élèves critiqueront le résultat au lieu de se contenter de le récupérer, et la façon dont le travail sera signalé. Demandez ensuite un retour (au tuteur IA en mode «\u00a0Vérifie mon travail\u00a0», sans aucune donnée personnelle, ou à un collègue) et notez une modification que vous y avez apportée en conséquence.',
               },
             },
             data: { minLength: 400 },
@@ -413,7 +414,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Quelle habitude de cette leçon voulez-vous le plus que vos élèves gardent lorsqu’ils rencontrent une image ou une vidéo frappante en dehors de l’école, et comment allez-vous l’exercer avec eux ce trimestre ?',
+                  'Quelle habitude de cette leçon voulez-vous le plus que vos élèves gardent lorsqu’ils rencontrent une image ou une vidéo frappante en dehors de l’école, et comment allez-vous la travailler avec eux ce trimestre\u00a0?',
               },
             },
             data: { minLength: 100 },
@@ -434,8 +435,9 @@ export const m6: SeedModulePart = {
             instructions: 'Seven questions. You need 70% to pass, and you can try again.',
           },
           fr: {
-            title: 'Quiz : une IA inclusive et créative',
-            instructions: 'Sept questions. Il faut 70 % pour réussir, et vous pouvez réessayer.',
+            title: 'Quiz\u00a0: une IA inclusive et créative',
+            instructions:
+              'Sept questions. Il faut 70\u00a0% pour réussir, et vous pouvez réessayer.',
           },
         },
         passingScorePercent: 70,
@@ -455,7 +457,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Dans une classe d’élèves de 12 ans, plusieurs élèves ont du mal à déchiffrer un long texte de sciences. L’objectif est d’expliquer comment se forment les volcans. Quelle approche suit le mieux la conception universelle de l’apprentissage ?',
+                  'Dans une classe d’élèves de 12\u00a0ans, plusieurs élèves ont du mal à déchiffrer un long texte de sciences. L’objectif est d’expliquer comment se forment les volcans. Quelle approche suit le mieux la conception universelle de l’apprentissage\u00a0?',
               },
             },
             options: [
@@ -555,7 +557,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Dans quelles situations l’aide de l’IA risque-t-elle de supprimer l’apprentissage plutôt qu’un obstacle ? Choisissez toutes les bonnes réponses.',
+                  'Dans quelles situations l’aide de l’IA risque-t-elle de supprimer l’apprentissage plutôt qu’un obstacle\u00a0? Choisissez toutes les bonnes réponses.',
               },
             },
             options: [
@@ -566,7 +568,7 @@ export const m6: SeedModulePart = {
                     text: 'Dictation software that corrects spelling, used in a spelling assessment',
                   },
                   fr: {
-                    text: 'Un logiciel de dictée qui corrige l’orthographe, utilisé pendant une évaluation d’orthographe',
+                    text: 'Un logiciel de dictée vocale qui corrige l’orthographe, utilisé pendant une évaluation d’orthographe',
                   },
                 },
               },
@@ -588,7 +590,7 @@ export const m6: SeedModulePart = {
                     text: 'A tool that reads the text for pupils in a lesson whose objective is to practise reading aloud fluently',
                   },
                   fr: {
-                    text: 'Un outil qui lit le texte à la place des élèves dans une séance dont l’objectif est de s’entraîner à lire à voix haute avec fluidité',
+                    text: 'Un outil qui lit le texte à la place des élèves dans une séance dont l’objectif est de travailler la fluence de lecture à voix haute',
                   },
                 },
               },
@@ -618,7 +620,7 @@ export const m6: SeedModulePart = {
                 text: 'A support is right when it removes a barrier on the way to the objective, and wrong when it does the very thing the lesson is meant to teach or assess. Reading a word problem aloud and captioning a video remove barriers; correcting spelling in a spelling test, reading for pupils in a fluency lesson and writing the paragraph for them remove the learning.',
               },
               fr: {
-                text: 'Une aide est pertinente quand elle lève un obstacle sur le chemin de l’objectif, et inadaptée quand elle fait précisément ce que la séance doit enseigner ou évaluer. Lire un énoncé à voix haute et sous-titrer une vidéo lèvent des obstacles ; corriger l’orthographe pendant une évaluation d’orthographe, lire à la place des élèves dans une séance de fluidité et rédiger le paragraphe à leur place suppriment l’apprentissage.',
+                text: 'Une aide est pertinente quand elle lève un obstacle sur le chemin de l’objectif, et inadaptée quand elle fait précisément ce que la séance doit enseigner ou évaluer. Lire un énoncé à voix haute et sous-titrer une vidéo lèvent des obstacles\u00a0; corriger l’orthographe pendant une évaluation d’orthographe, lire à la place des élèves dans une séance consacrée à la fluence de lecture et rédiger le paragraphe à leur place suppriment l’apprentissage.',
               },
             },
           },
@@ -633,7 +635,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Un collègue prépare une surprise pour la fin du trimestre : une courte vidéo dans laquelle le chef d’établissement, avec une voix clonée par l’IA, annonce la fête de l’école. Le chef d’établissement est d’accord. Que recommande cette formation ?',
+                  'Un collègue prépare une surprise pour la fin du trimestre\u00a0: une courte vidéo dans laquelle le chef d’établissement, avec une voix clonée par l’IA, annonce la fête de l’école. Le chef d’établissement est d’accord. Que recommande cette formation\u00a0?',
               },
             },
             options: [
@@ -641,7 +643,9 @@ export const m6: SeedModulePart = {
                 id: 'a',
                 translations: {
                   en: { text: 'Go ahead: the head teacher has agreed' },
-                  fr: { text: 'Aller de l’avant : le chef d’établissement a donné son accord' },
+                  fr: {
+                    text: 'Réaliser la vidéo\u00a0: le chef d’établissement a donné son accord',
+                  },
                 },
               },
               {
@@ -649,7 +653,7 @@ export const m6: SeedModulePart = {
                 translations: {
                   en: { text: 'Go ahead, as long as the video is labelled "AI-generated"' },
                   fr: {
-                    text: 'Aller de l’avant, à condition que la vidéo porte la mention « générée par l’IA »',
+                    text: 'Réaliser la vidéo, à condition qu’elle porte la mention «\u00a0générée par l’IA\u00a0»',
                   },
                 },
               },
@@ -660,7 +664,7 @@ export const m6: SeedModulePart = {
                     text: 'Do not generate images or voices of real staff or pupils, even with consent: use a real recording of the head teacher or an invented character',
                   },
                   fr: {
-                    text: 'Ne pas générer d’images ni de voix de membres du personnel ou d’élèves réels, même avec leur accord : utiliser un véritable enregistrement du chef d’établissement ou un personnage inventé',
+                    text: 'Ne pas générer d’images ni de voix de membres du personnel ou d’élèves réels, même avec leur accord\u00a0: utiliser un véritable enregistrement du chef d’établissement ou un personnage inventé',
                   },
                 },
               },
@@ -669,7 +673,7 @@ export const m6: SeedModulePart = {
                 translations: {
                   en: { text: 'Go ahead, as long as the video is only shown inside the school' },
                   fr: {
-                    text: 'Aller de l’avant, à condition que la vidéo ne soit montrée qu’au sein de l’établissement',
+                    text: 'Réaliser la vidéo, à condition qu’elle ne soit montrée qu’au sein de l’établissement',
                   },
                 },
               },
@@ -696,7 +700,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Une classe d’élèves de 15 ans veut publier sur le site de l’établissement des illustrations de ses nouvelles générées par l’IA. Quelles vérifications faut-il faire d’abord ? Choisissez toutes les bonnes réponses.',
+                  'Une classe d’élèves de 15\u00a0ans veut publier sur le site de l’établissement des illustrations générées par l’IA pour ses nouvelles. Quelles vérifications faut-il faire d’abord\u00a0? Choisissez toutes les bonnes réponses.',
               },
             },
             options: [
@@ -724,10 +728,10 @@ export const m6: SeedModulePart = {
                 id: 'c',
                 translations: {
                   en: {
-                    text: 'No image shows a real pupil, a member of staff or anyone the pupils know',
+                    text: 'No image shows a real person (a pupil, a member of staff or anyone else)',
                   },
                   fr: {
-                    text: 'Aucune image ne représente un élève, un membre du personnel ou une personne que les élèves connaissent',
+                    text: 'Aucune image ne représente une personne réelle (un élève, un membre du personnel ou toute autre personne)',
                   },
                 },
               },
@@ -761,7 +765,7 @@ export const m6: SeedModulePart = {
                 text: 'These are the four rules of the lesson: an approved tool and its age rule, the terms for the use of outputs, no real people, and disclosure. Realism is not a requirement, and for illustrations of fiction it adds nothing but a risk of confusion.',
               },
               fr: {
-                text: 'Ce sont les quatre règles de la leçon : un outil autorisé et sa règle d’âge, les conditions d’utilisation des résultats, aucune personne réelle, et la déclaration. Le réalisme n’est pas une exigence, et pour illustrer une fiction, il n’apporte qu’un risque de confusion.',
+                text: 'Ce sont les quatre règles de la leçon\u00a0: un outil autorisé et sa règle d’âge, les conditions d’utilisation des résultats, aucune personne réelle, et la déclaration. Le réalisme n’est pas une exigence, et pour illustrer une fiction, il n’apporte qu’un risque de confusion.',
               },
             },
           },
@@ -776,7 +780,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Un élève montre à la classe une vidéo virale dans laquelle une personnalité politique connue fait une déclaration choquante. Quelle réaction installe l’habitude la plus utile ?',
+                  'Un élève montre à la classe une vidéo virale dans laquelle une personnalité politique connue fait une déclaration choquante. Quelle réaction installe l’habitude la plus utile\u00a0?',
               },
             },
             options: [
@@ -787,7 +791,7 @@ export const m6: SeedModulePart = {
                     text: 'Look for glitches such as extra fingers or odd blinking: if there are none, it is real',
                   },
                   fr: {
-                    text: 'Chercher des défauts comme des doigts en trop ou des clignements étranges : s’il n’y en a pas, elle est authentique',
+                    text: 'Chercher des défauts comme des doigts en trop ou des clignements étranges\u00a0: s’il n’y en a pas, elle est authentique',
                   },
                 },
               },
@@ -805,7 +809,7 @@ export const m6: SeedModulePart = {
                     text: 'Leave the video and check the source: who published it first, whether reliable outlets report it, and what the original context was',
                   },
                   fr: {
-                    text: 'Quitter la vidéo et vérifier la source : qui l’a publiée en premier, si des médias fiables en parlent, et quel était le contexte d’origine',
+                    text: 'Quitter la vidéo et vérifier la source\u00a0: qui l’a publiée en premier, si des médias fiables en parlent, et quel était le contexte d’origine',
                   },
                 },
               },
@@ -826,7 +830,7 @@ export const m6: SeedModulePart = {
                 text: 'Glitches are disappearing and detectors give probabilities, not proof. Lateral reading and finding the original context work whatever tool was used. Treating everything as fake feeds the "liar’s dividend": it makes genuine evidence easier to deny.',
               },
               fr: {
-                text: 'Les défauts disparaissent et les détecteurs donnent des probabilités, pas des preuves. La lecture latérale et la recherche du contexte d’origine fonctionnent quel que soit l’outil utilisé. Tout considérer comme faux nourrit le « dividende du menteur » : cela rend les preuves authentiques plus faciles à nier.',
+                text: 'Les défauts disparaissent et les détecteurs donnent des probabilités, pas des preuves. La lecture latérale et la recherche du contexte d’origine fonctionnent quel que soit l’outil utilisé. Tout considérer comme faux nourrit le «\u00a0dividende du menteur\u00a0»\u00a0: cela rend les preuves authentiques plus faciles à nier.',
               },
             },
           },
@@ -841,7 +845,7 @@ export const m6: SeedModulePart = {
               },
               fr: {
                 prompt:
-                  'Complétez le principe de la première leçon de ce module : lever l’___, garder l’apprentissage. (un mot)',
+                  'Complétez le principe de la première leçon de ce module\u00a0: lever l’___, garder l’apprentissage. (un mot)',
               },
             },
             options: [],
@@ -855,7 +859,9 @@ export const m6: SeedModulePart = {
                 'obstacle',
                 'obstacles',
                 'the obstacle',
+                'the obstacles',
                 'barrier to learning',
+                'barriers to learning',
               ],
               fr: [
                 'obstacle',
@@ -864,9 +870,10 @@ export const m6: SeedModulePart = {
                 "l'obstacle",
                 'les obstacles',
                 'barrière',
+                'barrières',
                 'la barrière',
                 'frein',
-                'le frein',
+                'freins',
               ],
             },
             explanation: {
@@ -874,7 +881,7 @@ export const m6: SeedModulePart = {
                 text: 'Remove the barrier, keep the learning: a support should clear the way to the objective without doing the work that the objective is about.',
               },
               fr: {
-                text: 'Lever l’obstacle, garder l’apprentissage : une aide doit dégager le chemin vers l’objectif sans faire le travail sur lequel porte cet objectif.',
+                text: 'Lever l’obstacle, garder l’apprentissage\u00a0: une aide doit dégager le chemin vers l’objectif sans faire le travail sur lequel porte cet objectif.',
               },
             },
           },
