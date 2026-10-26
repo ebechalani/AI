@@ -1,7 +1,9 @@
 // Module m3 of "My First Artificial Intelligence Adventure" (ages 8-10): "Teach a computer with
 // examples". It comes after m1 (Meet artificial intelligence) and before m4 (AI that sees and
 // hears) and m2 (Talking to AI), and builds on m1-l2, where a robot learned to sort apples and
-// oranges: here the learner meets the words label, example, training and testing.
+// oranges: here the learner meets the words label, example, training, model and testing, which
+// m4 then uses without defining them again (m4 also refers back to m3's one-sided examples, to
+// the off-topic command "What's for lunch?" and to the smart classroom project).
 //
 // - m3-l1 "Sorting with examples" (20 min) is unplugged: a paper sorting game with invented words
 //   (soft or spiky), then a rule sorter in blocks to trace by hand (saved, not run) next to a
@@ -95,11 +97,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Labels and examples',
-                body: 'In the first module, a robot learned to sort apples and oranges. Here are the words people use to explain how it works:\n\n| Word | What it means | For the fruit robot |\n|---|---|---|\n| **Label** | The name of a group | *apple*, *orange* |\n| **Example** | One thing with its label | a green apple, labelled *apple* |\n| **Training** | Studying the examples to find patterns | "apples are smooth and round" |\n| **Testing** | Trying the computer on something new | a fruit it has never seen |\n\nTesting with **new** things is the important part. A computer that can only sort the examples it has already seen has not really learned anything: it has just remembered them.',
+                body: 'In the first module, a robot learned to sort apples and oranges. Here are the words people use to explain how it works:\n\n| Word | What it means | For the fruit robot |\n|---|---|---|\n| **Label** | The name of a group | *apple*, *orange* |\n| **Example** | One thing with its label | a green apple, labelled *apple* |\n| **Training** | Studying the examples to find patterns | "apples are smooth and round" |\n| **Model** | The part of the program that learns the patterns and then makes the guesses | the part of the robot that guesses *apple* or *orange* |\n| **Testing** | Trying the computer on something new | a fruit it has never seen |\n\nTesting with **new** things is the important part. A computer that can only sort the examples it has already seen has not really learned anything: it has just remembered them.',
               },
               fr: {
                 heading: 'Étiquettes et exemples',
-                body: 'Dans le premier module, un robot apprenait à trier des pommes et des oranges. Voici les mots qu’on utilise pour expliquer comment il fonctionne\u00a0:\n\n| Mot | Ce qu’il veut dire | Pour le robot à fruits |\n|---|---|---|\n| **Étiquette** | Le nom d’un groupe | *pomme*, *orange* |\n| **Exemple** | Une chose avec son étiquette | une pomme verte, étiquetée *pomme* |\n| **Entraînement** | Étudier les exemples pour trouver des régularités | «\u00a0les pommes sont lisses et rondes\u00a0» |\n| **Test** | Essayer l’ordinateur sur quelque chose de nouveau | un fruit qu’il n’a jamais vu |\n\nLe plus important, c’est de tester avec des choses **nouvelles**. Un ordinateur qui ne sait trier que les exemples qu’il a déjà vus n’a rien appris pour de vrai\u00a0: il s’en souvient, c’est tout.',
+                body: 'Dans le premier module, un robot apprenait à trier des pommes et des oranges. Voici les mots qu’on utilise pour expliquer comment il fonctionne\u00a0:\n\n| Mot | Ce qu’il veut dire | Pour le robot à fruits |\n|---|---|---|\n| **Étiquette** | Le nom d’un groupe | *pomme*, *orange* |\n| **Exemple** | Une chose avec son étiquette | une pomme verte, étiquetée *pomme* |\n| **Entraînement** | Étudier les exemples pour trouver des régularités | «\u00a0les pommes sont lisses et rondes\u00a0» |\n| **Modèle** | La partie du programme qui apprend les régularités, puis qui devine | la partie du robot qui devine *pomme* ou *orange* |\n| **Test** | Essayer l’ordinateur sur quelque chose de nouveau | un fruit qu’il n’a jamais vu |\n\nLe plus important, c’est de tester avec des choses **nouvelles**. Un ordinateur qui ne sait trier que les exemples qu’il a déjà vus n’a rien appris pour de vrai\u00a0: il s’en souvient, c’est tout.',
               },
             },
             data: {},
@@ -112,11 +114,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'More examples, different examples',
-                body: 'A computer learns better with **more** examples, and with **different** ones. With one apple, it might think every apple is red, but with fifty apples of all sizes and colours, it sees the real pattern.\n\nTwo things can go wrong:\n\n- **Too few examples.** The computer may find a pattern that is not really there.\n- **One-sided examples.** If every apple it saw was red, it may decide that a green apple is not an apple.\n\nIn real life, one-sided examples can make an AI unfair to the people or things that were missing, so people choose examples with care and check the guesses.',
+                body: 'You already know that **more** good examples mean better guesses. **Different** examples matter just as much. With one apple, a computer might think every apple is red, but with fifty apples of all sizes and colours, it sees the real pattern.\n\nTwo things can go wrong:\n\n- **Too few examples.** The computer may find a pattern that is not really there.\n- **One-sided examples.** If every apple it saw was red, it may decide that a green apple is not an apple.\n\nIn real life, one-sided examples can make an AI unfair to the people or things that were missing, so people choose examples with care and check the guesses.',
               },
               fr: {
                 heading: 'Plus d’exemples, des exemples variés',
-                body: 'Un ordinateur apprend mieux avec **plus** d’exemples, et avec des exemples **variés**. Avec une seule pomme, il pourrait croire que toutes les pommes sont rouges, mais avec cinquante pommes de toutes les tailles et de toutes les couleurs, il voit la vraie régularité.\n\nDeux choses peuvent mal tourner\u00a0:\n\n- **Trop peu d’exemples.** L’ordinateur risque de trouver une régularité qui n’existe pas vraiment.\n- **Des exemples tous pareils.** Si toutes les pommes qu’il a vues étaient rouges, il peut décider qu’une pomme verte n’est pas une pomme.\n\nDans la vraie vie, des exemples tous pareils peuvent rendre une IA injuste envers les personnes ou les choses qui manquaient\u00a0: on choisit donc les exemples avec soin, et on vérifie ce que l’ordinateur devine.',
+                body: 'Tu sais déjà que **plus** il y a de bons exemples, plus l’ordinateur devine juste. Des exemples **variés** comptent tout autant. Avec une seule pomme, un ordinateur pourrait croire que toutes les pommes sont rouges, mais avec cinquante pommes de toutes les tailles et de toutes les couleurs, il voit la vraie régularité.\n\nDeux choses peuvent mal tourner\u00a0:\n\n- **Trop peu d’exemples.** L’ordinateur risque de trouver une régularité qui n’existe pas vraiment.\n- **Des exemples tous pareils.** Si toutes les pommes qu’il a vues étaient rouges, il peut décider qu’une pomme verte n’est pas une pomme.\n\nDans la vraie vie, des exemples tous pareils peuvent rendre une IA injuste envers les personnes ou les choses qui manquaient\u00a0: on choisit donc les exemples avec soin, et on vérifie ce que l’ordinateur devine.',
               },
             },
             data: {},

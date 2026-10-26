@@ -1,11 +1,29 @@
 // "My First Artificial Intelligence Adventure": the AI Explorer demo course (ages 8-10) of
-// brief section 22. Two modules of two lessons; blocks cover every lesson stage; one quiz per
-// module; one project; English and French; no uploaded files. Two videos are curated YouTube
-// videos for this age range (Smile and Learn, Code.org's AI for Oceans), both in English; the
-// prompt video of m2-l1 keeps the placeholder id RoboHolic03 until a suitable video is
-// verified, and the player shows it as unavailable with its summary open.
+// brief section 22. Four modules of two lessons (eight lessons, 180 minutes), in this order:
+// m1 "Meet artificial intelligence", m3 "Teach a computer with examples", m4 "AI that sees and
+// hears", m2 "Talking to AI" (prompts and the story project, which ends the course). Blocks
+// cover every lesson stage; one quiz per module; English and French; no uploaded files.
+//
+// m1 and m2 (with quiz-m1, quiz-m2 and project-1) are the first release and are written here.
+// m3 and m4 were added by a later content release (ARCHITECTURE.md 11.7) and live in
+// ./my-first-ai-adventure/, whose headers say what each one covers. A release only adds to a
+// database that already holds the course, so module ids are not in course order, the module
+// files' quizzes and projects come after the first release's in their arrays, and m1, m2 and
+// their quizzes and project must not be changed here. project-1 stays first among the
+// projects: scripts/seed/demo-progress.ts reviews course.projects[0] to issue Lea's certificate.
+//
+// Two Machine Learning for Kids activities, both "Try it now" (no accounts, nothing about the
+// child is stored): Smart Classroom (m3-l2, a text model in Scratch) and Mailman Max (m4-l1,
+// drawn letters, an images model in Scratch). Each has a paper version for schools that block
+// the site and an optional hand-in (project-m3, project-m4); the certificate needs only the
+// story project project-1 (m2-l2). Two videos are curated YouTube videos for this age range
+// (Smile and Learn, Code.org's AI for Oceans), both in English; the prompt video of m2-l1 keeps
+// the placeholder id RoboHolic03 until a suitable video is verified, and the player shows it as
+// unavailable with its summary open. m3 and m4 have no video block.
 
 import type { SeedCourse } from '../types';
+import { m3 } from './my-first-ai-adventure/m3';
+import { m4 } from './my-first-ai-adventure/m4';
 
 const RICH = 'rich_text' as const;
 
@@ -17,12 +35,16 @@ export const myFirstAiAdventure: SeedCourse = {
       en: {
         title: 'My First Artificial Intelligence Adventure',
         summary:
-          'Discover what AI is, how it learns from examples, and how to talk to it with good prompts.',
+          'Discover what AI is, teach a computer with your own examples on Machine Learning for Kids, find out how AI sees and hears, and learn to talk to it with good prompts.',
         description:
-          'An adventure in four lessons for young explorers. You will find out what artificial intelligence is and where it hides in everyday life, compare what people and machines are good at, learn to write a clear prompt, and create your own AI story while using AI kindly and safely. The course ends with a story project and a certificate.',
+          'An adventure in eight lessons for young explorers. You will find out what artificial intelligence is and where it hides in everyday life, and compare what people and machines are good at. Then you will teach a computer yourself: play a sorting game with made-up words, learn what labels, examples, training and testing are, and train a model that understands your commands for a smart classroom in Scratch. Next, you will find out how AI sees and hears: train a model that reads the postcode letters you draw for a sorting office in Scratch, discover why voice assistants sometimes mishear, and learn how to keep your face and your voice private. Both models are made on Machine Learning for Kids (the activities Smart Classroom and Mailman Max) with "Try it now", so no account is needed. Each activity has a paper version for when the website cannot be opened, and a short hand-in that shows what your model got right and wrong. Finally, you will learn to write a clear prompt and create your own AI story while using AI kindly and safely. Each module has a quiz, and the course ends with a story project and a certificate.',
         outcomes: [
           'Explain in your own words what artificial intelligence is',
           'Tell apart what people and machines are good at',
+          'Use the words label, example, training and testing to explain how a computer learns',
+          'Train and test your own models on Machine Learning for Kids, and improve them with better examples',
+          'Explain how AI recognises drawings and sounds, and why it sometimes gets them wrong',
+          'Keep your face and your voice private, and ask an adult before using a camera or a microphone',
           'Write a clear prompt with a who, a what and a how',
           'Use AI responsibly: check, be kind and ask an adult',
         ],
@@ -30,12 +52,16 @@ export const myFirstAiAdventure: SeedCourse = {
       fr: {
         title: 'Ma première aventure en intelligence artificielle',
         summary:
-          'Découvre ce qu’est l’IA, comment elle apprend à partir d’exemples et comment lui parler avec de bonnes consignes.',
+          'Découvre ce qu’est l’IA, entraîne un ordinateur avec tes propres exemples sur Machine Learning for Kids, comprends comment l’IA voit et entend, et apprends à lui parler avec de bonnes consignes.',
         description:
-          'Une aventure en quatre leçons pour les jeunes explorateurs et exploratrices. Tu vas découvrir ce qu’est l’intelligence artificielle et où elle se cache dans la vie de tous les jours, comparer ce que les humains et les machines savent bien faire, apprendre à écrire une consigne claire, puis créer ta propre histoire avec l’aide de l’IA, en l’utilisant avec prudence et bienveillance. Le cours se termine par un projet d’histoire et un certificat.',
+          'Une aventure en huit leçons pour les jeunes explorateurs et exploratrices. Tu vas découvrir ce qu’est l’intelligence artificielle et où elle se cache dans la vie de tous les jours, et comparer ce que les humains et les machines savent bien faire. Ensuite, c’est toi qui apprendras à un ordinateur\u00a0: tu joueras à un jeu de tri avec des mots inventés, tu découvriras ce que sont les étiquettes, les exemples, l’entraînement et le test, puis tu entraîneras un modèle qui comprend tes commandes pour une classe intelligente dans Scratch. Puis tu verras comment l’IA voit et entend\u00a0: tu entraîneras un modèle qui lit les lettres de codes postaux que tu dessines pour un centre de tri dans Scratch, tu découvriras pourquoi les assistants vocaux comprennent parfois de travers et tu apprendras à protéger ton visage et ta voix. Les deux modèles se fabriquent sur Machine Learning for Kids (activités Smart Classroom et Mailman Max) avec «\u00a0Essayer maintenant\u00a0»\u00a0: pas besoin de créer de compte. Chaque activité a une version sur papier pour le cas où le site ne s’ouvre pas, et un petit travail à rendre qui montre ce que ton modèle a réussi et où il s’est trompé. Enfin, tu apprendras à écrire une consigne claire et tu créeras ta propre histoire avec l’aide de l’IA, en l’utilisant avec prudence et bienveillance. Chaque module comporte un quiz, et le cours se termine par un projet d’histoire et un certificat.',
         outcomes: [
           'Expliquer avec tes propres mots ce qu’est l’intelligence artificielle',
           'Distinguer ce que les humains et les machines savent bien faire',
+          'Utiliser les mots étiquette, exemple, entraînement et test pour expliquer comment un ordinateur apprend',
+          'Entraîner et tester tes propres modèles sur Machine Learning for Kids, et les améliorer avec de meilleurs exemples',
+          'Expliquer comment l’IA reconnaît les dessins et les sons, et pourquoi elle se trompe parfois',
+          'Protéger ton visage et ta voix, et demander à un adulte avant d’utiliser une caméra ou un microphone',
           'Écrire une consigne claire avec un qui, un quoi et un comment',
           'Utiliser l’IA de façon responsable\u00a0: vérifier, rester gentil et demander à un adulte',
         ],
@@ -43,10 +69,21 @@ export const myFirstAiAdventure: SeedCourse = {
     },
     audience: 'student',
     area: 'ai',
-    tags: ['ai', 'prompts', 'responsible-ai', 'stories'],
+    tags: [
+      'ai',
+      'machine-learning',
+      'machine-learning-for-kids',
+      'scratch',
+      'vision',
+      'voice-assistants',
+      'prompts',
+      'responsible-ai',
+      'privacy',
+      'stories',
+    ],
     ageMin: 8,
     ageMax: 10,
-    estimatedMinutes: 80,
+    estimatedMinutes: 180,
     visibility: 'private',
     certificateEnabled: true,
     hardwarePlatformIds: [],
@@ -356,6 +393,8 @@ export const myFirstAiAdventure: SeedCourse = {
         },
       ],
     },
+    m3.module,
+    m4.module,
     {
       id: 'm2',
       input: {
@@ -979,6 +1018,8 @@ export const myFirstAiAdventure: SeedCourse = {
         ],
       },
     },
+    ...m3.quizzes,
+    ...m4.quizzes,
   ],
 
   projects: [
@@ -1014,5 +1055,7 @@ export const myFirstAiAdventure: SeedCourse = {
         requiredForCertificate: true,
       },
     },
+    ...m3.projects,
+    ...m4.projects,
   ],
 };
