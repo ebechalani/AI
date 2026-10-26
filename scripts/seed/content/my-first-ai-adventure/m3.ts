@@ -78,11 +78,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Soft or spiky?',
-                body: 'Say these two made-up words out loud: **lulimo** and **krak**. Which one sounds soft, like a cloud? Which one sounds spiky, like a cactus?\n\nMost people choose the same answer, though nobody ever taught them a rule. They learned it from all the words they have heard.\n\nToday you will **be the machine** and learn to sort made-up words only from examples, just like a computer.',
+                body: 'Say these two made-up words out loud: **lulimo** and **krak**. Which one sounds soft, like a cloud? Which one sounds spiky, like a cactus?\n\nMost people choose the same answer, even though nobody ever gave them a rule. A computer has no such feeling: it can only learn soft and spiky from examples.\n\nToday you will **be the machine** and learn to sort made-up words only from examples, just like a computer.',
               },
               fr: {
                 heading: 'Doux ou piquant\u00a0?',
-                body: 'Dis ces deux mots inventés à voix haute\u00a0: **lulimo** et **krak**. Lequel sonne doux, comme un nuage\u00a0? Lequel sonne piquant, comme un cactus\u00a0?\n\nPresque tout le monde donne la même réponse, et pourtant personne ne nous a appris de règle. Nous l’avons apprise grâce à tous les mots que nous avons déjà entendus.\n\nAujourd’hui, c’est toi qui vas **jouer la machine**\u00a0: tu vas apprendre à trier des mots inventés rien qu’avec des exemples, comme un ordinateur.',
+                body: 'Dis ces deux mots inventés à voix haute\u00a0: **lulimo** et **krak**. Lequel sonne doux, comme un nuage\u00a0? Lequel sonne piquant, comme un cactus\u00a0?\n\nPresque tout le monde donne la même réponse, et pourtant personne ne nous a donné de règle. Un ordinateur, lui, n’a pas ce genre d’intuition\u00a0: il ne peut apprendre «\u00a0doux\u00a0» et «\u00a0piquant\u00a0» qu’à partir d’exemples.\n\nAujourd’hui, c’est toi qui vas **faire la machine**\u00a0: tu vas apprendre à trier des mots inventés rien qu’avec des exemples, comme un ordinateur.',
               },
             },
             data: {},
@@ -112,11 +112,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'More examples, different examples',
-                body: 'A computer learns better with **more** examples, and with **different** ones. With one apple, it might think every apple is red. With fifty apples of all sizes and colours, it sees the real pattern.\n\nTwo things can go wrong:\n\n- **Too few examples.** The computer may find a pattern that is not really there.\n- **One-sided examples.** If every apple it saw was red, it may decide that a green apple is not an apple.\n\nIn real life, an AI trained on one-sided examples can make unfair mistakes about the people or things that were missing. So people choose examples with care, and check the guesses.',
+                body: 'A computer learns better with **more** examples, and with **different** ones. With one apple, it might think every apple is red, but with fifty apples of all sizes and colours, it sees the real pattern.\n\nTwo things can go wrong:\n\n- **Too few examples.** The computer may find a pattern that is not really there.\n- **One-sided examples.** If every apple it saw was red, it may decide that a green apple is not an apple.\n\nIn real life, one-sided examples can make an AI unfair to the people or things that were missing, so people choose examples with care and check the guesses.',
               },
               fr: {
                 heading: 'Plus d’exemples, des exemples variés',
-                body: 'Un ordinateur apprend mieux avec **plus** d’exemples, et avec des exemples **variés**. Avec une seule pomme, il pourrait croire que toutes les pommes sont rouges. Avec cinquante pommes de toutes les tailles et de toutes les couleurs, il voit la vraie régularité.\n\nDeux choses peuvent mal tourner\u00a0:\n\n- **Trop peu d’exemples.** L’ordinateur risque de trouver une régularité qui n’existe pas vraiment.\n- **Des exemples tous pareils.** Si toutes les pommes qu’il a vues étaient rouges, il peut décider qu’une pomme verte n’est pas une pomme.\n\nDans la vraie vie, une IA entraînée avec des exemples tous pareils peut faire des erreurs injustes sur les personnes ou les choses qui manquaient. Alors on choisit les exemples avec soin, et on vérifie ce que l’ordinateur devine.',
+                body: 'Un ordinateur apprend mieux avec **plus** d’exemples, et avec des exemples **variés**. Avec une seule pomme, il pourrait croire que toutes les pommes sont rouges, mais avec cinquante pommes de toutes les tailles et de toutes les couleurs, il voit la vraie régularité.\n\nDeux choses peuvent mal tourner\u00a0:\n\n- **Trop peu d’exemples.** L’ordinateur risque de trouver une régularité qui n’existe pas vraiment.\n- **Des exemples tous pareils.** Si toutes les pommes qu’il a vues étaient rouges, il peut décider qu’une pomme verte n’est pas une pomme.\n\nDans la vraie vie, des exemples tous pareils peuvent rendre une IA injuste envers les personnes ou les choses qui manquaient\u00a0: on choisit donc les exemples avec soin, et on vérifie ce que l’ordinateur devine.',
               },
             },
             data: {},
@@ -129,11 +129,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Be the machine: the sorting game',
-                body: 'Copy the words onto small paper cards, or just use the tables. Play alone or with a partner.\n\n**Round 1: train.** These cards already have their labels. What do the soft words have in common? And the spiky ones?\n\n| Soft | Spiky |\n|---|---|\n| lulimo | krak |\n| molana | tizzik |\n| bolumi | zatek |\n| malulu | kipitt |\n\n**Round 2: test.** Sort four new cards you have never seen: **lomuna**, **trekkit**, **mibolu**, **zipzak**. Which pattern helped you?\n\n**Round 3: too few examples.** Cover every card except **lulimo** and **krak**. You are a new machine that only knows these two, so you might think "spiky words have a K". Now sort **zitzat**. Were you fooled?\n\n*Answers: in round 2, soft, spiky, soft, spiky. In round 3, zitzat has no K, so the new machine might call it soft.*',
+                body: 'Copy the words onto small paper cards, or just use the table and the words below. Play alone or with a partner.\n\n**Round 1: train.** These cards already have their labels. What do the soft words have in common? And the spiky ones?\n\n| Soft | Spiky |\n|---|---|\n| lulimo | krak |\n| molana | tizzik |\n| bolumi | zatek |\n| malulu | kipitt |\n\n**Round 2: test.** Sort four new cards you have never seen: **lomuna**, **trekkit**, **mibolu**, **zipzak**. Which pattern helped you?\n\n**Round 3: too few examples.** Cover every card except **lulimo** and **krak**. You are a new machine that only knows these two, so you might think "spiky words have a K". Now sort **zitzat**. Were you fooled?\n\n*Sorted the four cards of round 2? Check: soft, spiky, soft, spiky.*',
               },
               fr: {
-                heading: 'Joue la machine\u00a0: le jeu du tri',
-                body: 'Recopie les mots sur de petites cartes en papier, ou sers-toi simplement des tableaux. Joue seul ou avec un camarade.\n\n**Manche 1\u00a0: l’entraînement.** Ces cartes ont déjà leur étiquette. Qu’ont en commun les mots doux\u00a0? Et les mots piquants\u00a0?\n\n| Doux | Piquant |\n|---|---|\n| lulimo | krak |\n| molana | tizzik |\n| bolumi | zatek |\n| malulu | kipitt |\n\n**Manche 2\u00a0: le test.** Range quatre cartes nouvelles, que tu n’as jamais vues\u00a0: **lomuna**, **trekkit**, **mibolu**, **zipzak**. Quelle régularité t’a aidé\u00a0?\n\n**Manche 3\u00a0: trop peu d’exemples.** Cache toutes les cartes sauf **lulimo** et **krak**. Tu es une machine toute neuve qui ne connaît que ces deux-là\u00a0: tu pourrais croire que «\u00a0les mots piquants ont un K\u00a0». Maintenant, range **zitzat**. T’es-tu fait piéger\u00a0?\n\n*Réponses\u00a0: dans la manche 2, doux, piquant, doux, piquant. Dans la manche 3, zitzat n’a pas de K, alors la nouvelle machine pourrait le ranger avec les mots doux.*',
+                heading: 'Fais la machine\u00a0: le jeu du tri',
+                body: 'Recopie les mots sur de petites cartes en papier, ou sers-toi simplement du tableau et des mots ci-dessous. Joue seul ou avec un camarade.\n\n**Manche 1\u00a0: l’entraînement.** Ces cartes ont déjà leur étiquette. Qu’ont en commun les mots doux\u00a0? Et les mots piquants\u00a0?\n\n| Doux | Piquant |\n|---|---|\n| lulimo | krak |\n| molana | tizzik |\n| bolumi | zatek |\n| malulu | kipitt |\n\n**Manche 2\u00a0: le test.** Range quatre cartes nouvelles, que tu n’as jamais vues\u00a0: **lomuna**, **trekkit**, **mibolu**, **zipzak**. Quelle régularité t’a aidé\u00a0?\n\n**Manche 3\u00a0: trop peu d’exemples.** Cache toutes les cartes sauf **lulimo** et **krak**. Tu es une machine toute neuve qui ne connaît que ces deux-là\u00a0: tu pourrais croire que «\u00a0les mots piquants ont un K\u00a0». Maintenant, range **zitzat**. T’es-tu fait piéger\u00a0?\n\n*Tu as rangé les quatre cartes de la manche 2\u00a0? Vérifie\u00a0: doux, piquant, doux, piquant.*',
               },
             },
             data: {},
@@ -151,7 +151,7 @@ export const m3: SeedModulePart = {
               },
               fr: {
                 instructions:
-                  'Une personne a écrit ce trieur après avoir vu seulement la carte «\u00a0krak\u00a0». Ton programme est enregistré, pas exécuté\u00a0: joue toi-même le rôle de l’ordinateur. (Dans les blocs, *Soft* veut dire doux et *Spiky*, piquant.)\n\n1. Suis les blocs pour chaque mot des commentaires, et note ce que dit le trieur.\n2. Quel mot range-t-il mal\u00a0? Change la règle pour corriger l’erreur.\n3. Invente un mot piquant que ta nouvelle règle range encore mal.\n4. Lis le trieur qui apprend, tout en bas. Qui écrit sa règle\u00a0?',
+                  'Une personne a écrit ce trieur après avoir vu seulement la carte «\u00a0krak\u00a0». Ton programme est enregistré, pas exécuté\u00a0: joue toi-même le rôle de l’ordinateur. (Dans les blocs, Soft veut dire «\u00a0doux\u00a0», Spiky «\u00a0piquant\u00a0», trained with «\u00a0entraîné avec\u00a0» et recognise text (answer) (label) «\u00a0l’étiquette que le modèle reconnaît pour la réponse\u00a0».)\n\n1. Suis les blocs pour chaque mot des commentaires, et note ce que dit le trieur.\n2. Quel mot range-t-il mal\u00a0? Change la règle pour corriger l’erreur.\n3. Invente un mot piquant que ta nouvelle règle range encore mal.\n4. Lis le trieur qui apprend, tout en bas. Qui écrit sa règle\u00a0?',
                 hint: 'Pour vérifier deux lettres à la fois, utilise «\u00a0or\u00a0» (ou)\u00a0: if <<(answer) contains [k]?> or <(answer) contains [z]?>> then',
               },
             },
@@ -179,11 +179,14 @@ export const m3: SeedModulePart = {
                 '//',
                 '',
                 '// LEARNING SORTER (just read it)',
+                '// trained with: lulimo, molana, bolumi, malulu = Soft',
+                '//               krak, tizzik, zatek, kipitt = Spiky',
                 '// when green flag clicked',
                 '// ask [Type a made-up word] and wait',
-                '// say (label the model guesses for (answer))',
+                '// say (recognise text (answer) (label))',
                 '',
                 '// 4. Who wrote the rule of the learning sorter?',
+                '//    Hint: look at what it was trained with.',
                 '//',
               ),
             },
@@ -269,11 +272,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Lamp on, please!',
-                body: 'Imagine a classroom where the fan and the lamp do what you type. "Switch on the lamp" works. But what about "Make it brighter"? A person understands at once. A program that only knows a few exact sentences does nothing.\n\nRemember the rule sorter: every new word needed a new rule. Today you will train a computer with examples instead. Phone assistants and smart speakers use a similar idea to understand the many ways people ask for things.',
+                body: 'Imagine a classroom where the fan and the lamp do what you type. "Switch on the lamp" works. But what about "Make it brighter"? A person understands at once. A program that only knows a few exact sentences does nothing.\n\nRemember the rule sorter: every new word needed a new rule. Today you will train a computer with examples instead.',
               },
               fr: {
                 heading: 'Allume la lampe, s’il te plaît\u00a0!',
-                body: 'Imagine une classe où le ventilateur et la lampe font ce que tu écris. «\u00a0Allume la lampe\u00a0» marche. Mais «\u00a0Plus clair, s’il te plaît\u00a0»\u00a0? Une personne comprend tout de suite. Un programme qui ne connaît que quelques phrases exactes ne fait rien.\n\nSouviens-toi du trieur à règles\u00a0: chaque nouveau mot demandait une nouvelle règle. Aujourd’hui, tu vas plutôt entraîner un ordinateur avec des exemples. Les assistants des téléphones et les enceintes connectées utilisent une idée semblable pour comprendre les nombreuses façons de demander quelque chose.',
+                body: 'Imagine une classe où le ventilateur et la lampe font ce que tu écris. «\u00a0Allume la lampe\u00a0» marche. Mais «\u00a0Plus clair, s’il te plaît\u00a0»\u00a0? Une personne comprend tout de suite. Un programme qui ne connaît que quelques phrases exactes ne fait rien.\n\nSouviens-toi du trieur à règles\u00a0: chaque nouveau mot demandait une nouvelle règle. Aujourd’hui, tu vas plutôt entraîner un ordinateur avec des exemples.',
               },
             },
             data: {},
@@ -286,7 +289,7 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Commands, labels and meaning',
-                body: 'Here, each **label** is a command the classroom can carry out, and each **example** is one way to ask for it:\n\n| Label | Examples |\n|---|---|\n| lamp on | "Light, please!" · "Make it brighter" |\n| fan on | "Start the fan" · "Phew, I am melting!" |\n\n"Make it brighter" never says *lamp* or *on*. With enough varied examples, the model learns the **meaning** of a command, not just its words, so it can understand sentences it has never seen.\n\nBut it only knows your labels. Type "What is for lunch?" and it still picks one of them. A person needs to check.',
+                body: 'Here, each **label** is a command the classroom can carry out, and each **example** is one way to ask for it:\n\n| Label | Examples |\n|---|---|\n| lamp on | "Light, please!" · "Make it brighter" |\n| fan on | "Start the fan" · "Phew, I\'m melting!" |\n\n"Make it brighter" never says *lamp* or *on*. With enough varied examples, the model learns the **meaning** of a command, not just its words, so it can understand sentences it has never seen.\n\nBut it only knows your labels. Type "What\'s for lunch?" and it still picks one of them. A person needs to check.',
               },
               fr: {
                 heading: 'Commandes, étiquettes et sens',
@@ -304,18 +307,18 @@ export const m3: SeedModulePart = {
               en: {
                 title: 'Smart Classroom: teach a computer your commands',
                 instructions:
-                  '**Your goal:** a Scratch classroom where the fan and the lamp obey you, whatever words you use. The model learns what a command means from your examples, not the exact words.\n\n1. Open Machine Learning for Kids and choose **Try it now**. For the click-by-click steps, follow the official worksheet (PDF).\n2. Create a **text** project named **smart classroom**, in the language of your commands.\n3. Add the four labels of the worksheet: fan on, fan off, lamp on, lamp off. Spell them as it does: the Scratch classroom needs them.\n4. Under each label, write **at least five** different commands of your own: polite, short, a question, a hint. No names of real people.\n5. Train the model, then test it with **new** sentences and note the label it picks.\n6. Mistakes? Add more varied examples where labels get mixed up, then train and test again.\n7. With the worksheet, open Scratch and load the classroom. It only obeys a few exact sentences: swap those rules for your model and try your commands.\n8. Take your screenshot, and write down two new commands the model understood and one it got wrong.',
+                  '**Your goal:** a Scratch classroom where the fan and the lamp obey you, whatever words you use.\n\n1. Open Machine Learning for Kids and choose **Try it now**. For the click-by-click steps, follow the official worksheet (PDF).\n2. Create a **text** project named **smart classroom**, in the language of your commands.\n3. Add the worksheet\'s four labels, spelled exactly like this: fan on, fan off, lamp on, lamp off. The Scratch classroom only knows these four.\n4. Under each label, write **at least five** different commands of your own. Mix them up: a polite one, a hint like "Phew, I\'m melting!", a very short one and a question. No names of real people.\n5. Train the model, then test it with **new** sentences and note the label it picks. Try tricky ones too, like "What\'s for lunch?"\n6. Mistakes? Add more varied examples where the model mixes up labels, then train and test again.\n7. With the worksheet, open Scratch and load the classroom. It only obeys a few exact sentences: swap those rules for your model, try your commands and take your screenshot.',
                 bringBack:
                   'A screenshot of your Scratch classroom or of a test result (no names or faces), two new commands the model understood with the label it chose, and one it got wrong, with your idea of why.',
-                hint: 'If two labels get mixed up, compare their examples. Do "lamp on" and "lamp off" use almost the same words? Add examples that show the difference, then train again.',
+                hint: 'If the model mixes up two labels, compare their examples. Do "lamp on" and "lamp off" use almost the same words? Add examples that show the difference.',
               },
               fr: {
                 title: 'Classe intelligente\u00a0: apprends tes commandes à un ordinateur',
                 instructions:
-                  '**Ton but\u00a0:** une classe Scratch où le ventilateur et la lampe t’obéissent, quels que soient tes mots. Le modèle apprend le sens d’une commande grâce à tes exemples, pas les mots exacts.\n\n1. Ouvre Machine Learning for Kids et choisis **Essayer maintenant** (*Try it now*). Pour le détail des clics, suis la fiche officielle (PDF).\n2. Crée un projet de **texte** nommé **smart classroom**, dans la langue de tes commandes (*French* pour le français).\n3. Ajoute les quatre étiquettes de la fiche\u00a0: fan on, fan off, lamp on, lamp off. Écris-les comme elle\u00a0: la classe Scratch en a besoin.\n4. Pour chaque étiquette, écris **au moins cinq** commandes différentes, inventées par toi\u00a0: polie, courte, une question, un indice. Aucun nom de vraie personne.\n5. Entraîne le modèle, puis teste-le avec des phrases **nouvelles** et note l’étiquette qu’il choisit.\n6. Des erreurs\u00a0? Ajoute des exemples plus variés là où les étiquettes se mélangent, puis entraîne et teste de nouveau.\n7. Avec la fiche, ouvre Scratch et charge la classe. Elle n’obéit qu’à quelques phrases exactes\u00a0: remplace ces règles par ton modèle et essaie tes commandes.\n8. Fais ta capture d’écran, et note deux commandes nouvelles que le modèle a comprises et une qu’il a mal comprise.',
+                  '**Ton but\u00a0:** une classe Scratch où le ventilateur et la lampe t’obéissent, quels que soient tes mots.\n\n1. Ouvre Machine Learning for Kids et choisis **Essayer maintenant** (*Try it now*). Pour le détail des clics, suis la fiche officielle (PDF).\n2. Crée un projet de type **reconnaissance texte** nommé **smart classroom**, dans la langue de tes commandes (*French* pour le français).\n3. Ajoute les quatre étiquettes de la fiche, écrites exactement ainsi\u00a0: fan on, fan off, lamp on, lamp off. La classe Scratch ne connaît que celles-là.\n4. Pour chaque étiquette, écris **au moins cinq** commandes différentes, inventées par toi. Varie-les\u00a0: une commande polie, une phrase qui donne un indice (comme «\u00a0Pfiou, je fonds\u00a0!\u00a0»), une très courte et une question. Aucun nom de vraie personne.\n5. Entraîne le modèle, puis teste-le avec des phrases **nouvelles** et note l’étiquette qu’il choisit. Essaie aussi des phrases pièges, comme «\u00a0Qu’est-ce qu’on mange à midi\u00a0?\u00a0»\n6. Des erreurs\u00a0? Ajoute des exemples plus variés là où le modèle confond les étiquettes, puis entraîne et teste de nouveau.\n7. Avec la fiche, ouvre Scratch et charge la classe. Elle n’obéit qu’à quelques phrases exactes\u00a0: remplace ces règles par ton modèle, essaie tes commandes et fais ta capture d’écran.',
                 bringBack:
-                  'Une capture d’écran de ta classe Scratch ou d’un résultat de test (sans nom ni visage), deux commandes nouvelles que le modèle a comprises avec l’étiquette choisie, et une qu’il a mal comprise, avec ton idée de la raison.',
-                hint: 'Si deux étiquettes se mélangent, compare leurs exemples. Est-ce que «\u00a0lamp on\u00a0» et «\u00a0lamp off\u00a0» utilisent presque les mêmes mots\u00a0? Ajoute des exemples qui montrent bien la différence, puis entraîne de nouveau le modèle.',
+                  'Une capture d’écran de ta classe Scratch ou d’un résultat de test (sans nom ni visage), deux commandes nouvelles que le modèle a comprises avec l’étiquette choisie, et une qu’il a mal comprise, en expliquant pourquoi d’après toi.',
+                hint: 'Si le modèle confond deux étiquettes, compare leurs exemples. Est-ce que «\u00a0lamp on\u00a0» et «\u00a0lamp off\u00a0» utilisent presque les mêmes mots\u00a0? Ajoute des exemples qui montrent bien la différence.',
               },
             },
             data: {
@@ -335,11 +338,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 heading: 'No website? Be the smart classroom on paper',
-                body: 'If the website does not open, play the same project with classmates or family.\n\n1. Make four label cards: **fan on**, **fan off**, **lamp on**, **lamp off**.\n2. Everyone writes commands on small papers, at least five per label, and puts them under the right card. That is the training.\n3. One player is **the computer** and reads all the examples.\n4. The others say **new** commands. The computer points at a label, with no help.\n5. Keep score: command, label chosen, right or wrong.\n\nWhich commands fooled the computer, and why? Bring back your score table and a photo of your cards (no faces).',
+                body: 'If the website does not open, play the same project with classmates or family.\n\n1. Make four label cards: **fan on**, **fan off**, **lamp on**, **lamp off**.\n2. Everyone writes commands on small papers, at least five per label, and puts them under the right card. That is the training.\n3. One player is **the computer** and reads all the examples.\n4. The others say **new** commands, including something off-topic like "What\'s for lunch?" The computer may only compare: it points at the label whose papers share the most words with the command, and it must always pick one of the four labels.\n5. Keep score: command, label chosen, right or wrong.\n\nWhich commands fooled the computer, and why? Bring back your score table and a photo of your cards (no faces).',
               },
               fr: {
-                heading: 'Pas de site\u00a0? Joue la classe intelligente sur papier',
-                body: 'Si le site ne s’ouvre pas, joue le même projet avec des camarades ou avec ta famille.\n\n1. Prépare quatre cartes étiquettes\u00a0: **fan on** (ventilateur allumé), **fan off** (ventilateur éteint), **lamp on** (lampe allumée), **lamp off** (lampe éteinte).\n2. Chacun écrit des commandes sur de petits papiers, au moins cinq par étiquette, et les range sous la bonne carte. C’est l’entraînement.\n3. Un joueur fait **l’ordinateur**\u00a0: il lit tous les exemples.\n4. Les autres disent des commandes **nouvelles**. L’ordinateur montre une étiquette, sans aide.\n5. Note les résultats\u00a0: commande, étiquette choisie, juste ou faux.\n\nQuelles commandes ont trompé l’ordinateur, et pourquoi\u00a0? Rapporte ton tableau des résultats et une photo de tes cartes (sans visage).',
+                heading: 'Pas de site\u00a0? Joue à la classe intelligente sur papier',
+                body: 'Si le site ne s’ouvre pas, joue le même projet avec des camarades ou avec ta famille.\n\n1. Prépare quatre cartes étiquettes\u00a0: **fan on** (ventilateur allumé), **fan off** (ventilateur éteint), **lamp on** (lampe allumée), **lamp off** (lampe éteinte).\n2. Chacun écrit des commandes sur de petits papiers, au moins cinq par étiquette, et les range sous la bonne carte. C’est l’entraînement.\n3. Un joueur fait **l’ordinateur**\u00a0: il lit tous les exemples.\n4. Les autres disent des commandes **nouvelles**, dont au moins une hors sujet, comme «\u00a0Qu’est-ce qu’on mange à midi\u00a0?\u00a0» L’ordinateur n’a le droit que de comparer\u00a0: il montre l’étiquette dont les papiers ont le plus de mots en commun avec la commande, et il doit toujours choisir une des quatre étiquettes.\n5. Note les résultats\u00a0: commande, étiquette choisie, juste ou faux.\n\nQuelles commandes ont trompé l’ordinateur, et pourquoi\u00a0? Rapporte ton tableau des résultats et une photo de tes cartes (sans visage).',
               },
             },
             data: {},
@@ -390,11 +393,11 @@ export const m3: SeedModulePart = {
             translations: {
               en: {
                 prompt:
-                  'Your model understood sentences it had never seen. How do you think it did that? What would you add to fix the command it got wrong?',
+                  'Your model (or your paper computer) understood sentences it had never seen. How do you think it did that? What would you add to fix the command it got wrong?',
               },
               fr: {
                 prompt:
-                  'Ton modèle a compris des phrases qu’il n’avait jamais vues. Comment a-t-il fait, d’après toi\u00a0? Qu’ajouterais-tu pour corriger la commande qu’il a mal comprise\u00a0?',
+                  'Ton modèle (ou ton ordinateur en papier) a compris des phrases qu’il n’avait jamais vues. Comment a-t-il fait, d’après toi\u00a0? Qu’ajouterais-tu pour corriger la commande qu’il a mal comprise\u00a0?',
               },
             },
             data: { minLength: 40 },
@@ -603,7 +606,7 @@ export const m3: SeedModulePart = {
                 text: 'More examples, varied examples and testing with new cards all help. Examples that all look the same teach a one-sided pattern.',
               },
               fr: {
-                text: 'Plus d’exemples, des exemples variés et des tests sur des cartes nouvelles\u00a0: tout cela aide. Des exemples tous pareils apprennent une régularité trop étroite.',
+                text: 'Plus d’exemples, des exemples variés et des tests sur des cartes nouvelles\u00a0: tout cela aide. Des exemples tous pareils font apprendre une régularité trop étroite.',
               },
             },
           },
@@ -677,18 +680,7 @@ export const m3: SeedModulePart = {
             correctOptionIndexes: [],
             acceptedAnswers: {
               en: ['testing', 'test', 'a test', 'the test', 'tests', 'test it', 'testing it'],
-              fr: [
-                'test',
-                'le test',
-                'un test',
-                'tests',
-                'les tests',
-                'tester',
-                'le tester',
-                'essai',
-                'un essai',
-                'essayer',
-              ],
+              fr: ['test', 'le test', 'un test', 'tests', 'les tests', 'tester', 'le tester'],
             },
             explanation: {
               en: {
@@ -716,14 +708,14 @@ export const m3: SeedModulePart = {
             brief:
               'Train a model on Machine Learning for Kids to understand commands for the fan and the lamp of a virtual classroom. Test it with new sentences, use it in the Scratch classroom, and show what it understood and where it went wrong.',
             requirements:
-              'Hand in three things: (1) a screenshot of your Scratch classroom reacting to a command, or of a test result on Machine Learning for Kids; (2) two new commands that were not in your examples and that the model understood, each with the label it chose; (3) one command it got wrong, the label it chose, and one or two sentences about why you think it made that mistake. Send the screenshot as a picture and write (2) and (3) in the box about your work. No names, faces or school details in your commands or your screenshot. If the website did not open, play the paper version and send your score table as text or as a photo instead of the screenshot, with (2) and (3) from your game.',
+              'Hand in three things: (1) a screenshot of your Scratch classroom reacting to a command, or of a test result on Machine Learning for Kids; (2) two new commands that were not in your examples and that the model understood, each with the label it chose; (3) one command it got wrong, the label it chose, and one or two sentences about why you think it made that mistake. If it got everything right, give it an off-topic command like "What\'s for lunch?" and use that one. Send the screenshot as a picture and write (2) and (3) in the box about your work. No names, faces or school details in your commands or your screenshot. If the website did not open, play the paper version and send your score table (as text or a photo) instead of the screenshot, with (2) and (3) from your game.',
           },
           fr: {
             title: 'Ma classe intelligente',
             brief:
               'Entraîne un modèle sur Machine Learning for Kids à comprendre des commandes pour le ventilateur et la lampe d’une classe virtuelle. Teste-le avec des phrases nouvelles, utilise-le dans la classe Scratch, puis montre ce qu’il a compris et où il s’est trompé.',
             requirements:
-              'Rends trois choses\u00a0: (1) une capture d’écran de ta classe Scratch qui réagit à une commande, ou d’un résultat de test sur Machine Learning for Kids\u00a0; (2) deux commandes nouvelles, absentes de tes exemples, que le modèle a comprises, chacune avec l’étiquette qu’il a choisie\u00a0; (3) une commande qu’il a mal comprise, l’étiquette qu’il a choisie, et une ou deux phrases pour expliquer pourquoi il s’est trompé, d’après toi. Envoie la capture d’écran comme image et écris (2) et (3) dans la zone qui présente ton travail. Aucun nom, aucun visage ni aucun détail sur ton école dans tes commandes ou ta capture d’écran. Si le site ne s’est pas ouvert, joue la version sur papier et envoie ton tableau des résultats en texte ou en photo à la place de la capture d’écran, avec (2) et (3) tirés de ta partie.',
+              'Rends trois choses\u00a0: (1) une capture d’écran de ta classe Scratch qui réagit à une commande, ou d’un résultat de test sur Machine Learning for Kids\u00a0; (2) deux commandes nouvelles, absentes de tes exemples, que le modèle a comprises, chacune avec l’étiquette qu’il a choisie\u00a0; (3) une commande qu’il a mal comprise, l’étiquette qu’il a choisie, et une ou deux phrases pour expliquer pourquoi il s’est trompé, d’après toi. S’il ne s’est jamais trompé, donne-lui une commande hors sujet, comme «\u00a0Qu’est-ce qu’on mange à midi\u00a0?\u00a0», et sers-toi de celle-là. Envoie la capture d’écran comme image et écris (2) et (3) dans «\u00a0À propos de votre travail\u00a0». Aucun nom, aucun visage ni aucun détail sur ton école dans tes commandes ou ta capture d’écran. Si le site ne s’est pas ouvert, joue la version sur papier et envoie ton tableau des résultats (en texte ou en photo) à la place de la capture d’écran, avec (2) et (3) tirés de ta partie.',
           },
         },
         allowedSubmissionTypes: ['text', 'image'],

@@ -12,15 +12,23 @@
 // Scratch 3; Try it now, no accounts): two made-up command words, labelled left and right so
 // that the worksheet's Scratch template and scripts match, plus the site's background noise
 // label (it keeps that English name in the French interface); made-up words in the learner's own
-// voice or sounds made with objects, never a classmate's voice; microphone only with the
-// teacher's permission. The worksheet's first part (the ready-made Speech to Text blocks, Google
-// Chrome only) is skipped to fit 40 minutes (its teacher's notes say 1 hour). The site asks for
-// at least 8 examples per label in a sounds project, and it trains and keeps sound models in the
-// browser (its help page; tensorflow-models-speech-commands with BROWSER_FFT, a spectrogram, in
-// IBM/taxinomitis). A paper version for schools that block the site or the microphone (sound
-// pictures on a 3 x 6 grid, a partner as the model, "far away" and "noisy" test cards); the
-// hand-in project-m4 (assignment: a screenshot and a test table of sound, place, tries and
-// recognised; no audio submissions). No tutor activity in m4-l1, for time.
+// voice or sounds made with hands or objects, never a classmate's voice; microphone only with the
+// teacher's permission (step 3, its first use). Background noise is recorded with nobody talking
+// (neighbours pause for the 2 seconds of each recording), so no classmate's voice ends up in the
+// training examples. Step 2 picks the storage "In your web browser" (« Dans votre navigateur
+// web »): sound examples then stay in the browser (uploadSound in public/components/training/
+// training.service.js); cloud storage uploads them (src/lib/restapi/sounds/uploads.ts) for the
+// life of the Try it now session (SESSION_LIFESPAN, 4 hours). To fit 40 minutes (the teacher's
+// notes say 1 hour), the worksheet's first part (the ready-made Speech to Text blocks) is skipped,
+// the test plan is 3 tries per case, and the Scratch part is an extension ("if you have time";
+// the screenshot of the test page is enough for the hand-in). The French Scratch button is
+// « Modèles de projets » (Project templates). The site asks for at least 8 examples per label in
+// a sounds project, and it trains sound models in the browser (tensorflow-models-speech-commands
+// with BROWSER_FFT, a spectrogram, in IBM/taxinomitis). A paper version for schools that block
+// the site or the microphone (sound pictures on a 3 x 6 grid, a partner as the model, "far
+// away", "noisy" and never-learned test cards); the hand-in project-m4 (assignment: a screenshot
+// and a test table of sound, place, tries and recognised; no audio submissions). No tutor
+// activity in m4-l1, for time.
 // m4-l2: false triggers and missed commands (which one is worse depends on the command), clear
 // command words, a confidence threshold (the site's test page reports a sound only when the
 // model is fairly confident: probabilityThreshold 0.7 in soundtraining.service.js), confirmations,
@@ -29,9 +37,12 @@
 // wake word is usually detected on the device, what follows is often sent to the company, some
 // companies have had staff listen to a share of recordings; a voice recording can be personal
 // data, e.g. under the GDPR) and fairness for voices a model heard little of. The blocks code
-// activity, to trace by hand: with a threshold of 80, the six heard labels give turn left, say
-// again, stop, nothing, drive forward, say again; a threshold of 60 changes only the sixth
-// (turn left), 95 changes the first and the fifth (say again). Then a check_my_work tutor
+// activity, to trace by hand: background noise is set aside before the threshold test (else a
+// quiet room would make the robot ask "say that again" on its own); with a threshold of 80, the
+// six heard labels give turn left, say again, stop, nothing, drive forward, say again; a
+// threshold of 60 changes only the sixth (turn left), 95 changes the first and the fifth (say
+// again). Step 4 shows the limit of "stop always wins": the loop does not listen while the robot
+// drives, so only the emergency stop button can stop it then. Then a check_my_work tutor
 // activity, the module quiz quiz-m4 and a reflection. No video block in this module: no curated
 // video in the course files is about sound or speech recognition.
 
@@ -71,7 +82,7 @@ export const m4: SeedModulePart = {
             en: {
               title: 'Give a robot ears',
               summary:
-                'How a robot turns sounds into patterns it can learn, and why noise and distance change what it hears. Then train your own alien command words.',
+                'How a robot turns sounds into patterns it can learn, and why noise and distance change what it hears. Then train a model to recognise your own alien command words.',
             },
             fr: {
               title: 'Donne des oreilles à un robot',

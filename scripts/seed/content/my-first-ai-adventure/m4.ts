@@ -16,7 +16,9 @@
 // lesson and the hint says to delete an earlier lesson's project first. No video block: the
 // one curated computer-vision video (Code.org, 2hXG8v8p0KM) serves ages 10-14 in
 // ai-robotics-foundations, and 30 minutes are already tight for the worksheet (its teacher's
-// notes estimate an hour).
+// notes estimate an hour): step 3 asks for ML4K's minimum of five drawings per label, step 6
+// for three envelopes, with Learn & Test as the shortcut when time runs out. The player does
+// not shuffle quiz options, so the correct ones sit in varied positions: keep it that way.
 
 import type { SeedModulePart } from '../../types';
 
@@ -69,11 +71,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Can a computer read your writing?',
-                body: 'A big post office sorts mountains of letters, many with handwritten addresses: big, small, neat or wobbly. In many countries, machines read the **postcode** on each envelope and send it to the right van.\n\nBut how can a computer read writing when no two people write alike? In the last module you taught a computer with examples. Today you will use drawings, and see what a computer really "sees".',
+                body: 'A big post office sorts mountains of envelopes, many with handwritten addresses: big, small, neat or wobbly. In many countries, machines read the **postcode** on each envelope and send it to the right van.\n\nBut how can a computer read writing when no two people write alike? In the last module you taught a computer with examples. Today you will use drawings, and see what a computer really "sees".',
               },
               fr: {
                 heading: 'Un ordinateur peut-il lire ton écriture\u00a0?',
-                body: 'Un grand centre de tri postal reçoit des montagnes de lettres, souvent avec une adresse écrite à la main\u00a0: en grand, en petit, proprement ou en tremblant. Dans de nombreux pays, des machines lisent le **code postal** sur chaque enveloppe et l’envoient vers le bon camion.\n\nMais comment un ordinateur peut-il lire une écriture, alors que personne n’écrit pareil\u00a0? Dans le module précédent, tu as appris à un ordinateur à partir d’exemples. Aujourd’hui, tu vas le faire avec des dessins, et découvrir ce qu’un ordinateur «\u00a0voit\u00a0» vraiment.',
+                body: 'Un grand centre de tri postal reçoit des montagnes de courrier, souvent avec une adresse écrite à la main\u00a0: en grand, en petit, proprement ou en tremblant. Dans de nombreux pays, des machines lisent le **code postal** sur chaque enveloppe et l’envoient vers le bon camion.\n\nMais comment un ordinateur peut-il lire une écriture, alors que personne n’écrit pareil\u00a0? Dans le module précédent, tu as entraîné un ordinateur avec des exemples. Aujourd’hui, tu vas le faire avec des dessins, et découvrir ce qu’un ordinateur «\u00a0voit\u00a0» vraiment.',
               },
             },
             data: {},
@@ -86,11 +88,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'A picture is made of tiny squares',
-                body: 'Look very closely at a screen and you will see tiny squares called **pixels**. Each one has a single colour, stored as a **number**. Here is an O made of 25 pixels (■ dark, □ light):\n\n```\n□ ■ ■ ■ □\n■ □ □ □ ■\n■ □ □ □ ■\n■ □ □ □ ■\n□ ■ ■ ■ □\n```\n\nA real drawing has thousands of pixels, and the computer never sees "a letter O": only a grid of numbers. So you give the **model** (the program that learns) lots of drawings of each letter, each with its **label**. It finds **patterns**: an O is a ring of dark pixels, an X is two lines that cross. For a new drawing, it picks the label whose pattern looks closest.',
+                body: 'Zoom in a long way on a picture and you will see that it is made of tiny squares called **pixels**. Each one has a single colour, stored as a **number**. Here is an O made of 25 pixels (■ coloured in, □ empty):\n\n```\n□ ■ ■ ■ □\n■ □ □ □ ■\n■ □ □ □ ■\n■ □ □ □ ■\n□ ■ ■ ■ □\n```\n\nA real drawing has thousands of pixels, and the computer never sees "a letter O": only a grid of numbers. So you give the **model** (the program that learns) lots of drawings of each letter, each with its **label**. It finds **patterns**: an O is a ring of dark pixels, an X is two lines that cross. For a new drawing, it picks the label whose pattern looks closest.',
               },
               fr: {
                 heading: 'Une image est faite de minuscules carrés',
-                body: 'Regarde un écran de très près\u00a0: tu verras de minuscules carrés appelés **pixels**. Chaque pixel a une seule couleur, que l’ordinateur garde sous forme de **nombre**. Voici un O fait de 25\u00a0pixels (■ foncé, □ clair)\u00a0:\n\n```\n□ ■ ■ ■ □\n■ □ □ □ ■\n■ □ □ □ ■\n■ □ □ □ ■\n□ ■ ■ ■ □\n```\n\nUn vrai dessin compte des milliers de pixels, et l’ordinateur ne voit jamais «\u00a0une lettre O\u00a0»\u00a0: seulement une grille de nombres. Alors, tu donnes au **modèle** (le programme qui apprend) beaucoup de dessins de chaque lettre, chacun avec son **étiquette**. Il cherche des **régularités**\u00a0: un O est un anneau de pixels foncés, un X est fait de deux traits qui se croisent. Devant un nouveau dessin, il choisit l’étiquette dont les régularités lui ressemblent le plus.',
+                body: 'Zoome très fort sur une image\u00a0: tu verras qu’elle est faite de minuscules carrés appelés **pixels**. Chaque pixel a une seule couleur, que l’ordinateur garde sous forme de **nombre**. Voici un O fait de 25\u00a0pixels (■ colorié, □ vide)\u00a0:\n\n```\n□ ■ ■ ■ □\n■ □ □ □ ■\n■ □ □ □ ■\n■ □ □ □ ■\n□ ■ ■ ■ □\n```\n\nUn vrai dessin compte des milliers de pixels, et l’ordinateur ne voit jamais «\u00a0une lettre O\u00a0»\u00a0: seulement une grille de nombres. Alors, tu donnes au **modèle** (le programme qui apprend) beaucoup de dessins de chaque lettre, chacun avec son **étiquette**. Il cherche des **régularités**\u00a0: un O est un anneau de pixels foncés, un X est fait de deux traits qui se croisent. Devant un nouveau dessin, il choisit l’étiquette dont les régularités lui ressemblent le plus.',
               },
             },
             data: {},
@@ -121,18 +123,18 @@ export const m4: SeedModulePart = {
               en: {
                 title: 'Mailman Max: a sorting office that reads postcodes',
                 instructions:
-                  '**Goal:** train a computer to read postcode letters that you draw, then use it in a Scratch sorting office. (In the UK, postcodes start with letters, such as OX for Oxford.)\n\n1. Open Machine Learning for Kids with the button below and choose **Try it now**: no account, no name.\n2. Make a project called *Mailman Max* that recognises **images**.\n3. Add the three labels the worksheet asks for. In each, use **draw** to write its letters with the mouse about ten times, big enough to fill the box. Drawings only: no photos, no webcam.\n4. Train the model and test it with new drawings on **Learn & Test**.\n5. Follow the official worksheet (PDF) to open the sorting office in Scratch and connect your model.\n6. Test at least five envelopes: neat, messy, tiny and look-alike letters. Note where each went, then take a screenshot.',
+                  '**Goal:** train a computer to read postcode letters that you draw, then use it in a Scratch sorting office. (In the UK, postcodes start with letters, such as OX for Oxford.)\n\n1. Open Machine Learning for Kids with the button below and choose **Try it now**: no account, no name.\n2. Make a project called *Mailman Max* that recognises **images**.\n3. Add the three labels of the worksheet: Oxford (draw OX), Guildford (GU) and Southampton (SO). In each, use **draw** to write its two letters with the mouse at least five times (the site needs five; ten works better), big enough to fill the box. Drawings only: no photos, no webcam.\n4. Train the model and test it with new drawings on **Learn & Test**.\n5. Follow the official worksheet (PDF) to open the sorting office in Scratch and connect your model.\n6. Test at least three envelopes: neat, messy, tiny or look-alike letters. Note where each went, then take a screenshot. Short of time? Test with new drawings on **Learn & Test** and screenshot that.',
                 bringBack:
                   'For the project below: a screenshot, one drawing the model got wrong (what you wrote, where it went, why you think it got confused) and one idea to help it.',
-                hint: 'Mixing up two letters? Add more examples of both, drawn differently, and train again. Try it now keeps one project at a time: delete any project left from an earlier lesson, once its work is handed in.',
+                hint: 'Mixing up two letters? Add more examples of both, drawn differently, and train again. "Try it now" keeps only one project at a time: delete any project left from an earlier lesson, once its work is handed in.',
               },
               fr: {
                 title: 'Le facteur Max\u00a0: un centre de tri qui lit les codes postaux',
                 instructions:
-                  '**Objectif\u00a0:** entraîner un ordinateur à lire les lettres de codes postaux que tu dessines, puis l’utiliser dans un centre de tri Scratch. (Au Royaume-Uni, les codes postaux commencent par des lettres, comme OX pour Oxford.)\n\n1. Ouvre Machine Learning for Kids avec le bouton ci-dessous et choisis **Essayer maintenant** (*Try it now*)\u00a0: pas de compte, pas de nom.\n2. Crée un projet appelé *Facteur Max* qui reconnaît des **images**.\n3. Ajoute les trois étiquettes que demande la fiche. Dans chacune, utilise **dessin** (*draw*) pour écrire ses lettres à la souris une dizaine de fois, assez grand pour remplir la case. Uniquement des dessins\u00a0: pas de photo, pas de webcam.\n4. Entraîne le modèle et teste-le avec de nouveaux dessins dans **Apprendre & Tester**.\n5. Suis la fiche officielle (PDF) pour ouvrir le centre de tri dans Scratch et y brancher ton modèle.\n6. Teste au moins cinq enveloppes\u00a0: lettres soignées, brouillonnes, toutes petites ou qui se ressemblent. Note où chacune est partie, puis fais une capture d’écran.',
+                  '**Objectif\u00a0:** entraîner un ordinateur à lire les lettres de codes postaux que tu dessines, puis l’utiliser dans un centre de tri Scratch. (Au Royaume-Uni, les codes postaux commencent par des lettres, comme OX pour Oxford.)\n\n1. Ouvre Machine Learning for Kids avec le bouton ci-dessous et choisis **Essayer maintenant** (*Try it now*)\u00a0: pas de compte, pas de nom.\n2. Crée un projet appelé *Facteur Max* qui reconnaît des **images**.\n3. Ajoute les trois étiquettes de la fiche\u00a0: Oxford (dessine OX), Guildford (GU) et Southampton (SO). Dans chacune, utilise **dessin** (*draw*) pour écrire ses deux lettres à la souris au moins cinq fois (le site en demande cinq\u00a0; dix, c’est mieux), assez grand pour remplir la case. Uniquement des dessins\u00a0: pas de photo, pas de webcam.\n4. Entraîne le modèle et teste-le avec de nouveaux dessins dans **Apprendre & Tester** (*Learn & Test*).\n5. Suis la fiche officielle (PDF) pour ouvrir le centre de tri dans Scratch et y brancher ton modèle.\n6. Teste au moins trois enveloppes\u00a0: lettres soignées, brouillonnes, toutes petites ou qui se ressemblent. Note où chacune est partie, puis fais une capture d’écran. Pas assez de temps\u00a0? Teste de nouveaux dessins dans **Apprendre & Tester** et fais une capture de cet écran.',
                 bringBack:
                   'Pour le projet ci-dessous\u00a0: une capture d’écran, un dessin que le modèle a mal trié (ce que tu as écrit, où il est parti, pourquoi il s’est trompé selon toi) et une idée pour l’aider.',
-                hint: 'Il confond deux lettres\u00a0? Ajoute d’autres exemples des deux, dessinés de différentes façons, et entraîne-le à nouveau. «\u00a0Essayer maintenant\u00a0» ne garde qu’un projet à la fois\u00a0: supprime celui d’une leçon précédente, une fois son travail rendu.',
+                hint: 'Ton modèle confond deux lettres\u00a0? Ajoute d’autres exemples des deux, dessinés de différentes façons, et entraîne-le à nouveau. «\u00a0Essayer maintenant\u00a0» ne garde qu’un projet à la fois\u00a0: s’il reste un projet d’une leçon précédente, supprime-le une fois son travail rendu.',
               },
             },
             data: {
@@ -152,11 +154,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'No website? Run a paper sorting office',
-                body: 'Play the same idea on paper with a partner.\n\n1. On six grids of 5 by 5 squares, colour an **O** three times and an **X** three times, each a little different: your labelled **examples**.\n2. Your partner, the "computer", studies them for one minute, then turns them over.\n3. Draw four secret **tests**: a neat O, a messy X, a tiny O in a corner, and a T.\n4. The computer may only answer "O" or "X". Note which answers are right.\n5. Swap roles. Which drawing fooled the computer? Which example would have helped?\n\nFor the project, photograph your grids and results (no faces or names), or type them.',
+                body: 'Try the same idea on paper with a partner.\n\n1. On six grids of 5 by 5 squares, colour an **O** three times and an **X** three times, each a little different: your labelled **examples**.\n2. Your partner, the "computer", studies them for one minute, then turns them over.\n3. Draw five secret **tests**: a neat O, a messy X, a tiny O in a corner, a C and a T.\n4. The computer may only answer "O" or "X". Note which answers are right. The C and the T have no right answer: as with the cat above, the computer must still pick O or X.\n5. Swap roles. Which drawing fooled the computer? Which example would have helped?\n\nFor the project, photograph your grids and results (no faces or names), or type them.',
               },
               fr: {
                 heading: 'Pas de site\u00a0? Fais un centre de tri sur papier',
-                body: 'Joue la même idée sur papier avec un ou une camarade.\n\n1. Sur six grilles de 5\u00a0carrés sur 5, colorie trois fois un **O** et trois fois un **X**, chaque fois un peu différent\u00a0: ce sont tes **exemples**, avec leurs étiquettes.\n2. Ton ou ta camarade, «\u00a0l’ordinateur\u00a0», les observe une minute, puis les retourne.\n3. Dessine quatre **tests** secrets\u00a0: un O soigné, un X brouillon, un tout petit O dans un coin, et un T.\n4. L’ordinateur ne peut répondre que «\u00a0O\u00a0» ou «\u00a0X\u00a0». Note les réponses justes.\n5. Échangez les rôles. Quel dessin a trompé l’ordinateur\u00a0? Quel exemple l’aurait aidé\u00a0?\n\nPour le projet, prends en photo tes grilles et tes résultats (sans visage ni nom), ou écris-les au clavier.',
+                body: 'Fais la même expérience sur papier avec un ou une camarade.\n\n1. Sur six grilles de 5\u00a0carrés sur 5, colorie trois fois un **O** et trois fois un **X**, chaque fois un peu différent\u00a0: ce sont tes **exemples**, avec leurs étiquettes.\n2. Ton ou ta camarade, «\u00a0l’ordinateur\u00a0», les observe une minute, puis les retourne.\n3. Dessine cinq **tests** secrets\u00a0: un O soigné, un X brouillon, un tout petit O dans un coin, un C et un T.\n4. L’ordinateur ne peut répondre que «\u00a0O\u00a0» ou «\u00a0X\u00a0». Note les réponses justes. Le C et le T n’ont pas de bonne réponse\u00a0: comme pour le chat plus haut, l’ordinateur doit quand même choisir O ou X.\n5. Échangez les rôles. Quel dessin a trompé l’ordinateur\u00a0? Quel exemple l’aurait aidé\u00a0?\n\nPour le projet, prends en photo tes grilles et tes résultats (sans visage ni nom), ou écris-les au clavier.',
               },
             },
             data: {},
@@ -169,15 +171,15 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 instructions:
-                  'Did a letter go to the wrong van? Ask the AI tutor for a hint about why. It gives clues, not answers: you find the reason yourself.',
+                  'Did an envelope go to the wrong van? Ask the AI tutor for a hint about why. It gives clues, not answers: you find the reason yourself.',
                 starterPrompt:
-                  'My handwriting model sent an OX letter to the Southampton van. Can you give me a hint about why it might have got confused, without telling me the answer?',
+                  'My handwriting model sent an OX envelope to the Southampton van. Can you give me a hint about why it might have got confused, without telling me the answer?',
               },
               fr: {
                 instructions:
-                  'Une lettre est partie dans le mauvais camion\u00a0? Demande un indice au tuteur IA pour comprendre pourquoi. Il donne des pistes, pas la réponse\u00a0: c’est toi qui trouves la raison.',
+                  'Une enveloppe est partie dans le mauvais camion\u00a0? Demande un indice au tuteur IA pour comprendre pourquoi. Il donne des pistes, pas la réponse\u00a0: c’est toi qui trouves la raison.',
                 starterPrompt:
-                  'Mon modèle qui lit l’écriture a envoyé une lettre OX vers le camion de Southampton. Peux-tu me donner un indice pour comprendre pourquoi il s’est peut-être trompé, sans me donner la réponse\u00a0?',
+                  'Mon modèle qui lit l’écriture a envoyé une enveloppe OX vers le camion de Southampton. Peux-tu me donner un indice pour comprendre pourquoi il a pu se tromper, sans me donner la réponse\u00a0?',
               },
             },
             data: { tutorMode: 'hint', labToolId: null },
@@ -263,11 +265,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'How a computer learns to hear',
-                body: 'A sound is air shaking very fast. A **microphone** turns the shaking into numbers, a bit like pixels do for a picture.\n\nTo recognise a word or a sound, a model learns from **many examples**: lots of people saying "yes", lots of claps, lots of doorbells. Some phones can be set to spot a doorbell or a smoke alarm, which helps people who are deaf or hard of hearing.\n\nA voice assistant waits for one special word, its **wake word**. When it hears it, it starts to listen properly, and often sends your words to big computers far away. Then it must understand what you want, like the computer you taught to understand you in the last module.',
+                body: 'A sound is air shaking very fast. A **microphone** turns the shaking into numbers, a bit like pixels do for a picture.\n\nTo recognise a word or a sound, a model learns from **many examples**: lots of people saying "yes", lots of claps, lots of doorbells. Some phones can be set to spot a doorbell or a smoke alarm, which helps people who are deaf or hard of hearing.\n\nA voice assistant waits for a special word or short phrase, its **wake word**. It listens all the time, but only for that, inside the speaker itself. When it hears it, it starts recording and often sends your words to big computers far away. Then it must understand what you want, like the computer you taught to understand you in the last module.',
               },
               fr: {
                 heading: 'Comment un ordinateur apprend à entendre',
-                body: 'Un son, c’est de l’air qui vibre très vite. Un **microphone** transforme ces vibrations en nombres, un peu comme les pixels pour une image.\n\nPour reconnaître un mot ou un son, un modèle apprend à partir de **beaucoup d’exemples**\u00a0: beaucoup de personnes qui disent «\u00a0oui\u00a0», beaucoup d’applaudissements, beaucoup de sonnettes. Certains téléphones peuvent être réglés pour repérer une sonnette ou une alarme incendie, ce qui aide les personnes sourdes ou malentendantes.\n\nUn assistant vocal attend un mot spécial, son **mot d’activation** (en anglais, *wake word*). Quand il l’entend, il se met vraiment à écouter et envoie souvent tes paroles à de gros ordinateurs situés très loin. Ensuite, il doit comprendre ce que tu veux, comme l’ordinateur à qui tu as appris à te comprendre dans le module précédent.',
+                body: 'Un son, c’est de l’air qui vibre très vite. Un **microphone** transforme ces vibrations en nombres, un peu comme les pixels pour une image.\n\nPour reconnaître un mot ou un son, un modèle apprend à partir de **beaucoup d’exemples**\u00a0: beaucoup de personnes qui disent «\u00a0oui\u00a0», beaucoup d’applaudissements, beaucoup de sonnettes. Certains téléphones peuvent être réglés pour repérer une sonnette ou une alarme incendie, ce qui aide les personnes sourdes ou malentendantes.\n\nUn assistant vocal attend un mot spécial ou une courte phrase, son **mot d’activation** (en anglais, *wake word*). Il écoute tout le temps, mais seulement pour repérer ce mot, à l’intérieur même de l’enceinte. Quand il l’entend, il commence à enregistrer et envoie souvent tes paroles à de gros ordinateurs situés très loin. Ensuite, il doit comprendre ce que tu veux, comme l’ordinateur à qui tu as appris à te comprendre dans le module précédent.',
               },
             },
             data: {},
@@ -280,11 +282,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Why it mishears',
-                body: 'Like your handwriting model, a voice model guesses from patterns. It can mishear when:\n\n- **there is noise**, like music, a TV or friends talking;\n- **your voice is not like its examples**: if it learned mostly from some voices or accents, it works less well for others. That is unfair, so good teams collect examples from many different people;\n- **it meets a new word**, like a made-up name: it picks the closest word it knows;\n- **words sound the same**, like "right" and "write".\n\nA word on TV can even sound like the wake word and wake the speaker by mistake.',
+                body: 'Like your handwriting model, a voice model guesses from patterns. It can mishear when:\n\n- **there is noise**, like music, a TV or friends talking;\n- **your voice is not like its examples**: if it learned mostly from some voices or accents, it works less well for others. That is unfair, so good teams collect examples from many different people;\n- **it meets a new word**, like a made-up name: it picks the closest word it knows;\n- **words sound the same**, like "right" and "write".\n\nA word on TV can even sound like the wake word and wake the speaker by mistake: then it may record and send what people say next. Many smart speakers have a button that switches the microphone off.',
               },
               fr: {
                 heading: 'Pourquoi il comprend de travers',
-                body: 'Un modèle vocal devine à partir de régularités, comme ton modèle qui lit l’écriture. Il peut comprendre de travers quand\u00a0:\n\n- **il y a du bruit**, comme de la musique, la télé ou des amis qui parlent\u00a0;\n- **ta voix ne ressemble pas à ses exemples**\u00a0: s’il a surtout appris avec certaines voix ou certains accents, il marche moins bien pour les autres. Ce n’est pas juste, alors les bonnes équipes rassemblent des exemples venant de personnes très différentes\u00a0;\n- **il rencontre un mot nouveau**, comme un nom inventé\u00a0: il choisit le mot le plus proche qu’il connaît\u00a0;\n- **des mots se prononcent pareil**, comme «\u00a0vert\u00a0», «\u00a0verre\u00a0» et «\u00a0ver\u00a0».\n\nUn mot entendu à la télé peut même ressembler au mot d’activation et réveiller l’enceinte par erreur.',
+                body: 'Un modèle vocal devine à partir de régularités, comme ton modèle qui lit l’écriture. Il peut comprendre de travers quand\u00a0:\n\n- **il y a du bruit**, comme de la musique, la télé ou des amis qui parlent\u00a0;\n- **ta voix ne ressemble pas à ses exemples**\u00a0: s’il a surtout appris avec certaines voix ou certains accents, il marche moins bien pour les autres. Ce n’est pas juste, alors les bonnes équipes rassemblent des exemples venant de personnes très différentes\u00a0;\n- **il rencontre un mot nouveau**, comme un nom inventé\u00a0: il choisit le mot le plus proche qu’il connaît\u00a0;\n- **des mots se prononcent pareil**, comme «\u00a0vert\u00a0», «\u00a0verre\u00a0» et «\u00a0ver\u00a0».\n\nUn mot entendu à la télé peut même ressembler au mot d’activation et réveiller l’enceinte par erreur\u00a0: elle peut alors enregistrer et envoyer ce qu’on dit ensuite. Beaucoup d’enceintes ont un bouton pour couper le micro.',
               },
             },
             data: {},
@@ -297,7 +299,7 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Your face and your voice belong to you',
-                body: "Your face and your voice are **personal**, like your name: they can show who you are. Protect yours and other people's:\n\n1. **Ask an adult first** before you use a camera or a microphone in an app, a game or a website.\n2. **Never film or record friends without asking.** If they say no, it is no.\n3. **Never share recordings** of yourself or anyone else. Online, they can be copied, and you cannot take them back.\n4. **Watch for the light** that shows a camera or microphone is on. Not expecting it? Tell an adult.\n\nThat is why this course uses drawings and made-up examples, never real faces or voices.",
+                body: "Your face and your voice are **personal**, like your name: they can show who you are. Protect yours and other people's:\n\n1. **Ask an adult first** before you use a camera or a microphone in an app, a game or a website.\n2. **Never film or record friends without asking.** If they say no, that means no.\n3. **Never share recordings** of yourself or anyone else. Online, they can be copied, and you cannot take them back.\n4. **Watch for the light** that shows a camera or microphone is on. Not expecting it? Tell an adult.\n\nThat is why this course uses drawings and made-up examples, never real faces or voices.",
               },
               fr: {
                 heading: 'Ton visage et ta voix t’appartiennent',
@@ -314,7 +316,7 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 heading: 'Play the wake-word game',
-                body: 'No microphone needed! Play with your class or your family.\n\n1. One player is the smart speaker. Together, choose a wake word such as "Rocket".\n2. The speaker closes their eyes. The others take turns to say words: "Rabbit", "Rock", "Rocket"...\n3. The speaker raises a hand only for the wake word.\n4. Make it harder: everyone hums while one person speaks. Then try close words, such as "Pocket" or "Rock it".\n\nDid the speaker wake up by mistake, or miss the wake word? What made it harder?',
+                body: 'No microphone needed! Play with your class or your family.\n\n1. One player is the smart speaker. Together, choose a wake word such as "Rocket".\n2. The smart speaker closes their eyes. The others take turns to say words: "Rabbit", "Rock", "Rocket"...\n3. The smart speaker raises a hand only for the wake word.\n4. Make it harder: everyone hums while one person speaks. Then try words that sound almost the same, such as "Pocket" or "Rock it".\n\nDid the smart speaker wake up by mistake, or miss the wake word? What made it harder?',
               },
               fr: {
                 heading: 'Joue au jeu du mot d’activation',
@@ -412,17 +414,17 @@ export const m4: SeedModulePart = {
               {
                 id: 'a',
                 translations: {
-                  en: { text: 'A grid of tiny squares, each one stored as a number' },
-                  fr: {
-                    text: 'Une grille de minuscules carrés, chacun gardé sous forme de nombre',
-                  },
+                  en: { text: 'A word that it reads the way you do' },
+                  fr: { text: 'Un mot qu’il lit comme toi' },
                 },
               },
               {
                 id: 'b',
                 translations: {
-                  en: { text: 'A word that it reads the way you do' },
-                  fr: { text: 'Un mot qu’il lit comme toi' },
+                  en: { text: 'A grid of tiny squares, each one stored as a number' },
+                  fr: {
+                    text: 'Une grille de minuscules carrés, chacun gardé sous forme de nombre',
+                  },
                 },
               },
               {
@@ -433,7 +435,7 @@ export const m4: SeedModulePart = {
                 },
               },
             ],
-            correctOptionIndexes: [0],
+            correctOptionIndexes: [1],
             acceptedAnswers: {},
             explanation: {
               en: {
@@ -451,41 +453,41 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 prompt:
-                  'Your model keeps sending SO letters to the Oxford van. What is the best way to help it?',
+                  'Your model keeps sending SO envelopes to the Oxford van. What is the best way to help it?',
               },
               fr: {
                 prompt:
-                  'Ton modèle envoie sans arrêt les lettres SO vers le camion d’Oxford. Quelle est la meilleure façon de l’aider\u00a0?',
+                  'Ton modèle envoie sans arrêt les enveloppes SO vers le camion d’Oxford. Quelle est la meilleure façon de l’aider\u00a0?',
               },
             },
             options: [
               {
                 id: 'a',
                 translations: {
-                  en: {
-                    text: 'Add more examples of SO and OX, drawn in different ways, then train it again',
-                  },
-                  fr: {
-                    text: 'Ajouter d’autres exemples de SO et de OX, dessinés de différentes façons, puis l’entraîner à nouveau',
-                  },
-                },
-              },
-              {
-                id: 'b',
-                translations: {
                   en: { text: 'Write the next SO very small, in a corner' },
                   fr: { text: 'Écrire le prochain SO tout petit, dans un coin' },
                 },
               },
               {
-                id: 'c',
+                id: 'b',
                 translations: {
                   en: { text: 'Delete all the SO examples' },
                   fr: { text: 'Supprimer tous les exemples de SO' },
                 },
               },
+              {
+                id: 'c',
+                translations: {
+                  en: {
+                    text: 'Add more examples of SO and OX, drawn in different ways, then train it again',
+                  },
+                  fr: {
+                    text: 'Ajouter d’autres exemples de SO et d’OX, dessinés de différentes façons, puis l’entraîner à nouveau',
+                  },
+                },
+              },
             ],
-            correctOptionIndexes: [0],
+            correctOptionIndexes: [2],
             acceptedAnswers: {},
             explanation: {
               en: {
@@ -503,11 +505,11 @@ export const m4: SeedModulePart = {
             translations: {
               en: {
                 prompt:
-                  'A model that has learned only three labels, Oxford, Guildford and Southampton, will say "I do not know" if you draw a cat.',
+                  'A model that has learned only three labels (Oxford, Guildford and Southampton) will say "I do not know" if you draw a cat.',
               },
               fr: {
                 prompt:
-                  'Un modèle qui n’a appris que trois étiquettes, Oxford, Guildford et Southampton, dira «\u00a0je ne sais pas\u00a0» si tu dessines un chat.',
+                  'Un modèle qui n’a appris que trois étiquettes (Oxford, Guildford et Southampton) dira «\u00a0je ne sais pas\u00a0» si tu dessines un chat.',
               },
             },
             options: [
@@ -549,12 +551,19 @@ export const m4: SeedModulePart = {
               {
                 id: 'b',
                 translations: {
+                  en: { text: 'It is in a bad mood today' },
+                  fr: { text: 'Il est de mauvaise humeur aujourd’hui' },
+                },
+              },
+              {
+                id: 'c',
+                translations: {
                   en: { text: 'You say a made-up word that it never learned' },
                   fr: { text: 'Tu dis un mot inventé qu’il n’a jamais appris' },
                 },
               },
               {
-                id: 'c',
+                id: 'd',
                 translations: {
                   en: { text: 'Your voice is not like most of the examples it learned from' },
                   fr: {
@@ -562,15 +571,8 @@ export const m4: SeedModulePart = {
                   },
                 },
               },
-              {
-                id: 'd',
-                translations: {
-                  en: { text: 'It is in a bad mood today' },
-                  fr: { text: 'Il est de mauvaise humeur aujourd’hui' },
-                },
-              },
             ],
-            correctOptionIndexes: [0, 1, 2],
+            correctOptionIndexes: [0, 2, 3],
             acceptedAnswers: {},
             explanation: {
               en: {
@@ -599,15 +601,15 @@ export const m4: SeedModulePart = {
               {
                 id: 'a',
                 translations: {
-                  en: { text: 'It thought it heard its wake word' },
-                  fr: { text: 'Elle a cru entendre son mot d’activation' },
+                  en: { text: 'It wanted to watch the programme' },
+                  fr: { text: 'Elle voulait regarder l’émission' },
                 },
               },
               {
                 id: 'b',
                 translations: {
-                  en: { text: 'It wanted to watch the programme' },
-                  fr: { text: 'Elle voulait regarder l’émission' },
+                  en: { text: 'The word on TV sounded close enough to its wake word' },
+                  fr: { text: 'Le mot de la télé ressemblait assez à son mot d’activation' },
                 },
               },
               {
@@ -618,7 +620,7 @@ export const m4: SeedModulePart = {
                 },
               },
             ],
-            correctOptionIndexes: [0],
+            correctOptionIndexes: [1],
             acceptedAnswers: {},
             explanation: {
               en: {
@@ -647,26 +649,26 @@ export const m4: SeedModulePart = {
               {
                 id: 'a',
                 translations: {
-                  en: { text: 'Ask an adult before you say yes' },
-                  fr: { text: 'Demander à un adulte avant de dire oui' },
-                },
-              },
-              {
-                id: 'b',
-                translations: {
                   en: { text: 'Say yes quickly so you can start playing' },
                   fr: { text: 'Dire oui très vite pour commencer à jouer' },
                 },
               },
               {
-                id: 'c',
+                id: 'b',
                 translations: {
                   en: { text: 'Say yes, then record your friends to test it' },
                   fr: { text: 'Dire oui, puis enregistrer tes amis pour essayer' },
                 },
               },
+              {
+                id: 'c',
+                translations: {
+                  en: { text: 'Ask an adult before you say yes' },
+                  fr: { text: 'Demander à un adulte avant de dire oui' },
+                },
+              },
             ],
-            correctOptionIndexes: [0],
+            correctOptionIndexes: [2],
             acceptedAnswers: {},
             explanation: {
               en: {
@@ -727,16 +729,16 @@ export const m4: SeedModulePart = {
           en: {
             title: 'My handwriting sorting office',
             brief:
-              'Train a computer to read postcode letters that you draw with the mouse, and use it in the Mailman Max sorting office in Scratch. Then test it like a scientist: find a drawing it gets wrong, think about why, and suggest how to help it. If the website does not work at your school, do the paper sorting office of the lesson instead.',
+              'Train a computer to read postcode letters that you draw with the mouse, and use it in the Mailman Max sorting office in Scratch. Then test it like a scientist: find a drawing it gets wrong, think about why, and suggest how to help it. If the website does not work at your school, do the paper sorting office from the lesson instead.',
             requirements:
-              'Hand in three things:\n1. A screenshot of your sorting office in Scratch or of your tests (for the paper version, a photo of your grids and results).\n2. One drawing the model got wrong: what you wrote, where it went, and why you think it got confused.\n3. One idea to help the model do better, for example more examples, different examples or bigger letters.\nYou can type parts 2 and 3. Check that your screenshot or photo shows no faces, no names and no other personal details.',
+              'Hand in three things:\n1. A screenshot of your sorting office in Scratch or of your tests (for the paper version, a photo of your grids and results, or your results typed out: each test, what the computer answered, right or wrong).\n2. One drawing the model got wrong: what you wrote, where it went (paper version: what the computer answered), and why you think it got confused. If it got everything right, give your trickiest test instead and say why it was hard.\n3. One idea to help the model do better, for example more examples, different examples or bigger letters.\nYou can type parts 2 and 3, and part 1 too for the paper version. Check that your screenshot or photo shows no faces, no names and no other personal details.',
           },
           fr: {
             title: 'Mon centre de tri qui lit l’écriture',
             brief:
               'Entraîne un ordinateur à lire les lettres de codes postaux que tu dessines à la souris, et utilise-le dans le centre de tri du facteur Max, dans Scratch. Ensuite, teste-le comme un scientifique\u00a0: trouve un dessin qu’il trie mal, réfléchis à la raison, et propose une façon de l’aider. Si le site ne fonctionne pas dans ton école, fais plutôt le centre de tri sur papier de la leçon.',
             requirements:
-              'Rends trois choses\u00a0:\n1. Une capture d’écran de ton centre de tri dans Scratch ou de tes essais (pour la version sur papier, une photo de tes grilles et de tes résultats).\n2. Un dessin que le modèle a mal trié\u00a0: ce que tu as écrit, où il est parti, et pourquoi le modèle s’est trompé selon toi.\n3. Une idée pour aider le modèle à faire mieux, par exemple plus d’exemples, des exemples différents ou des lettres plus grandes.\nTu peux écrire les parties 2 et 3 au clavier. Vérifie qu’on ne voit sur ta capture ou ta photo ni visage, ni nom, ni aucune autre information personnelle.',
+              'Rends trois choses\u00a0:\n1. Une capture d’écran de ton centre de tri dans Scratch ou de tes essais (pour la version sur papier, une photo de tes grilles et de tes résultats, ou tes résultats écrits au clavier\u00a0: chaque test, la réponse de l’ordinateur, juste ou faux).\n2. Un dessin que le modèle a mal trié\u00a0: ce que tu as écrit, où il est parti (version sur papier\u00a0: ce que l’ordinateur a répondu), et pourquoi le modèle s’est trompé selon toi. S’il a tout bien trié, donne plutôt ton test le plus difficile et explique pourquoi il l’était.\n3. Une idée pour aider le modèle à faire mieux, par exemple plus d’exemples, des exemples différents ou des lettres plus grandes.\nTu peux écrire les parties 2 et 3 au clavier, et aussi la partie 1 pour la version sur papier. Vérifie qu’on ne voit sur ta capture ou ta photo ni visage, ni nom, ni aucune autre information personnelle.',
           },
         },
         allowedSubmissionTypes: ['text', 'image'],
