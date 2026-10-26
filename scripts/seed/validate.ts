@@ -23,13 +23,18 @@ import type { SeedChallenge, SeedCourse } from './types';
 /** The languages every piece of demo content carries, whatever LOCALES enables. */
 export const CONTENT_LOCALES: readonly Locale[] = ['en', 'fr'];
 
-/** The five demo courses of ARCHITECTURE.md 11.6, by document id. */
+/**
+ * The seven official seed courses of ARCHITECTURE.md 11.6, by document id: the five demo
+ * courses, then the two that the content release 2026-10-longer-courses adds.
+ */
 export const DEMO_COURSE_IDS = [
   'my-first-ai-adventure',
   'build-with-generative-ai',
   'from-ai-user-to-ai-developer',
   'ai-essentials-for-educators',
   'ai-robotics-foundations',
+  'ai-engineering-with-python',
+  'from-idea-to-ai-product',
 ] as const;
 
 /** What createCourse would be given: the seed's course fields with no cover. */

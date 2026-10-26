@@ -1,18 +1,50 @@
 // "AI Essentials for Educators": the Teacher Academy demo course of brief section 22, for
-// teachers of pupils aged 8 to 18. Four modules of two lessons: generative AI literacy (how
-// language models produce text; hallucinations, bias and a four-point check), planning and
-// differentiation (a five-part prompt pattern; adapted texts that keep the objective and
-// describe needs, never pupils), assessment and academic integrity (AI-resilient tasks, AI-use
-// levels, why detectors cannot settle a case, class AI-use policies) and safe classroom AI
-// (personal data, age rules, safeguarding; age-appropriate activities on the LEARN -> TRY ->
-// BUILD -> GET FEEDBACK -> IMPROVE -> SHOW cycle). A teacher course has no project: its 'build'
-// stage is a reflection in which teachers plan something concrete for their own class. Blocks
-// cover every lesson stage; one quiz per module; English and French ("vous"); no uploaded
-// files. The five videos are from Code.org (How AI Works; AI 101 for Teachers, with ETS, ISTE
-// and Khan Academy) and IBM Technology, all in English; the other three lessons cover their
+// teachers of pupils aged 8 to 18. Six modules of two lessons, twelve lessons and 535 minutes, in
+// this order: m1 generative AI literacy (how language models produce text; hallucinations, bias
+// and a four-point check), m2 planning and differentiation (a five-part prompt pattern; adapted
+// texts that keep the objective and describe needs, never pupils), m3 assessment and academic
+// integrity (AI-resilient tasks, AI-use levels, why detectors cannot settle a case, class AI-use
+// policies), m4 safe classroom AI (personal data, age rules, safeguarding; age-appropriate
+// activities on the LEARN -> TRY -> BUILD -> GET FEEDBACK -> IMPROVE -> SHOW cycle), m5 teaching
+// machine learning hands-on with Machine Learning for Kids (the ways in and what the site keeps,
+// privacy and consent, a lesson plan with a fallback; assessing what pupils build: evidence, a
+// rubric, misconceptions, bias and the next worksheet) and m6 inclusive and creative AI
+// (read-aloud, captions, levelled texts and translation planned with Universal Design for
+// Learning; image, audio and video generation, its rules and media literacy against deepfakes),
+// which ends the course with quiz-m6 and a last reflection. A teacher course has no project: its
+// 'build' stage is a reflection in which teachers plan something concrete for their own class,
+// so `projects` stays empty. Blocks cover every lesson stage, and every lesson has a 'watch'
+// stage; one quiz per module; English and French ("vous"); no uploaded files.
+//
+// m1 to m4 (with quiz-m1 to quiz-m4) are the first release and are written here. m5 and m6 were
+// added by a later content release (ARCHITECTURE.md 11.7) and live in
+// ./ai-essentials-for-educators/, whose headers say what each one covers. A release only adds to
+// a database that already holds the course, so m1 to m4 and their quizzes must not be changed
+// here, and the module files' quizzes come after the first release's in their array. m4-l2 was
+// written as the last lesson of the first release: its quiz intro calls quiz-m4 "a final check"
+// and its last reflection asks for a first step "to bring what you learned in this course into
+// your classroom". Both stay as they are; the course now ends with m6-l2. Module ids follow the
+// course order, so the references by number ("module 4") in every module hold. When the course
+// was assembled, m6-l1 gained a written replay (m6-l1-b5) so that it has a 'watch' stage like
+// every other lesson, and m5-l1-b4 a line that keeps ages 8 to 10 to m4-l2's age table (the
+// teacher operates the site on the class screen).
+//
+// One Machine Learning for Kids activity, done by the teacher as a learner with "Try it now" (no
+// account; nothing about the learner is stored, the site says): Smart Classroom (m5-l1, a text
+// model in Scratch that recognises classroom commands), with a class-screen or paper version for
+// schools that block the site. There is nothing to hand in: teachers keep their test table and
+// timings in their own notes for the reflections. m5-l2 links seven worksheets to choose from
+// (links only, no worksheet text; CC BY-NC-SA 4.0). The seven videos are in English: six from
+// Code.org (How AI Works on chatbots and large language models, m1-l1, and on image and video
+// generation, m6-l2, also curated in build-with-generative-ai m1-l2; three sessions of AI 101 for
+// Teachers, with ETS, ISTE and Khan Academy, m2-l1, m4-l1 and m4-l2; "What is machine learning?"
+// from AI for Oceans, m5-l1, also curated in my-first-ai-adventure m1-l2) and one from IBM
+// Technology (m1-l2). The other five lessons (m2-l2, m3-l1, m3-l2, m5-l2, m6-l1) cover their
 // 'watch' stage with a written replay instead.
 
 import type { SeedCourse } from '../types';
+import { m5 } from './ai-essentials-for-educators/m5';
+import { m6 } from './ai-essentials-for-educators/m6';
 
 const RICH = 'rich_text' as const;
 
@@ -24,9 +56,9 @@ export const aiEssentialsForEducators: SeedCourse = {
       en: {
         title: 'AI Essentials for Educators',
         summary:
-          'Understand what generative AI can and cannot do, use it to plan and differentiate, rethink assessment, protect your pupils and run safe, project-based AI activities.',
+          'Understand what generative AI can and cannot do, use it to plan and differentiate, rethink assessment, protect your pupils and run safe, project-based AI activities, then teach machine learning hands-on with Machine Learning for Kids and use AI for inclusive, creative work.',
         description:
-          'A practical course for teachers of pupils aged 8 to 18. In eight lessons you will find out how generative AI produces text and why it makes mistakes, write prompts that turn it into a useful planning assistant while you remain the author, adapt resources for different learners without sharing personal data, redesign assessment for a world in which pupils have AI tools (and see why AI detectors cannot settle a case), apply privacy, age and safeguarding rules, and plan a project-based AI activity for your own class. Each lesson ends with a short task for your classroom, four quizzes check your understanding, and completing the course earns a certificate.',
+          'A practical course for teachers of pupils aged 8 to 18. In twelve lessons you will find out how generative AI produces text and why it makes mistakes, write prompts that turn it into a useful planning assistant while you remain the author, adapt resources for different learners without sharing personal data, redesign assessment for a world in which pupils have AI tools (and see why AI detectors cannot settle a case), apply privacy, age and safeguarding rules, and plan a project-based AI activity for your own class. You will then learn to teach machine learning hands-on with Machine Learning for Kids, a free website on which pupils train their own models: choose how pupils reach it and what it keeps about them, plan a lesson with a fallback for when the site is blocked, and do its Smart Classroom activity yourself, as your pupils will, with "Try it now", so no account is needed. You will also learn to assess what pupils build, with the evidence to collect, a simple rubric, the misconceptions to listen for and questions on bias, and to choose the next worksheet for your class. The last module turns to inclusive and creative AI: read-aloud, captions, levelled texts and translation, planned for the whole class with Universal Design for Learning and with no data about pupils’ needs in any prompt, then image, audio and video generation in class, with the rules to set first and the verification habits that help pupils see through deepfakes. Most lessons end with a short plan for your own class, and six quizzes check your understanding. The course closes with a lesson on generated media and media literacy and its quiz, and completing it earns a certificate.',
         outcomes: [
           'Explain how generative AI produces text, and why fluent output can still be false or biased',
           'Write structured prompts for lesson plans, rubrics and differentiated resources, and check every output',
@@ -34,14 +66,18 @@ export const aiEssentialsForEducators: SeedCourse = {
           'Explain why AI detectors cannot prove misconduct, and respond fairly to suspected undisclosed AI use',
           'Apply privacy, age and safeguarding rules when you or your pupils use AI tools',
           'Plan an age-appropriate, project-based AI activity for your own class',
+          'Run a hands-on Machine Learning for Kids lesson safely: choose the way in, protect pupils’ data, follow your school’s consent rules and plan a fallback',
+          'Assess what pupils build with machine learning, using evidence, a simple rubric and questions on misconceptions and bias',
+          'Plan read-aloud, captions, levelled texts and translation for the whole class with Universal Design for Learning, keeping data about needs out of every prompt',
+          'Set clear rules for AI-generated images, audio and video, and teach pupils to check what they see and hear',
         ],
       },
       fr: {
         title: 'L’essentiel de l’IA pour les enseignants',
         summary:
-          'Comprenez ce que l’IA générative sait faire et ne sait pas faire, utilisez-la pour préparer et différencier, repensez l’évaluation, protégez vos élèves et menez des activités d’IA sûres, fondées sur des projets.',
+          'Comprenez ce que l’IA générative sait faire ou non, utilisez-la pour préparer et différencier, repensez l’évaluation, protégez vos élèves, menez des activités d’IA sûres, enseignez l’apprentissage automatique avec Machine Learning for Kids et mettez l’IA au service de l’inclusion et de la création.',
         description:
-          'Une formation pratique pour les enseignants d’élèves de 8 à 18\u00a0ans. En huit leçons, vous découvrirez comment l’IA générative produit du texte et pourquoi elle se trompe, vous rédigerez des prompts qui en font une aide utile à la préparation de vos cours tout en restant l’auteur de vos choix, vous adapterez des ressources à des élèves différents sans partager de données personnelles, vous repenserez l’évaluation dans un monde où les élèves ont accès à l’IA (et verrez pourquoi les détecteurs d’IA ne permettent pas de trancher), vous appliquerez les règles de protection des données, d’âge et de protection de l’enfance, et vous concevrez une activité d’IA fondée sur un projet pour votre propre classe. Chaque leçon se termine par une courte tâche pour votre classe, quatre quiz vérifient votre compréhension, et la formation terminée donne droit à un certificat.',
+          'Une formation pratique pour les enseignants d’élèves de 8 à 18\u00a0ans. En douze leçons, vous découvrirez comment l’IA générative produit du texte et pourquoi elle se trompe, vous rédigerez des prompts qui en font une aide utile à la préparation de vos cours tout en restant l’auteur de vos choix, vous adapterez des ressources à des élèves différents sans partager de données personnelles, vous repenserez l’évaluation dans un monde où les élèves ont accès à l’IA (et verrez pourquoi les détecteurs d’IA ne permettent pas de trancher), vous appliquerez les règles de protection des données, d’âge et de protection de l’enfance, et vous concevrez une activité d’IA fondée sur un projet pour votre propre classe. Vous apprendrez ensuite à enseigner l’apprentissage automatique par la pratique avec Machine Learning for Kids, un site gratuit sur lequel les élèves entraînent leurs propres modèles\u00a0: choisir comment vos élèves y accèdent et ce que le site conserve à leur sujet, préparer une séance avec une solution de repli si le site est bloqué, et faire vous-même, comme vos élèves, son activité Smart Classroom (Salle de classe intelligente) avec «\u00a0Essayer maintenant\u00a0» (Try it now), sans créer de compte. Vous verrez aussi comment évaluer ce que construisent les élèves, avec les traces d’apprentissage à recueillir, une grille simple, les idées fausses à repérer et des questions sur les biais, et comment choisir la fiche suivante pour votre classe. Le dernier module est consacré à une IA inclusive et créative\u00a0: la lecture à voix haute, les sous-titres, les textes de différents niveaux et la traduction, prévus pour toute la classe grâce à la conception universelle de l’apprentissage et sans aucune donnée sur les besoins des élèves dans un prompt, puis la génération d’images, de sons et de vidéos en classe, avec les règles à fixer d’abord et les habitudes de vérification qui aident les élèves à déjouer les deepfakes. La plupart des leçons se terminent par un court plan pour votre propre classe, et six quiz vérifient votre compréhension. La formation se conclut par une leçon sur les médias générés et l’éducation aux médias, suivie de son quiz, et, une fois terminée, elle donne droit à un certificat.',
         outcomes: [
           'Expliquer comment l’IA générative produit du texte, et pourquoi un texte fluide peut quand même être faux ou biaisé',
           'Rédiger des prompts structurés pour des plans de séance, des grilles d’évaluation et des ressources différenciées, et vérifier chaque résultat',
@@ -49,6 +85,10 @@ export const aiEssentialsForEducators: SeedCourse = {
           'Expliquer pourquoi les détecteurs d’IA ne prouvent rien, et réagir équitablement face à un usage non déclaré de l’IA',
           'Appliquer les règles de protection des données, d’âge et de protection de l’enfance quand vous ou vos élèves utilisez l’IA',
           'Concevoir une activité d’IA adaptée à l’âge et fondée sur un projet pour votre propre classe',
+          'Mener en toute sécurité une séance avec Machine Learning for Kids\u00a0: choisir le mode d’accès, protéger les données des élèves, respecter les règles de consentement et prévoir une solution de repli',
+          'Évaluer ce que les élèves construisent avec l’apprentissage automatique, à l’aide de traces, d’une grille simple et de questions sur les idées fausses et les biais',
+          'Proposer à toute la classe lecture à voix haute, sous-titres, textes de niveaux variés et traduction selon la conception universelle de l’apprentissage, sans données sur les besoins dans un prompt',
+          'Fixer des règles claires pour les images, les sons et les vidéos générés par l’IA, et apprendre aux élèves à vérifier ce qu’ils voient et entendent',
         ],
       },
     },
@@ -63,11 +103,12 @@ export const aiEssentialsForEducators: SeedCourse = {
       'academic-integrity',
       'safeguarding',
       'privacy',
+      'machine-learning',
       'responsible-ai',
     ],
     ageMin: null,
     ageMax: null,
-    estimatedMinutes: 370,
+    estimatedMinutes: 535,
     visibility: 'private',
     certificateEnabled: true,
     hardwarePlatformIds: [],
@@ -1410,6 +1451,8 @@ export const aiEssentialsForEducators: SeedCourse = {
         },
       ],
     },
+    m5.module,
+    m6.module,
   ],
 
   quizzes: [
@@ -2617,7 +2660,9 @@ export const aiEssentialsForEducators: SeedCourse = {
         ],
       },
     },
+    ...m5.quizzes,
+    ...m6.quizzes,
   ],
 
-  projects: [],
+  projects: [...m5.projects, ...m6.projects],
 };

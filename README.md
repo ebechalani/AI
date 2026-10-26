@@ -93,10 +93,12 @@ npm run seed
   `0001_initial` writes the reference data: the seven learning pathways, the seven badge
   definitions and the hardware platforms. Migrations are the only source of this data.
 - `npm run seed` upserts the demo content by stable id, so it can be run again at any time:
-  the demo courses, the school "Demo Academy" with one licence, the class "Grade 6 A" with
-  the first two student courses of the seed assigned (one until the other demo courses are
-  written), two challenges, and the demo accounts below with some progress, one submitted
-  project awaiting review and one issued certificate. The summary it prints ends with the
+  the seven official courses of `scripts/seed/content` (the five demo courses, then
+  `ai-engineering-with-python` and `from-idea-to-ai-product`), the school "Demo Academy"
+  with one licence, the class "Grade 6 A" with the first two student courses of the seed
+  assigned (`my-first-ai-adventure`, `build-with-generative-ai`), two challenges, and the
+  demo accounts below with some progress, one submitted project awaiting review and one
+  issued certificate. The summary it prints ends with the
   certificate's verification code and the id of the submission awaiting review. On the emulators the demo
   accounts are created and the class join code is the fixed `RBHDEM23`. A real project is
   seeded once only (see [Adding content to a live site](#7-adding-content-to-a-live-site)).

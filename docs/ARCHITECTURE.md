@@ -556,7 +556,7 @@ Repository root:
 │  │  ├─ demo-users.ts           demo school, licence, class and accounts as data; password rules (section 11.6)
 │  │  ├─ demo-progress.ts        the learners' progress of 11.6, written through the services as the learners and the teacher
 │  │  ├─ validate.ts             pure content checks shared by the runner and tests/unit/seed-content.test.ts (the WS-K rules of 11.2)
-│  │  └─ content/                index.ts (barrel: SEED_COURSES, SEED_CHALLENGES) + one file per demo course + challenges.ts
+│  │  └─ content/                index.ts (barrel: SEED_COURSES, SEED_CHALLENGES) + one file per official seed course (seven) + <courseId>/<moduleId>.ts module files + releases.ts + challenges.ts
 │  ├─ bootstrap-admin.ts         create or promote the first platform_admin (section 1.5, path 7)
 │  ├─ delete-user-data.ts        erase one user's account, records and files (section 12)
 │  ├─ cleanup-uploads.ts         delete unregistered or unattached Storage objects and expired rate-limit docs
@@ -5328,13 +5328,25 @@ Stub pages and stub components inside an owned path are replaced by the owner.
 | **H** Platform admin | Admin dashboard, schools, users (role, status, educator verification), subscriptions/licences, certificates, challenges | `L/admin/**` except `layout.tsx` and `courses/**`, `components/admin/**`, `actions/admin.ts`, messages `admin` |
 | **I** AI Tutor + AI Lab | Anthropic adapter, prompts, safety, tutor route and panel, tutor page, AI Lab, AI activity block | `lib/ai/**`, `app/api/ai/**`, `L/student/(shell)/tutor/**`, `L/student/(shell)/ai-lab/**`, `components/ai/**`, `components/lesson/blocks/AiActivityBlock.tsx`, `actions/ai.ts`, messages `tutor`, `aiLab` |
 | **J** Robotics, challenges, achievements, certificates, settings | Robotics page, Challenge Arena, achievements, certificate list/document/verification, student settings (incl. avatar picker) | `L/student/(shell)/{robotics,challenges,achievements,certificates,settings}/**`, `L/(shared)/certificates/**`, `L/(public)/verify/**`, `components/{robotics,challenges,achievements,certificates}/**`, `actions/certificates.ts`, `actions/settings.ts`, messages `robotics`, `challenges`, `achievements`, `certificates`, `settings` |
-| **K** Seed content | The five demo courses of brief section 22 and sample challenges, in `en` and `fr`, as data that satisfies `scripts/seed/types.ts` | `scripts/seed/content/**` |
+| **K** Seed content | The seven official seed courses (the five demo courses of brief section 22, then the two courses of the content release `2026-10-longer-courses`) and sample challenges, in `en` and `fr`, as data that satisfies `scripts/seed/types.ts`: one course file per course, its later modules as `SeedModulePart` files in `scripts/seed/content/<courseId>/`, and the content releases of `releases.ts` (11.7) | `scripts/seed/content/**` |
 
 **WS-K contract.** The runner (`scripts/seed/index.ts`, frozen) imports exactly two names
 from the barrel `scripts/seed/content/index.ts`: `SEED_COURSES: SeedCourse[]` and
 `SEED_CHALLENGES: SeedChallenge[]`. The foundation ships the barrel with one course file
 (`my-first-ai-adventure.ts`) and `challenges.ts` (11.6 needs two challenges from the seed);
-WS-K may rewrite both and adds the other four course files. Pathways, badges and hardware
+WS-K may rewrite both and adds the other course files: seven official seed courses in all,
+the five demo courses of brief section 22 (`my-first-ai-adventure.ts`,
+`build-with-generative-ai.ts`, `from-ai-user-to-ai-developer.ts`,
+`ai-essentials-for-educators.ts`, `ai-robotics-foundations.ts`), then
+`ai-engineering-with-python.ts` and `from-idea-to-ai-product.ts`, which the content release
+`2026-10-longer-courses` adds and `SEED_COURSES` lists last (the class of 11.6 takes its first
+two student courses). A course file holds the course's details and the modules of its first
+release inline; every module written later, and every module of the two release courses, is
+a `SeedModulePart` in `scripts/seed/content/<courseId>/<moduleId>.ts` (module, quizzes,
+projects), which the course file imports and spreads into its arrays in course order. Module
+ids therefore need not follow course order (`my-first-ai-adventure` runs m1, m3, m4, m2), and
+`project-1` stays first in that course's `projects` (`scripts/seed/demo-progress.ts` reviews
+`course.projects[0]`). Pathways, badges and hardware
 platforms are **not** in this folder; they come from `scripts/migrations/0001_initial.ts`
 only. The runner validates the whole folder with `scripts/seed/validate.ts` before writing
 anything, and `tests/unit/seed-content.test.ts` runs the same checks under `npm test`. The
@@ -5498,17 +5510,22 @@ only with `--with-demo-users`. A real project whose official courses were seeded
 - Reference data (from the migration, not the seed): the seven pathways of brief section 8;
   the seven badges of section 9.3; hardware `simulator`, `generic-camera-rover`,
   `generic-sensor-kit`.
-- Courses (ids): `my-first-ai-adventure` (AI Explorer, 8–10), `build-with-generative-ai`
+- Courses (ids), the seven official seed courses in `SEED_COURSES` order: the five demo
+  courses `my-first-ai-adventure` (AI Explorer, 8–10), `build-with-generative-ai`
   (AI Creator, 11–14), `from-ai-user-to-ai-developer` (AI Builder, 15–18),
-  `ai-essentials-for-educators` (Teacher Academy), `ai-robotics-foundations` (AI Robotics).
+  `ai-essentials-for-educators` (Teacher Academy), `ai-robotics-foundations` (AI Robotics),
+  then `ai-engineering-with-python` (AI Engineer, 14–16) and `from-idea-to-ai-product`
+  (AI Innovator, 16–18), new in the content release `2026-10-longer-courses` (11.7), which
+  also adds two modules to each of the five. Each course is a file in
+  `scripts/seed/content/`, with its later modules in `scripts/seed/content/<courseId>/` (11.2).
   All official, published, `free`, `certificateEnabled`; `ownerUid` is the demo platform
   admin's uid on the emulators and `'system'` on a real project (where that admin is never
   created), `schoolId` null, `visibility: 'public'`, `status: 'published'` with
   `publishedAt` set once.
 - School "Demo Academy" with one licence (`all_official`, 100 seats, active for a year);
   class "Grade 6 A" with the first two student-audience courses of `SEED_COURSES` assigned
-  (one until WS-K adds the others). `meta/seed` remembers the auto-ids the repositories gave
-  the school, licence, class and challenges, so a re-run (any run on the emulators; on a real
+  (`my-first-ai-adventure` and `build-with-generative-ai`). `meta/seed` remembers the
+  auto-ids the repositories gave the school, licence, class and challenges, so a re-run (any run on the emulators; on a real
   project, one after a run that failed before the courses were written, or one with
   `--overwrite-official-courses`) updates instead of duplicating (second run: 0 created, no
   duplicate attempts or submissions).
@@ -5525,14 +5542,17 @@ only with `--with-demo-users`. A real project whose official courses were seeded
   `emailVerified: true`, which satisfies `establishSession`'s `email_unverified` rule;
   `teacher@demo` has `verifiedEducator: true`.
 - Progress (`scripts/seed/demo-progress.ts`, through the services as the learners and the
-  teacher): `lea.demo` completes all four lessons, passes both quizzes first time and
-  submits the project, which the teacher accepts with decision `modify` (criteria
-  90/85/95/100), giving the automatic certificate, the `ai-explorer` pathway badge and the
-  manual badge `responsible-ai-champion` awarded by the teacher (700 XP from the course
-  (4 lessons × 50, 2 quizzes × 100, the project 300) + 150 badge bonus (`ai-explorer` 100,
-  `responsible-ai-champion` 50) = 850 XP, level 3); `omar.demo` (locale `fr`) completes lessons 1–2 with `quiz-m1` failed then
-  passed, starts lesson 3 and has the project submitted with a ready mock AI review (the one
-  submission awaiting review); `maya.demo` starts lesson 1 with a reflection saved;
+  teacher, in the first student course, `my-first-ai-adventure`): `lea.demo` completes all
+  eight lessons, passes the four quizzes first time and submits every project her lessons
+  hold; the teacher accepts the certificate project `project-1` (`course.projects[0]`) with
+  decision `modify` (criteria 90/85/95/100), giving the automatic certificate, the
+  `ai-explorer` pathway badge and the manual badge `responsible-ai-champion` awarded by the
+  teacher (1 100 XP from the course (8 lessons × 50, 4 quizzes × 100, `project-1` 300) + 150
+  badge bonus (`ai-explorer` 100, `responsible-ai-champion` 50) = 1 250 XP, level 4), while
+  her hand-ins of the optional `project-m3` and `project-m4` stay submitted, unreviewed;
+  `omar.demo` (locale `fr`) completes lessons 1–2 with `quiz-m1` failed then passed, starts
+  lesson 3 and has `project-1` submitted with a ready mock AI review (the submission the
+  summary names as awaiting review); `maya.demo` starts lesson 1 with a reflection saved;
   `student@demo` self-enrols, completes lesson 1 and fails `quiz-m1` once. The seed summary
   prints the certificate's verification code and the awaiting-review submission id.
 - Join code: no repository function sets a chosen code, so the seed sets `RBHDEM23` with one
