@@ -359,8 +359,9 @@ describe('school admin flow: teachers, roles, status and the numbers', () => {
       row('Omar Demo'),
     ];
     expect(ava?.enrollment).toMatchObject({ completedLessonCount: 0, source: 'class' });
+    // Lea hands in every project of the course and the teacher accepts them all (11.6).
     expect(lea).toMatchObject({
-      submissionsApproved: 1,
+      submissionsApproved: Object.keys(SEED_COURSE.projectXp).length,
       submissionsPending: 0,
       quizAveragePercent: 100,
     });

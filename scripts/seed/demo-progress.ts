@@ -55,8 +55,26 @@ const STORY: Record<Locale, { title: string; description: string; text: string }
   },
 };
 
+// What a learner hands in for the course's other projects: the activity assignments, which only
+// gate their own lesson (the story is the course's first project).
+const ACTIVITY_NOTES: Record<Locale, { title: string; description: string; text: string }> = {
+  en: {
+    title: 'My machine learning test notes',
+    description: 'What I trained, how I tested it and one mistake it made.',
+    text: 'I made my labels and gave each one examples I invented myself. Then I tested the model with new examples it had never seen. It got most of them right. It made one mistake: two of my examples looked a lot alike, so it mixed them up. Next time I would add more examples that are different from each other.',
+  },
+  fr: {
+    title: 'Mes notes de test d’apprentissage automatique',
+    description: 'Ce que j’ai entraîné, comment je l’ai testé et une erreur qu’il a faite.',
+    text: "J'ai créé mes étiquettes et je leur ai donné des exemples inventés par moi. Ensuite, j'ai testé le modèle avec de nouveaux exemples qu'il n'avait jamais vus. Il en a réussi la plupart. Il s'est trompé une fois : deux de mes exemples se ressemblaient beaucoup, alors il les a confondus. La prochaine fois, j'ajouterai des exemples plus différents les uns des autres.",
+  },
+};
+
 const TEACHER_FEEDBACK =
   'A complete story with a clear hero, problem and solution, and you said how the AI helped you. Next time, try adding one line of dialogue.';
+
+const ACTIVITY_FEEDBACK =
+  'Good testing: you tried examples the model had never seen and explained its mistake.';
 
 const MANUAL_BADGE_NOTE = 'Checked every AI answer and credited the tutor in the story.';
 
@@ -159,10 +177,11 @@ async function ensureSubmission(
   session: Session,
   courseId: string,
   projectId: string,
+  storyProjectId: string | null,
 ): Promise<Submission> {
   const latest = await getLatestSubmission(session, session.uid, { courseId, projectId });
   if (latest !== null) return latest;
-  const story = STORY[session.locale];
+  const story = (projectId === storyProjectId ? STORY : ACTIVITY_NOTES)[session.locale];
   const submission = await submitWork(session, {
     target: { context: 'project', courseId, projectId },
     title: story.title,
@@ -182,15 +201,18 @@ async function ensureSubmission(
 /** Starts the lesson and does everything its blocks ask for, without completing it. */
 async function workThrough(
   session: Session,
-  courseId: string,
+  course: SeedCourse,
   lesson: SeedLesson,
   quizPlan: QuizPlan,
 ): Promise<void> {
+  const courseId = course.id;
   await startLesson(session, courseId, lesson.id);
   await respondToBlocks(session, courseId, lesson);
   for (const block of lesson.blocks) {
     if (block.type === 'quiz') await ensureQuiz(session, courseId, block.data.quizId, quizPlan);
-    if (block.type === 'project') await ensureSubmission(session, courseId, block.data.projectId);
+    if (block.type === 'project') {
+      await ensureSubmission(session, courseId, block.data.projectId, storyProjectOf(course));
+    }
   }
 }
 
@@ -209,14 +231,19 @@ async function complete(session: Session, courseId: string, lesson: SeedLesson):
 
 async function learnLessons(
   session: Session,
-  courseId: string,
+  course: SeedCourse,
   lessons: readonly SeedLesson[],
   quizPlan: QuizPlan,
 ): Promise<void> {
   for (const lesson of lessons) {
-    await workThrough(session, courseId, lesson, quizPlan);
-    await complete(session, courseId, lesson);
+    await workThrough(session, course, lesson, quizPlan);
+    await complete(session, course.id, lesson);
   }
+}
+
+/** The project the demo story is handed in for: the course's first one. */
+function storyProjectOf(course: SeedCourse): string | null {
+  return course.projects[0]?.id ?? null;
 }
 
 // --- The plan ----------------------------------------------------------------------------------
@@ -237,17 +264,17 @@ export async function seedDemoProgress(
   if (first === undefined || second === undefined || third === undefined) {
     throw new Error(`${courseId} has fewer than three lessons.`);
   }
-  const projectId = course.projects[0]?.id ?? null;
+  const projectId = storyProjectOf(course);
 
   const lea = await learnerSession(uids.lea);
-  await learnLessons(lea, courseId, lessons, 'pass');
+  await learnLessons(lea, course, lessons, 'pass');
 
   const omar = await learnerSession(uids.omar);
-  await learnLessons(omar, courseId, [first, second], 'fail-then-pass');
+  await learnLessons(omar, course, [first, second], 'fail-then-pass');
   await startLesson(omar, courseId, third.id);
   await respondToBlocks(omar, courseId, third);
   const awaitingReview =
-    projectId === null ? null : await ensureSubmission(omar, courseId, projectId);
+    projectId === null ? null : await ensureSubmission(omar, courseId, projectId, projectId);
 
   const maya = await learnerSession(uids.maya);
   await startLesson(maya, courseId, first.id);
@@ -255,8 +282,8 @@ export async function seedDemoProgress(
 
   const student = await learnerSession(uids.student);
   await enrollSelf(student, courseId);
-  await learnLessons(student, courseId, [first], 'pass');
-  await workThrough(student, courseId, second, 'fail');
+  await learnLessons(student, course, [first], 'pass');
+  await workThrough(student, course, second, 'fail');
 
   // The teacher accepts Lea's project, which issues her certificate (9.5), and awards her the
   // manual badge.
@@ -273,6 +300,22 @@ export async function seedDemoProgress(
       feedback: TEACHER_FEEDBACK,
     });
     console.log(`   ${teacher.displayName}: accepted ${lea.displayName}'s project`);
+  }
+  // Lea hands in the activity assignments on her way through the course; the teacher accepts
+  // those too, so the only work left awaiting review is Omar's.
+  for (const other of course.projects.slice(1)) {
+    const submission = await getLatestSubmission(teacher, uids.lea, {
+      courseId,
+      projectId: other.id,
+    });
+    if (submission?.status !== 'submitted') continue;
+    await reviewSubmission(teacher, {
+      submissionId: submission.id,
+      decision: 'modify',
+      criteria: { creativity: 80, technicalQuality: 85, understanding: 90, responsibleAi: 95 },
+      feedback: ACTIVITY_FEEDBACK,
+    });
+    console.log(`   ${teacher.displayName}: accepted ${lea.displayName}'s ${other.id}`);
   }
   const badge = await awardManualBadge(teacher, {
     studentUid: uids.lea,

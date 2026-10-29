@@ -3496,11 +3496,11 @@ export function levelForXp(xp: number): number;      // min(MAX_LEVEL, floor((1 
 export function levelProgress(xp: number): { level: number; currentLevelXp: number; nextLevelXp: number; percent: number };
 ```
 
-Level 1 = 0 XP, 2 = 200, 3 = 600, 4 = 1 200, 5 = 2 000, 10 = 9 000. One demo course (4
-lessons, 2 quizzes, 1 project = 700 XP) takes a new learner to level 3. In `levelProgress`,
-`currentLevelXp` and `nextLevelXp` are the XP totals at which the current and the next level
-start (`xpForLevel(level)`, `xpForLevel(level + 1)`) and `percent` is 0–100 rounded down; at
-`MAX_LEVEL` `nextLevelXp` equals `currentLevelXp` and `percent` is 100. `xpForLevel` floors
+Level 1 = 0 XP, 2 = 200, 3 = 600, 4 = 1 200, 5 = 2 000, 10 = 9 000. The AI Explorer course
+(8 lessons, 4 quizzes, 1 project and 2 assignments = 1 400 XP) takes a new learner to level 4.
+In `levelProgress`, `currentLevelXp` and `nextLevelXp` are the XP totals at which the current
+and the next level start (`xpForLevel(level)`, `xpForLevel(level + 1)`) and `percent` is 0–100
+rounded down; at `MAX_LEVEL` `nextLevelXp` equals `currentLevelXp` and `percent` is 100. `xpForLevel` floors
 its argument and treats anything below 1 (or non-finite) as level 1; `levelForXp` answers 1
 for a non-positive or NaN total.
 
@@ -5544,12 +5544,14 @@ only with `--with-demo-users`. A real project whose official courses were seeded
 - Progress (`scripts/seed/demo-progress.ts`, through the services as the learners and the
   teacher, in the first student course, `my-first-ai-adventure`): `lea.demo` completes all
   eight lessons, passes the four quizzes first time and submits every project her lessons
-  hold; the teacher accepts the certificate project `project-1` (`course.projects[0]`) with
-  decision `modify` (criteria 90/85/95/100), giving the automatic certificate, the
-  `ai-explorer` pathway badge and the manual badge `responsible-ai-champion` awarded by the
-  teacher (1 100 XP from the course (8 lessons × 50, 4 quizzes × 100, `project-1` 300) + 150
-  badge bonus (`ai-explorer` 100, `responsible-ai-champion` 50) = 1 250 XP, level 4), while
-  her hand-ins of the optional `project-m3` and `project-m4` stay submitted, unreviewed;
+  hold (the story for `project-1`, test notes for the activity assignments); the teacher
+  accepts the certificate project `project-1` (`course.projects[0]`) with decision `modify`
+  (criteria 90/85/95/100), giving the automatic certificate, then her assignments
+  `project-m3` and `project-m4` (criteria 80/85/90/95), and awards the manual badge
+  `responsible-ai-champion` (1 400 XP from the course (8 lessons × 50, 4 quizzes × 100,
+  `project-1` 300, two assignments × 150) + 200 badge bonus (`ai-explorer` 100,
+  `responsible-ai-champion` 50, `vision-builder` 50 for three accepted projects) = 1 600 XP,
+  level 4);
   `omar.demo` (locale `fr`) completes lessons 1–2 with `quiz-m1` failed then passed, starts
   lesson 3 and has `project-1` submitted with a ready mock AI review (the submission the
   summary names as awaiting review); `maya.demo` starts lesson 1 with a reflection saved;

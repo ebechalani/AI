@@ -262,7 +262,9 @@ describe('content releases over a database seeded before them', () => {
     expect(report!.warnings).toEqual([
       `courses/${EDITED.id} details: edited in the app: left as they are; make the change by hand in the course editor`,
     ]);
-    expect((await contentReleasesDoc().get()).exists).toBe(false);
+    // The seed records the releases it already holds; this one is not among them.
+    const recorded: unknown = (await contentReleasesDoc().get()).get('releases');
+    expect(Object.keys((recorded ?? {}) as object)).not.toContain(RELEASE.id);
   });
 
   it('applying it writes every document the release adds exactly as the seed writes it', async () => {

@@ -30,10 +30,6 @@ import {
   type LessonBlockOf,
 } from '@/types/content';
 import { SEED_COURSES } from '../../scripts/seed/content';
-import { m4 as creatorM4 } from '../../scripts/seed/content/build-with-generative-ai/m4';
-import { m4 as builderM4 } from '../../scripts/seed/content/from-ai-user-to-ai-developer/m4';
-import { m3 as explorerM3 } from '../../scripts/seed/content/my-first-ai-adventure/m3';
-import { m4 as explorerM4 } from '../../scripts/seed/content/my-first-ai-adventure/m4';
 
 // The ml_activity block (ARCHITECTURE.md 7.6): the player's link checks agree with the rules the
 // editor validates with, the site's language goes before its hash route, and the block links out
@@ -458,16 +454,9 @@ describe('French copy of ml_activity', () => {
     // The English name may only follow the French one, in brackets: "(Try it now)".
     const englishFirst = /(?<!\(\*?)Try it now(?!\*?\))/;
     const french = [...strings(catalog('fr', 'lesson')), ...strings(catalog('fr', 'courseEditor'))];
-    // What the seed writes, and the module files that hold its Machine Learning for Kids lessons.
-    const parts = [explorerM3, explorerM4, creatorM4, builderM4];
-    const modules = [
-      ...SEED_COURSES.flatMap((course) => course.modules),
-      ...parts.map((part) => part.module),
-    ];
-    const projects = [
-      ...SEED_COURSES.flatMap((course) => course.projects),
-      ...parts.flatMap((part) => part.projects),
-    ];
+    // Everything the seed writes, its Machine Learning for Kids lessons included.
+    const modules = SEED_COURSES.flatMap((course) => course.modules);
+    const projects = SEED_COURSES.flatMap((course) => course.projects);
     for (const courseModule of modules) {
       for (const lesson of courseModule.lessons) {
         for (const seedBlock of lesson.blocks) french.push(...strings(seedBlock.translations.fr));

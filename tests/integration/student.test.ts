@@ -3,6 +3,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { SYSTEM_ACTOR } from '@/lib/auth/actor';
 import { listUserBadges } from '@/lib/data/badges';
 import { getCertificate, getCertificateByCode } from '@/lib/data/certificates';
+import { lessonProgressOf } from '@/lib/data/course-derive';
 import { applyLessonCompletion, getEnrollment, getLessonProgress } from '@/lib/data/enrollments';
 import { getFile } from '@/lib/data/files';
 import { getProject } from '@/lib/data/projects';
@@ -28,6 +29,7 @@ import {
 } from '@/lib/services/project-flow';
 import { completeSignup } from '@/lib/services/provisioning';
 import type { Session, SignupInput, Submission } from '@/types';
+import { BADGES } from '../../scripts/migrations/0001_initial';
 import { resetEmulators, seedEmulators, signUpWithPassword } from './support/emulators';
 import {
   attemptQuiz,
@@ -104,12 +106,31 @@ describe('student flow: an independent learner in the seed course', () => {
   let imageFileId: string;
   let submission: Submission;
 
+  // Four lessons are walked one by one, by role: the first two, the last (with the course's
+  // story project and its last quiz) and the one before it (which asks only for reflections).
+  // The lessons between the second and the next-to-last are worked through in one step.
+  const lessonCount = SEED_COURSE.lessons.length;
   const lesson1 = seedLesson(0);
   const lesson2 = seedLesson(1);
-  const lesson3 = seedLesson(2);
-  const lesson4 = seedLesson(3);
+  const lesson3 = seedLesson(lessonCount - 2);
+  const lesson4 = seedLesson(lessonCount - 1);
+  const between = SEED_COURSE.lessons.slice(2, -2);
   const quiz1 = lesson2.quizIds[0]!;
   const quiz2 = lesson4.quizIds[0]!;
+  const betweenQuizIds = between.flatMap((lesson) => lesson.quizIds);
+  const betweenProjectIds = between.flatMap((lesson) => lesson.projectIds);
+  const percentAfter = (completed: number) =>
+    lessonProgressOf(completed, lessonCount).progressPercent;
+  // At the end: every quiz passed and every project accepted, and the stat badges they earn.
+  const quizzesPassed = 2 + betweenQuizIds.length;
+  const projectsAccepted = 1 + betweenProjectIds.length;
+  const statBadges = BADGES.filter(
+    (badge) =>
+      badge.criteria.type === 'stat_threshold' &&
+      ((badge.criteria.stat === 'quizzesPassed' && quizzesPassed >= badge.criteria.threshold) ||
+        (badge.criteria.stat === 'projectsAccepted' &&
+          projectsAccepted >= badge.criteria.threshold)),
+  );
 
   beforeAll(async () => {
     await resetEmulators();
@@ -123,6 +144,17 @@ describe('student flow: an independent learner in the seed course', () => {
     ({ session: other } = await signUpStudent('other.learner@example.test', 'Other Learner'));
     limited = await buildOfficialCourse(admin, { title: 'Attempt limits', quizMaxAttempts: 1 });
   }, 240_000);
+
+  it('walks a seed course of the shape this flow expects', () => {
+    expect(lessonCount).toBeGreaterThanOrEqual(4);
+    expect(lesson1.reflections.length).toBeGreaterThan(0);
+    expect(lesson1.codeActivityIds.length).toBeGreaterThan(0);
+    expect(lesson2.quizIds).toHaveLength(1);
+    expect(lesson3).toMatchObject({ quizIds: [], projectIds: [] });
+    expect(lesson3.reflections.length).toBeGreaterThan(0);
+    expect(lesson4.projectIds).toEqual([SEED_PROJECT_ID]);
+    expect(lesson4.quizIds).toHaveLength(1);
+  });
 
   it('self sign-up writes the profile once, with what the server derives', async () => {
     const profile = await profileOf(student.uid);
@@ -503,7 +535,7 @@ describe('student flow: an independent learner in the seed course', () => {
     expect(done.enrollment).toMatchObject({
       completedLessonIds: [lesson3.id],
       completedLessonCount: 1,
-      progressPercent: 25,
+      progressPercent: percentAfter(1),
       status: 'active',
     });
     expect(await getLessonProgress(student, student.uid, COURSE_ID, lesson3.id)).toMatchObject({
@@ -517,7 +549,10 @@ describe('student flow: an independent learner in the seed course', () => {
     await respondToReflections(student, COURSE_ID, lesson2);
     const second = await completeLesson(student, COURSE_ID, lesson2.id);
     expect(second.completed).toBe(true);
-    expect(second.enrollment).toMatchObject({ completedLessonCount: 3, progressPercent: 75 });
+    expect(second.enrollment).toMatchObject({
+      completedLessonCount: 3,
+      progressPercent: percentAfter(3),
+    });
 
     // Completing a completed lesson again changes nothing and runs no handler.
     const again = await completeLesson(student, COURSE_ID, lesson1.id);
@@ -525,6 +560,32 @@ describe('student flow: an independent learner in the seed course', () => {
     const profile = await profileOf(student.uid);
     expect(profile.stats.lessonsCompleted).toBe(3);
     expect(profile.stats.coursesCompleted).toBe(0);
+  });
+
+  it('the lessons between are completed with their quizzes passed and their projects reviewed', async () => {
+    for (const lesson of between) {
+      await startLesson(student, COURSE_ID, lesson.id);
+      await respondToReflections(student, COURSE_ID, lesson);
+      for (const quizId of lesson.quizIds) {
+        expect((await attemptQuiz(student, COURSE_ID, quizId, true)).attempt.passed).toBe(true);
+      }
+      for (const projectId of lesson.projectIds) {
+        const work = await submitWork(student, textWork(projectTarget(COURSE_ID, projectId)));
+        await generateAiReview(work.id);
+        expect((await getSubmission(student, work.id)).status).toBe('ai_reviewed');
+      }
+      expect((await completeLesson(student, COURSE_ID, lesson.id)).completed).toBe(true);
+    }
+    const enrollment = await getEnrollment(student, student.uid, COURSE_ID);
+    expect(enrollment).toMatchObject({
+      completedLessonCount: lessonCount - 1,
+      progressPercent: percentAfter(lessonCount - 1),
+      status: 'active',
+      certificateId: null,
+    });
+    const profile = await profileOf(student.uid);
+    expect(profile.stats).toMatchObject({ quizzesPassed, projectsAccepted, coursesCompleted: 0 });
+    expect(profile.stats.badges).toBe(statBadges.length);
   });
 
   it('recovery: a completion whose handler never ran is repaired on the next read, certificate included', async () => {
@@ -566,14 +627,16 @@ describe('student flow: an independent learner in the seed course', () => {
     expect(profile.xpTotal).toBe(before.xpTotal + lesson4.xpReward + badgeBonus);
     expect(profile.level).toBe(levelForXp(profile.xpTotal));
     expect(profile.stats).toMatchObject({
-      lessonsCompleted: 4,
+      lessonsCompleted: lessonCount,
       coursesCompleted: 1,
-      badges: 1,
+      badges: 1 + statBadges.length,
       certificates: 1,
     });
     const badges = await listUserBadges(student, student.uid);
-    expect(badges.map((badge) => badge.badgeId)).toEqual([SEED_COURSE.pathwayId]);
-    expect(badges[0]?.awardedBy).toBe('system');
+    expect(badges.map((badge) => badge.badgeId).sort()).toEqual(
+      [SEED_COURSE.pathwayId, ...statBadges.map((badge) => badge.id)].sort(),
+    );
+    for (const badge of badges) expect(badge.awardedBy).toBe('system');
 
     const enrollment = await getEnrollment(student, student.uid, COURSE_ID);
     expect(enrollment?.certificateId).toBe(docIds.certificate(student.uid, COURSE_ID));
@@ -640,30 +703,39 @@ describe('student flow: an independent learner in the seed course', () => {
   it('the XP ledger, the stats and the level add up', async () => {
     const expected = [
       ...SEED_COURSE.lessons.map((lesson) => docIds.xpEntry('lesson', `${COURSE_ID}_${lesson.id}`)),
-      docIds.xpEntry('quiz', `${COURSE_ID}_${quiz1}`),
-      docIds.xpEntry('quiz', `${COURSE_ID}_${quiz2}`),
-      docIds.xpEntry('project', `${COURSE_ID}_${SEED_PROJECT_ID}`),
-      docIds.xpEntry('badge', SEED_COURSE.pathwayId),
+      ...[quiz1, quiz2, ...betweenQuizIds].map((quizId) =>
+        docIds.xpEntry('quiz', `${COURSE_ID}_${quizId}`),
+      ),
+      ...[SEED_PROJECT_ID, ...betweenProjectIds].map((projectId) =>
+        docIds.xpEntry('project', `${COURSE_ID}_${projectId}`),
+      ),
+      ...[SEED_COURSE.pathwayId, ...statBadges.map((badge) => badge.id)].map((badgeId) =>
+        docIds.xpEntry('badge', badgeId),
+      ),
     ].sort();
     expect(await ledgerIds(student.uid)).toEqual(expected);
 
     const lessonXp = SEED_COURSE.lessons.reduce((sum, lesson) => sum + lesson.xpReward, 0);
-    const total =
-      lessonXp +
-      SEED_COURSE.quizXp[quiz1]! +
-      SEED_COURSE.quizXp[quiz2]! +
-      SEED_COURSE.projectXp[SEED_PROJECT_ID]! +
-      100;
+    const quizXp = [quiz1, quiz2, ...betweenQuizIds].reduce(
+      (sum, quizId) => sum + SEED_COURSE.quizXp[quizId]!,
+      0,
+    );
+    const projectXp = [SEED_PROJECT_ID, ...betweenProjectIds].reduce(
+      (sum, projectId) => sum + SEED_COURSE.projectXp[projectId]!,
+      0,
+    );
+    const badgeXp = 100 + statBadges.reduce((sum, badge) => sum + badge.xpBonus, 0);
+    const total = lessonXp + quizXp + projectXp + badgeXp;
     const profile = await profileOf(student.uid);
     expect(profile.xpTotal).toBe(total);
     expect(profile.level).toBe(levelForXp(total));
     expect(profile.stats).toEqual({
       lessonsCompleted: SEED_COURSE.lessons.length,
-      quizzesPassed: 2,
-      projectsAccepted: 1,
+      quizzesPassed,
+      projectsAccepted,
       challengesCompleted: 0,
       coursesCompleted: 1,
-      badges: 1,
+      badges: 1 + statBadges.length,
       certificates: 1,
     });
   });
