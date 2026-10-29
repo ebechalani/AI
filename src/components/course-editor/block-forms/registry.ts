@@ -4,6 +4,7 @@ import { CodeActivityData, CodeActivityText } from './CodeActivityFields';
 import { EmbedData, EmbedText } from './EmbedFields';
 import { FileData, FileText } from './FileFields';
 import { ImageData, ImageText } from './ImageFields';
+import { MlActivityData, MlActivityText } from './MlActivityFields';
 import { ProjectBlockData, ProjectBlockText } from './ProjectBlockFields';
 import { QuizBlockData, QuizBlockText } from './QuizBlockFields';
 import { ReflectionData, ReflectionText } from './ReflectionFields';
@@ -23,6 +24,7 @@ export const BLOCK_FORMS: { [T in BlockType]: BlockForms<T> } = {
   embed: { Data: EmbedData, Text: EmbedText },
   reflection: { Data: ReflectionData, Text: ReflectionText },
   project: { Data: ProjectBlockData, Text: ProjectBlockText },
+  ml_activity: { Data: MlActivityData, Text: MlActivityText },
 };
 
 /**

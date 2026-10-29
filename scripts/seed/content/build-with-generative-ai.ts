@@ -1,12 +1,33 @@
-// "Build with Generative AI": the AI Creator demo course (ages 11-14) of brief section 22.
-// Three modules of two lessons: how generative AI works (prediction, diffusion), prompting
-// (role, task, context, format; iteration and a prompt log), and creating responsibly, ending
-// with a creator project (an illustrated story or a poster with a prompt log and a
-// reflection). Blocks cover every lesson stage; one quiz per module; one project; English and
-// French; no uploaded files. The three videos are from Code.org's How AI Works series (in
-// English); the prompting lesson covers its 'watch' stage with a written replay instead.
+// "Build with Generative AI": the AI Creator demo course (ages 11-14) of brief section 22. Five
+// modules, eleven lessons (340 minutes), in this order: m1 "How generative AI works" (prediction,
+// diffusion), m2 "Prompting like a pro" (role, task, context and format; iteration and a prompt
+// log), m4 "Data: the fuel of AI" (where training data comes from, labels, consent, copyright and
+// bias; a kindness model), m5 "AI assistants, games and media" (an assistant's instructions and
+// tests, a quiz-show player, video, voice and music generators) and m3 "Create responsibly: your
+// creator project" (the creator's code, then the creator project, an illustrated story or a
+// poster with a prompt log and a reflection, which ends the course). Blocks cover every lesson
+// stage; one quiz per module; English and French; no uploaded files.
+//
+// m1, m2 and m3 (with quiz-m1, quiz-m2, quiz-m3 and project-1) are the first release and are
+// written here. m4 and m5 were added by a later content release (ARCHITECTURE.md 11.7) and live
+// in ./build-with-generative-ai/, whose headers say what each one covers. A release only adds to
+// a database that already holds the course, so module ids are not in course order, the module
+// files' quizzes and projects come after the first release's in their arrays, and m1, m2, m3 and
+// their quizzes and project must not be changed here. project-1 stays first among the projects
+// and is the only one the certificate needs. Lessons refer to Module 2 by number (m1 and m2 keep
+// their places); the new modules name the others ("the creator's code at the end of the course").
+//
+// Two Machine Learning for Kids activities, both "Try it now" (no accounts, nothing about the
+// learner is stored): Make me happy (m4-l2, a text model of kind and unkind messages in Scratch)
+// and Quiz Show (m5-l2, a ready-trained question-answering model that reads Wikipedia, in
+// Scratch). Each has a paper version for schools that block the site and an optional hand-in
+// (project-m4, project-m5). The three videos are from Code.org's How AI Works series (in
+// English); m2-l1 and m5-l3 cover their 'watch' stage with a written replay instead, and m4 has
+// no video block.
 
 import type { SeedCourse } from '../types';
+import { m4 } from './build-with-generative-ai/m4';
+import { m5 } from './build-with-generative-ai/m5';
 
 const RICH = 'rich_text' as const;
 
@@ -18,13 +39,18 @@ export const buildWithGenerativeAi: SeedCourse = {
       en: {
         title: 'Build with Generative AI',
         summary:
-          'Find out how generative AI really works, write prompts that get results, and create an illustrated story or a poster responsibly.',
+          'Find out how generative AI works and the data behind it, write prompts that get results, train and test models on Machine Learning for Kids, design an assistant, explore video, voice and music generators, and create an illustrated story or a poster responsibly.',
         description:
-          "Generative AI can write a story, draw a picture or compose a tune in seconds. But how does it do it, and how do you stay in charge? In six lessons you will find out how text and image generators produce new content by predicting patterns (they predict, they do not think), learn to write prompts with a role, a task, context and a format, and improve them one step at a time. You will also learn the creator's code: credit AI help, respect artists, spot bias and deepfakes, check facts and protect your privacy. The course ends with a creator project, an illustrated short story or a poster that you plan, generate, critique and improve, with a prompt log that shows your process, and a certificate.",
+          'Generative AI can write a story, draw a picture or compose a tune in seconds. But how does it do it, and how do you stay in charge? In eleven lessons you will find out how text and image generators produce new content by predicting patterns (they predict, they do not think), learn to write prompts with a role, a task, context and a format, and improve them one step at a time. Then you will look at the data behind every model: where training data comes from, who labels it, why consent and copyright matter, and how gaps and bias shape what a model gets right and wrong. You will design your own AI assistant with clear rules and try to catch it out with tricky requests, and find out how video, voice and music generators work, how to spot their glitches and how to use them fairly. Two activities on Machine Learning for Kids, done with "Try it now" so that no account is needed, let you build with AI yourself: in Make me happy you train a model to tell kind messages from unkind ones for a Scratch character and test where sarcasm and slang fool it, and in Quiz Show you pit a ready-trained model that reads Wikipedia against a human player in Scratch to find out what it really knows. Each activity has a paper version for when the website cannot be opened, and a short hand-in that shows your test results. You will also learn the creator\'s code: credit AI help, respect artists, spot bias and deepfakes, check facts and protect your privacy. Each module has a quiz, and the course ends with a creator project, an illustrated short story or a poster that you plan, generate, critique and improve, with a prompt log that shows your process, and a certificate.',
         outcomes: [
           'Explain how text and image generators produce new content from patterns in their training data',
           'Write prompts with a role, a task, context and a format, and improve them step by step',
           'Spot common AI mistakes: made-up facts, bias and visual glitches',
+          'Explain where training data comes from, who labels it, and why consent, copyright and gaps in the data matter',
+          'Train and test a text model on Machine Learning for Kids, and explain why sarcasm, slang and dialects can fool it',
+          'Design an AI assistant with a purpose, a persona, rules, a tone and a format, and test it with normal, tricky and unsafe requests',
+          'Test a ready-trained model in a Scratch quiz show, and explain why recognising the type of a question is not knowing its answer',
+          'Explain how video, voice and music generators work, spot their glitches and use them fairly, with consent, AI labels and checked sources',
           'Create responsibly: credit AI help, respect creators, protect privacy and never fake real people',
           'Plan, create and improve a multimedia piece with a prompt log and a reflection',
         ],
@@ -32,13 +58,18 @@ export const buildWithGenerativeAi: SeedCourse = {
       fr: {
         title: 'Créer avec l’IA générative',
         summary:
-          'Découvre comment fonctionne vraiment l’IA générative, écris des prompts efficaces et crée une histoire illustrée ou une affiche de façon responsable.',
+          'Comprends l’IA générative et les données qui la nourrissent, écris des prompts efficaces, entraîne et teste des modèles sur Machine Learning for Kids, conçois un assistant, découvre les générateurs de vidéos, de voix et de musique, et crée une histoire illustrée ou une affiche de façon responsable.',
         description:
-          'L’IA générative peut écrire une histoire, dessiner une image ou composer une mélodie en quelques secondes. Mais comment fait-elle, et comment rester aux commandes\u00a0? En six leçons, tu vas découvrir comment les générateurs de texte et d’images produisent du contenu nouveau à partir de régularités apprises (ils prédisent, ils ne pensent pas), apprendre à écrire des prompts (des consignes pour l’IA) avec un rôle, une tâche, un contexte et un format, et les améliorer étape par étape. Tu découvriras aussi le code du créateur\u00a0: citer l’IA, respecter les artistes, repérer les biais et les deepfakes, vérifier les faits et protéger ta vie privée. Le cours se termine par un projet de créateur, une histoire courte illustrée ou une affiche que tu prépares, génères, critiques et améliores, accompagnée d’un journal de prompts qui montre ta démarche, puis par un certificat.',
+          'L’IA générative peut écrire une histoire, dessiner une image ou composer une mélodie en quelques secondes. Mais comment fait-elle, et comment rester aux commandes\u00a0? En onze leçons, tu vas découvrir comment les générateurs de texte et d’images produisent du contenu nouveau à partir de régularités apprises (ils prédisent, ils ne pensent pas), apprendre à écrire des prompts (des consignes pour l’IA) avec un rôle, une tâche, un contexte et un format, et les améliorer étape par étape. Tu t’intéresseras ensuite aux données qui se cachent derrière chaque modèle\u00a0: d’où viennent les données d’entraînement, qui les étiquette, pourquoi le consentement et le droit d’auteur comptent, et comment les lacunes et les biais influencent ce qu’un modèle réussit et rate. Tu concevras ton propre assistant IA avec des règles claires et tu essaieras de le prendre en défaut avec des demandes pièges, puis tu découvriras comment fonctionnent les générateurs de vidéos, de voix et de musique, comment repérer leurs défauts et comment t’en servir de façon responsable. Deux activités sur Machine Learning for Kids, faites avec «\u00a0Essayer maintenant\u00a0» (pas besoin de créer de compte), te permettent de créer toi-même avec l’IA. Dans «\u00a0Rends-moi heureux\u00a0» (Make me happy), tu entraînes un modèle à distinguer les messages gentils des messages pas gentils pour un personnage Scratch et tu testes les cas où le sarcasme et l’argot le piègent\u00a0; dans Quiz Show, tu opposes dans Scratch un modèle déjà entraîné, qui lit Wikipédia, à un joueur humain pour découvrir ce qu’il sait vraiment. Chaque activité a une version sur papier pour le cas où le site ne s’ouvre pas, et un petit travail à rendre qui présente tes résultats de test. Tu découvriras aussi le code du créateur\u00a0: citer l’IA, respecter les artistes, repérer les biais et les deepfakes, vérifier les faits et protéger ta vie privée. Chaque module comporte un quiz, et le cours se termine par un projet de créateur, une histoire courte illustrée ou une affiche que tu prépares, génères, critiques et améliores, accompagnée d’un journal de prompts qui montre ta démarche, puis par un certificat.',
         outcomes: [
           'Expliquer comment les générateurs de texte et d’images produisent du contenu nouveau à partir des régularités de leurs données d’entraînement',
           'Écrire des prompts avec un rôle, une tâche, un contexte et un format, et les améliorer étape par étape',
           'Repérer les erreurs courantes de l’IA\u00a0: faits inventés, biais et défauts visuels',
+          'Expliquer d’où viennent les données d’entraînement, qui les étiquette, et pourquoi le consentement, le droit d’auteur et les lacunes des données comptent',
+          'Entraîner et tester un modèle de texte sur Machine Learning for Kids, et expliquer pourquoi le sarcasme, l’argot et les dialectes peuvent le piéger',
+          'Concevoir un assistant IA avec un objectif, un personnage, des règles, un ton et un format, et le tester avec des demandes normales, pièges et dangereuses',
+          'Tester un modèle déjà entraîné dans un quiz télévisé Scratch, et expliquer pourquoi reconnaître le type d’une question n’est pas connaître sa réponse',
+          'Expliquer comment fonctionnent les générateurs de vidéos, de voix et de musique, repérer leurs défauts et s’en servir de façon responsable (consentement, étiquette «\u00a0IA\u00a0», sources vérifiées)',
           'Créer de façon responsable\u00a0: citer l’aide de l’IA, respecter les créateurs, protéger la vie privée et ne jamais fabriquer de faux contenus avec de vraies personnes',
           'Préparer, réaliser et améliorer une œuvre multimédia avec un journal de prompts et une analyse',
         ],
@@ -46,10 +77,21 @@ export const buildWithGenerativeAi: SeedCourse = {
     },
     audience: 'student',
     area: 'generative_ai',
-    tags: ['generative-ai', 'prompts', 'creativity', 'responsible-ai', 'images', 'stories'],
+    tags: [
+      'generative-ai',
+      'prompts',
+      'creativity',
+      'responsible-ai',
+      'images',
+      'stories',
+      'machine-learning',
+      'machine-learning-for-kids',
+      'training-data',
+      'scratch',
+    ],
     ageMin: 11,
     ageMax: 14,
-    estimatedMinutes: 180,
+    estimatedMinutes: 340,
     visibility: 'private',
     certificateEnabled: true,
     hardwarePlatformIds: [],
@@ -658,6 +700,8 @@ export const buildWithGenerativeAi: SeedCourse = {
         },
       ],
     },
+    m4.module,
+    m5.module,
     {
       id: 'm3',
       input: {
@@ -1997,6 +2041,8 @@ export const buildWithGenerativeAi: SeedCourse = {
         ],
       },
     },
+    ...m4.quizzes,
+    ...m5.quizzes,
   ],
 
   projects: [
@@ -2032,5 +2078,7 @@ export const buildWithGenerativeAi: SeedCourse = {
         requiredForCertificate: true,
       },
     },
+    ...m4.projects,
+    ...m5.projects,
   ],
 };

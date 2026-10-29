@@ -111,6 +111,7 @@ export const BLOCK_TYPES = [
   'embed',
   'reflection',
   'project',
+  'ml_activity',
 ] as const;
 export type BlockType = (typeof BLOCK_TYPES)[number];
 
@@ -136,6 +137,28 @@ export type CodeLanguage = (typeof CODE_LANGUAGES)[number];
 export const EMBED_ASPECT_RATIOS = ['16:9', '4:3', '1:1'] as const;
 export type EmbedAspectRatio = (typeof EMBED_ASPECT_RATIOS)[number];
 
+// An activity on machinelearningforkids.co.uk, which is opened in a new tab and never framed
+// (the site answers X-Frame-Options: SAMEORIGIN). `language` is its language-model page and
+// `pretrained` its ready-trained models; the other types are its project types.
+export const ML_PROJECT_TYPES = [
+  'text',
+  'images',
+  'numbers',
+  'sounds',
+  'regression',
+  'language',
+  'pretrained',
+] as const;
+export type MlProjectType = (typeof ML_PROJECT_TYPES)[number];
+
+/** Where the learner uses the model they trained. */
+export const ML_CODE_TOOLS = ['scratch', 'python', 'app_inventor', 'none'] as const;
+export type MlCodeTool = (typeof ML_CODE_TOOLS)[number];
+
+/** "Try it now" needs no account and keeps one project for a few hours. */
+export const ML_ACCESS_MODES = ['try_it_now', 'class_account'] as const;
+export type MlAccessMode = (typeof ML_ACCESS_MODES)[number];
+
 /** The translatable part of each block type. */
 export interface BlockTextMap {
   /** Markdown; no raw HTML, no images. */
@@ -149,6 +172,13 @@ export interface BlockTextMap {
   embed: { title: string; caption: string | null };
   reflection: { prompt: string };
   project: { intro: string | null };
+  /** `instructions` is Markdown; `bringBack` says what the learner brings back to the lesson. */
+  ml_activity: {
+    title: string;
+    instructions: string;
+    bringBack: string | null;
+    hint: string | null;
+  };
 }
 
 /** The language-neutral part of each block type. */
@@ -169,6 +199,17 @@ export interface BlockDataMap {
   embed: { url: string; aspectRatio: EmbedAspectRatio };
   reflection: { minLength: number };
   project: { projectId: string };
+  /**
+   * The host of `url` is one of ML_ACTIVITY_HOSTS; `worksheetUrl` starts with one of
+   * ML_WORKSHEET_PREFIXES and names a PDF.
+   */
+  ml_activity: {
+    url: string;
+    worksheetUrl: string | null;
+    projectType: MlProjectType;
+    codeTool: MlCodeTool;
+    access: MlAccessMode;
+  };
 }
 
 export type LessonBlockOf<T extends BlockType> = {

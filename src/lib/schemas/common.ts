@@ -50,6 +50,8 @@ export const VALIDATION_KEYS = [
   'too_many_files',
   'embed_not_allowed',
   'video_id_invalid',
+  'ml_link_not_allowed',
+  'ml_worksheet_not_allowed',
 ] as const;
 
 export type ValidationKey = (typeof VALIDATION_KEYS)[number];

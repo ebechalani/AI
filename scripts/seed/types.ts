@@ -62,3 +62,38 @@ export interface SeedChallenge {
   id: string;
   input: ChallengeInput;
 }
+
+/**
+ * One module with the quizzes and projects its blocks reference, kept in a file of its own
+ * (scripts/seed/content/<courseId>/<moduleId>.ts) and spread into its course's arrays.
+ */
+export interface SeedModulePart {
+  module: SeedModule;
+  quizzes: SeedQuiz[];
+  projects: SeedProject[];
+}
+
+/**
+ * Content added to the official courses after a database was first seeded. `npm run
+ * content:release` writes it into that database without changing what is already there
+ * (ARCHITECTURE.md 11.7); `npm run seed` writes it like the rest. Every id names content of
+ * SEED_COURSES.
+ */
+export interface ContentRelease {
+  /** Stable id; what each release created is recorded under it in meta/contentReleases. */
+  id: string;
+  /** One line for the logs. */
+  summary: string;
+  /** Courses new in this release, written whole when the database does not hold them. */
+  newCourses: string[];
+  /**
+   * Modules new in this release, in courses the database already holds. Each one is placed
+   * after the module that precedes it in the course file, among the modules the database holds.
+   */
+  newModules: { courseId: string; moduleId: string }[];
+  /**
+   * Courses whose details (texts, estimated time, tags) change in this release, with
+   * fingerprintCourseDetails of the details they replace: details edited in the app are kept.
+   */
+  courseDetails: { courseId: string; before: string }[];
+}

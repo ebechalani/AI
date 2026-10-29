@@ -5,6 +5,7 @@ import {
   AlignLeft,
   AppWindow,
   Bot,
+  BrainCircuit,
   Clapperboard,
   Code,
   Hammer,
@@ -39,6 +40,7 @@ const ICONS: Record<BlockType, LucideIcon> = {
   embed: AppWindow,
   reflection: NotebookPen,
   project: Hammer,
+  ml_activity: BrainCircuit,
 };
 
 export interface BlockSummaryProps {

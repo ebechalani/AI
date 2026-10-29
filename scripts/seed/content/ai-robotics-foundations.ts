@@ -1,17 +1,43 @@
 // "AI Robotics Foundations": the AI Robotics demo course (ages 10-14) of brief section 22, the
-// first course of the ai-robotics pathway. Three modules: how robots work (the sense, decide, act
-// loop; sensors and actuators), robots that see and decide (computer vision with rules and
-// learned models, lighting and training data; if/then rules, learned behaviour and state
-// machines), and building an autonomous robot (plan and program a line follower or an obstacle
-// avoider on a simulator if the teacher provides one, a kit or a paper dry run; safety, test log,
-// improvements; the project). Blocks cover every lesson stage; one quiz per module; one project;
-// English and French; no uploaded files. Coding activities (blocks or simple Python, with
-// bilingual comments that explain each new Python word) are saved, not run, and the robot.*
-// commands are generic examples, not one brand's API. The four videos are in English:
-// Crash Course Engineering #33, a TED-Ed lesson by Sajan Saini, and two videos of Code.org's How
-// AI Works series; the watch stage of m3-l1 is an unplugged "watch and observe" activity.
+// first course of the ai-robotics pathway. Five modules, ten lessons (420 minutes), in this order:
+// m1 "How robots work" (the sense, decide, act loop; sensors and actuators), m2 "Robots that see
+// and decide" (computer vision with rules and learned models, lighting and training data; if/then
+// rules, learned behaviour and state machines), m4 "Robots that listen" (microphones and
+// spectrograms, a sound recogniser; false triggers, confidence thresholds, confirmations, an
+// emergency stop that never depends on AI, the privacy and fairness of listening devices), m5
+// "Robots that learn to choose" (a decision tree grown from a log of sensor readings, overfitting;
+// a model trained from examples collected in a game, feature selection, bad examples, advice
+// rather than orders) and m3 "Build your autonomous robot" (plan and program a line follower or an
+// obstacle avoider on a simulator if the teacher provides one, a kit or a paper dry run; safety,
+// test log, improvements; the robot project, which ends the course). Blocks cover every lesson
+// stage; one quiz per module; English and French; no uploaded files. Coding activities (blocks or
+// simple Python, with bilingual comments that explain each new Python word) are saved, not run,
+// and the robot.* commands are generic examples, not one brand's API.
+//
+// m1, m2 and m3 (with quiz-m1, quiz-m2, quiz-m3 and project-1) are the first release and are
+// written here. m4 and m5 were added by a later content release (ARCHITECTURE.md 11.7) and live
+// in ./ai-robotics-foundations/, whose headers say what each one covers. A release only adds to a
+// database that already holds the course, so module ids are not in course order, the module
+// files' quizzes and projects come after the first release's in their arrays, and m1, m2, m3 and
+// their quizzes and project must not be changed here. project-1 stays first among the projects
+// and is the only one the certificate needs. The new modules refer to Module 2 by number (m1 and
+// m2 keep their places) and to "the last module" for m3. m3-l1 still starts the obstacle avoider
+// from "the DRIVING, TURNING and STOPPED states of the previous lesson" (m2-l2 when it was
+// written, m5-l2 now), so m5-l2 recalls those states of m2-l2 and points to the last module.
+//
+// Two Machine Learning for Kids activities, both "Try it now" (no accounts; a project lasts a few
+// hours at most): Alien Language (m4-l1, a sounds model of two made-up command words and the
+// room's background noise, microphone only with the teacher's permission, Scratch part optional)
+// and Zombie Escape! (m5-l2, a numbers model trained on the rooms collected in a Scratch game,
+// played in pairs). Each has a paper version for schools that block the site (or the microphone)
+// and an optional hand-in (project-m4, project-m5). The four videos are in English: Crash Course
+// Engineering #33, a TED-Ed lesson by Sajan Saini, and two videos of Code.org's How AI Works
+// series; the watch stage of m3-l1 is an unplugged "watch and observe" activity, and m4 and m5
+// have no video block (no curated video is about sound recognition or decision trees).
 
 import type { SeedCourse } from '../types';
+import { m4 } from './ai-robotics-foundations/m4';
+import { m5 } from './ai-robotics-foundations/m5';
 
 const RICH = 'rich_text' as const;
 
@@ -28,14 +54,18 @@ export const aiRoboticsFoundations: SeedCourse = {
       en: {
         title: 'AI Robotics Foundations',
         summary:
-          'Find out how robots sense, see and decide, then plan, program and test your own line-following or obstacle-avoiding robot.',
+          'Find out how robots sense, see, listen and decide, train a sound recogniser and a robot that learns to choose on Machine Learning for Kids, then plan, program and test your own line-following or obstacle-avoiding robot.',
         description:
-          'Robots are machines that sense the world, decide what to do and act on it, again and again. In six lessons you will take that loop apart: the sensors and motors a robot uses, how a camera and an AI model let it recognise lines and objects (and why lighting and training data change everything), and how it chooses what to do with fixed rules, learned behaviour and states. Then you will become a robotics engineer: plan, program and test a line-following or obstacle-avoiding robot on a robot simulator (if your teacher gives you one), on a classroom kit or as a paper dry run, keep a test log, and improve your robot with evidence. Coding activities use blocks or simple Python and are saved in the lesson, not run, so you trace them by hand; you can run them later on a simulator or on a kit your teacher approves. You will also learn to work safely around real robots and to use AI help responsibly. The course ends with a robot project and a certificate.',
+          'Robots are machines that sense the world, decide what to do and act on it, again and again. In ten lessons you will take that loop apart: the sensors and motors a robot uses, how a camera and an AI model let it recognise lines and objects (and why lighting and training data change everything), and how it chooses what to do with fixed rules, learned behaviour and states. Then you will give a robot ears: find out how a microphone and a spectrogram turn sounds into patterns that a model can learn, and design voice commands that are safe and respect privacy, with confidence thresholds, confirmations and an emergency stop that never depends on AI. You will also turn a table of sensor readings into a decision tree, see how a computer grows one, and find out why learning examples by heart (overfitting) is a trap. Two activities on Machine Learning for Kids, done with "Try it now" so that no account is needed, let you train models yourself: in Alien Language you teach a model to recognise two made-up command words and the background noise of the room, then test it close up, from farther away and with a sound it never learned; in Zombie Escape! you choose the sensors of a robot, collect examples by playing a Scratch game and judge the advice of the model trained on them. Each activity has a paper version for when the website cannot be used, and a short hand-in that shows your results. Finally you will become a robotics engineer: plan, program and test a line-following or obstacle-avoiding robot on a robot simulator (if your teacher gives you one), on a classroom kit or as a paper dry run, keep a test log, and improve your robot with evidence. Coding activities use blocks or simple Python and are saved in the lesson, not run, so you trace them by hand; you can run them later on a simulator or on a kit your teacher approves. You will also learn to work safely around real robots and to use AI help responsibly. Each module has a quiz, and the course ends with a robot project and a certificate.',
         outcomes: [
           'Describe a robot as a sense, decide, act loop and spot that loop in real machines',
           "Choose sensors (touch, distance, light, camera) and actuators (motors, servos) for a robot's job",
           'Explain how a robot recognises lines and objects with a camera, and why lighting and training data change the result',
           'Compare fixed if/then rules with learned behaviour, and design a simple state machine',
+          'Explain how a robot turns sounds into patterns it can learn, and train and test a sound recogniser on Machine Learning for Kids',
+          'Design voice commands that are safe and respect privacy, with confidence thresholds, confirmations and an emergency stop that never depends on AI',
+          'Turn a table of sensor readings into a decision tree, and explain why a tree that learns its examples by heart (overfitting) does worse on new ones',
+          'Train a model on examples collected in a game on Machine Learning for Kids, and explain how the choice of sensors and bad examples change its advice',
           'Plan, program and test a line-following or obstacle-avoiding robot, and improve it using a test log',
           'Work safely around real robots and use AI help responsibly',
         ],
@@ -43,14 +73,18 @@ export const aiRoboticsFoundations: SeedCourse = {
       fr: {
         title: 'Les bases de la robotique IA',
         summary:
-          'Découvre comment les robots perçoivent, voient et décident, puis conçois, programme et teste ton propre robot suiveur de ligne ou éviteur d’obstacles.',
+          'Découvre comment les robots perçoivent, voient, écoutent et décident, entraîne un modèle de reconnaissance de sons et un robot qui apprend à choisir sur Machine Learning for Kids, puis conçois, programme et teste ton propre robot suiveur de ligne ou éviteur d’obstacles.',
         description:
-          'Un robot est une machine qui perçoit le monde, décide quoi faire et agit, encore et encore. En six leçons, tu vas démonter cette boucle\u00a0: les capteurs et les moteurs qu’utilise un robot, la façon dont une caméra et un modèle d’IA lui permettent de reconnaître des lignes et des objets (et pourquoi l’éclairage et les données d’entraînement changent tout), et la manière dont il choisit quoi faire grâce à des règles fixes, à un comportement appris et à des états. Ensuite, tu deviendras ingénieur ou ingénieure en robotique\u00a0: tu concevras, programmeras et testeras un robot suiveur de ligne ou éviteur d’obstacles sur un simulateur de robot (si ton enseignant t’en propose un), sur un kit de ta classe ou lors d’un essai à blanc sur papier, tu tiendras un journal de tests et tu amélioreras ton robot à partir de preuves. Les activités de programmation utilisent des blocs ou du Python simple\u00a0; elles sont enregistrées dans la leçon, pas exécutées\u00a0: tu les déroules donc à la main, et tu pourras les exécuter plus tard sur un simulateur ou sur un kit approuvé par ton enseignant. Tu apprendras aussi à travailler en sécurité près de vrais robots et à utiliser l’aide de l’IA de façon responsable. Le cours se termine par un projet de robot et un certificat.',
+          'Un robot est une machine qui perçoit le monde, décide quoi faire et agit, encore et encore. En dix leçons, tu vas démonter cette boucle\u00a0: les capteurs et les moteurs qu’utilise un robot, la façon dont une caméra et un modèle d’IA lui permettent de reconnaître des lignes et des objets (et pourquoi l’éclairage et les données d’entraînement changent tout), et la manière dont il choisit quoi faire grâce à des règles fixes, à un comportement appris et à des états. Ensuite, tu donneras des oreilles à un robot\u00a0: tu découvriras comment un microphone et un spectrogramme transforment les sons en motifs qu’un modèle peut apprendre, et tu concevras des commandes vocales sûres et respectueuses de la vie privée, avec des seuils de confiance, des confirmations et un arrêt d’urgence qui ne dépend jamais de l’IA. Tu transformeras aussi un tableau de mesures de capteurs en arbre de décision, tu verras comment un ordinateur en fait pousser un, et tu découvriras pourquoi apprendre les exemples par cœur (le surapprentissage) est un piège. Deux activités sur Machine Learning for Kids, faites avec «\u00a0Essayer maintenant\u00a0» (pas besoin de créer de compte), te permettent d’entraîner toi-même des modèles. Dans Langage extraterrestre (Alien Language), tu apprends à un modèle à reconnaître deux mots de commande inventés et le bruit de fond de la pièce, puis tu le testes de près, de plus loin et avec un son qu’il n’a jamais appris\u00a0; dans Fuir les zombies\u00a0! (Zombie Escape!), tu choisis les capteurs d’un robot, tu rassembles des exemples en jouant à un jeu Scratch et tu juges les conseils du modèle entraîné sur ces exemples. Chaque activité a une version sur papier pour le cas où le site ne s’ouvre pas, et un petit travail à rendre qui présente tes résultats. Enfin, tu deviendras ingénieur ou ingénieure en robotique\u00a0: tu concevras, programmeras et testeras un robot suiveur de ligne ou éviteur d’obstacles sur un simulateur de robot (si ton enseignant t’en propose un), sur un kit de ta classe ou lors d’un essai à blanc sur papier, tu tiendras un journal de tests et tu amélioreras ton robot à partir de preuves. Les activités de programmation utilisent des blocs ou du Python simple\u00a0; elles sont enregistrées dans la leçon, pas exécutées\u00a0: tu les déroules donc à la main, et tu pourras les exécuter plus tard sur un simulateur ou sur un kit approuvé par ton enseignant. Tu apprendras aussi à travailler en sécurité près de vrais robots et à utiliser l’aide de l’IA de façon responsable. Chaque module comporte un quiz, et le cours se termine par un projet de robot et un certificat.',
         outcomes: [
           'Décrire un robot comme une boucle percevoir, décider, agir, et repérer cette boucle dans de vraies machines',
           'Choisir des capteurs (contact, distance, lumière, caméra) et des actionneurs (moteurs, servomoteurs) adaptés à la tâche d’un robot',
           'Expliquer comment un robot reconnaît des lignes et des objets avec une caméra, et pourquoi l’éclairage et les données d’entraînement changent le résultat',
           'Comparer des règles fixes «\u00a0si… alors\u00a0» avec un comportement appris, et concevoir une machine à états simple',
+          'Expliquer comment un robot transforme les sons en motifs qu’il peut apprendre, puis entraîner et tester un modèle de reconnaissance de sons sur Machine Learning for Kids',
+          'Concevoir des commandes vocales sûres et respectueuses de la vie privée, avec des seuils de confiance, des confirmations et un arrêt d’urgence qui ne dépend jamais de l’IA',
+          'Transformer un tableau de mesures de capteurs en arbre de décision, et expliquer pourquoi un arbre qui apprend ses exemples par cœur (surapprentissage) se trompe davantage sur des cas nouveaux',
+          'Entraîner un modèle sur des exemples rassemblés dans un jeu sur Machine Learning for Kids, et expliquer comment le choix des capteurs et de mauvais exemples changent ses conseils',
           'Concevoir, programmer et tester un robot suiveur de ligne ou éviteur d’obstacles, puis l’améliorer grâce à un journal de tests',
           'Travailler en sécurité près de vrais robots et utiliser l’aide de l’IA de façon responsable',
         ],
@@ -67,10 +101,12 @@ export const aiRoboticsFoundations: SeedCourse = {
       'state-machines',
       'python',
       'responsible-ai',
+      'machine-learning',
+      'machine-learning-for-kids',
     ],
     ageMin: 10,
     ageMax: 14,
-    estimatedMinutes: 270,
+    estimatedMinutes: 420,
     visibility: 'private',
     certificateEnabled: true,
     hardwarePlatformIds: ['simulator', 'generic-camera-rover'],
@@ -817,6 +853,8 @@ export const aiRoboticsFoundations: SeedCourse = {
         },
       ],
     },
+    m4.module,
+    m5.module,
     {
       id: 'm3',
       input: {
@@ -2048,6 +2086,8 @@ export const aiRoboticsFoundations: SeedCourse = {
         ],
       },
     },
+    ...m4.quizzes,
+    ...m5.quizzes,
   ],
 
   projects: [
@@ -2083,5 +2123,7 @@ export const aiRoboticsFoundations: SeedCourse = {
         requiredForCertificate: true,
       },
     },
+    ...m4.projects,
+    ...m5.projects,
   ],
 };

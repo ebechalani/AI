@@ -113,6 +113,8 @@ export function toBlockFields(
       return sameData(input);
     case 'project':
       return sameData(input);
+    case 'ml_activity':
+      return sameData(input);
     default:
       return assertNever(input, 'Unknown block type');
   }

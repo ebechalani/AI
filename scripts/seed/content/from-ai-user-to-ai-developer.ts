@@ -1,15 +1,43 @@
 // "From AI User to AI Developer": the AI Builder demo course (ages 15-18) of brief section 22.
-// Three modules: how machine learning works (data, features and labels; training, testing and
-// overfitting; the confusion matrix, precision and recall), building with models (a
-// decision-tree classifier in a Python notebook or a no-code tool; calling a language model
-// through an API safely), and shipping responsibly (bias audits, privacy, testing, model
-// cards), ending with a capstone project: a small AI-powered tool with test results and a
-// model card. Blocks cover every lesson stage; one quiz per module; one project; English and
-// French; no uploaded files. Coding activities are saved, not run: the notebook shows the
-// output of a real run (scikit-learn 1.9) in comments. The six videos are in English, from
-// Crash Course AI, StatQuest and IBM Technology.
+// Five modules, twelve lessons and 515 minutes, in this order: m1 "How machine learning works"
+// (data, features and labels; training, testing and overfitting; the confusion matrix,
+// precision and recall), m2 "Build with models" (a decision-tree classifier in a Python
+// notebook or a no-code tool; calling a language model through an API safely), m4 "Computer
+// vision" (pixels, filters, CNNs, transfer learning and data augmentation; shortcut learning),
+// m5 "Language models and chatbots" (designing an intent-based chatbot; calling your own text
+// model from Python; a recommender biased on purpose) and m3 "Ship it responsibly" (bias
+// audits, privacy, testing, model cards), which ends the course with the capstone project: a
+// small AI-powered tool with test results and a model card. Blocks cover every lesson stage;
+// one quiz per module; English and French; no uploaded files.
+//
+// m1, m2 and m3 (with quiz-m1, quiz-m2, quiz-m3 and project-1) are the first release and are
+// written here. m4 and m5 were added by a later content release (ARCHITECTURE.md 11.7) and
+// live in ./from-ai-user-to-ai-developer/, whose headers say what each one covers. A release
+// only adds to a database that already holds the course, so module ids are not in course
+// order, the module files' quizzes and projects come after the first release's in their
+// arrays, and m1, m2, m3 and their quizzes and project must not be changed here. project-1, the
+// capstone, stays first among the projects. The module files name other lessons by their
+// titles, never by number, so their cross-references still hold with m4 and m5 between m2 and
+// m3.
+//
+// Three Machine Learning for Kids activities, all "Try it now" (no accounts, nothing about the
+// learner is stored): Fooled (m4-l2, an images model in Scratch that learns a colour shortcut,
+// then a fixed dataset), Chatbots, Python version (m5-l2, a text model called from the
+// learner's own Python program; its project key stays on the website and in the learner's own
+// notebook, and is replaced with YOUR-KEY in anything brought back) and Tourist Info (m5-l3, a
+// text model in Scratch tilted on purpose, measured before and after). Try it now keeps one
+// project at a time, so m5-l2 and m5-l3 say when to delete the previous one. Each activity has a
+// paper version for schools that block the site; Fooled and Chatbots have optional hand-ins
+// (project-m4, project-m5), Tourist Info a written hand-in in a reflection block; the
+// certificate needs only project-1 (m3-l2). Coding activities are saved, not run: the notebook
+// of m2-l1 shows the output of a real run (scikit-learn 1.9) in comments. The seven videos are
+// in English: six from Crash Course AI, StatQuest and IBM Technology, and Code.org's How AI
+// Works video on chatbots and large language models (m5-l1), also curated in
+// build-with-generative-ai and ai-essentials-for-educators. m4 has no video block.
 
 import type { SeedCourse } from '../types';
+import { m4 } from './from-ai-user-to-ai-developer/m4';
+import { m5 } from './from-ai-user-to-ai-developer/m5';
 
 const RICH = 'rich_text' as const;
 
@@ -26,15 +54,18 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
       en: {
         title: 'From AI User to AI Developer',
         summary:
-          'Go behind the screen: learn how machine learning really works, train and evaluate a classifier, call an AI model from code, and ship a small AI tool with a model card.',
+          'Go behind the screen: learn how machine learning really works, train and evaluate a classifier, call an AI model from code, find out how machines see and how chatbots work with Machine Learning for Kids projects, and ship a small AI tool with a model card.',
         description:
-          'You use AI every day. This course shows you how to build with it. In seven lessons you will learn how supervised machine learning turns data into a model, why a model must be tested on data it has never seen, and how to measure it honestly with a confusion matrix, precision and recall. You will build a decision-tree classifier in a Python notebook (or with a no-code tool), then learn how developers call ready-made AI models through an API: prompts as code, temperature, tokens and cost, and keeping keys and personal data safe. Finally you will audit a model for bias, write a model card and test before you ship. The course ends with a capstone project, a small AI-powered tool with its test results and model card, and a certificate. Coding activities are written and saved in the lesson, not run, so you work out by hand what the code does; you can run it later in an environment your teacher approves.',
+          'You use AI every day. This course shows you how to build with it. In twelve lessons you will learn how supervised machine learning turns data into a model, why a model must be tested on data it has never seen, and how to measure it honestly with a confusion matrix, precision and recall. You will build a decision-tree classifier in a Python notebook (or with a no-code tool), then learn how developers call ready-made AI models through an API: prompts as code, temperature, tokens and cost, and keeping keys and personal data safe. Next, you will find out how machines see: images as grids of numbers, the filters and layers of a convolutional network, transfer learning and data augmentation, and why image models learn shortcuts. Then you will design a chatbot like a professional, with intents, a confidence threshold, a fallback and a handover to a person, and learn when a large language model fits better. Three activities on Machine Learning for Kids put these ideas into practice. In Fooled, you train a fruit classifier that learns the wrong clue, catch it and fix its dataset. In Chatbots, you train the question classifier of your own FAQ bot and call it from your own Python program, keeping its project key secret. In Tourist Info, you tilt a recommender on purpose, measure the tilt with the same test requests before and after, and document it in a mini model card. They use "Try it now", so no account is needed; each one has a paper version for when the website cannot be opened, and a short hand-in. Finally you will audit a model for bias, protect privacy, write a full model card and test before you ship. Each module has a quiz, and the course ends with a capstone project, a small AI-powered tool with its test results and model card, and a certificate. Coding activities are written and saved in the lesson, not run, so you work out by hand what the code does; you can run it later in an environment your teacher approves.',
         outcomes: [
           'Explain how supervised learning turns labelled examples (features and labels) into a model that makes predictions',
           'Split data into training, validation and test sets, and recognise overfitting and underfitting',
           'Evaluate a classifier with a confusion matrix, accuracy, precision and recall, and choose the metric that fits the problem',
           'Build and test a decision-tree classifier in Python, or train one with a no-code tool',
           'Call an AI model through an API with a prompt template, sensible settings and secrets kept safe',
+          'Explain how an image classifier turns pixels into a prediction, catch the shortcuts it learns with counterexamples, and fix the dataset that caused them',
+          'Design a chatbot with intents, a confidence threshold, a fallback and a handover to a person, and call your own trained text model from Python with its key kept secret',
+          'Show how training data can tilt a recommender, and measure the tilt with the same test set before and after',
           'Audit a model for bias, protect privacy and document it with a model card before sharing it',
           'Design, build, test and document a small AI-powered tool',
         ],
@@ -42,15 +73,18 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
       fr: {
         title: 'D’utilisateur à développeur d’IA',
         summary:
-          'Passe de l’autre côté de l’écran\u00a0: découvre comment fonctionne vraiment l’apprentissage automatique, entraîne et évalue un classifieur, appelle un modèle d’IA depuis ton code et publie un petit outil d’IA avec sa fiche de modèle.',
+          'Passe de l’autre côté de l’écran\u00a0: comprends comment apprennent les machines, entraîne et évalue un classifieur, appelle un modèle d’IA depuis ton code, explore la vision par ordinateur et les chatbots avec Machine Learning for Kids, et publie un petit outil d’IA avec sa fiche de modèle.',
         description:
-          'Tu utilises l’IA tous les jours. Ce cours te montre comment construire avec elle. En sept leçons, tu vas découvrir comment l’apprentissage automatique supervisé transforme des données en modèle, pourquoi un modèle doit être testé sur des données qu’il n’a jamais vues, et comment le mesurer honnêtement avec une matrice de confusion, la précision et le rappel. Tu construiras un classifieur à arbre de décision dans un notebook Python (ou avec un outil sans code), puis tu verras comment les développeurs appellent des modèles d’IA tout faits grâce à une API\u00a0: les prompts comme du code, la température, les tokens et le coût, et la protection des clés et des données personnelles. Enfin, tu feras l’audit des biais d’un modèle, tu rédigeras une fiche de modèle et tu testeras avant de publier. Le cours se termine par un projet final, un petit outil propulsé par l’IA avec ses résultats de tests et sa fiche de modèle, puis par un certificat. Les activités de programmation sont écrites et enregistrées dans la leçon, pas exécutées\u00a0: tu détermines à la main ce que fait le code, et tu pourras l’exécuter plus tard dans un environnement approuvé par ton enseignant.',
+          'Tu utilises l’IA tous les jours. Ce cours te montre comment construire avec elle. En douze leçons, tu vas découvrir comment l’apprentissage automatique supervisé transforme des données en modèle, pourquoi un modèle doit être testé sur des données qu’il n’a jamais vues, et comment le mesurer honnêtement avec une matrice de confusion, la précision et le rappel. Tu construiras un classifieur à arbre de décision dans un notebook Python (ou avec un outil sans code), puis tu verras comment les développeurs appellent des modèles d’IA tout faits grâce à une API\u00a0: les prompts comme du code, la température, les tokens et le coût, et la protection des clés et des données personnelles. Tu découvriras ensuite comment voient les machines\u00a0: les images comme grilles de nombres, les filtres et les couches d’un réseau convolutif, l’apprentissage par transfert et l’augmentation de données, et pourquoi les modèles d’images apprennent des raccourcis. Puis tu concevras un chatbot comme un professionnel, avec des intentions, un seuil de confiance, une réponse de repli et un transfert vers une personne, et tu sauras quand un grand modèle de langage convient mieux. Trois activités sur Machine Learning for Kids mettent ces idées en pratique. Dans Trompé (Fooled), tu entraînes un classifieur de fruits qui apprend le mauvais indice, tu le prends sur le fait et tu corriges son jeu de données. Dans Chatbots, tu entraînes le classifieur de questions de ton propre bot de FAQ et tu l’appelles depuis ton propre programme Python, en gardant secrète sa clé de projet. Dans Tourist Info, tu fais pencher exprès un système de recommandation, tu mesures ce penchant avec les mêmes demandes de test avant et après, et tu le documentes dans une mini-fiche de modèle. Elles se font avec «\u00a0Essayer maintenant\u00a0» (Try it now)\u00a0: pas besoin de créer de compte. Chacune a une version sur papier pour le cas où le site ne s’ouvre pas, et un court travail à rendre. Enfin, tu feras l’audit des biais d’un modèle, tu protégeras la vie privée, tu rédigeras une fiche de modèle complète et tu testeras avant de publier. Chaque module comporte un quiz, et le cours se termine par un projet final, un petit outil propulsé par l’IA avec ses résultats de tests et sa fiche de modèle, puis par un certificat. Les activités de programmation sont écrites et enregistrées dans la leçon, pas exécutées\u00a0: tu détermines à la main ce que fait le code, et tu pourras l’exécuter plus tard dans un environnement approuvé par ton enseignant.',
         outcomes: [
           'Expliquer comment l’apprentissage supervisé transforme des exemples étiquetés (caractéristiques et étiquettes) en un modèle qui fait des prédictions',
           'Répartir des données en jeux d’entraînement, de validation et de test, et reconnaître le surapprentissage et le sous-apprentissage',
           'Évaluer un classifieur avec une matrice de confusion, l’exactitude, la précision et le rappel, et choisir la mesure adaptée au problème',
           'Construire et tester un classifieur à arbre de décision en Python, ou en entraîner un avec un outil sans code',
           'Appeler un modèle d’IA via une API avec un gabarit de prompt, des réglages adaptés et des secrets bien protégés',
+          'Expliquer comment un classifieur d’images passe des pixels à une prédiction, repérer ses raccourcis avec des contre-exemples et corriger le jeu de données en cause',
+          'Concevoir un chatbot avec intentions, seuil de confiance, réponse de repli et transfert vers une personne, et appeler depuis Python ton propre modèle de texte sans divulguer sa clé',
+          'Montrer comment les données d’entraînement peuvent faire pencher un système de recommandation, et mesurer ce penchant avec le même jeu de test avant et après',
           'Auditer les biais d’un modèle, protéger la vie privée et le documenter avec une fiche de modèle avant de le partager',
           'Concevoir, construire, tester et documenter un petit outil propulsé par l’IA',
         ],
@@ -60,16 +94,19 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
     area: 'ai',
     tags: [
       'machine-learning',
+      'machine-learning-for-kids',
       'python',
       'classification',
       'evaluation',
+      'computer-vision',
+      'chatbots',
       'apis',
       'responsible-ai',
       'model-cards',
     ],
     ageMin: 15,
     ageMax: 18,
-    estimatedMinutes: 300,
+    estimatedMinutes: 515,
     visibility: 'private',
     certificateEnabled: true,
     hardwarePlatformIds: [],
@@ -1140,7 +1177,11 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
       ],
     },
 
-    // --- Module 3: ship it responsibly ----------------------------------------------------------
+    // --- Modules 3 and 4 in course order: m4 and m5, added by a content release -----------------
+    m4.module,
+    m5.module,
+
+    // --- Module 5, the last: ship it responsibly (m3) -------------------------------------------
     {
       id: 'm3',
       input: {
@@ -2459,6 +2500,8 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
         ],
       },
     },
+    ...m4.quizzes,
+    ...m5.quizzes,
   ],
 
   projects: [
@@ -2494,5 +2537,7 @@ export const fromAiUserToAiDeveloper: SeedCourse = {
         requiredForCertificate: true,
       },
     },
+    ...m4.projects,
+    ...m5.projects,
   ],
 };

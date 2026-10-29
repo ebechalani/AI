@@ -93,12 +93,15 @@ npm run seed
   `0001_initial` writes the reference data: the seven learning pathways, the seven badge
   definitions and the hardware platforms. Migrations are the only source of this data.
 - `npm run seed` upserts the demo content by stable id, so it can be run again at any time:
-  the demo courses, the school "Demo Academy" with one licence, the class "Grade 6 A" with
-  the first two student courses of the seed assigned (one until the other demo courses are
-  written), two challenges, and the demo accounts below with some progress, one submitted
-  project awaiting review and one issued certificate. The summary it prints ends with the
+  the seven official courses of `scripts/seed/content` (the five demo courses, then
+  `ai-engineering-with-python` and `from-idea-to-ai-product`), the school "Demo Academy"
+  with one licence, the class "Grade 6 A" with the first two student courses of the seed
+  assigned (`my-first-ai-adventure`, `build-with-generative-ai`), two challenges, and the
+  demo accounts below with some progress, one submitted project awaiting review and one
+  issued certificate. The summary it prints ends with the
   certificate's verification code and the id of the submission awaiting review. On the emulators the demo
-  accounts are created and the class join code is the fixed `RBHDEM23`.
+  accounts are created and the class join code is the fixed `RBHDEM23`. A real project is
+  seeded once only (see [Adding content to a live site](#7-adding-content-to-a-live-site)).
 
 Every script under `scripts/` talks to the emulators unless `--allow-project <id>` names a
 real project (see [Deploying](#deploying)). They all accept `--env-file <path>` (default:
@@ -248,7 +251,7 @@ npm run smoke:queries -- --allow-project <id> --env-file .env.production.local
 `migrate` writes the reference data. `smoke:queries` runs every repository list function
 against the project, so a missing or still-building index fails here rather than on a page.
 
-The demo courses are optional on a real project:
+The demo courses are optional on a real project, and seeded once:
 `npm run seed -- --allow-project <id> --env-file ...` seeds the courses and challenges only.
 Add `--with-demo-users` for the demo school and accounts; it then requires
 `SEED_DEMO_PASSWORD` of 16 characters or more, never creates the demo platform admin, and
@@ -299,6 +302,25 @@ throws when one is present on Vercel or with a project id that does not start wi
   It refuses while the user still owns a class that is not archived.
 
 Both work against the emulators without `--allow-project`.
+
+### 7. Adding content to a live site
+
+Once a real project has been seeded, do not seed it again: the seed writes every official course
+whole, which would erase what platform admins changed in the app, so it refuses a project
+whose official courses it wrote before (`meta/seed.coursesSeededAt`;
+`--overwrite-official-courses` forces it). A first setup that failed before the courses were all
+written can simply be run again. The seed also records the releases whose content it wrote, so
+a release run later never brings back what an admin deleted from them. New official content (a
+new course, a new module of an existing course, new course details) is written in
+`scripts/seed/content` like the rest and named in a release in
+`scripts/seed/content/releases.ts`. After deploying the code, run the **Content release**
+workflow (`.github/workflows/content-release.yml`) from the Actions tab, first as a dry run
+(the default), which prints every document it would create or change, then with `apply`
+ticked. By hand: `npm run content:release -- --allow-project <id> --env-file
+.env.production.local`, then the same with `--apply`. It only creates what the database lacks,
+never brings back what an admin deleted, keeps course details an admin edited (it prints a
+warning instead), and changes nothing when run twice. See section 11.7 of the architecture
+document.
 
 ## Folder layout
 

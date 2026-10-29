@@ -54,6 +54,7 @@ export function toRuntime(data: LessonPlayerData): LessonRuntime {
     lessonId: data.lesson.id,
     readOnly: data.readOnly,
     tutorEnabled: data.tutorEnabled,
+    audience: data.course.audience,
     responses: Object.fromEntries(
       Object.entries(responses).map(([blockId, response]) => [blockId, response.text]),
     ),

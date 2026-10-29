@@ -1,0 +1,115 @@
+name: Content release
+
+# Adds new official content to the real Firebase project (ARCHITECTURE.md 11.7, README "Adding
+# content to a live site"): the releases of scripts/seed/content/releases.ts, written by
+# `npm run content:release`. It creates the courses and modules the database lacks and replaces
+# course details only where they are still the ones a release replaces; it never changes what an
+# admin edited in the app and never brings back what an admin deleted. Run it from the Actions
+# tab ("Run workflow"): first as a dry run (the default), which prints what it would create or
+# change and writes nothing, then again with "apply" ticked. Running it twice changes nothing
+# the second time.
+#
+# Needs the repository secret FIREBASE_SERVICE_ACCOUNT, as the Firebase setup workflow does, and
+# the optional repository variable FIREBASE_STORAGE_BUCKET. The repository is public, so this
+# workflow never prints a key.
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Release ids, separated by spaces (empty = every release, oldest first)
+        required: false
+        type: string
+        default: ''
+      apply:
+        description: Write to the database (unticked = a dry run that writes nothing)
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Two runs never overlap: the second waits for the first to finish.
+concurrency:
+  group: content-release
+  cancel-in-progress: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  release:
+    name: Write the content releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Prepare credentials
+        env:
+          SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          STORAGE_BUCKET: ${{ vars.FIREBASE_STORAGE_BUCKET }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SERVICE_ACCOUNT}" ]; then
+            echo "::error::The repository secret FIREBASE_SERVICE_ACCOUNT is missing (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          key_file="${RUNNER_TEMP}/service-account.json"
+          printf '%s' "${SERVICE_ACCOUNT}" > "${key_file}"
+          if ! jq -e '.project_id and .client_email and .private_key' "${key_file}" > /dev/null; then
+            echo "::error::FIREBASE_SERVICE_ACCOUNT is not a service account JSON key (project_id, client_email and private_key are required)."
+            exit 1
+          fi
+          project_id="$(jq -r .project_id "${key_file}")"
+          bucket="${STORAGE_BUCKET:-${project_id}.firebasestorage.app}"
+          # The scripts' environment check asks for one; nothing here rate-limits.
+          rate_limit_secret="$(openssl rand -hex 32)"
+          echo "::add-mask::${rate_limit_secret}"
+          env_file="${RUNNER_TEMP}/project.env"
+          {
+            echo "FIREBASE_PROJECT_ID=${project_id}"
+            echo "FIREBASE_STORAGE_BUCKET=${bucket}"
+            echo "FIREBASE_CLIENT_EMAIL=$(jq -r .client_email "${key_file}")"
+            # One line with literal \n escapes, as src/lib/env.ts expects.
+            echo "FIREBASE_PRIVATE_KEY=\"$(jq -r .private_key "${key_file}" | awk 'BEGIN { ORS = "\\n" } { print }')\""
+            echo "RATE_LIMIT_SECRET=${rate_limit_secret}"
+          } > "${env_file}"
+          {
+            echo "PROJECT_ID=${project_id}"
+            echo "ENV_FILE=${env_file}"
+            echo "GOOGLE_APPLICATION_CREDENTIALS=${key_file}"
+          } >> "${GITHUB_ENV}"
+          echo "Project: ${project_id}"
+
+      - name: Write the content releases (a dry run unless "apply" is ticked)
+        env:
+          RELEASES: ${{ inputs.release }}
+          APPLY: ${{ inputs.apply }}
+        run: |
+          set -euo pipefail
+          # The input is a list of ids, passed as separate arguments and never evaluated. An id is
+          # letters, digits and hyphens (ID_PATTERN) and starts with no hyphen here, so that
+          # nothing typed into the input can read as an option of the script.
+          read -r -a ids <<< "${RELEASES}"
+          for id in "${ids[@]}"; do
+            if ! [[ "${id}" =~ ^[A-Za-z0-9][A-Za-z0-9-]{0,63}$ ]]; then
+              echo "::error::\"${id}\" is not a release id (letters, digits and hyphens)."
+              exit 1
+            fi
+          done
+          args=(--allow-project "${PROJECT_ID}" --env-file "${ENV_FILE}" --yes)
+          if [ "${APPLY}" = "true" ]; then args+=(--apply); fi
+          npm run content:release -- "${ids[@]}" "${args[@]}"
+
+      - name: Remove the credentials
+        if: ${{ always() }}
+        run: rm -f "${RUNNER_TEMP}/service-account.json" "${RUNNER_TEMP}/project.env"

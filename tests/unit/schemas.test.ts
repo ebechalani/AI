@@ -390,6 +390,7 @@ describe('course schemas', () => {
 
 describe('block schema', () => {
   const base = { stage: 'learn', defaultLocale: 'en' } as const;
+  const WORKSHEETS = 'https://github.com/IBM/taxinomitis-docs/raw/master/project-worksheets/pdf/';
   const blocks: BlockInput[] = [
     {
       ...base,
@@ -452,6 +453,25 @@ describe('block schema', () => {
       translations: { en: { intro: null } },
       data: { projectId: 'project-1' },
     },
+    {
+      ...base,
+      type: 'ml_activity',
+      translations: {
+        en: {
+          title: 'Teach a computer to understand you',
+          instructions: '1. Click **Try it now**.\n2. Make a text project.',
+          bringBack: 'A screenshot of your Scratch project.',
+          hint: null,
+        },
+      },
+      data: {
+        url: 'https://machinelearningforkids.co.uk/#!/login',
+        worksheetUrl: `${WORKSHEETS}worksheet-smartclassroom-tryitnow.pdf`,
+        projectType: 'text',
+        codeTool: 'scratch',
+        access: 'try_it_now',
+      },
+    },
   ];
 
   it.each(blocks.map((block) => [block.type, block] as const))(
@@ -513,6 +533,86 @@ describe('block schema', () => {
     // The CSP frame-src lists the bare hosts, so the browser would block these two.
     expect(courseSchemas.isEmbeddableUrl('https://player.vimeo.com:8443/video/1')).toBe(false);
     expect(courseSchemas.isEmbeddableUrl('https://user:pw@player.vimeo.com/video/1')).toBe(false);
+  });
+
+  it('links an ml_activity to Machine Learning for Kids only', () => {
+    const ml = blocks[11]!;
+    const errorsFor = (url: string) =>
+      errorsOf(courseSchemas.blockInputSchema, { ...ml, data: { ...ml.data, url } });
+    for (const url of [
+      'https://machinelearningforkids.co.uk/',
+      'https://machinelearningforkids.co.uk/#!/worksheets',
+      'https://machinelearningforkids.co.uk/?lang=fr#!/pretrained',
+    ]) {
+      expect(errorsFor(url), url).toEqual({});
+    }
+    for (const url of [
+      'https://machinelearningforkids.co.uk.evil.com/#!/login',
+      'https://www.machinelearningforkids.co.uk/',
+      'https://machinelearningforkids.co.uk:8443/',
+      'https://user:pw@machinelearningforkids.co.uk/',
+      'https://scratch.mit.edu/projects/1',
+    ]) {
+      expect(errorsFor(url), url).toEqual({ 'data.url': ['ml_link_not_allowed'] });
+    }
+    // Not an https URL at all: the URL rule reports it too, so the editor names the real fault.
+    for (const url of ['http://machinelearningforkids.co.uk/', 'machinelearningforkids']) {
+      const errors = errorsFor(url);
+      expect(Object.keys(errors), url).toEqual(['data.url']);
+      expect(errors['data.url'], url).toContain('invalid_url');
+    }
+  });
+
+  it('takes an official worksheet PDF or nothing', () => {
+    const ml = blocks[11]!;
+    const errorsFor = (worksheetUrl: string | null) =>
+      errorsOf(courseSchemas.blockInputSchema, { ...ml, data: { ...ml.data, worksheetUrl } });
+    expect(errorsFor(null)).toEqual({});
+    expect(
+      errorsFor(
+        'https://raw.githubusercontent.com/IBM/taxinomitis-docs/master/project-worksheets/pdf/worksheet-fooled.pdf',
+      ),
+    ).toEqual({});
+    for (const url of [
+      'https://github.com/IBM/taxinomitis/raw/master/x.pdf',
+      'https://github.com/IBM/taxinomitis-docs-copy/raw/master/x.pdf',
+      // Anyone can open a pull request, and GitHub serves its head under the repository's path.
+      'https://raw.githubusercontent.com/IBM/taxinomitis-docs/refs/pull/13/head/project-worksheets/pdf/x.pdf',
+      'https://github.com/IBM/taxinomitis-docs/raw/0123456789abcdef0123456789abcdef01234567/x.pdf',
+      'https://github.com/IBM/taxinomitis-docs/blob/master/project-worksheets/pdf/worksheet-fooled.pdf',
+      `${WORKSHEETS}sub/x.pdf`,
+      `${WORKSHEETS}..%2fx.pdf`,
+      `${WORKSHEETS}../../../../other/raw/master/x.pdf`,
+      `${WORKSHEETS}worksheet-fooled.docx`,
+      `${WORKSHEETS}worksheet-fooled.pdf?download=1`,
+      `${WORKSHEETS}worksheet-fooled.pdf#page=2`,
+      'https://example.com/IBM/taxinomitis-docs/raw/master/x.pdf',
+    ]) {
+      expect(errorsFor(url), url).toEqual({ 'data.worksheetUrl': ['ml_worksheet_not_allowed'] });
+    }
+  });
+
+  it('requires the title and the instructions of an ml_activity, and known choices', () => {
+    const ml = blocks[11]!;
+    expect(
+      errorsOf(courseSchemas.blockInputSchema, {
+        ...ml,
+        translations: { en: { title: ' ', instructions: '', bringBack: null, hint: null } },
+      }),
+    ).toEqual({
+      'translations.en.title': ['default_locale_required'],
+      'translations.en.instructions': ['default_locale_required'],
+    });
+    expect(
+      errorsOf(courseSchemas.blockInputSchema, {
+        ...ml,
+        data: { ...ml.data, projectType: 'faces', codeTool: 'excel', access: 'guest' },
+      }),
+    ).toEqual({
+      'data.projectType': ['invalid_choice'],
+      'data.codeTool': ['invalid_choice'],
+      'data.access': ['invalid_choice'],
+    });
   });
 
   it('enforces the text limits and the required text of the default language', () => {

@@ -113,6 +113,44 @@
       "saved": "Votre réponse est enregistrée.",
       "unsaved": "Pas encore enregistrée",
       "preview": "Les réponses ne sont pas enregistrées en aperçu."
+    },
+    "ml": {
+      "badge": "Machine Learning for Kids",
+      "projectTypes": {
+        "text": "Reconnaître du texte",
+        "images": "Reconnaître des images",
+        "numbers": "Reconnaître des nombres",
+        "sounds": "Reconnaître des sons",
+        "regression": "Prédire des nombres",
+        "language": "Générer du texte",
+        "pretrained": "Modèle déjà entraîné"
+      },
+      "codeTools": {
+        "scratch": "Scratch",
+        "python": "Python",
+        "app_inventor": "App Inventor",
+        "none": "Sans programmation"
+      },
+      "access": {
+        "try_it_now": "Sans compte («\u00a0Essayer maintenant\u00a0»)",
+        "class_account": "Identifiant donné par votre enseignant"
+      },
+      "leavingTitle": "Vous allez sur un autre site",
+      "leaving": "Machine Learning for Kids est un site gratuit qui ne fait pas partie de RoboHolic AI. N’y écrivez ni votre nom, ni votre école, ni rien sur vous. Utilisez des exemples que vous inventez\u00a0: jamais de photos ni d’enregistrements de personnes. Demandez à votre enseignant avant d’allumer une webcam ou un micro.",
+      "tryItNowNote": "Un projet «\u00a0Essayer maintenant\u00a0» (Try it now) est effacé au bout de quelques heures. Terminez-le pendant cette leçon, et gardez ce qu’il faut rapporter avant de fermer le site.",
+      "bringBackTitle": "Ce qu’il faut rapporter",
+      "hint": "Afficher un indice",
+      "open": "Ouvrir Machine Learning for Kids",
+      "worksheet": "Fiche officielle (PDF)",
+      "worksheetInEnglish": "Fiche officielle (PDF, en anglais)",
+      "worksheetInFrench": "Fiche officielle (PDF, en français)",
+      "unavailable": "Le lien vers cette activité n’est pas disponible. Demandez à votre enseignant.",
+      "attribution": "Machine Learning for Kids est créé par Dale Lane. Ses fiches sont partagées sous la licence Creative Commons BY-NC-SA 4.0. Les consignes de cette page sont rédigées par RoboHolic AI.",
+      "forTeachers": {
+        "classAccount": "Compte de classe sur le site",
+        "leaving": "Machine Learning for Kids est un site gratuit qui ne fait pas partie de RoboHolic AI. N’y écrivez ni votre nom, ni celui de votre école, ni rien sur vous ou vos élèves. Utilisez des exemples que vous inventez\u00a0: jamais de photos ni d’enregistrements de personnes. Vérifiez les règles de votre école avant d’allumer une webcam ou un micro.",
+        "unavailable": "Le lien vers cette activité n’est pas disponible."
+      }
     }
   }
 }

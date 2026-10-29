@@ -8,7 +8,14 @@ import { TRANSLATION_STATES } from '@/components/course-editor/translations';
 import { LOCALES } from '@/lib/i18n/config';
 import { LAB_TOOL_IDS } from '@/types/ai';
 import { AUDIENCES } from '@/types/common';
-import { BLOCK_TYPES, CODE_LANGUAGES, VIDEO_SOURCES } from '@/types/content';
+import {
+  BLOCK_TYPES,
+  CODE_LANGUAGES,
+  ML_ACCESS_MODES,
+  ML_CODE_TOOLS,
+  ML_PROJECT_TYPES,
+  VIDEO_SOURCES,
+} from '@/types/content';
 import { HARDWARE_CAPABILITIES } from '@/types/hardware';
 import { PROJECT_KINDS } from '@/types/project';
 import { QUESTION_TYPES, REVEAL_ANSWERS } from '@/types/quiz';
@@ -63,7 +70,7 @@ describe.each(['en', 'fr'])('%s/courseEditor catalog', (locale) => {
   it('has no dot in a key name and the same keys as the English source', () => {
     const source = leaves(catalog('en')).map(([key]) => key);
     expect(messages.map(([key]) => key).sort()).toEqual(source.sort());
-    expect(source).toHaveLength(496);
+    expect(source).toHaveLength(526);
   });
 
   it('formats every message as ICU without an error', () => {
@@ -104,6 +111,9 @@ describe.each(['en', 'fr'])('%s/courseEditor catalog', (locale) => {
       ...CODE_LANGUAGES.map((l) => `blocks.code.languages.${l}`),
       ...VIDEO_SOURCES.map((s) => `blocks.video.sources.${s}`),
       ...['wide', 'standard', 'square'].map((r) => `blocks.embed.ratios.${r}`),
+      ...ML_PROJECT_TYPES.map((p) => `blocks.ml.projectTypes.${p}`),
+      ...ML_CODE_TOOLS.map((c) => `blocks.ml.codeTools.${c}`),
+      ...ML_ACCESS_MODES.flatMap((a) => [`blocks.ml.accessModes.${a}`, `blocks.ml.accessModes.${a}Description`]),
       ...STATUS_ACTIONS.flatMap((a) => [`status.confirm.${a}.title`, `status.confirm.${a}.description`, `status.toast.${a}`]),
       ...STATUS_EXPLANATIONS.map((e) => `status.explanation.${e}`),
       'status.explanation.publishedOfficialNoPathway',

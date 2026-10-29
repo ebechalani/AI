@@ -391,6 +391,10 @@
       "project": {
         "label": "Project",
         "description": "A project or an assignment that learners submit."
+      },
+      "ml_activity": {
+        "label": "Machine Learning for Kids",
+        "description": "An activity on machinelearningforkids.co.uk, opened in a new tab, with a safety notice and what to bring back."
       }
     },
     "richText": {
@@ -495,6 +499,42 @@
       "create": "Create a new project",
       "noneFree": "Every project of this course is already used in a lesson. Create a new one.",
       "intro": "Introduction"
+    },
+    "ml": {
+      "url": "Activity address",
+      "urlHint": "An https address on {hosts}. Learners open it in a new tab: the website cannot be shown inside the lesson.",
+      "worksheetUrl": "Official worksheet (PDF)",
+      "worksheetUrlHint": "Optional. On machinelearningforkids.co.uk/#!/worksheets, choose Download under a worksheet, then copy the link of “Download project worksheet” (or of the guidance for teachers): its address starts with https://github.com/IBM/taxinomitis-docs/raw/master/. Link to it; do not copy its text into the lesson.",
+      "projectType": "Project type",
+      "projectTypes": {
+        "text": "Recognising text",
+        "images": "Recognising images",
+        "numbers": "Recognising numbers",
+        "sounds": "Recognising sounds",
+        "regression": "Predicting numbers",
+        "language": "Generating text",
+        "pretrained": "Ready-trained model"
+      },
+      "codeTool": "Coding tool",
+      "codeTools": {
+        "scratch": "Scratch",
+        "python": "Python",
+        "app_inventor": "App Inventor",
+        "none": "No coding"
+      },
+      "access": "How learners use the website",
+      "accessModes": {
+        "try_it_now": "No account (“Try it now”)",
+        "try_it_nowDescription": "Nothing to set up. The project is deleted after a few hours, so learners finish it in one lesson.",
+        "class_account": "Class login from the teacher",
+        "class_accountDescription": "The school sets up a class on the website and gives each learner a login."
+      },
+      "title": "Title",
+      "instructions": "Instructions",
+      "instructionsHint": "Markdown: numbered steps work well. Write them in your own words.",
+      "bringBack": "What to bring back",
+      "bringBackHint": "Optional. For example a screenshot, or three tests and what the model answered.",
+      "hint": "Hint"
     }
   },
   "reorder": {

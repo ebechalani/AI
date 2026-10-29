@@ -69,7 +69,7 @@ describe('seed content', () => {
     }
   });
 
-  it('has two modules of two lessons, a quiz per module, one project and every stage', () => {
+  it('has two modules of two lessons, a quiz per module, three projects and every stage', () => {
     const course = adventure();
     expect(course.modules.length).toBeGreaterThanOrEqual(2);
     for (const courseModule of course.modules) {
@@ -79,7 +79,7 @@ describe('seed content', () => {
       );
       expect(quizBlocks.length).toBeGreaterThanOrEqual(1);
     }
-    expect(course.projects).toHaveLength(1);
+    expect(course.projects).toHaveLength(3);
     const stages = new Set(blocksOf(course).map((block) => block.stage));
     expect([...LESSON_STAGES].filter((stage) => !stages.has(stage))).toEqual([]);
   });
@@ -100,7 +100,9 @@ describe('seed content', () => {
     const course = adventure();
     const links = contentLinks(course);
     expect([...links.quizzes.keys()].sort()).toEqual(course.quizzes.map((quiz) => quiz.id).sort());
-    expect([...links.projects.keys()]).toEqual(course.projects.map((project) => project.id));
+    expect([...links.projects.keys()].sort()).toEqual(
+      course.projects.map((project) => project.id).sort(),
+    );
     const lessonIds = course.modules.flatMap((module) => module.lessons.map((lesson) => lesson.id));
     for (const lessonId of [...links.quizzes.values(), ...links.projects.values()]) {
       expect(lessonIds).toContain(lessonId);
